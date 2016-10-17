@@ -1,0 +1,337 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&subset=cyrillic-ext');
+
+$activeBlue: #43abe7;
+$iconGrey: #b0bec8;
+$middleGrey: #82898f;
+
+* {
+	outline: none;
+}
+
+html, body {
+	width: 100%;
+	min-height: 100%;
+	height: 100%;
+}
+
+body {
+	background-color: #f1f5f7;
+}
+
+a {
+	text-decoration: none;
+
+	&:hover {
+		opacity: .9;
+	}
+}
+
+.so-bold {
+	font-weight: 900;
+}
+
+.dark-bold {
+	font-family: 'Roboto';
+	font-size: 14px;
+	font-weight: 900;
+	color: #535659;
+}
+
+.small-light {
+	color: $iconGrey;
+	font-family: 'Roboto';
+	font-size: 13px;
+}
+
+.cta-button {
+	display: flex; position: relative;
+	justify-content: space-around;
+	padding: 0 13px;
+
+	height: 36px;
+	background-color: $activeBlue;
+	border-radius: 18px;
+	border: none;
+
+	cursor: pointer;
+
+	@include transition(background-color .2s);
+
+	&:hover {
+		background-color: darken($activeBlue, 10%);
+	}
+
+	i, .title {
+		margin: 0 3px;
+		color: #ffffff;
+	}
+
+	i {
+		line-height: 36px;
+		font-size: 16px;
+	}
+
+	.title {
+		height: 100%;
+		font-family: 'Roboto';
+		font-weight: 900;
+		line-height: 36px;
+		font-size: 13px;
+	}
+}
+
+.small-icon {
+	position: relative;
+	width: auto; height: 36px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+
+	&:hover, &.active {
+		i {
+			color: darken($iconGrey, 10%);
+		}
+	}
+
+	i {
+		color: $iconGrey;
+		@include transition(color .2s);
+	}
+
+	.badge {
+		position: absolute;
+		top: -4px; right: -4px;
+		width: 14px; height: 14px;
+		padding-right: 1px;
+		border-radius: 7px;
+		background-color: #e8676a;
+		color: #ffffff;
+		font-family: 'Roboto';
+		font-size: 9px;
+		font-weight: 900;
+		line-height: 14px;
+		text-align: center;
+		box-sizing: border-box;
+	}
+}
+
+#wrapper {
+	width: 1180px; height: 100%;
+	margin: 0 auto 0;
+
+	#top-bar {
+		display: flex;
+		justify-content: space-between;
+
+		width: 100%; height: 90px;
+		margin-top: 27px;
+		
+		#logo {
+			width: 135px; height: 47px;
+			margin-right: 100px;
+			background-color: green;
+			background-image: url('../images/logo.png');
+		}
+
+		#search {
+			position: relative;
+			width: 341px; height: 36px;
+
+			input[type="text"] {
+				width: 100%; height: 100%;
+				padding: 0 17px;
+				border-radius: 18px;
+				border: 1px solid #dbe0e3;
+				background: #ffffff;
+				box-sizing: border-box;
+				font-size: 13px;
+				color: darken($iconGrey, 20%);
+				@include transition(border .2s);
+
+				&:focus, &.active {
+					border-color: $activeBlue;
+				}
+			}
+
+			i {
+				position: absolute;
+				top: 8px; right: 10px;
+				color: #8899a6;
+				font-size: 20px;
+			}
+		}
+
+		#user-block {
+			width: 200px; height: 36px;
+
+			.avatar {
+				width: 36px; height: 36px;
+				margin-right: 14px;
+				float: left;
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: cover;
+				border-radius: 18px;
+			}
+
+			.name {
+				display: block;
+				margin-top: 4px;
+
+				&:after {
+					display: inline-block;
+					position: absolute;
+					margin-top: 1px;
+					content: 'keyboard_arrow_down';
+					font-family: 'Material Icons';
+				}
+			}
+
+			.view-profile {
+				font-family: 'Roboto';
+				font-size: 11px;
+				color: $iconGrey;
+			}
+		}
+	}
+
+	.filters {
+		width: 100%; height: 70px;
+	}
+
+	> .content {
+		display: flex;
+		justify-content: space-between;
+
+		a {
+			color: $activeBlue;
+		}
+
+		.card {
+			background-color: #ffffff;
+			border-radius: 4px;
+			box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
+			box-sizing: border-box;
+
+			&.user-info {
+				padding: 25px;
+
+				.name {
+					line-height: 20px;
+				}
+
+				.status {
+					font-family: 'Roboto';
+					font-size: 13px;
+					color: $iconGrey;
+				}
+
+				.divider {
+					width: 100%; height: 0;
+					margin: 20px 0 20px -25px;
+					padding-right: 50px;
+					border-top: 1px solid #f0f2f4;
+				}
+
+				a {
+					font-family: 'Roboto';
+					font-size: 14px;
+					font-weight: 900;
+					line-height: 24px;
+				}
+			}
+
+			&.feed-item {
+				padding: 17px 17px 17px 65px;
+
+				.avatar {
+					position: absolute;
+					width: 36px; height: 36px;
+					margin-left: -48px;
+					background-repeat: no-repeat;
+					background-position: center;
+					background-size: cover;
+					border-radius: 18px;
+				}
+
+				.body {
+					.title {
+						display: flex;
+						justify-content: space-between;
+						height: 36px;
+						line-height: 36px;
+
+						.separator {
+							font-family: 'Roboto';
+							font-size: 8px;
+							color: $iconGrey;
+						}
+
+						.name {
+							height: 36px;
+							line-height: 36px;
+							font-family: 'Roboto';
+						}
+
+						.add {
+							margin-left: 120px;
+						}
+					}
+
+					.content {
+						.text {
+							margin-bottom: 20px;
+							padding-right: 40px;
+							color: $middleGrey;
+							font-family: 'Roboto';
+							font-size: 13px;
+							line-height: 20px;
+							letter-spacing: .3px;
+							box-sizing: border-box;
+						}
+
+						img {
+							display: block;
+							width: 100%;
+							border-radius: 4px;
+						}
+					}
+				}
+			}
+		}
+
+		.left, .right {
+			width: calc(25% - 34px);
+		}
+
+		.middle {
+			width: 50%;
+		}
+
+		.left {
+			.recent-list {
+				margin-top: 40px;
+
+				.title {
+					margin-bottom: 20px;
+					font-family: 'Roboto';
+					font-size: 14px;
+				}
+
+				a {
+					display: block;
+					font-family: 'Roboto';
+					font-size: 14px;
+					line-height: 26px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,1 @@
+angular.module('er', ['angularMoment', 'er.controllers', 'er.services', 'er.directives'])

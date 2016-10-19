@@ -1,0 +1,10 @@
+<div class="new-questions">
+	<div class="header">
+		<div class="title">{{questions.length}} New questions</div>
+		<a href="#" class="cta-button">View all</a>
+	</div>
+
+	<!-- <div class="loader" ng-if="familiarExpertsLoading"></div> -->
+
+	<question question="question" ng-repeat="question in questions"></question>
+</div>

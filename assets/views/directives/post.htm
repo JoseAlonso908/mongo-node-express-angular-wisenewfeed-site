@@ -10,13 +10,13 @@
 			<div class="separator">&bull;</div>
 			<div class="country small-light">{{post.author.country}}</div>
 
-			<button class="add small-icon" title="Add"><i class="material-icons">person_add</i></button>
+			<button class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 			<button class="more small-icon" title="More"><i class="material-icons">more_vert</i></button>
 		</div>
 
 		<div class="content">
-			<div class="text">{{post.text}}</div>
-			<img src="{{post.image}}">
+			<div class="text" ng-bind-html="post.text"></div>
+			<img ng-if="post.image" ng-src="{{post.image}}">
 		</div>
 
 		<div class="ratings">
@@ -65,7 +65,7 @@
 				<span class="name dark-bold">{{comment.author.name}}</span>
 				<span class="time small-light" am-time-ago="comment.createdAt"></span>
 			</div>
-			<div class="text">{{comment.text}}</div>
+			<div class="text" ng-bind-html="comment.text"></div>
 			<div class="stats">
 				<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
 				<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>
@@ -77,7 +77,7 @@
 
 	<div class="comment-box">
 		<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
-		<textarea placeholder="Write a comment..." resize="none" ng-class="{'not-empty': comment}" ng-model="comment"></textarea>
+		<textarea placeholder="Write a comment..." ng-class="{'not-empty': comment}" ng-model="comment"></textarea>
 		<button class="send"><i class="material-icons">send</i> Send</button>
 		<button class="upload-image"><i class="material-icons">camera_alt</i></button>
 		<div class="clear"></div>

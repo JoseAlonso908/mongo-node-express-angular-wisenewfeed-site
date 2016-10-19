@@ -1,0 +1,22 @@
+{
+  "name": "expert-reaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/lavavrik/expert-reaction.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/lavavrik/expert-reaction/issues"
+  },
+  "homepage": "https://gitlab.com/lavavrik/expert-reaction#README",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

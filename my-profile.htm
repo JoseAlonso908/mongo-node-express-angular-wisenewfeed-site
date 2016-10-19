@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Expert Reaction Homepage</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0/angular-moment.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="assets/stylesheets/screen.css">
+		<script src="assets/scripts/app.js"></script>
+
+		<script>
+			WebFont.load({
+				google: {
+					families: ['Roboto:400,400i,500,700,900', 'Material Icons']
+				},
+				active: function() {
+					sessionStorage.fonts = true
+					console.log('Roboto loaded')
+				}
+			})
+		</script>
+	</head>
+	<body ng-app="er" ng-controller="homeController">
+	<div id="wrapper">
+		<div id="top-bar">
+			<div id="logo"></div>
+
+			<div id="search">
+				<i class="material-icons">search</i>
+				<input type="text" placeholder="Search">
+			</div>
+
+			<div class="cta-button make-post">
+				<i class="material-icons">chat_bubble</i>
+				<div class="title">Make post</div>
+			</div>
+
+			<button class="small-icon" title="Profile">
+				<i class="material-icons">person</i>
+			</button>
+
+			<button class="small-icon" title="Messages">
+				<div class="badge">12</div>
+				<i class="material-icons">forum</i>
+			</button>
+
+			<button class="small-icon" title="Notifications">
+				<div class="badge">5</div>
+				<i class="material-icons">notifications</i>
+			</button>
+
+			<div id="user-block">
+				<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+				<a class="name dark-bold" href="javascript:void(0);">{{user.name}}</a>
+				<a class="view-profile" href="javascript:void(0);">View profile</a>
+			</div>
+		</div>
+
+		<div class="filters">
+			<div class="dropdown-wrapper">
+				<div class="menu-buttons dropdown" dropdown-id="countries">
+					<div class="title">Country:</div>
+					<div class="option">{{countries.chosenCountry.title}}</div>
+				</div>
+				<ul class="dropdown-list" dropdown-id="countries">
+					<li ng-repeat="region in countries.countries" ng-class="countries.activeRegionClass(region)">
+						{{region.title}}
+						<ul class="sublist">
+							<li ng-repeat="country in region.sub" ng-click="countries.setActiveCountry(country)" ng-class="countries.activeCountryClass(country)">{{country.title}}</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+			
+			<div class="dropdown-wrapper">
+				<div class="menu-buttons dropdown" dropdown-id="categories">
+					<div class="title">Category:</div>
+					<div class="option">{{cats.chosenCategory.title}}</div>
+				</div>
+				<ul class="dropdown-list" dropdown-id="categories">
+					<li ng-repeat="cat in cats.categories" ng-class="cats.activeCategoryClass(cat)" ng-click="cats.setActiveCategory(cat)">{{cat.title}} ({{cat.countShort}})</li>
+				</ul>
+			</div>
+
+			<a href="#" class="menu-buttons">Top</a>
+			<a href="#" class="menu-buttons">News</a>
+			<a href="#" class="menu-buttons">Journalist</a>
+			<a href="#" class="menu-buttons">Expert</a>
+			<a href="#" class="menu-buttons">Photos</a>
+		</div>
+
+		<div class="content">
+			<div class="left">
+				<div class="card user-info">
+					<div class="name dark-bold">Jack Daniels</div>
+					<div class="status">User</div>
+
+					<div class="divider"></div>
+
+					<a href="#">Upgrade to Expert</a>
+					<br>
+					<a href="#">Upgrade to Journalist</a>
+				</div>
+
+				<div class="recent-list">
+					<div class="title"><span class="so-bold">Recent</span> #Tags</div>
+					<a href="#" class="item" ng-repeat="tag in r_tags">#{{tag}}</a>
+				</div>
+
+				<div class="recent-list">
+					<div class="title"><span class="so-bold">Recent</span> @PeopleName</div>
+					<a href="#" class="item" ng-repeat="guy in r_people">@{{guy}}</a>
+				</div>
+
+				<div class="recent-list">
+					<div class="title"><span class="so-bold">Recent</span> $Category</div>
+					<a href="#" class="item" ng-repeat="cat in r_categories">${{cat}}</a>
+				</div>
+			</div>
+			<div class="middle">
+				<div class="loader" ng-if="loading"></div>
+			
+				<post post="post" ng-repeat="post in feed"></post>
+			</div>
+			<div class="right">
+				<familiarexperts></familiarexperts>
+
+				<div class="about-box card">
+					&copy; 2017 Expert Reaction
+					<a href="#">About</a>
+					<a href="#">How it work</a>
+					<a href="#">FAQ</a>
+					<a href="#">Business</a>
+					<a href="#">Career</a>
+					<a href="#">Feedback</a>
+					<a href="#">Media</a>
+					<div class="divider"></div>
+					<a href="#" class="advertise">Advertise with Expert Reaction</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>

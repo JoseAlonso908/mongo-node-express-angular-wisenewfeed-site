@@ -1,0 +1,54 @@
+<div id="wrapper" ng-controller="homeController">
+	<topbar user="user"></topbar>
+	<filters></filters>
+
+	<div class="content">
+		<div class="left">
+			<div class="card user-info">
+				<div class="name dark-bold">Jack Daniels</div>
+				<div class="status">User</div>
+
+				<div class="divider"></div>
+
+				<a href="#">Upgrade to Expert</a>
+				<br>
+				<a href="#">Upgrade to Journalist</a>
+			</div>
+
+			<div class="recent-list">
+				<div class="title"><span class="so-bold">Recent</span> #Tags</div>
+				<a href="#" class="item" ng-repeat="tag in r_tags">#{{tag}}</a>
+			</div>
+
+			<div class="recent-list">
+				<div class="title"><span class="so-bold">Recent</span> @PeopleName</div>
+				<a href="#" class="item" ng-repeat="guy in r_people">@{{guy}}</a>
+			</div>
+
+			<div class="recent-list">
+				<div class="title"><span class="so-bold">Recent</span> $Category</div>
+				<a href="#" class="item" ng-repeat="cat in r_categories">${{cat}}</a>
+			</div>
+		</div>
+		<div class="middle">
+			<div class="loader" ng-if="feedLoading"></div>
+			<post post="post" ng-repeat="post in feed"></post>
+		</div>
+		<div class="right">
+			<familiarexperts></familiarexperts>
+
+			<div class="about-box card">
+				&copy; 2017 Expert Reaction
+				<a href="#">About</a>
+				<a href="#">How it work</a>
+				<a href="#">FAQ</a>
+				<a href="#">Business</a>
+				<a href="#">Career</a>
+				<a href="#">Feedback</a>
+				<a href="#">Media</a>
+				<div class="divider"></div>
+				<a href="#" class="advertise">Advertise with Expert Reaction</a>
+			</div>
+		</div>
+	</div>
+</div>

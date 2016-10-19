@@ -3,5 +3,12 @@
 		<div class="title">Familiar Experts</div>
 		<a href="#" class="cta-button">View all</a>
 	</div>
+
+	<div class="loader" ng-if="familiarExpertsLoading"></div>
+
 	<familiarexpert user="expert" ng-repeat="expert in users"></familiarexpert>
+	<div class="footer" ng-if="!familiarExpertsLoading">
+		<a href="#"><i class="material-icons">refresh</i> Refresh</a>
+		<a href="#">Find Expert</a>
+	</div>
 </div>

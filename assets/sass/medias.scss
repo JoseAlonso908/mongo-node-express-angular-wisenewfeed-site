@@ -1,0 +1,41 @@
+@media (max-width: 1180px) {
+	#wrapper {
+		width: 900px;
+
+		#top-bar {
+			#logo {
+				margin-right: 20px;
+			}
+
+			#search {
+				position: relative;
+				width: 220px; height: 36px;
+			}
+		}
+
+		.wallpaper-wrapper {
+			.wallpaper {
+				height: 220px;
+			}
+
+			.rated-avatar-wrapper {
+				width: 140px; height: 140px;
+				top: 192px; left: 24px;
+
+				.badge {
+					top: 114px; left: 51px;
+				}
+			}
+
+			.buttons {
+				margin: 165px 0 0 140px;
+			}
+
+			.footer {
+				.stats {
+					margin-left: 140px;
+				}
+			}
+		}
+	}
+}

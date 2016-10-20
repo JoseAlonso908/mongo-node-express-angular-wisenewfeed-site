@@ -1,4 +1,7 @@
 angular.module('er.controllers', [])
+.controller('startController', function ($scope) {
+	
+})
 .controller('homeController', function ($scope, $timeout, categoriesDropdown, countriesDropdown, dropdowns, identityService, feedService) {
 	$scope.cats = categoriesDropdown
 	$scope.countries = countriesDropdown

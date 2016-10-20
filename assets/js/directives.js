@@ -111,3 +111,13 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('autosuggest', function () {
+	return {
+		restrict: 'A',
+		templateUrl: 'assets/views/directives/autosuggest.htm',
+		scope: {
+			suggestions: '=',
+		},
+		
+	}
+})

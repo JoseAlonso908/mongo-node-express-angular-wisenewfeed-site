@@ -29,4 +29,22 @@
   #wrapper .wallpaper-wrapper .footer .stats {
     margin-left: 140px;
   }
+  #wrapper .content .left .photos {
+    width: 191px;
+    height: 191px;
+  }
+  #wrapper .content .left .photos .photo, #wrapper .content .left .photos .other-photos {
+    width: 61px;
+    height: 61px;
+  }
+  #wrapper .content .left .photos .other-photos {
+    font-size: 24px;
+    line-height: 61px;
+  }
+  #wrapper .content .middle {
+    width: 75%;
+  }
+  #wrapper .content .right {
+    display: none;
+  }
 }

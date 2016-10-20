@@ -9,6 +9,6 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
 })
 
-app.listen(8001, () => {
+app.listen(8006, () => {
 	console.log('kek')
 })

@@ -4,6 +4,9 @@ angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'er.controllers'
 		$locationProvider.hashPrefix('!')
 
 		$routeProvider
+			.when('/start', {
+				templateUrl: 'assets/views/landing.htm'
+			})
 			.when('/', {
 				templateUrl: 'assets/views/home.htm'
 			})

@@ -1,5 +1,5 @@
 <div id="top-bar">
-	<a id="logo" ui-sref="/"></a>
+	<a id="logo" ng-href="#!/"></a>
 
 	<div id="search">
 		<i class="material-icons">search</i>
@@ -28,6 +28,6 @@
 	<div id="user-block" ng-cloak ng-if="$parent.user">
 		<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
 		<a class="name dark-bold" href="javascript:void(0);">{{user.name}}</a>
-		<a class="view-profile" ui-sref="/my">View profile</a>
+		<a class="view-profile" ng-href="#!/my">View profile</a>
 	</div>
 </div>

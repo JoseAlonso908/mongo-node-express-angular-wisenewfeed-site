@@ -1,7 +1,7 @@
-angular.module('er', ['ui.router', 'ngSanitize', 'angularMoment', 'er.controllers', 'er.services', 'er.directives'])
-.config(['$urlRouterProvider', '$stateProvider',
-	function config($urlRouterProvider, $stateProvider) {
-		$urlRouterProvider.hashPrefix('!')
+angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'er.controllers', 'er.services', 'er.directives'])
+.config(['$locationProvider', '$routeProvider',
+	function config($locationProvider, $routeProvider) {
+		$locationProvider.hashPrefix('!')
 
 		$routeProvider
 			.when('/start', {

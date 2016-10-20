@@ -8,7 +8,13 @@ const
 
 let app = express()
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')))
+app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+	setHeaders: function (res, path, stat) {
+		res.set('Access-Control-Allow-Origin', '*')
+		res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+	}
+}))
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 

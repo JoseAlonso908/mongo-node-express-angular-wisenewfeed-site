@@ -14,7 +14,6 @@ gulp.task('compass', () => {
 	}))
 	.on('error', onError)
 	.pipe(gulp.dest('./assets/css'))
-	.pipe(livereload())
 })
 
 gulp.task('js', () => {
@@ -33,7 +32,6 @@ gulp.task('js', () => {
 })
 
 gulp.task('watch', () => {
-	livereload.listen()
 	gulp.watch('./sass/*.scss', () => {
 		gulp.run('compass')
 	})

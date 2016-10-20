@@ -2,34 +2,44 @@ var gulp = require('gulp'),
 	livereload = require('gulp-livereload'),
 	compass = require('gulp-compass'),
 	watch = require('gulp-watch'),
-	uglify = require('gulp-uglifyjs')
+	uglify = require('gulp-uglifyjs'),
+	browserify = require('gulp-browserify'),
+	ngAnnotate = require('gulp-ng-annotate')
 
 gulp.task('compass', () => {
 	gulp.src('./assets/sass/*.scss')
 	.pipe(compass({
-		config_file: './assets/config.rb',
+		config_file: './compass-config.rb',
 		css: './assets/stylesheets',
-		sass: './assets/sass',
+		sass: './sass',
 	}))
 	.on('error', onError)
-	.pipe(gulp.dest('./assets/stylesheets'))
+	.pipe(gulp.dest('./assets/css'))
 	.pipe(livereload())
 })
 
 gulp.task('js', () => {
-	gulp.src('./assets/js/*.js')
-	.pipe(uglify({mangle: false}))
+	gulp.src('./js/*.js')
+	// .pipe(browserify({
+	// 	insertGlobals: true,
+	// 	debug: true,
+	// }))
+	.pipe(ngAnnotate())
+	.pipe(uglify({
+		outSourceMap: true,
+		mangle: true
+	}))
 	.on('error', onError)
 	.pipe(gulp.dest('./assets/scripts'))
 })
 
 gulp.task('watch', () => {
 	livereload.listen()
-	gulp.watch('./assets/sass/*.scss', () => {
+	gulp.watch('./sass/*.scss', () => {
 		gulp.run('compass')
 	})
 
-	gulp.watch('./assets/js/*.js', () => {
+	gulp.watch('./js/*.js', () => {
 		gulp.run('js')
 	})
 })

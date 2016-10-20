@@ -1211,6 +1211,8 @@ a {
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
+			// @include filter-gradient(#f1f5f7, #b0bec8, vertical);
+			@include background-image(linear-gradient(top, darken(#f1f5f7, 2%) 1%, #b0bec8 100%));
 		}
 
 		.footer {

@@ -17,6 +17,23 @@
   },
   "homepage": "https://gitlab.com/lavavrik/expert-reaction#README",
   "dependencies": {
-    "express": "^4.14.0"
+    "angular": "^1.5.8",
+    "angular-cookies": "^1.5.8",
+    "angular-moment": "^1.0.0",
+    "angular-passport": "^1.0.5",
+    "angular-route": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "moment": "^2.15.1",
+    "mongoose": "^4.6.4",
+    "numeral": "^1.5.3",
+    "random-string": "^0.1.2",
+    "satellizer": "^0.15.5"
+  },
+  "devDependencies": {
+    "gulp-browserify": "^0.5.1",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-uglifyjs": "^0.6.2"
   }
 }

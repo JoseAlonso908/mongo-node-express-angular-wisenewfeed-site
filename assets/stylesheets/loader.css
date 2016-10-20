@@ -1,6 +1,6 @@
 /*
 Error: Undefined variable: "$iconGrey".
-        on line 3 of /home/lprokopovych/projects/expert-reaction/assets/sass/loader.scss
+        on line 3 of /home/lprokopovych/projects/expert-reaction/sass/loader.scss
 
 1: .loader {
 2: 	animation: load 1s linear infinite;
@@ -12,7 +12,7 @@ Error: Undefined variable: "$iconGrey".
 8: 	width: 24px;
 
 Backtrace:
-/home/lprokopovych/projects/expert-reaction/assets/sass/loader.scss:3
+/home/lprokopovych/projects/expert-reaction/sass/loader.scss:3
 /home/lprokopovych/.rvm/gems/ruby-2.0.0-p643/gems/sass-3.4.22/lib/sass/script/tree/variable.rb:49:in `_perform'
 /home/lprokopovych/.rvm/gems/ruby-2.0.0-p643/gems/sass-3.4.22/lib/sass/script/tree/node.rb:58:in `perform'
 /home/lprokopovych/.rvm/gems/ruby-2.0.0-p643/gems/sass-3.4.22/lib/sass/script/tree/list_literal.rb:63:in `block in _perform'
@@ -75,4 +75,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$iconGrey\".\A         on line 3 of /home/lprokopovych/projects/expert-reaction/assets/sass/loader.scss\A \A 1: .loader {\A 2: 	animation: load 1s linear infinite;\A 3: 	border: 6px solid $iconGrey;\A 4: 	border-radius: 50%;\A 5: 	display: block;\A 6: 	height: 24px;\A 7: 	margin: auto;\A 8: 	width: 24px;"; }
+  content: "Error: Undefined variable: \"$iconGrey\".\A         on line 3 of /home/lprokopovych/projects/expert-reaction/sass/loader.scss\A \A 1: .loader {\A 2: 	animation: load 1s linear infinite;\A 3: 	border: 6px solid $iconGrey;\A 4: 	border-radius: 50%;\A 5: 	display: block;\A 6: 	height: 24px;\A 7: 	margin: auto;\A 8: 	width: 24px;"; }

@@ -5,11 +5,11 @@
 		<bigratedavatar user="user" ng-if="user"></bigratedavatar>
 
 		<div class="buttons">
-			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length}})</div></div>
+			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></div>
 			<div class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></div>
 		</div>
 
-		<div class="wallpaper" style="background-image: url('{{user.wallpaper}}')"></div>
+		<div class="wallpaper" style="wallpaperStyle"></div>
 		<div class="footer">
 			<div class="stats">
 				<div class="stat">
@@ -47,13 +47,13 @@
 				<div class="name">{{user.name}}</div>
 				<div class="position">{{user.position}}</div>
 
-				<div class="rating-wrapper">
+				<div class="rating-wrapper" ng-if="user.likes_percentage">
 					<i class="material-icons like">thumb_up</i>
 					<div class="rating-value">{{user.likes_percentage}}% Likes</div>
 					<i class="material-icons dislike">thumb_down</i>
 				</div>
 
-				<div class="rating-bar-wrapper">
+				<div class="rating-bar-wrapper" ng-if="user.likes_percentage">
 					<div class="rating-bar" style="width: {{user.likes_percentage}}%;"></div>
 				</div>
 			</div>

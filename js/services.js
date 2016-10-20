@@ -1,98 +1,121 @@
+// var numeral = require('numeral')
+
 angular.module('er.services', [])
-.factory('identityService', function ($timeout) {
+.factory('identityService', function ($timeout, $http) {
 	return new Promise(function (resolve, reject) {
-		$timeout(function () {
-			var user = {
-				name: 'Jack Daniels',
-				position: 'Director',
-				avatar: 'http://i.imgur.com/wq43v5T.jpg',
-				rating: 1,
-				color: 'bronze',
-				wallpaper: 'https://metrouk2.files.wordpress.com/2015/04/mm1-e1429271504595.png',
-				xp: 72,
-				likes: 4223,
-				dislikes: 23,
-				reactions: 1200,
-				following: 23200,
-				followers: 43002,
-				likes_percentage: 45,
-				intro: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipiscing eos, civibus.',
-				experience: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei.',
-				certificates: [
-					{title: 'Lorem Ipsum certificate'},
-					{title: 'Dolor certificate'}
-				],
-				downloads: [
-					{title: 'DESIGN.PSD'},
-					{title: 'PROTOTYPE.PDF'},
-				],
-				address: {
-					email: 'test@example.com',
-					phone: '+1 234 567 89 00',
-					skype: 'test.example',
-					linkedin: 'linked.in',
-					fb: 'fb.name',
-				},
-				photos: [
-					{url: 'http://statici.behindthevoiceactors.com/behindthevoiceactors/_img/actors/danny-devito-19.9.jpg'},
-					{url: 'https://www.picsofcelebrities.com/celebrity/danny-devito/pictures/large/danny-devito-family.jpg'},
-					{url: 'http://vignette2.wikia.nocookie.net/godfather-fanon/images/a/aa/Tommy_DeVito.jpg/revision/latest?cb=20121121213421'},
-					{url: 'http://img2.rnkr-static.com/list_img_v2/2752/102752/870/danny-devito-movies-and-films-and-filmography-u2.jpg'},
-					{url: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTkkc5M14e2-ePKz8nRrlUEAm64QmscRx2MneSFew1M2uL45CpW'},
-					{url: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSE78J23sFfj0hRZcFc_iZ8wgXKbSNoazvfLSydHE-FP7dVunyo'},
-					{url: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQRyoFyo7FBvCUFlEY8lIRRHREIBmXmXGxNt7-lEbRAQX7s27qAPw'},
-					{url: 'http://www.mcmbuzz.com/wp-content/uploads/2012/07/Danny-DeVito-at-the-London-MCM-Expo-3.jpg'},
-					{url: 'http://img.mypopulars.com/images/danny-devito/danny-devito_18.jpg'},
-					{url: 'http://www.filmreference.com/images/sjff_03_img1053.jpg'},
-					{url: 'http://i.dailymail.co.uk/i/pix/2015/01/19/24D7DB8200000578-0-image-a-1_1421687572450.jpg'},
-					{url: 'http://images.onionstatic.com/starwipe/6670/original/780.jpg'},
-					{url: 'https://s-media-cache-ak0.pinimg.com/236x/38/13/88/381388169d3c32162073fa96876d07e4.jpg'},
-				],
-				questions: [
-					{
-						author: {
-							name: 'Alla Pugacheva',
-							avatar: 'http://ua-reporter.com/sites/default/files/pug_zzz.jpg',
-							rating: 1,
-							color: 'bronze',
-							role: 'Visitor',
-							country: 'Russia',
-						},
-						text: 'Lorem ipsum dolor sit amet?',
-						likes: '3'
-					},
-				]
+		$http.get('/me', {
+			header: {
+				authorization: localStorage.satellizer_token
 			}
+		}).then(function (response) {
+			var user = response.data
 
-			var chosenPhotos = []
-			user.randomPhotos = []
-
-			if (user.photos.length <= 8) {
-				user.randomPhotos = user.photos
-
-				for (var i = user.randomPhotos.length; i < 9; i++) {
-					user.randomPhotos.push({url: ''})
-				}
-			} else {
-				for (var i = 0; i < 8;) {
-					var randomPhotoKey = Math.floor(Math.random() * user.photos.length)
-					if (chosenPhotos.indexOf(randomPhotoKey) === -1) {
-						user.randomPhotos.push(user.photos[randomPhotoKey])
-						chosenPhotos.push(randomPhotoKey)
-						i++
-					}
-				}
-			}
-
-			user.likes = numeral(user.likes).format('0a').toUpperCase()
-			user.dislikes = numeral(user.dislikes).format('0a').toUpperCase()
-			user.reactions = numeral(user.reactions).format('0a').toUpperCase()
-			user.following= numeral(user.following).format('0a').toUpperCase()
-			user.followers = numeral(user.followers).format('0a').toUpperCase()
+			user.rating = user.rating || 1
+			user.color = user.color || 'bronze'
+			user.likes = user.likes || 0
+			user.xp = user.xp || 0
+			user.dislikes = user.dislikes || 0
+			user.reactions = user.reactions || 0
+			user.followers = user.followers || 0
+			user.following = user.following || 0
 
 			resolve(user)
-		}, 300)
+		})
 	})
+
+	// return new Promise(function (resolve, reject) {
+	// 	$timeout(function () {
+	// 		var user = {
+	// 			name: 'Jack Daniels',
+	// 			position: 'Director',
+	// 			avatar: 'http://i.imgur.com/wq43v5T.jpg',
+	// 			rating: 1,
+	// 			color: 'bronze',
+	// 			wallpaper: 'https://metrouk2.files.wordpress.com/2015/04/mm1-e1429271504595.png',
+	// 			xp: 72,
+	// 			likes: 4223,
+	// 			dislikes: 23,
+	// 			reactions: 1200,
+	// 			following: 23200,
+	// 			followers: 43002,
+	// 			likes_percentage: 45,
+	// 			intro: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipiscing eos, civibus.',
+	// 			experience: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei.',
+	// 			certificates: [
+	// 				{title: 'Lorem Ipsum certificate'},
+	// 				{title: 'Dolor certificate'}
+	// 			],
+	// 			downloads: [
+	// 				{title: 'DESIGN.PSD'},
+	// 				{title: 'PROTOTYPE.PDF'},
+	// 			],
+	// 			address: {
+	// 				email: 'test@example.com',
+	// 				phone: '+1 234 567 89 00',
+	// 				skype: 'test.example',
+	// 				linkedin: 'linked.in',
+	// 				fb: 'fb.name',
+	// 			},
+	// 			photos: [
+	// 				{url: 'http://statici.behindthevoiceactors.com/behindthevoiceactors/_img/actors/danny-devito-19.9.jpg'},
+	// 				{url: 'https://www.picsofcelebrities.com/celebrity/danny-devito/pictures/large/danny-devito-family.jpg'},
+	// 				{url: 'http://vignette2.wikia.nocookie.net/godfather-fanon/images/a/aa/Tommy_DeVito.jpg/revision/latest?cb=20121121213421'},
+	// 				{url: 'http://img2.rnkr-static.com/list_img_v2/2752/102752/870/danny-devito-movies-and-films-and-filmography-u2.jpg'},
+	// 				{url: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTkkc5M14e2-ePKz8nRrlUEAm64QmscRx2MneSFew1M2uL45CpW'},
+	// 				{url: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSE78J23sFfj0hRZcFc_iZ8wgXKbSNoazvfLSydHE-FP7dVunyo'},
+	// 				{url: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQRyoFyo7FBvCUFlEY8lIRRHREIBmXmXGxNt7-lEbRAQX7s27qAPw'},
+	// 				{url: 'http://www.mcmbuzz.com/wp-content/uploads/2012/07/Danny-DeVito-at-the-London-MCM-Expo-3.jpg'},
+	// 				{url: 'http://img.mypopulars.com/images/danny-devito/danny-devito_18.jpg'},
+	// 				{url: 'http://www.filmreference.com/images/sjff_03_img1053.jpg'},
+	// 				{url: 'http://i.dailymail.co.uk/i/pix/2015/01/19/24D7DB8200000578-0-image-a-1_1421687572450.jpg'},
+	// 				{url: 'http://images.onionstatic.com/starwipe/6670/original/780.jpg'},
+	// 				{url: 'https://s-media-cache-ak0.pinimg.com/236x/38/13/88/381388169d3c32162073fa96876d07e4.jpg'},
+	// 			],
+	// 			questions: [
+	// 				{
+	// 					author: {
+	// 						name: 'Alla Pugacheva',
+	// 						avatar: 'http://ua-reporter.com/sites/default/files/pug_zzz.jpg',
+	// 						rating: 1,
+	// 						color: 'bronze',
+	// 						role: 'Visitor',
+	// 						country: 'Russia',
+	// 					},
+	// 					text: 'Lorem ipsum dolor sit amet?',
+	// 					likes: '3'
+	// 				},
+	// 			]
+	// 		}
+
+	// 		var chosenPhotos = []
+	// 		user.randomPhotos = []
+
+	// 		if (user.photos.length <= 8) {
+	// 			user.randomPhotos = user.photos
+
+	// 			for (var i = user.randomPhotos.length; i < 9; i++) {
+	// 				user.randomPhotos.push({url: ''})
+	// 			}
+	// 		} else {
+	// 			for (var i = 0; i < 8;) {
+	// 				var randomPhotoKey = Math.floor(Math.random() * user.photos.length)
+	// 				if (chosenPhotos.indexOf(randomPhotoKey) === -1) {
+	// 					user.randomPhotos.push(user.photos[randomPhotoKey])
+	// 					chosenPhotos.push(randomPhotoKey)
+	// 					i++
+	// 				}
+	// 			}
+	// 		}
+
+	// 		user.likes = numeral(user.likes).format('0a').toUpperCase()
+	// 		user.dislikes = numeral(user.dislikes).format('0a').toUpperCase()
+	// 		user.reactions = numeral(user.reactions).format('0a').toUpperCase()
+	// 		user.following= numeral(user.following).format('0a').toUpperCase()
+	// 		user.followers = numeral(user.followers).format('0a').toUpperCase()
+
+	// 		resolve(user)
+	// 	}, 300)
+	// })
 })
 .factory('feedService', function ($timeout, $sce, parseTextService) {
 	return new Promise(function (resolve, reject) {

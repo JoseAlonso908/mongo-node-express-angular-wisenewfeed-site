@@ -1136,6 +1136,12 @@ a:hover {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIxJSIgc3RvcC1jb2xvcj0iI2ViZjBmMyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2IwYmVjOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #ebf0f3), color-stop(100%, #b0bec8));
+  background-image: -moz-linear-gradient(top, #ebf0f3 1%, #b0bec8 100%);
+  background-image: -webkit-linear-gradient(top, #ebf0f3 1%, #b0bec8 100%);
+  background-image: linear-gradient(to bottom, #ebf0f3 1%, #b0bec8 100%);
 }
 #wrapper .wallpaper-wrapper .footer {
   width: 100%;

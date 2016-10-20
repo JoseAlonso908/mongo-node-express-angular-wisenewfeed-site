@@ -34,7 +34,9 @@
   },
   "devDependencies": {
     "gulp-browserify": "^0.5.1",
+    "gulp-compass": "^2.1.0",
     "gulp-ng-annotate": "^2.0.0",
-    "gulp-uglifyjs": "^0.6.2"
+    "gulp-uglifyjs": "^0.6.2",
+    "gulp-watch": "^4.3.10"
   }
 }

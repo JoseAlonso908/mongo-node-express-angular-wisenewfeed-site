@@ -8,7 +8,7 @@ const
 
 let app = express()
 
-app.use('/assets', express.static('assets'))
+app.use('/assets', express.static(path.join(__dirname, 'assets')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 

@@ -3,7 +3,9 @@ var gulp = require('gulp'),
 	watch = require('gulp-watch'),
 	uglify = require('gulp-uglifyjs'),
 	browserify = require('gulp-browserify'),
-	ngAnnotate = require('gulp-ng-annotate')
+	ngAnnotate = require('gulp-ng-annotate'),
+	plumber = require('gulp-plumber')
+	gulpUtil = require('gulp-util')
 
 gulp.task('compass', () => {
 	gulp.src('./assets/sass/*.scss')
@@ -12,22 +14,33 @@ gulp.task('compass', () => {
 		css: './assets/stylesheets',
 		sass: './sass',
 	}))
-	.on('error', onError)
+	.pipe(plumber())
 	.pipe(gulp.dest('./assets/css'))
 })
 
-gulp.task('js', () => {
-	gulp.src('./js/*.js')
-	// .pipe(browserify({
-	// 	insertGlobals: true,
-	// 	debug: true,
-	// }))
-	.pipe(ngAnnotate())
-	.pipe(uglify({
-		outSourceMap: true,
-		mangle: true
+gulp.task('browserify', () => {
+	gulp.src('./js/app.js')
+	.pipe(browserify({
+		insertGlobals: true,
+		debug: true,
 	}))
-	.on('error', onError)
+	.pipe(ngAnnotate())
+	.pipe(uglify('angular.js', {
+		// outSourceMap: true,
+		mangle: true
+	}).on('error', gulpUtil.log))
+	.pipe(plumber())
+	.pipe(gulp.dest('./assets/scripts'))
+})
+
+gulp.task('js', () => {
+	gulp.src(['./js/*.js', '!./js/app.js'])
+	.pipe(ngAnnotate())
+	.pipe(uglify('app.js', {
+		// outSourceMap: true,
+		mangle: true
+	}).on('error', gulpUtil.log))
+	.pipe(plumber())
 	.pipe(gulp.dest('./assets/scripts'))
 })
 
@@ -36,16 +49,15 @@ gulp.task('watch', () => {
 		gulp.run('compass')
 	})
 
-	gulp.watch('./js/*.js', () => {
+	gulp.watch('./js/app.js', () => {
+		gulp.run('browserify')
+	})
+
+	gulp.watch(['./js/*.js', '!./js/app.js'], () => {
 		gulp.run('js')
 	})
 })
 
 gulp.task('default', ['watch'], () => {
-	gulp.start(['compass', 'js'])
+	gulp.start(['compass', 'browserify', 'js'])
 })
-
-function onError(err) {
-	console.log(err);
-	this.emit('end');
-}

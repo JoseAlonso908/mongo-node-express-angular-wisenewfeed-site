@@ -132,6 +132,33 @@ a:hover {
   font-size: 13px;
 }
 
+.autosuggest {
+  min-width: 200px;
+  position: absolute;
+  margin-top: -10px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 8px 0 rgba(130, 137, 143, 0.6);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.autosuggest .item {
+  height: 24px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  -moz-transition: background-color;
+  -o-transition: background-color;
+  -webkit-transition: background-color;
+  transition: background-color;
+}
+.autosuggest .item:hover {
+  background-color: #f2f3f4;
+}
+
 .cta-button {
   display: inline-flex;
   position: relative;
@@ -562,7 +589,7 @@ a:hover {
 #wrapper > .content .card.feed-item .body .ratings .rating .value:before {
   display: inline-block;
   position: absolute;
-  margin: 0px 0 0 -15px;
+  margin: 0 0 0 -15px;
   font-family: 'Material Icons';
 }
 #wrapper > .content .card.feed-item .body .ratings .rating .value.likes:before {
@@ -1285,9 +1312,13 @@ a:hover {
   height: 100%;
 }
 #landing-wrapper #header-wrapper {
+  position: relative;
   width: 100%;
   height: 100px;
   background-color: #ffffff;
+}
+#landing-wrapper #header-wrapper.shadow {
+  box-shadow: 0 3px 12px rgba(130, 137, 143, 0.2);
 }
 #landing-wrapper #header-wrapper #header {
   display: flex;
@@ -1359,6 +1390,9 @@ a:hover {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #f1f5f7;
+}
+#landing-wrapper #content-wrapper:not(.empty) {
   background-image: url("../images/landing.jpg");
 }
 #landing-wrapper #content-wrapper .content {
@@ -1368,6 +1402,60 @@ a:hover {
   width: 1180px;
   height: 100%;
   margin: 0 auto 0;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup {
+  justify-content: center;
+  flex-flow: column wrap;
+  align-items: center;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block {
+  width: 400px;
+  margin: 16px 0;
+  padding: 27px 24px;
+  box-shadow: 0 3px 6px rgba(130, 137, 143, 0.5);
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .title {
+  color: #535659;
+  font-size: 18px;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .text {
+  margin: 20px 0 20px;
+  color: #82898f;
+  font-size: 13px;
+  line-height: 20px;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .small-loader {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 36px;
+  margin-top: 10px;
+  background: url("../images/small-loader.gif") no-repeat center;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text] {
+  display: inline-block;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  border: 1px solid #e6e9ec;
+  background: #ffffff;
+  border-radius: 3px;
+  color: #535659;
+  box-sizing: border-box;
+  -moz-transition: border-color 0.1s;
+  -o-transition: border-color 0.1s;
+  -webkit-transition: border-color 0.1s;
+  transition: border-color 0.1s;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text]:focus {
+  border-color: #43abe7;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text].error {
+  border-color: red;
 }
 #landing-wrapper #content-wrapper .content .welcome {
   width: 510px;
@@ -1386,6 +1474,7 @@ a:hover {
   line-height: 20px;
 }
 #landing-wrapper #content-wrapper .content .welcome .join {
+  display: inline-block;
   height: 36px;
   padding: 0 20px;
   background-color: #43abe7;
@@ -1396,6 +1485,7 @@ a:hover {
   font-size: 13px;
   font-weight: 900;
   cursor: pointer;
+  opacity: 1;
   -moz-transition: background-color 0.2s;
   -o-transition: background-color 0.2s;
   -webkit-transition: background-color 0.2s;
@@ -1403,6 +1493,7 @@ a:hover {
 }
 #landing-wrapper #content-wrapper .content .welcome .join:hover {
   background-color: #1c95db;
+  opacity: 1;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks {
   width: 400px;
@@ -1528,6 +1619,12 @@ a:hover {
   color: #43abe7;
   line-height: 20px;
 }
+#landing-wrapper #content-wrapper .content .auth-blocks > div .auth-error {
+  margin-top: 15px;
+  font-size: 13px;
+  text-align: center;
+  color: red;
+}
 #landing-wrapper #content-wrapper .content .auth-blocks > div .divider {
   width: 100%;
   height: 0;
@@ -1570,6 +1667,106 @@ a:hover {
   float: right;
   color: rgba(255, 255, 255, 0.8);
   font-size: 13px;
+}
+
+.backdrop {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+.backdrop .popup {
+  position: relative;
+  width: 400px;
+  padding: 27px 24px;
+  box-shadow: 0 3px 6px rgba(130, 137, 143, 0.5);
+  border-radius: 4px;
+  background-color: #ffffff;
+  z-index: 11;
+  box-sizing: border-box;
+}
+.backdrop .popup .title {
+  color: #535659;
+  font-size: 18px;
+}
+.backdrop .popup .text {
+  margin: 20px 0 20px;
+  color: #82898f;
+  font-size: 13px;
+  line-height: 20px;
+}
+.backdrop .popup .small-loader {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 36px;
+  margin-top: 10px;
+  background: url("../images/small-loader.gif") no-repeat center;
+}
+.backdrop .popup input[type=text] {
+  display: inline-block;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  border: 1px solid #e6e9ec;
+  background: #ffffff;
+  border-radius: 3px;
+  color: #535659;
+  box-sizing: border-box;
+  -moz-transition: border-color 0.1s;
+  -o-transition: border-color 0.1s;
+  -webkit-transition: border-color 0.1s;
+  transition: border-color 0.1s;
+}
+.backdrop .popup input[type=text]:focus {
+  border-color: #43abe7;
+}
+.backdrop .popup input[type=text].error {
+  border-color: red;
+}
+.backdrop .popup .footer a {
+  display: inline-block;
+  height: 36px;
+  float: left;
+  color: #43abe7;
+  font-size: 13px;
+  line-height: 36px;
+}
+.backdrop .popup .footer button {
+  height: 36px;
+  margin-left: 8px;
+  padding: 0 20px;
+  float: right;
+  font-size: 13px;
+  font-weight: 900;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  -moz-transition: background-color 0.1s;
+  -o-transition: background-color 0.1s;
+  -webkit-transition: background-color 0.1s;
+  transition: background-color 0.1s;
+}
+.backdrop .popup .footer button.cancel {
+  background-color: #f2f3f4;
+  color: #b0bec8;
+}
+.backdrop .popup .footer button.cancel:hover {
+  background-color: #d6dadd;
+}
+.backdrop .popup .footer button.confirm {
+  background-color: #43abe7;
+  color: #ffffff;
+}
+.backdrop .popup .footer button.confirm:hover {
+  background-color: #1c95db;
 }
 
 @media (max-width: 1180px) {

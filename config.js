@@ -1,3 +1,6 @@
 module.exports = {
-	FACEBOOK_SECRET: 'b0f9e9d9ebaecb3d79e3f2f4c31305b9'
+	FACEBOOK_SECRET: 'b0f9e9d9ebaecb3d79e3f2f4c31305b9',
+	LINKEDIN_SECRET: 'iyX2DFMPitSmuHIa',
+	TWITTER_KEY: 'vWvoIDn4bHVp4TbBg4PX5X8Ir',
+	TWITTER_SECRET: 'FVKbagnUXxEtmuFqys7ofkWkZh0WjYKeMzA5nf9bAlRKFrSm75',
 }

@@ -111,13 +111,43 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('autosuggest', function () {
+.directive('autosuggest', function ($compile) {
 	return {
-		restrict: 'A',
+		restrict: 'E',
 		templateUrl: 'assets/views/directives/autosuggest.htm',
 		scope: {
 			suggestions: '=',
+			ngModel: '=',
 		},
-		
+		link: function ($scope, element, attr) {
+			$scope.show = false
+
+			var lastUserValue
+			
+			$scope.$watch('ngModel', function (newValue, oldValue) {
+				if (newValue && newValue != oldValue && oldValue != lastUserValue) {
+					$scope.filteredSuggestions = []
+
+					for (var i = 0; i < $scope.suggestions.length; i++) {
+						var item = $scope.suggestions[i]
+						if (item.toLowerCase().indexOf(newValue.toLowerCase()) !== -1) {
+							$scope.filteredSuggestions.push(item)
+						}
+					}
+
+					$scope.filteredSuggestions = $scope.filteredSuggestions.slice(0, 7)
+
+					$scope.show = true
+				} else {
+					$scope.show = false
+				}
+			})
+
+			$scope.setSuggestion = function (value) {
+				lastUserValue = $scope.ngModel
+				$scope.ngModel = value
+				$scope.show = false
+			}
+		}
 	}
 })

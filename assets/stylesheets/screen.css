@@ -277,7 +277,6 @@ a:hover {
   background-color: #e8676a;
   color: #ffffff;
   font-size: 9px;
-  font-weight: 900;
   line-height: 14px;
   text-align: center;
   box-sizing: border-box;
@@ -333,7 +332,7 @@ a:hover {
   font-size: 20px;
 }
 #wrapper #top-bar .make-post {
-  width: 115px;
+  width: 100px;
 }
 #wrapper #top-bar .small-icon {
   width: 36px;
@@ -543,6 +542,9 @@ a:hover {
 #wrapper > .content .card.feed-item .body .title .add {
   margin-left: 80px;
 }
+#wrapper > .content .card.feed-item .body .title .small-icon i {
+  font-size: 20px;
+}
 #wrapper > .content .card.feed-item .body .content .text {
   margin-bottom: 20px;
   padding-right: 40px;
@@ -566,7 +568,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   flex-flow: wrap;
-  padding: 10px;
+  padding: 6px 10px;
   background-color: #f2f7fb;
   border-radius: 4px;
 }
@@ -615,7 +617,7 @@ a:hover {
   height: 26px;
   margin-right: 2px;
   padding: 0 10px 0 27px;
-  background-color: #e8f5fc;
+  background-color: transparent;
   border: none;
   border-radius: 14px;
   color: #b0bec8;
@@ -645,6 +647,14 @@ a:hover {
   color: #b0bec8;
   font-weight: 900;
   font-size: 13px;
+  cursor: pointer;
+  -moz-transition: color 0.2s;
+  -o-transition: color 0.2s;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+}
+#wrapper > .content .card.feed-item .actions .comments-count:hover {
+  color: #a1b2be;
 }
 #wrapper > .content .card.feed-item .actions .comments-count i {
   font-size: 15px;
@@ -730,15 +740,13 @@ a:hover {
   color: #a1b2be;
 }
 #wrapper > .content .card.feed-item .comment-box .send {
+  width: 75px;
   height: 26px;
   margin-top: -8px;
   padding: 0 12px;
   background-color: #43abe7;
   border-radius: 18px;
-  color: #ffffff;
   border: none;
-  font-weight: 900;
-  font-size: 13px;
   cursor: pointer;
   float: right;
   opacity: 0;
@@ -747,7 +755,18 @@ a:hover {
 #wrapper > .content .card.feed-item .comment-box .send:hover {
   background-color: #1c95db;
 }
-#wrapper > .content .card.feed-item .comment-box .send i {
+#wrapper > .content .card.feed-item .comment-box .send div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#wrapper > .content .card.feed-item .comment-box .send div .title {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 13px;
+}
+#wrapper > .content .card.feed-item .comment-box .send div i {
+  color: #ffffff;
   font-size: 13px;
 }
 #wrapper > .content .left, #wrapper > .content .right {
@@ -796,15 +815,13 @@ a:hover {
   right: auto;
 }
 #wrapper > .content .middle .on-your-mind .send {
+  width: 75px;
   height: 26px;
   margin-top: -40px;
   padding: 0 12px;
   background-color: #43abe7;
   border-radius: 18px;
-  color: #ffffff;
   border: none;
-  font-weight: 900;
-  font-size: 13px;
   cursor: pointer;
   float: right;
   opacity: 0;
@@ -813,7 +830,18 @@ a:hover {
 #wrapper > .content .middle .on-your-mind .send:hover {
   background-color: #1c95db;
 }
-#wrapper > .content .middle .on-your-mind .send i {
+#wrapper > .content .middle .on-your-mind .send div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#wrapper > .content .middle .on-your-mind .send div .title {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 13px;
+}
+#wrapper > .content .middle .on-your-mind .send div i {
+  color: #ffffff;
   font-size: 13px;
 }
 #wrapper > .content .middle .on-your-mind .upload-image {
@@ -1297,10 +1325,10 @@ a:hover {
   background-color: #2ca1e4;
 }
 #wrapper .wallpaper-wrapper .buttons > div.edit-profile {
-  background-color: #535659;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 #wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover {
-  background-color: #47494c;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 #wrapper .wallpaper-wrapper .buttons > div i {
   margin: 6px 4px 0 0;

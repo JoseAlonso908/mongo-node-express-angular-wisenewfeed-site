@@ -99,7 +99,12 @@
 			<div class="on-your-mind">
 				<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
 				<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
-				<button class="send"><i class="material-icons">send</i> Send</button>
+				<button class="send">
+					<div>
+						<i class="material-icons">send</i>
+						<div class="title">Send</div>
+					</div>
+				</button>
 				<button class="upload-image"><i class="material-icons">camera_alt</i></button>
 
 				<div class="clear"></div>

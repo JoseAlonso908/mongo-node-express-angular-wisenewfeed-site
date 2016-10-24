@@ -217,7 +217,7 @@ a {
 		background-color: #e8676a;
 		color: #ffffff;
 		font-size: 9px;
-		font-weight: 900;
+		// font-weight: 400;
 		line-height: 14px;
 		text-align: center;
 		box-sizing: border-box;
@@ -271,7 +271,7 @@ a {
 		}
 
 		.make-post {
-			width: 115px;
+			width: 100px;
 		}
 
 		.small-icon {
@@ -511,6 +511,12 @@ a {
 						.add {
 							margin-left: 80px;
 						}
+
+						.small-icon {
+							i {
+								font-size: 20px;
+							}
+						}
 					}
 
 					.content {
@@ -542,7 +548,7 @@ a {
 							display: flex;
 							justify-content: space-between;
 							flex-flow: wrap;
-							padding: 10px;
+							padding: 6px 10px;
 							background-color: #f2f7fb;
 							border-radius: 4px;
 
@@ -602,7 +608,7 @@ a {
 						height: 26px;
 						margin-right: 2px;
 						padding: 0 10px 0 27px;
-						background-color: $buttonBg;
+						background-color: transparent;
 						border: none;
 						border-radius: 14px;
 						color: $iconGrey;
@@ -632,6 +638,12 @@ a {
 						color: $iconGrey;
 						font-weight: 900;
 						font-size: 13px;
+						cursor: pointer;
+						@include transition(color .2s);
+
+						&:hover {
+							color: darken($iconGrey, 5%);
+						}
 
 						i {
 							font-size: 15px;
@@ -731,15 +743,12 @@ a {
 					}
 
 					.send {
-						height: 26px;
+						width: 75px; height: 26px;
 						margin-top: -8px;
 						padding: 0 12px;
 						background-color: $activeBlue;
 						border-radius: 18px;
-						color: #ffffff;
 						border: none;
-						font-weight: 900;
-						font-size: 13px;
 						cursor: pointer;
 						float: right;
 						opacity: 0;
@@ -749,8 +758,21 @@ a {
 							background-color: darken($activeBlue, 10%);
 						}
 
-						i {
-							font-size: 13px;
+						div {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+
+							.title {
+								color: #ffffff;
+								font-weight: 900;
+								font-size: 13px;
+							}
+
+							i {
+								color: #ffffff;
+								font-size: 13px;
+							}
 						}
 					}
 				}
@@ -807,15 +829,12 @@ a {
 				}
 
 				.send {
-					height: 26px;
+					width: 75px; height: 26px;
 					margin-top: -40px;
 					padding: 0 12px;
 					background-color: $activeBlue;
 					border-radius: 18px;
-					color: #ffffff;
 					border: none;
-					font-weight: 900;
-					font-size: 13px;
 					cursor: pointer;
 					float: right;
 					opacity: 0;
@@ -825,8 +844,21 @@ a {
 						background-color: darken($activeBlue, 10%);
 					}
 
-					i {
-						font-size: 13px;
+					div {
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+
+						.title {
+							color: #ffffff;
+							font-weight: 900;
+							font-size: 13px;
+						}
+
+						i {
+							color: #ffffff;
+							font-size: 13px;
+						}
 					}
 				}
 
@@ -1381,10 +1413,11 @@ a {
 				}
 
 				&.edit-profile {
-					background-color: $soDark;
+					// background-color: $soDark;
+					background-color: rgba(#ffffff, .15);
 
 					&:hover {
-						background-color: darken($soDark, 5%);
+						background-color: rgba(#ffffff, .05);
 					}
 				}
 

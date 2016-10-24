@@ -3,10 +3,19 @@ angular.module('er.modals', [])
 	return btfModal({
 		controller: 'confirmAccountModalController',
 		controllerAs: 'modal',
-		templateUrl: 'assets/views/modals/confirm-account.htm'
+		templateUrl: 'assets/views/modals/confirm-account.htm',
 	})
 })
-.controller('confirmAccountModalController', function ($scope, $parent, confirmAccountModal, $timeout) {
+.controller('confirmAccountModalController', function ($scope, $parent, phone, confirmAccountModal, verifyPhoneService, verifyPhoneCodeService) {
+	$scope.ready = false
+
+	$scope.phone = phone
+
+	verifyPhoneService(phone).then(function () {
+		console.log('Code sent;')
+		$scope.ready = true
+	})
+
 	$scope.close = function () {
 		confirmAccountModal.deactivate()
 		$parent.doneSignup(false)
@@ -18,18 +27,86 @@ angular.module('er.modals', [])
 		}
 
 		$scope.loading = true
-		$timeout(function () {
-			if ($scope.code == 'test') {
-				confirmAccountModal.deactivate()
-				$parent.doneSignup(true)
-			} else {
-				$scope.codeError = true
-				$scope.loading = false
-			}
-		}, 1000)
+		verifyPhoneCodeService(phone, $scope.code).then(function (response) {
+			$scope.loading = false
+			confirmAccountModal.deactivate()
+			$parent.doneSignup(true)
+			console.log(response)
+		}, function (error) {
+			$scope.loading = false
+			$scope.codeError = true
+			console.log(error)
+		})
 	}
 
 	$scope.resend = function () {
+		
+	}
+})
+.factory('forgotPasswordModal', function (btfModal) {
+	return btfModal({
+		controller: 'forgotPasswordModalController',
+		controllerAs: 'modal',
+		templateUrl: 'assets/views/modals/forgot-password.htm',
+	})
+})
+.controller('forgotPasswordModalController', function ($scope, $parent, forgotPasswordModal, forgotPasswordService) {
+	$scope.close = forgotPasswordModal.deactivate
 
+	$scope.confirm = function () {
+		$scope.emailError = false
+		if (!$scope.email) return $scope.emailError = true
+
+		$scope.loading = true
+		forgotPasswordService($scope.email).then(function (data) {
+			$scope.loading = false
+			$scope.sent = true
+		}, function (error) {
+			$scope.loading = false
+			$scope.error = error
+		})
+	}
+})
+.factory('findMyAccountModal', function (btfModal) {
+	return btfModal({
+		controller: 'findMyAccountModalController',
+		controllerAs: 'modal',
+		templateUrl: 'assets/views/modals/find-my-account.htm',
+	})
+})
+.controller('findMyAccountModalController', function ($scope, $parent, $location, findMyAccountModal, findAccountRequestService, findAccountSigninService) {
+	$scope.close = findMyAccountModal.deactivate
+
+	$scope.confirm = function () {
+		$scope.error = ''
+		$scope.inputError = false
+		if (!$scope.input) return $scope.inputError = true
+
+		$scope.requestLoading = true
+		findAccountRequestService($scope.input).then(function (data) {
+			$scope.requestLoading = false
+			$scope.codeSent = true
+		}, function (error) {
+			$scope.requestLoading = false
+			$scope.error = error
+			console.error(error)
+		})
+	}
+
+	$scope.signIn = function () {
+		$scope.codeValidationError = ''
+		$scope.codeError = false
+		if (!$scope.code) return $scope.codeError = true
+
+		$scope.codeLoading = true
+		findAccountSigninService($scope.code).then(function (response) {
+			$scope.codeLoading = false
+			$location.url('/')
+			window.localStorage.satellizer_token = response.token
+			findMyAccountModal.deactivate()
+		}, function (error) {
+			$scope.codeLoading = false
+			$scope.codeValidationError = error
+		})
 	}
 })

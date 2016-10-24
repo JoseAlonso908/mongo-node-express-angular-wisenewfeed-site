@@ -2,6 +2,9 @@ var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
 
+window.numeral = require('numeral')
+window.async = require('async')
+
 // angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'ngCookies', 'er.controllers', 'er.services', 'er.directives', 'satellizer'])
 // .config(['$locationProvider', '$routeProvider', '$authProvider',
 angular.module('er', [
@@ -23,6 +26,9 @@ angular.module('er', [
 			})
 			.when('/my', {
 				templateUrl: 'assets/views/profile.htm'
+			})
+			.when('/resetpassword', {
+				templateUrl: 'assets/views/resetpassword.htm'
 			})
 
 

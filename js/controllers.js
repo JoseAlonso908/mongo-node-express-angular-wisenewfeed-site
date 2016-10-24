@@ -1,25 +1,44 @@
 angular.module('er.controllers', [])
-.controller('startController', function ($scope, $auth, $location, $cookies, $timeout, countriesListService, confirmAccountModal) {
-	$auth.logout()
-	$cookies.remove('user')
+.controller('startController', function (	$scope, $auth, $location, $cookies, $timeout,
+											countriesListService, confirmAccountModal, 
+											validateEmailService, validatePhoneService,
+											forgotPasswordModal, findMyAccountModal, identityService) {
+
+	// $auth.logout()
+
+	$scope.identityLoading = true
+	identityService().then(function (user) {
+		$scope.identityLoading = true
+		$scope.user = user
+	})
+
+	// $cookies.remove('user')
 
 	$scope.authenticate = function (provider) {
+		$cookies.remove('user')
+		$auth.logout()
+
 		$auth.authenticate(provider)
 		.then(function (response) {
-			$location.path('/')
+			console.log('Done.')
+			console.log(response)
+			$location.url('/')
 		})
 		.catch(function (response) {
-			$location.path('/start')
+			$location.url('/start')
 		})
 	}
 
 	$scope.login = {email: '', password: '', error: ''}
+	$scope.remember = false
 	$scope.doLogin = function () {
 		$auth.login({
 			email: $scope.login.email,
 			password: $scope.login.password
 		}).then(function (response) {
-			$location.path('/')
+			localStorage.rememberLogin = $scope.remember
+
+			$location.url('/')
 		}).catch(function (response) {
 			$scope.login.error = response.data.message
 		})
@@ -29,22 +48,11 @@ angular.module('er.controllers', [])
 		if (!phoneVerified) return
 		
 		$cookies.putObject('signup-params', $scope.signup)
-		$location.path('/confirmsignup')
-
-		// $auth.signup({
-		// 	email: $scope.signup.email,
-		// 	password: $scope.signup.password,
-		// 	name: $scope.signup.name,
-		// 	country: $scope.signup.country,
-		// 	phone: $scope.signup.phone,
-		// }).then(function (response) {
-		// 	$location.path('/')
-		// }).catch(function (response) {
-		// 	$scope.signup.error = response.data.message
-		// })
+		$location.url('/confirmsignup')
 	}
 
-	$scope.signup = {email: 'lavavrik@yandex.ru', password: '111', name: 'Lavrik', country: 'Ukraine', phone: '639735449'}
+	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
+	// $scope.signup = {email: 'lavavrik@yandex.ru', password: '111', name: 'Lavrik', country: 'Ukraine', phone: '+380639735449'}
 	$scope.doSignup = function () {
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
@@ -54,7 +62,41 @@ angular.module('er.controllers', [])
 			}
 		}
 
-		confirmAccountModal.activate({$parent: $scope})
+		async.series([
+			function (callback) {
+				validateEmailService($scope.signup.email).then(function (response) {
+					callback()
+				}, function (error) {
+					callback(error)
+				})
+			},
+			function (callback) {
+				validatePhoneService($scope.signup.phone).then(function (response) {
+					callback()
+				}, function (error) {
+					callback(error)
+				})
+			}
+		], function (err) {
+			if (err) $scope.signup.error = err
+			else {
+				confirmAccountModal.activate({$parent: $scope, phone: $scope.signup.phone})
+			}
+		})
+	}
+
+	$scope.forgotPassword = function () {
+		forgotPasswordModal.activate({$parent: $scope})
+	}
+
+	$scope.findMyAccount = function () {
+		findMyAccountModal.activate({$parent: $scope})
+	}
+
+	$scope.logout = function () {
+		$auth.logout()
+		$cookies.remove('user')
+		$scope.user = undefined
 	}
 
 	$scope.countries = []
@@ -62,10 +104,56 @@ angular.module('er.controllers', [])
 		$scope.countries = list
 	})
 })
-.controller('confirmSignupController', function ($scope, $cookies) {
+.controller('confirmSignupController', function ($scope, $cookies, $auth, $location) {
+	$scope.fields = [
+		'Field 1',
+		'Field 2',
+		'Field 3',
+		'Field 4'
+	]
+
 	$scope.signup = $cookies.getObject('signup-params')
-	// $cookies.remove('signup-params')
-	console.log($scope.signup)
+	
+	$scope.extra = {title: '', company: '', field: ''}
+	$scope.extraError = {title: '', company: '', field: ''}
+
+	$scope.doSignup = function (role) {
+		var roles = ['expert', 'journalist', 'user']
+		if (roles.indexOf(role) === -1) return false
+
+
+		if (role == 'expert' || role == 'journalist') {
+			// Validate additional options for expert and journalist
+			var hasErrors = false
+
+			for (var field in $scope.extra) {
+				var value = $scope.extra[field]
+				if (!value) {
+					$scope.extraError[field] = true
+					hasErrors = true
+				}
+				else $scope.extraError[field] = false
+			}
+
+			if (hasErrors) return false
+			else {
+				Object.assign($scope.signup, {
+					title: $scope.extra.title,
+					company: $scope.extra.company,
+				})
+			}
+		}
+
+		$scope.signup.role = role
+
+		console.log($scope.signup)
+
+		$auth.signup($scope.signup).then(function (response) {
+			$location.url('/start')
+		}).catch(function (response) {
+			alert("Signup failed due to: " + response.data.message)
+		})
+	}
 })
 .controller('homeController', function ($scope, $timeout, categoriesDropdown, countriesDropdown, dropdowns, identityService, feedService) {
 	$scope.cats = categoriesDropdown
@@ -105,4 +193,35 @@ angular.module('er.controllers', [])
 			$scope.$apply()
 		})
 	})
+})
+.controller('resetPasswordController', function ($scope, $location, checkPasswordTokenService, resetPasswordService) {
+	$scope.newPassword = ''
+	$scope.newPasswordRepeat = ''
+
+	$scope.newPasswordError = false
+	$scope.newPasswordRepeatError = false
+
+	var token = location.hash.split('?')[1].split('token=')[1]
+	checkPasswordTokenService(token).then(function (response) {
+		$scope.tokenValid = true
+	}, function (error) {
+		$scope.tokenValid = false
+	})
+
+	$scope.doReset = function () {
+		if (!$scope.newPassword) {
+			return $scope.newPasswordError = true
+		}
+
+		if ($scope.newPassword != $scope.newPasswordRepeat) {
+			return $scope.newPasswordRepeatError = true
+		}
+
+		resetPasswordService(token, $scope.newPassword).then(function (response) {
+			$location.url('/start')
+		}, function (error) {
+			$scope.customError = error
+			$scope.tokenValid = false
+		})
+	}
 })

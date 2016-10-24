@@ -6,13 +6,15 @@
 		<div class="left">
 			<div class="card user-info">
 				<div class="name dark-bold">{{user.name}}</div>
-				<div class="status">User</div>
+				<div class="status">{{user.role}}</div>
 
 				<div class="divider"></div>
 
-				<a href="#">Upgrade to Expert</a>
-				<br>
-				<a href="#">Upgrade to Journalist</a>
+				<div ng-if="user.role == 'User'" >
+					<a href="#">Upgrade to Expert</a>
+					<br>
+					<a href="#">Upgrade to Journalist</a>
+				</div>
 			</div>
 
 			<div class="recent-list">

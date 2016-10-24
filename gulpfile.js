@@ -13,7 +13,7 @@ gulp.task('compass', () => {
 		config_file: './compass-config.rb',
 		css: './assets/stylesheets',
 		sass: './sass',
-	}))
+	}).on('error', gulpUtil.log))
 	.pipe(plumber())
 	.pipe(gulp.dest('./assets/css'))
 })
@@ -24,7 +24,7 @@ gulp.task('browserify', () => {
 		insertGlobals: true,
 		debug: true,
 	}))
-	.pipe(ngAnnotate())
+	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('angular.js', {
 		// outSourceMap: true,
 		mangle: true
@@ -35,7 +35,7 @@ gulp.task('browserify', () => {
 
 gulp.task('js', () => {
 	gulp.src(['./js/*.js', '!./js/app.js'])
-	.pipe(ngAnnotate())
+	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('app.js', {
 		// outSourceMap: true,
 		mangle: true

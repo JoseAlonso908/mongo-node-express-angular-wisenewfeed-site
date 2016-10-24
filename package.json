@@ -28,6 +28,7 @@
     "body-parser": "^1.15.2",
     "countries-list": "^1.2.0",
     "express": "^4.14.0",
+    "mailgun": "^0.5.0",
     "moment": "^2.15.1",
     "mongoose": "^4.6.4",
     "numeral": "^1.5.3",
@@ -35,6 +36,7 @@
     "request": "^2.75.0",
     "satellizer": "^0.15.5",
     "sha1": "^1.1.1",
+    "twilio": "^2.11.0",
     "validator": "^6.1.0"
   },
   "devDependencies": {

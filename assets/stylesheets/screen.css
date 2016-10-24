@@ -1386,7 +1386,7 @@ a:hover {
 }
 #landing-wrapper #content-wrapper {
   width: 100%;
-  height: calc(100% - 100px);
+  min-height: calc(100% - 100px);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1401,14 +1401,19 @@ a:hover {
   align-items: center;
   width: 1180px;
   height: 100%;
+  min-height: 800px;
   margin: 0 auto 0;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup {
+#landing-wrapper #content-wrapper .content.confirm-signup, #landing-wrapper #content-wrapper .content.reset-password {
   justify-content: center;
   flex-flow: column wrap;
   align-items: center;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block {
+#landing-wrapper #content-wrapper .content.confirm-signup a, #landing-wrapper #content-wrapper .content.reset-password a {
+  color: #43abe7;
+  font-size: 13px;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block, #landing-wrapper #content-wrapper .content.reset-password .block {
   width: 400px;
   margin: 16px 0;
   padding: 27px 24px;
@@ -1417,17 +1422,17 @@ a:hover {
   background-color: #ffffff;
   box-sizing: border-box;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block .title {
+#landing-wrapper #content-wrapper .content.confirm-signup .block .title, #landing-wrapper #content-wrapper .content.reset-password .block .title {
   color: #535659;
   font-size: 18px;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block .text {
+#landing-wrapper #content-wrapper .content.confirm-signup .block .text, #landing-wrapper #content-wrapper .content.reset-password .block .text {
   margin: 20px 0 20px;
   color: #82898f;
   font-size: 13px;
   line-height: 20px;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block .small-loader {
+#landing-wrapper #content-wrapper .content.confirm-signup .block .small-loader, #landing-wrapper #content-wrapper .content.reset-password .block .small-loader {
   position: absolute;
   width: 16px;
   height: 16px;
@@ -1435,7 +1440,7 @@ a:hover {
   margin-top: 10px;
   background: url("../images/small-loader.gif") no-repeat center;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text] {
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text], #landing-wrapper #content-wrapper .content.confirm-signup .block input[type=password], #landing-wrapper #content-wrapper .content.confirm-signup .block select, #landing-wrapper #content-wrapper .content.reset-password .block input[type=text], #landing-wrapper #content-wrapper .content.reset-password .block input[type=password], #landing-wrapper #content-wrapper .content.reset-password .block select {
   display: inline-block;
   width: 100%;
   height: 36px;
@@ -1451,11 +1456,32 @@ a:hover {
   -webkit-transition: border-color 0.1s;
   transition: border-color 0.1s;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text]:focus {
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text]:focus, #landing-wrapper #content-wrapper .content.confirm-signup .block input[type=password]:focus, #landing-wrapper #content-wrapper .content.confirm-signup .block select:focus, #landing-wrapper #content-wrapper .content.reset-password .block input[type=text]:focus, #landing-wrapper #content-wrapper .content.reset-password .block input[type=password]:focus, #landing-wrapper #content-wrapper .content.reset-password .block select:focus {
   border-color: #43abe7;
 }
-#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text].error {
+#landing-wrapper #content-wrapper .content.confirm-signup .block input[type=text].error, #landing-wrapper #content-wrapper .content.confirm-signup .block input[type=password].error, #landing-wrapper #content-wrapper .content.confirm-signup .block select.error, #landing-wrapper #content-wrapper .content.reset-password .block input[type=text].error, #landing-wrapper #content-wrapper .content.reset-password .block input[type=password].error, #landing-wrapper #content-wrapper .content.reset-password .block select.error {
   border-color: red;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .footer, #landing-wrapper #content-wrapper .content.reset-password .block .footer {
+  display: flex;
+  justify-content: space-between;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .footer button.cta-button, #landing-wrapper #content-wrapper .content.reset-password .block .footer button.cta-button {
+  display: block;
+  width: calc(50% - 6px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block .footer button.cta-button.resetpassword, #landing-wrapper #content-wrapper .content.reset-password .block .footer button.cta-button.resetpassword {
+  width: 100%;
+}
+#landing-wrapper #content-wrapper .content.confirm-signup .block.as-user .footer button.cta-button, #landing-wrapper #content-wrapper .content.reset-password .block.as-user .footer button.cta-button {
+  display: block;
+  width: 100%;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
 }
 #landing-wrapper #content-wrapper .content .welcome {
   width: 510px;
@@ -1612,13 +1638,6 @@ a:hover {
   -webkit-transition: background-color 0.1s;
   transition: background-color 0.1s;
 }
-#landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer a {
-  display: inline-block;
-  height: 20px;
-  font-size: 13px;
-  color: #43abe7;
-  line-height: 20px;
-}
 #landing-wrapper #content-wrapper .content .auth-blocks > div .auth-error {
   margin-top: 15px;
   font-size: 13px;
@@ -1662,6 +1681,41 @@ a:hover {
 #landing-wrapper #content-wrapper .content .auth-blocks > div.register {
   margin-top: 48px;
 }
+#landing-wrapper #content-wrapper .content .auth-blocks > div .continue-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div a {
+  display: inline-block;
+  height: 20px;
+  font-size: 13px;
+  color: #43abe7;
+  line-height: 20px;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div a.continue {
+  display: inline-block;
+  width: auto;
+  height: 36px;
+  margin: 20px 0;
+  padding: 0 20px;
+  background-color: #43abe7;
+  border: none;
+  border-radius: 18px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 36px;
+  -moz-transition: background-color 0.1s;
+  -o-transition: background-color 0.1s;
+  -webkit-transition: background-color 0.1s;
+  transition: background-color 0.1s;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div a.continue:hover {
+  background-color: #1c95db;
+  opacity: 1;
+}
 #landing-wrapper #content-wrapper .content .auth-blocks > a {
   margin-top: 10px;
   float: right;
@@ -1701,6 +1755,15 @@ a:hover {
   font-size: 13px;
   line-height: 20px;
 }
+.backdrop .popup .text.error {
+  color: red !important;
+}
+.backdrop .popup .bold-value {
+  margin: 4px 0;
+  font-size: 13px;
+  font-weight: 900;
+  color: #535659;
+}
 .backdrop .popup .small-loader {
   position: absolute;
   width: 16px;
@@ -1708,6 +1771,24 @@ a:hover {
   right: 36px;
   margin-top: 10px;
   background: url("../images/small-loader.gif") no-repeat center;
+}
+.backdrop .popup .checked {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 36px;
+  margin-top: 10px;
+  color: #43abe7;
+}
+.backdrop .popup .checked i {
+  font-size: 16px;
+}
+.backdrop .popup .divider {
+  width: 100%;
+  height: 0;
+  margin: 24px 0 20px -24px;
+  padding-right: 48px;
+  border-top: 1px solid #f0f2f4;
 }
 .backdrop .popup input[type=text] {
   display: inline-block;

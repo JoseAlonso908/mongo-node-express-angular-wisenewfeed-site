@@ -7,7 +7,14 @@ const
 	request = require('request'),
 	qs = require('querystring'),
 	validator = require('validator'),
-	countriesList = require('countries-list')
+	countriesList = require('countries-list'),
+	twilio = require('twilio'),
+	async = require('async'),
+	Mailgun = require('mailgun').Mailgun
+
+let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
+
+let mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
 
@@ -22,9 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 var mongoose = require('mongoose')
+mongoose.Promise = Promise
 mongoose.connect('mongodb://localhost/expertreaction');
 var User = require('./models/user')(mongoose)
 var Token = require('./models/token')(mongoose)
+var PhoneVerification = require('./models/phoneverification')(mongoose)
+var ResetPassword = require('./models/resetpassword')(mongoose)
+var FindAccount = require('./models/findaccount')(mongoose)
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
@@ -43,9 +54,9 @@ app.get('/static/countries', (req, res) => {
 })
 
 app.get('/me', (req, res) => {
-	let token = req.headers.authorization.split(' ')[1]
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
 
-	if (!token) return res.status(500).send({error: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
 
 	Token.getUserByToken(token, (err, user) => {
 		res.send(user)
@@ -68,19 +79,205 @@ app.post('/auth/login', (req, res) => {
 	})
 })
 
+app.post('/auth/signup/validate/email', (req, res) => {
+	let {email} = req.body
+
+	async.series([
+		(callback) => {
+			if (!validator.isEmail(email)) callback({message: 'Invalid email'})
+			else callback()
+		},
+		(callback) => {
+			User.findByEmail(email, (err, user) => {
+				if (user) callback({message: 'User with this email aready exist'})
+				else callback()
+			})
+		},
+	], (err) => {
+		if (err) return res.status(400).send(err)
+		else return res.send({ok: true})
+	})
+})
+
+app.post('/auth/signup/validate/phone', (req, res) => {
+	let {phone} = req.body
+
+	async.series([
+		(callback) => {
+			User.findByPhone(phone, (err, user) => {
+				if (user) callback({message: 'User with this phone aready exist'})
+				else callback()
+			})
+		}
+	], (err) => {
+		if (err) return res.status(400).send(err)
+		else return res.send({ok: true})
+	})
+})
+
+app.post('/auth/signup/verify/phone', (req, res) => {
+	let {phone} = req.body
+
+	PhoneVerification.createCode(phone, (err, result) => {
+		twilioClient.messages.create({
+			to: phone,
+			from: '+16692316392',
+			body: `Expert Reaction verification code: ${result.code}`
+		}, (err, message) => {
+			if (err) return res.status(err.status).send(err)
+			else return res.send(message)
+		})
+	})
+})
+
+app.post('/auth/signup/verifycode/phone', (req, res) => {
+	let {phone, code} = req.body
+
+	PhoneVerification.verifyCode(phone, code, (result) => {
+		if (result === true) return res.send({ok: true})
+		else return res.status(400).send({message: 'Code is invalid'})
+	})
+})
+
+app.post('/auth/forgotpassword', (req, res) => {
+	let {email} = req.body
+
+	console.log(email)
+
+	User.findByEmail(email, (err, user) => {
+		if (!user) res.status(400).send({message: 'User with this email does not exist'})
+		else {
+			ResetPassword.createRequest(email, (err, request) => {
+				console.log(err)
+				console.log(request)
+
+				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, email,
+				`Password recovery`,
+				`You requested a password reset. Please follow this link to proceed:
+http://localhost:8006/#!/resetpassword/?token=${request.token}`)
+				res.send({ok: true})
+			})
+		}
+	})
+})
+
+app.post('/auth/forgotpassword/validate', (req, res) => {
+	let {token} = req.body
+
+	ResetPassword.validateRequest(token, (result) => {
+		if (result) return res.send({ok: true})
+		else return res.status(400).send({message: 'Reset password token is invalid'})
+	})
+})
+
+app.post('/auth/resetpassword', (req, res) => {
+	let {token, newpassword} = req.body
+
+	async.waterfall([
+		(next) => {
+			ResetPassword.getEmailByToken(token, (email) => {
+				if (!email) return next({message: `Token is invalid`})
+				else next(null, email)
+			})
+		},
+		(email, next) => {
+			User.findByEmail(email, (err, user) => {
+				if (!user) return next({message: `User does not exist`})
+				else next(null, email, user)
+			})
+		},
+		(email, user, next) => {
+			User.updatePassword(user._id, newpassword, (err, user) => {
+				if (!user) return next({message: 'Unable to change password'})
+				else return next(null)
+			})
+		},
+		(next) => {
+			ResetPassword.removeToken(token, next)
+		}
+	], (err) => {
+		if (err) return res.status(400).send(err)
+		else return res.send({ok: true})
+	})
+})
+
+app.post('/auth/findaccount/request', (req, res) => {
+	let {value} = req.body
+
+	User.findByEmailOrPhone(value, (err, user) => {
+		if (!user) return res.status(400).send({message: 'User not found'})
+
+		let foundValue = {}
+
+		if (user.email === value) foundValue.email = value
+		else if (user.phone === value) foundValue.phone = value
+
+		FindAccount.create(foundValue, (err, findaccount) => {
+			if (foundValue.hasOwnProperty('email')) {
+				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, value,
+				`Account verification code`,
+				`Put this code into corresponding input:
+${findaccount.code}`)
+			}
+
+			if (foundValue.hasOwnProperty('phone')) {
+				twilioClient.messages.create({
+					to: value,
+					from: '+16692316392',
+					body: `Expert Reaction verification code: ${findaccount.code}`
+				}, (err, message) => {})
+			}
+
+			res.send({ok: true})
+		})
+	})
+})
+
+app.post('/auth/findaccount/signin', (req, res) => {
+	let {code} = req.body
+
+	FindAccount.findByCode(code, (err, findaccount) => {
+		if (!findaccount) return res.status(400).send({message: 'Code is invalid'})
+
+		let identityValue = ''
+		if (findaccount.email) identityValue = findaccount.email
+		else if (findaccount.phone) identityValue = findaccount.phone
+
+		User.findByEmailOrPhone(identityValue, (err, user) => {
+			getTokenAndRespond(res, user)
+		})
+	})
+})
+
 app.post('/auth/signup', (req, res) => {
 	let {email, password, name, country, phone} = req.body
-	User.findByEmail(email, (err, user) => {
-		if (user) return res.status(400).send({message: 'User with this email aready exist'})
-		else {
+
+	async.series([
+		(callback) => {
 			if (!email || !password || !name || !country || !phone)
-				return res.status(400).send({message: 'All fields should be filled'})
-
-			if (!validator.isEmail(email)) return res.status(400).send({message: 'Invalid email'})
-
-			User.createUser({
-				email, password, name, country, phone
-			}, (err, user) => {
+				callback({message: 'All fields should be filled'})
+			else callback()
+		},
+		(callback) => {
+			if (!validator.isEmail(email)) callback({message: 'Invalid email'})
+			else callback()
+		},
+		(callback) => {
+			User.findByEmail(email, (err, user) => {
+				if (user) callback({message: 'User with this email aready exist'})
+				else callback()
+			})
+		},
+		(callback) => {
+			User.findByPhone(phone, (err, user) => {
+				if (user) callback({message: 'User with this phone aready exist'})
+				else callback()
+			})
+		},
+	], (err, results) => {
+		if (err) return res.status(400).send(err)
+		else {
+			User.createUser(req.body, (err, user) => {
 				getTokenAndRespond(res, user)
 			})
 		}

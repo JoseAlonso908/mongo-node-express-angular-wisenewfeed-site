@@ -1,0 +1,32 @@
+<div class="backdrop">
+	<div class="popup">
+		<div class="title">Find my account</div>
+		<div class="text">Please enter your phone or email to find your account.</div>
+		<div class="text error">{{error}}</div>
+
+		<div class="small-loader" ng-if="requestLoading"></div>
+		<div class="checked" ng-if="codeSent"><i class="material-icons">check</i></div>
+		<input type="text" ng-disabled="codeSent || requestLoading" ng-change="inputError = false" ng-class="{error: inputError}" ng-model="$parent.input" placeholder="Email/Phone">
+
+		<div class="divider" ng-if="codeSent"></div>
+
+		<div class="footer" ng-if="!codeSent">
+			<button ng-click="$parent.confirm()" class="confirm">Send</button>
+			<button ng-click="$parent.close()" class="cancel">Cancel</button>
+		</div>
+
+		<div ng-if="codeSent">
+			<div class="title">Verification</div>
+			<div class="text">Please enter a code that was sent to email or phone number</div>
+			<div class="text error">{{$parent.codeValidationError}}</div>
+
+			<div class="small-loader" ng-if="codeLoading"></div>
+			<input type="text" ng-disabled="codeLoading" ng-change="$parent.codeError = false" ng-class="{error: $parent.codeError}" ng-model="$parent.code" placeholder="Code">
+
+			<div class="footer">
+				<button ng-click="$parent.signIn()" class="confirm">Sign in</button>
+				<button ng-click="$parent.close()" class="cancel">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

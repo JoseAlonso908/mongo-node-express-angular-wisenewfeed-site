@@ -1,6 +1,121 @@
-// var numeral = require('numeral')
-
 angular.module('er.services', [])
+.factory('findAccountRequestService', function ($http, $q) {
+	return function (value) {
+		var d = $q.defer()
+
+		$http.post('/auth/findaccount/request', {value: value}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('findAccountSigninService', function ($http, $q) {
+	return function (code) {
+		var d = $q.defer()
+
+		$http.post('/auth/findaccount/signin', {code: code}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('forgotPasswordService', function ($http, $q) {
+	return function (email) {
+		var d = $q.defer()
+
+		$http.post('/auth/forgotpassword', {email: email}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('checkPasswordTokenService', function ($http, $q) {
+	return function (token) {
+		var d = $q.defer()
+
+		$http.post('/auth/forgotpassword/validate', {token: token}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('resetPasswordService', function ($http, $q) {
+	return function (token, newpassword) {
+		var d = $q.defer()
+
+		$http.post('/auth/resetpassword', {token: token, newpassword: newpassword}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('validateEmailService', function ($http, $q) {
+	return function (email) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/validate/email', {email: email}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('validatePhoneService', function ($http, $q) {
+	return function (phone) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/validate/phone', {phone: phone}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('verifyPhoneService', function ($http, $q) {
+	return function (phone) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/verify/phone', {phone: phone}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
+.factory('verifyPhoneCodeService', function ($http, $q) {
+	return function (phone, code) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/verifycode/phone', {phone: phone, code: code}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
 .factory('countriesListService', function ($http, $q) {
 	return function () {
 		var d = $q.defer()
@@ -35,8 +150,17 @@ angular.module('er.services', [])
 			user.followers = user.followers || 0
 			user.following = user.following || 0
 			user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+			user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 
-			$cookies.putObject('user', user)
+			var options = {
+				expires: new Date
+			}
+
+			if (localStorage.rememberLogin) {
+				options.expires = new Date(Date.now() + (168 * 3600 * 1000))
+			}
+
+			$cookies.putObject('user', user, options)
 
 			d.resolve(user)
 		})

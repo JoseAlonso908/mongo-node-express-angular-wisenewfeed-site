@@ -1,4 +1,50 @@
 angular.module('er.directives', [])
+.directive('dropdown', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/dropdown.htm',
+		scope: {
+			title: '@',
+			defaultItem: '=',
+			list: '=',
+			chosen: '=',
+			change: '=',
+		},
+		link: function ($scope, element, attr) {
+			var rootElement = angular.element(element)[0]
+
+			var dropdownButton = angular.element(rootElement.querySelector('.dropdown')),
+				dropdownList = angular.element(rootElement.querySelector('.dropdown-list'))
+				dropdownLists = angular.element(document.querySelectorAll('.dropdown-list'))
+
+			angular.element(document.body).on('click', function () {dropdownList.removeClass('active')})
+
+			dropdownList.on('click', function (e) {e.stopImmediatePropagation()})
+
+			dropdownButton.on('click', function (e) {
+				dropdownLists.removeClass('active')
+
+				e.stopImmediatePropagation()
+				dropdownList.toggleClass('active')
+			})
+
+			$scope.isActiveParentItem = function (parentItem) {
+				for (var i in parentItem.sub) {
+					if (parentItem.sub[i].id === $scope.chosen.id) return true
+				}
+			}
+
+			$scope.isActiveItem = function (item) {
+				return $scope.chosen.id == item.id
+			}
+
+			$scope.choose = function (item) {
+				$scope.change(item)
+				dropdownList.removeClass('active')
+			}
+		}
+	}
+})
 .directive('avatar', function () {
 	return {
 		restrict: 'E',
@@ -74,13 +120,10 @@ angular.module('er.directives', [])
 		scope: {user: '='},
 	}
 })
-.directive('filters', function (dropdowns) {
+.directive('filters', function () {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/filters.htm',
-		link: function ($scope, element, attr) {
-			dropdowns()
-		}
 	}
 })
 .directive('bigratedavatar', function () {
@@ -111,7 +154,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('autosuggest', function ($compile) {
+.directive('autosuggest', function () {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/autosuggest.htm',

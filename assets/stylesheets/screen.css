@@ -347,7 +347,11 @@ a:hover {
 }
 #wrapper #top-bar #user-block .name {
   display: block;
+  width: 135px;
   margin-top: 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #wrapper #top-bar #user-block .name:after {
   display: inline-block;
@@ -430,7 +434,7 @@ a:hover {
   transition: margin-top 0.3s, opacity 0.3s;
 }
 #wrapper .filters .dropdown-list.active, #wrapper .filters .sublist.active {
-  margin-top: 28px;
+  margin-top: 8px;
   opacity: 1;
   pointer-events: auto;
 }
@@ -446,6 +450,16 @@ a:hover {
   -o-transition: font-weight 0.1s, background-color 0.1s;
   -webkit-transition: font-weight 0.1s, background-color 0.1s;
   transition: font-weight 0.1s, background-color 0.1s;
+}
+#wrapper .filters .dropdown-list li.nested, #wrapper .filters .sublist li.nested {
+  position: relative;
+}
+#wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .sublist li.nested:after {
+  position: absolute;
+  right: 6px;
+  font-family: 'Material Icons';
+  font-size: 20px;
+  content: 'keyboard_arrow_right';
 }
 #wrapper .filters .dropdown-list li:hover, #wrapper .filters .dropdown-list li.active, #wrapper .filters .sublist li:hover, #wrapper .filters .sublist li.active {
   background-color: #f2f3f4;
@@ -703,6 +717,7 @@ a:hover {
   font-size: 13px;
   box-sizing: border-box;
   resize: none;
+  line-height: 16px;
 }
 #wrapper > .content .card.feed-item .comment-box textarea:focus {
   border-color: #43abe7;
@@ -800,6 +815,7 @@ a:hover {
   font-size: 13px;
   box-sizing: border-box;
   resize: none;
+  line-height: 16px;
 }
 #wrapper > .content .middle .on-your-mind textarea:focus, #wrapper > .content .middle .on-your-mind textarea.not-empty {
   height: 76px;

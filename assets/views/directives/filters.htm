@@ -1,14 +1,17 @@
 <div class="filters">
-	<div class="dropdown-wrapper">
+	<dropdown title="Country" list="countries" chosen="chosenCountry" change="setActiveCountry"></dropdown>
+	<dropdown title="Category" list="categories" chosen="chosenCategory" change="setActiveCategory"></dropdown>
+
+	<!-- <div class="dropdown-wrapper">
 		<div class="menu-buttons dropdown" dropdown-id="countries">
 			<div class="title">Country:</div>
 			<div class="option">{{countries.chosenCountry.title}}</div>
 		</div>
 		<ul class="dropdown-list" dropdown-id="countries">
-			<li ng-repeat="region in countries.countries" ng-class="countries.activeRegionClass(region)">
+			<li ng-repeat="region in countries.countries" ng-class="{nested: true, active: countries.activeRegionClass(region)}">
 				{{region.title}}
 				<ul class="sublist">
-					<li ng-repeat="country in region.sub" ng-click="countries.setActiveCountry(country)" ng-class="countries.activeCountryClass(country)">{{country.title}}</li>
+					<li ng-repeat="country in region.sub" ng-click="countries.setActiveCountry(country)" ng-class="{active: countries.activeCountryClass(country)}">{{country.title}}</li>
 				</ul>
 			</li>
 		</ul>
@@ -23,7 +26,7 @@
 		<ul class="dropdown-list" dropdown-id="categories">
 			<li ng-repeat="cat in cats.categories" ng-class="cats.activeCategoryClass(cat)" ng-click="cats.setActiveCategory(cat)">{{cat.title}} ({{cat.countShort}})</li>
 		</ul>
-	</div>
+	</div> -->
 
 	<a href="#" class="menu-buttons">Top</a>
 	<a href="#" class="menu-buttons">News</a>

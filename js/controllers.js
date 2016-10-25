@@ -155,9 +155,28 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('homeController', function ($scope, $timeout, categoriesDropdown, countriesDropdown, dropdowns, identityService, feedService) {
-	$scope.cats = categoriesDropdown
-	$scope.countries = countriesDropdown
+.controller('homeController', function ($scope, $timeout, categoriesService, groupedCountriesService, identityService, feedService) {
+	categoriesService().then(function (result) {
+		for (var i in result) {
+			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+		}
+
+		$scope.categories = result
+		$scope.chosenCategory = result[0]
+	})
+
+	$scope.setActiveCategory = function (item) {
+		$scope.chosenCategory = item
+	}
+
+	groupedCountriesService().then(function (result) {
+		$scope.countries = result
+		$scope.chosenCountry = result[0].sub[0]
+	})
+
+	$scope.setActiveCountry = function (item) {
+		$scope.chosenCountry = item
+	}
 
 	$scope.r_tags = ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']
 	$scope.r_people = ['Guy 1', 'Guy 2', 'Guy 3', 'Guy 4', 'Guy 5', 'Guy 6', 'Guy 7']

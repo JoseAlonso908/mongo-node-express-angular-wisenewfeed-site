@@ -267,19 +267,23 @@ a:hover {
   transition: color 0.2s;
 }
 .small-icon .badge {
+  display: flex;
+  justify-content: center;
   position: absolute;
   top: -4px;
   right: -4px;
-  width: 14px;
-  height: 14px;
-  padding-right: 1px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   border-radius: 7px;
   background-color: #e8676a;
-  color: #ffffff;
-  font-size: 9px;
-  line-height: 14px;
-  text-align: center;
   box-sizing: border-box;
+}
+.small-icon .badge .value {
+  height: inherit;
+  font-size: 11px;
+  color: #ffffff;
+  line-height: 16px;
 }
 
 #wrapper {

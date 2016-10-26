@@ -1,4 +1,5 @@
 const config = require('./config')
+const env = process.env.NODE_ENV || 'local'
 
 const
 	express = require('express'),
@@ -37,7 +38,7 @@ app.use(bodyParser.json())
 
 var mongoose = require('mongoose')
 mongoose.Promise = Promise
-mongoose.connect('mongodb://localhost/expertreaction');
+mongoose.connect(config.MONGO[env].DSN);
 var User = require('./models/user')(mongoose)
 var Token = require('./models/token')(mongoose)
 var PhoneVerification = require('./models/phoneverification')(mongoose)

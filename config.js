@@ -12,5 +12,13 @@ module.exports = {
 	MAILGUN: {
 		APIKEY: 'key-20875aee9b1ccb3a8dc0bf2c906eafb5',
 		SANDBOX_DOMAIN: 'sandbox2acf9e50194e46c9b47c1b82106a334f.mailgun.org',
+	},
+	MONGO: {
+		'local': {
+			DSN: 'mongodb://localhost/expertreaction'
+		},
+		'development': {
+			DSN: 'mongodb://lp:w2eVt1puhb@wlab.tech/expertreaction'
+		}
 	}
 }

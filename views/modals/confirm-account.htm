@@ -11,7 +11,7 @@
 			<a href="javascript:void(0);" ng-click="resend()" ng-disabled="!ready || resendTimer > 0">Resend code <span ng-show="resendTimer > 0">({{resendTimer}})</span></a>
 
 			<button ng-click="confirm()" ng-disabled="loading || !ready" class="confirm">Confirm</button>
-			<button ng-click="close()" ng-disabled="loading || !ready" class="cancel">Cancel</button>
+			<button ng-click="close()" class="cancel">Cancel</button>
 		</div>
 	</div>
 </div>

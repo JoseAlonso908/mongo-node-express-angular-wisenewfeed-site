@@ -1,5 +1,5 @@
 const config = require('./config')
-const env = process.env.NODE_ENV || 'local'
+const env = 'development'
 
 const
 	express = require('express'),

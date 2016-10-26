@@ -38,7 +38,7 @@ angular.module('er', [
 
 		$authProvider.linkedin({
 			clientId: '77cidth7sa053d',
-			redirectUri: '/auth/linkedin'
+			redirectUri: 'http://expertreaction.wlab.tech/auth/linkedin'
 		});
 	}
 ])

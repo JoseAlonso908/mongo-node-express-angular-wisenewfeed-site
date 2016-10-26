@@ -38,7 +38,7 @@ angular.module('er', [
 
 		$authProvider.linkedin({
 			clientId: '77cidth7sa053d',
-			redirectUri: 'http://localhost:8006/auth/linkedin'
+			redirectUri: '/auth/linkedin'
 		});
 	}
 ])

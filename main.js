@@ -162,7 +162,7 @@ app.post('/auth/forgotpassword', (req, res) => {
 				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, email,
 				`Password recovery`,
 				`You requested a password reset. Please follow this link to proceed:
-http://localhost:8006/#!/resetpassword/?token=${request.token}`)
+http://expertreaction.wlab.tech/#!/resetpassword/?token=${request.token}`)
 				res.send({ok: true})
 			})
 		}

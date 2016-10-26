@@ -32,6 +32,8 @@ angular.module('er.controllers', [])
 	$scope.login = {email: '', password: '', error: ''}
 	$scope.remember = false
 	$scope.doLogin = function () {
+		if (!$scope.login.email || !$scope.login.password) return
+
 		$auth.login({
 			email: $scope.login.email,
 			password: $scope.login.password
@@ -52,15 +54,21 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
-	// $scope.signup = {email: 'lavavrik@yandex.ru', password: '111', name: 'Lavrik', country: 'Ukraine', phone: '+380639735449'}
+	// $scope.signup = {email: 'lavavrik@yandex.ru', password: 'a12345678', name: 'Lavrik', country: 'Ukraine', phone: '+380639735449'}
 	$scope.doSignup = function () {
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
 
 			if (!$scope.signup[field]) {
+				signupForm[field].$valid = false
 				return $scope.signup.error = 'All fields should be filled'
 			}
 		}
+
+		// console.log($scope.signupForm.$valid)
+		// console.log($scope.signupForm)
+
+		if (!$scope.signupForm.$valid) return
 
 		async.series([
 			function (callback) {
@@ -184,14 +192,14 @@ angular.module('er.controllers', [])
 
 	identityService().then(function (user) {
 		$scope.user = user
+	})
 
-		$scope.feedLoading = true
-		$scope.feed = []
-		feedService.then(function (feed) {
-			$scope.feed = feed
-			$scope.feedLoading = false
-			$scope.$apply()
-		})
+	$scope.feedLoading = true
+	$scope.feed = []
+	feedService.then(function (feed) {
+		$scope.feed = feed
+		$scope.feedLoading = false
+		$scope.$apply()
 	})
 })
 .controller('profileController', function ($scope, identityService, feedService) {

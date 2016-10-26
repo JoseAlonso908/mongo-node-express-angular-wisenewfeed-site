@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Welcome to Compass.
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
@@ -59,13 +60,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 
 .loader {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 20px;
   animation: load 1s linear infinite;
   border: 6px solid #b0bec8;
   border-radius: 50%;
-  display: block;
-  height: 24px;
-  margin: auto;
-  width: 24px;
 }
 
 .loader:after {
@@ -92,6 +93,31 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   clear: both;
 }
 
+.view {
+  width: 100%;
+  height: 100%;
+}
+.view.ng-enter, .view.ng-leave {
+  position: absolute;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+.view.ng-enter {
+  opacity: 0;
+}
+.view.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.view.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
+  border-color: red !important;
+}
+
 html, body {
   width: 100%;
   min-height: 100%;
@@ -115,6 +141,10 @@ a {
 }
 a:hover {
   opacity: .9;
+}
+a[disabled] {
+  color: #b0bec8 !important;
+  cursor: default;
 }
 
 .so-bold {
@@ -286,6 +316,50 @@ a:hover {
   line-height: 16px;
 }
 
+.user-menu {
+  position: absolute;
+  width: 180px;
+  margin: 20px 0 0 -25px;
+  padding: 15px 0;
+  z-index: 3;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
+  opacity: 0;
+  pointer-events: none;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+.user-menu.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.user-menu .divider {
+  width: 100%;
+  height: 0;
+  margin: 15px 0 15px 0;
+  border-top: 1px solid #f0f2f4;
+}
+.user-menu a {
+  display: block;
+  height: 32px;
+  padding: 0 22px;
+  color: #82898f;
+  font-size: 13px;
+  line-height: 32px;
+  opacity: 1;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+.user-menu a:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 #wrapper {
   width: 1180px;
   height: 100%;
@@ -429,7 +503,7 @@ a:hover {
   z-index: 3;
   background-color: #ffffff;
   border-radius: 4px;
-  box-shadow: 0 5px 8px 0 rgba(130, 137, 143, 0.6);
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
   opacity: 0;
   pointer-events: none;
   -moz-transition: margin-top 0.3s, opacity 0.3s;
@@ -1202,6 +1276,8 @@ a:hover {
   margin-bottom: 55px;
   box-shadow: 0 3px 6px 0 rgba(130, 137, 143, 0.3);
   box-sizing: border-box;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 #wrapper .wallpaper-wrapper .wallpaper {
   width: 100%;
@@ -1222,6 +1298,8 @@ a:hover {
   width: 100%;
   height: 80px;
   background-color: #ffffff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 #wrapper .wallpaper-wrapper .footer .stats {
   display: flex;
@@ -1586,6 +1664,35 @@ a:hover {
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div form {
   margin-top: 22px;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip {
+  position: absolute;
+  width: 300px;
+  margin-left: -328px;
+  margin-top: -48px;
+  background-color: #ffffff;
+  color: #535659;
+  font-size: 13px;
+  padding: 10px 15px 10px 25px;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(130, 137, 143, 0.5);
+  box-sizing: border-box;
+  opacity: 0;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip.visible {
+  opacity: 1;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li {
+  padding-bottom: 2px;
+}
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li:before {
+  position: absolute;
+  margin-left: -10px;
+  content: '•';
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div form input:not([type=checkbox]):not([type=radio]):not([type=submit]) {
   display: inline-block;

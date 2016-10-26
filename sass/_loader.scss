@@ -1,11 +1,10 @@
 .loader {
+	display: block;
+	width: 24px; height: 24px;
+	margin: 0 auto 20px;
 	animation: load 1s linear infinite;
 	border: 6px solid $iconGrey;
 	border-radius: 50%;
-	display: block;
-	height: 24px;
-	margin: auto;
-	width: 24px;
 }
 
 .loader:after {

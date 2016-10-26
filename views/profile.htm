@@ -1,0 +1,135 @@
+<div id="wrapper" ng-controller="profileController">
+	<topbar user="user"></topbar>
+
+	<div class="wallpaper-wrapper">
+		<bigratedavatar user="user" ng-if="user"></bigratedavatar>
+
+		<div class="buttons">
+			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></div>
+			<div class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></div>
+		</div>
+
+		<div class="wallpaper" style="wallpaperStyle"></div>
+		<div class="footer">
+			<div class="stats">
+				<div class="stat">
+					<i class="material-icons">thumb_up</i>
+					<div class="value">{{user.likes}}</div>
+					<div class="title">Like</div>
+				</div>
+				<div class="stat">
+					<i class="material-icons">thumb_down</i>
+					<div class="value">{{user.dislikes}}</div>
+					<div class="title">Dislike</div>
+				</div>
+				<div class="stat">
+					<i class="material-icons">chat_bubble</i>
+					<div class="value">{{user.reactions}}</div>
+					<div class="title">React</div>
+				</div>
+				<div class="stat">
+					<i class="material-icons">person</i>
+					<div class="value">{{user.following}}</div>
+					<div class="title">Following</div>
+				</div>
+				<div class="stat">
+					<i class="material-icons">people</i>
+					<div class="value">{{user.followers}}</div>
+					<div class="title">Followers</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<div class="user-profile-info" ng-if="user">
+				<div class="name">{{user.name}}</div>
+				<div class="position">{{user.position}}</div>
+
+				<div class="rating-wrapper" ng-if="user.likes_percentage">
+					<i class="material-icons like">thumb_up</i>
+					<div class="rating-value">{{user.likes_percentage}}% Likes</div>
+					<i class="material-icons dislike">thumb_down</i>
+				</div>
+
+				<div class="rating-bar-wrapper" ng-if="user.likes_percentage">
+					<div class="rating-bar" style="width: {{user.likes_percentage}}%;"></div>
+				</div>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.intro">
+				<div class="title">Intro</div>
+				<div class="value">{{user.intro}}</div>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.experience">
+				<div class="title">Experience</div>
+				<div class="value">{{user.experience}}</div>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.certificates">
+				<div class="title">Certificates</div>
+				<a href=javascript:void(0); class="file" ng-repeat="cert in user.certificates">{{cert.title}}</a>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.address">
+				<div class="title">Address</div>
+				<div class="address-element email" ng-if="user.address.email">{{user.address.email}}</div>
+				<div class="address-element phone" ng-if="user.address.phone">{{user.address.phone}}</div>
+				<div class="address-element skype" ng-if="user.address.skype">{{user.address.skype}}</div>
+				<div class="address-element linkedin" ng-if="user.address.linkedin">{{user.address.linkedin}}</div>
+				<div class="address-element fb" ng-if="user.address.fb">{{user.address.fb}}</div>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.downloads">
+				<div class="title">Downloads</div>
+				<a href=javascript:void(0); class="file-download" ng-repeat="file in user.downloads">{{file.title}}</a>
+			</div>
+
+			<div class="user-description-block" ng-if="user && user.photos">
+				<div class="title">Photos</div>
+				<div class="photos">
+					<div class="photo" ng-class="{empty: photo.url === ''}" style="background-image: url('{{photo.url}}');" ng-repeat="photo in user.randomPhotos"></div>
+					<div class="other-photos" ng-if="user.photos.length > 8">+{{user.photos.length - 8}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="middle">
+			<div class="on-your-mind">
+				<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+				<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
+				<button class="send">
+					<div>
+						<i class="material-icons">send</i>
+						<div class="title">Send</div>
+					</div>
+				</button>
+				<button class="upload-image"><i class="material-icons">camera_alt</i></button>
+
+				<div class="clear"></div>
+			</div>
+
+			<div class="loader" ng-if="feedLoading"></div>
+			<post post="post" ng-repeat="post in feed"></post>
+		</div>
+		<div class="right">
+			<newquestions user="user" ng-if="user"></newquestions>
+
+			<familiarexperts></familiarexperts>
+
+			<div class="about-box card">
+				&copy; 2017 Expert Reaction
+				<a href=javascript:void(0);>About</a>
+				<a href=javascript:void(0);>How it work</a>
+				<a href=javascript:void(0);>FAQ</a>
+				<a href=javascript:void(0);>Business</a>
+				<a href=javascript:void(0);>Career</a>
+				<a href=javascript:void(0);>Feedback</a>
+				<a href=javascript:void(0);>Media</a>
+				<div class="divider"></div>
+				<a href=javascript:void(0); class="advertise">Advertise with Expert Reaction</a>
+			</div>
+		</div>
+	</div>
+</div>

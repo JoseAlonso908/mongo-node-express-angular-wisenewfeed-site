@@ -8,9 +8,9 @@ window.async = require('async')
 // angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'ngCookies', 'er.controllers', 'er.services', 'er.directives', 'satellizer'])
 // .config(['$locationProvider', '$routeProvider', '$authProvider',
 angular.module('er', [
-	require('angular-route'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
+	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
 	'btford.modal',
-	'er.controllers', 'er.services', 'er.directives', 'er.modals'])
+	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider',
 	function config($locationProvider, $routeProvider, $authProvider) {
 		$locationProvider.hashPrefix('!')

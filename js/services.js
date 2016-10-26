@@ -163,6 +163,8 @@ angular.module('er.services', [])
 			$cookies.putObject('user', user, options)
 
 			d.resolve(user)
+		}, function (error) {
+			d.reject(error.message)
 		})
 
 		return d.promise
@@ -262,7 +264,7 @@ angular.module('er.services', [])
 	// 	}, 300)
 	// })
 })
-.factory('feedService', function ($timeout, $sce, parseTextService) {
+.factory('feedService', function ($timeout, $sce) {
 	return new Promise(function (resolve, reject) {
 		var feed = [
 			{
@@ -389,12 +391,12 @@ angular.module('er.services', [])
 			post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
 			post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
 
-			post.text = $sce.trustAsHtml(parseTextService(post.text))
+			// post.text = $sce.trustAsHtml(parseTextService(post.text))
 
 			if (post.comments) {
 				for (var j in post.comments) {
 					var comment = post.comments[j]
-					comment.text = $sce.trustAsHtml(parseTextService(comment.text))
+					// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
 					post.comments[j] = comment
 				}
 			}
@@ -497,16 +499,5 @@ angular.module('er.services', [])
 		d.resolve(response)
 
 		return d.promise
-	}
-})
-.factory('parseTextService', function () {
-	return function (text, additionClasses) {
-		if (!additionClasses) additionClasses = {tags: [], people: [], cats: []}
-
-		text = text.replace(/#([a-z0-9]+)/gi, '<a href="#!/tag/$1" class="' + additionClasses['tags'].join(' ') + '">#$1</a>')
-		text = text.replace(/@([a-z0-9]+)/gi, '<a href="#!/people/$1" class="' + additionClasses['people'].join(' ') + '">@$1</a>')
-		text = text.replace(/\$([a-z0-9]+)/gi, '<a href="#!/category/$1" class="' + additionClasses['cats'].join(' ') + '">$$1</a>')
-
-		return text
 	}
 })

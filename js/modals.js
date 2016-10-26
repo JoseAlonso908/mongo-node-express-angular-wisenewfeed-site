@@ -6,19 +6,36 @@ angular.module('er.modals', [])
 		templateUrl: 'assets/views/modals/confirm-account.htm',
 	})
 })
-.controller('confirmAccountModalController', function ($scope, $parent, phone, confirmAccountModal, verifyPhoneService, verifyPhoneCodeService) {
-	$scope.ready = false
-
+.controller('confirmAccountModalController', function ($scope, $parent, $interval, phone, confirmAccountModal, verifyPhoneService, verifyPhoneCodeService) {
 	$scope.phone = phone
 
-	verifyPhoneService(phone).then(function () {
-		console.log('Code sent;')
-		$scope.ready = true
-	})
+	$scope.maxResendTimerValue = 1
+
+	var sendCode = function () {
+		$scope.resendTimer = $scope.maxResendTimerValue
+
+		$scope.ready = false
+		$scope.loading = true
+		verifyPhoneService(phone).then(function () {
+			$scope.ready = true
+			$scope.loading = false
+
+			$interval(function () {
+				$scope.resendTimer--
+			}, 1000, $scope.maxResendTimerValue)
+		})
+	}
+	sendCode()
 
 	$scope.close = function () {
 		confirmAccountModal.deactivate()
 		$parent.doneSignup(false)
+	}
+
+	$scope.resend = function () {
+		if ($scope.resendTimer == 0) {
+			sendCode()
+		}
 	}
 
 	$scope.confirm = function () {
@@ -37,10 +54,6 @@ angular.module('er.modals', [])
 			$scope.codeError = true
 			console.log(error)
 		})
-	}
-
-	$scope.resend = function () {
-		
 	}
 })
 .factory('forgotPasswordModal', function (btfModal) {

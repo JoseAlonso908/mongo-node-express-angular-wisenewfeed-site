@@ -4,10 +4,10 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
-@import "compass/css3";
+@import "compass/css3"; 
 // @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&subset=cyrillic-ext');
 
-$activeBlue: #43abe7;
+$activeBlue: #43abe7; 
 $iconGrey: #b0bec8;
 $middleGrey: #82898f;
 $soDark: #535659;
@@ -21,6 +21,33 @@ $soLight: #f1f5f7;
 
 .clear {
 	clear: both;
+}
+
+.view {
+	width: 100%; height: 100%;
+
+	&.ng-enter, &.ng-leave {
+		position: absolute;
+		@include transition(opacity .2s);
+	}
+
+	&.ng-enter {
+		opacity: 0;
+	}
+
+	&.ng-enter.ng-enter-active {
+		opacity: 1;
+	}
+
+	&.ng-leave.ng-leave-active {
+		opacity: 0;
+	}
+}
+
+input, textarea {
+	&.ng-invalid.ng-touched {
+		border-color: red !important;
+	}
 }
 
 html, body {
@@ -48,6 +75,11 @@ a {
 
 	&:hover {
 		opacity: .9;
+	}
+
+	&[disabled] {
+		color: $iconGrey !important;
+		cursor: default;
 	}
 }
 
@@ -230,6 +262,48 @@ a {
 	}
 }
 
+.user-menu {
+	position: absolute;
+	width: 180px;
+	margin: 20px 0 0 -25px;
+	padding: 15px 0;
+	z-index: 3;
+	background-color: #ffffff;
+	border-radius: 4px;
+	box-shadow: 0 5px 8px 0 rgba(#000000, 0.17);
+	opacity: 0;
+	pointer-events: none;
+	@include transition(opacity .2s);
+
+	&.active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.divider {
+		width: 100%; height: 0;
+		margin: 15px 0 15px 0;
+		// padding-right: 50px;
+		border-top: 1px solid #f0f2f4;
+	}
+
+	a {
+		display: block;
+		height: 32px;
+		padding: 0 22px;
+		color: $middleGrey;
+		font-size: 13px;
+		line-height: 32px;
+		opacity: 1;
+		@include transition(background-color .2s);
+
+		&:hover {
+			opacity: 1;
+			background-color: rgba(#000000, .05);
+		}
+	}
+}
+
 #wrapper {
 	width: 1180px; height: 100%;
 	margin: 0 auto 0;
@@ -381,7 +455,7 @@ a {
 			z-index: 3;
 			background-color: #ffffff;
 			border-radius: 4px;
-			box-shadow: 0 5px 8px 0 rgba($middleGrey, .6);
+			box-shadow: 0 5px 8px 0 rgba(#000000, 0.17);
 			opacity: 0;
 			pointer-events: none;
 			$aTime: .3s;
@@ -1286,6 +1360,8 @@ a {
 		margin-bottom: 55px;
 		box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
 		box-sizing: border-box;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
 
 		.wallpaper {
 			width: 100%; height: 340px;
@@ -1301,6 +1377,8 @@ a {
 		.footer {
 			width: 100%; height: 80px;
 			background-color: #ffffff;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
 
 			.stats {
 				display: flex;
@@ -1702,6 +1780,40 @@ a {
 					form {
 						margin-top: 22px;
 
+						.field-tip {
+							$width: 300px;
+
+							position: absolute;
+							width: $width;
+							margin-left: (-$width - 28px);
+							margin-top: -48px;
+							background-color: #ffffff;
+							color: $soDark;
+							font-size: 13px;
+							padding: 10px 15px 10px 25px;
+							border-radius: 3px;
+							box-shadow: 0 3px 4px rgba($middleGrey, .5);
+							box-sizing: border-box;
+							opacity: 0;
+							@include transition(opacity .2s);
+
+							&.visible {
+								opacity: 1;
+							}
+
+							ul {
+								li {
+									padding-bottom: 2px;
+
+									&:before {
+										position: absolute;
+										margin-left: -10px;
+										content: '•';
+									}
+								}
+							}
+						}
+
 						input:not([type=checkbox]):not([type=radio]):not([type=submit]) {
 							display: inline-block;
 							width: 100%; height: 36px;
@@ -2035,6 +2147,5 @@ a {
 		}
 	}
 }
-
 
 @import "medias";

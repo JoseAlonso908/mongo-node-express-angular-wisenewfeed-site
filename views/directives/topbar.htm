@@ -1,0 +1,39 @@
+<div id="top-bar">
+	<a id="logo" ng-href="#!/"></a>
+
+	<div id="search">
+		<i class="material-icons">search</i>
+		<input type="text" placeholder="Search">
+	</div>
+
+	<div class="cta-button make-post">
+		<i class="material-icons">chat_bubble</i>
+		<div class="title">Make post</div>
+	</div>
+
+	<button class="small-icon" title="Profile">
+		<i class="material-icons">person</i>
+	</button>
+
+	<button class="small-icon" title="Messages">
+		<div class="badge">
+			<div class="value">12</div>
+		</div>
+		<i class="material-icons">forum</i>
+	</button>
+
+	<button class="small-icon" title="Notifications">
+		<div class="badge">
+			<div class="value">5</div>
+		</div>
+		<i class="material-icons">notifications</i>
+	</button>
+
+	<div id="user-block" ng-cloak ng-if="$parent.user">
+		<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+		<a class="name dark-bold" ng-click="$parent.openUserMenu($event)" href="javascript:void(0);">{{user.name}}</a>
+		<a class="view-profile" ng-href="#!/my">View profile</a>
+
+		<usermenu user="user" ng-if="$parent.user"></usermenu>
+	</div>
+</div>

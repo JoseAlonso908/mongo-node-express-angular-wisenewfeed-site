@@ -1,20 +1,23 @@
 var gulp = require('gulp'),
 	compass = require('gulp-compass'),
+	cleanCSS = require('gulp-clean-css'),
+	concat = require('gulp-concat'),
 	watch = require('gulp-watch'),
 	uglify = require('gulp-uglifyjs'),
 	browserify = require('gulp-browserify'),
 	ngAnnotate = require('gulp-ng-annotate'),
-	plumber = require('gulp-plumber')
-	gulpUtil = require('gulp-util')
+	plumber = require('gulp-plumber'),
+	gulpUtil = require('gulp-util'),
+	htmlmin = require('gulp-htmlmin'),
+	clean = require('gulp-clean')
 
-gulp.task('compass', () => {
-	gulp.src('./assets/sass/*.scss')
+gulp.task('css', () => {
+	gulp.src('./sass/*.scss')
 	.pipe(compass({
 		config_file: './compass-config.rb',
-		css: './assets/stylesheets',
+		css: './assets/css',
 		sass: './sass',
 	}).on('error', gulpUtil.log))
-	.pipe(plumber())
 	.pipe(gulp.dest('./assets/css'))
 })
 
@@ -44,9 +47,18 @@ gulp.task('js', () => {
 	.pipe(gulp.dest('./assets/scripts'))
 })
 
+gulp.task('html', () => {
+	gulp.src(['./views/**/*.htm', './views/**/*.html'])
+	.pipe(htmlmin({
+		collapseWhitespace: true,
+		removeComments: true
+	}).on('error', gulpUtil.log))
+	.pipe(gulp.dest('./assets/views'))
+})
+
 gulp.task('watch', () => {
 	gulp.watch('./sass/*.scss', () => {
-		gulp.run('compass')
+		gulp.run(['css'])
 	})
 
 	gulp.watch('./js/app.js', () => {
@@ -56,8 +68,12 @@ gulp.task('watch', () => {
 	gulp.watch(['./js/*.js', '!./js/app.js'], () => {
 		gulp.run('js')
 	})
+
+	gulp.watch(['./views/**/*.htm', './views/**/*.html'], () => {
+		gulp.run('html')
+	})
 })
 
 gulp.task('default', ['watch'], () => {
-	gulp.start(['compass', 'browserify', 'js'])
+	gulp.start(['css', 'browserify', 'js', 'html'])
 })

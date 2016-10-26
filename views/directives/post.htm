@@ -1,0 +1,89 @@
+<div class="card feed-item">
+	<avatar image="{{post.author.avatar}}" color="{{post.author.color}}" number="{{post.author.rating}}"></avatar>
+
+	<div class="body">
+		<div class="title">
+			<div class="name dark-bold">{{post.author.name}}</div>
+			<div class="time small-light" am-time-ago="post.createdAt"></div>
+			<div class="separator">&bull;</div>
+			<div class="position small-light">{{post.author.position}}</div>
+			<div class="separator">&bull;</div>
+			<div class="country small-light">{{post.author.country}}</div>
+
+			<button class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
+			<button class="more small-icon" title="More"><i class="material-icons">more_vert</i></button>
+		</div>
+
+		<div class="content">
+			<div class="text" ng-bind-html="post.text | textLinks"></div>
+			<img ng-if="post.image" ng-src="{{post.image}}">
+		</div>
+
+		<div class="ratings">
+			<div class="rating">
+				<div class="title">Expert</div>
+				<div class="value likes">{{post.ratings.expert.likes}}</div>
+				<div class="value dislikes">{{post.ratings.expert.dislikes}}</div>
+				<div class="value shares">{{post.ratings.expert.shares}}</div>
+			</div>
+
+			<div class="rating">
+				<div class="title">Journalist</div>
+				<div class="value likes">{{post.ratings.journalist.likes}}</div>
+				<div class="value dislikes">{{post.ratings.journalist.dislikes}}</div>
+				<div class="value shares">{{post.ratings.journalist.shares}}</div>
+			</div>
+
+			<div class="rating">
+				<div class="title">Visitor</div>
+				<div class="value likes">{{post.ratings.visitor.likes}}</div>
+				<div class="value dislikes">{{post.ratings.visitor.dislikes}}</div>
+				<div class="value shares">{{post.ratings.visitor.shares}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="divider"></div>
+
+	<div class="actions">
+		<button><i class="material-icons">thumb_up</i> Like</button>
+		<button><i class="material-icons">thumb_down</i> Dislike</button>
+		<button><i class="material-icons">share</i> Share</button>
+
+		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
+			<i class="material-icons">chat_bubble</i>
+			<div class="number">{{post.comments.length || 0}}</div>
+		</div>
+	</div>
+
+	<div class="divider"></div>
+
+	<div class="comments" ng-show="commentsVisible && post.comments.length > 0">
+		<div class="comment" ng-repeat="comment in post.comments">
+			<avatar image="{{comment.author.avatar}}" color="{{comment.author.color}}" number="{{comment.author.rating}}"></avatar>
+			<div class="comment-title">
+				<span class="name dark-bold">{{comment.author.name}}</span>
+				<span class="time small-light" am-time-ago="comment.createdAt"></span>
+			</div>
+			<div class="text" ng-bind-html="comment.text | textLinks"></div>
+			<div class="stats">
+				<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
+				<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>
+			</div>
+
+			<div class="divider"></div>
+		</div>
+	</div>
+	<div class="comment-box" ng-if="user">
+		<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+		<textarea placeholder="Write a comment..." ng-class="{'not-empty': comment}" ng-model="comment"></textarea>
+		<button class="send">
+			<div>
+				<i class="material-icons">send</i>
+				<div class="title">Send</div>
+			</div>
+		</button>
+		<button class="upload-image"><i class="material-icons">camera_alt</i></button>
+		<div class="clear"></div>
+	</div>
+</div>

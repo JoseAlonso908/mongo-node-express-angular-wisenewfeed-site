@@ -1,0 +1,14 @@
+<div class="question card">
+	<button class="follow"><i class="material-icons">person_add</i></button>
+	<div class="header">
+		<avatar image="{{question.author.avatar}}" color="{{question.author.color}}" number="{{question.author.rating}}"></avatar>
+		<div class="name">{{question.author.name}}</div>
+		<div class="role">{{question.author.role}}</div>
+	</div>
+	<div class="divider"></div>
+	<div class="text">{{question.text}}</div>
+	<div class="footer">
+		<div class="likes"><i class="material-icons">thumb_up</i> <div class="title">{{question.likes}}</div></div>
+		<div class="reply" title="Reply"><i class="material-icons">reply</i> <div class="title">Reply</div></div>
+	</div>
+</div>

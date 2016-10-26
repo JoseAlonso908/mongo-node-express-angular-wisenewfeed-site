@@ -17,7 +17,9 @@ angular.module('er.directives', [])
 				dropdownList = angular.element(rootElement.querySelector('.dropdown-list'))
 				dropdownLists = angular.element(document.querySelectorAll('.dropdown-list'))
 
-			angular.element(document.body).on('click', function () {dropdownList.removeClass('active')})
+			angular.element(document.body).on('click', function (e) {
+				dropdownList.removeClass('active')
+			})
 
 			dropdownList.on('click', function (e) {e.stopImmediatePropagation()})
 
@@ -26,6 +28,7 @@ angular.module('er.directives', [])
 
 				e.stopImmediatePropagation()
 				dropdownList.toggleClass('active')
+				angular.element(document.body).triggerHandler('shadow-click')
 			})
 
 			$scope.isActiveParentItem = function (parentItem) {
@@ -42,6 +45,29 @@ angular.module('er.directives', [])
 				$scope.change(item)
 				dropdownList.removeClass('active')
 			}
+		}
+	}
+})
+.directive('usermenu', function ($auth, $rootScope, $cookies, $location) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/usermenu.htm',
+		scope: {user: '='},
+		link: function ($scope, element, attr) {
+			$scope.logout = function () {
+				$cookies.remove('user')
+				$auth.logout()
+				$location.url('/start')
+			}
+
+			$scope.$on('open-user-menu', function (e, data) {
+				$scope.active = true
+			})
+
+			angular.element(document.body).on('click shadow-click', function () {
+				$scope.active = false
+				$scope.$apply()
+			})
 		}
 	}
 })
@@ -113,11 +139,17 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('topbar', function () {
+.directive('topbar', function ($rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/topbar.htm',
 		scope: {user: '='},
+		link: function ($scope, element, attr) {
+			$scope.openUserMenu = function (e) {
+				e.stopPropagation()
+				$rootScope.$broadcast('open-user-menu')
+			}
+		}
 	}
 })
 .directive('filters', function () {

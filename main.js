@@ -2,6 +2,9 @@ const config = require('./config')
 
 const
 	express = require('express'),
+	compression = require('compression'),
+	// staticCache = require('express-static-cache')
+	serveStatic = require('serve-static'),
 	path = require('path'),
 	bodyParser = require('body-parser'),
 	request = require('request'),
@@ -18,11 +21,15 @@ let mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
 
-app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+app.use(compression())
+app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 	setHeaders: function (res, path, stat) {
 		res.set('Access-Control-Allow-Origin', '*')
 		res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-	}
+		// res.set('Cache-Control', 'public, max-age=259200')
+	},
+	maxAge: (5 * 60) * 1000,
+	dotfiles: 'ignore'
 }))
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -47,7 +54,8 @@ app.get('/static/countries', (req, res) => {
 	for (let code in countriesList.countries) {
 		let item = countriesList.countries[code]
 
-		countryPhoneCodeList.push(`${item.name} +${item.phone}`)
+		// countryPhoneCodeList.push(`${item.name} +${item.phone}`)
+		countryPhoneCodeList.push(`${item.name}`)
 	}
 
 	res.send(countryPhoneCodeList)

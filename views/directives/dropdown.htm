@@ -1,0 +1,14 @@
+<div class="dropdown-wrapper">
+	<div class="menu-buttons dropdown">
+		<div class="title">{{title}}:</div>
+		<div class="option">{{chosen.title}}</div>
+	</div>
+	<ul class="dropdown-list">
+		<li ng-repeat="item in list" ng-click="(!!(item.sub)) ? void() : choose(item)" ng-class="{nested: !!(item.sub), active: (!!(item.sub)) ? isActiveParentItem(item) : isActiveItem(item)}">
+			{{item.title}} {{(item.additional) ? '(' + item.additional + ')' : ''}}
+			<ul class="sublist" ng-show="item.sub">
+				<li ng-repeat="subItem in item.sub" ng-click="choose(subItem)" ng-class="{active: isActiveItem(subItem)}">{{subItem.title}}</li>
+			</ul>
+		</li>
+	</ul>
+</div>

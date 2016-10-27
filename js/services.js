@@ -156,11 +156,13 @@ angular.module('er.services', [])
 				expires: new Date
 			}
 
-			if (localStorage.rememberLogin) {
+			console.log(localStorage.rememberLogin)
+			if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 				options.expires = new Date(Date.now() + (168 * 3600 * 1000))
 			}
 
 			$cookies.putObject('user', user, options)
+			localStorage.removeItem('satellizer_token')
 
 			d.resolve(user)
 		}, function (error) {

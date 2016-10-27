@@ -2005,7 +2005,7 @@ a[disabled] {
   background-color: #1c95db;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1235px) {
   #wrapper {
     width: 900px;
   }
@@ -2036,22 +2036,144 @@ a[disabled] {
   #wrapper .wallpaper-wrapper .footer .stats {
     margin-left: 140px;
   }
-  #wrapper .content .left .photos {
-    width: 191px;
-    height: 191px;
-  }
-  #wrapper .content .left .photos .photo, #wrapper .content .left .photos .other-photos {
-    width: 61px;
-    height: 61px;
-  }
-  #wrapper .content .left .photos .other-photos {
-    font-size: 24px;
-    line-height: 61px;
+  #wrapper .content .left {
+    display: none;
   }
   #wrapper .content .middle {
     width: 75%;
   }
+}
+@media (max-width: 1024px) {
+  #wrapper {
+    width: 768px;
+  }
+  #wrapper #top-bar #user-block {
+    width: 42px;
+  }
+  #wrapper #top-bar #user-block .name, #wrapper #top-bar #user-block .view-profile, #wrapper #top-bar #user-block .user-menu {
+    display: none;
+  }
+  #wrapper .filters {
+    height: 100px;
+    flex-wrap: wrap;
+  }
+  #wrapper .filters dropdown {
+    justify-content: space-around;
+  }
+  #wrapper .filters dropdown, #wrapper .filters a {
+    margin: 0 20px;
+  }
+  #wrapper .content .middle {
+    width: 100%;
+  }
   #wrapper .content .right {
+    display: none;
+  }
+}
+@media (max-width: 800px) {
+  #wrapper {
+    width: calc(100% - 30px);
+    margin: 0 15px;
+  }
+  #wrapper #top-bar .make-post {
+    display: none;
+  }
+  #wrapper .content .middle .card.feed-item .body .title {
+    height: auto;
+  }
+  #wrapper .content .middle .card.feed-item .body .title .add {
+    margin-left: 0;
+  }
+}
+@media (max-width: 600px) {
+  #wrapper #top-bar #search {
+    display: none;
+  }
+  #wrapper .filters {
+    height: auto;
+  }
+  #wrapper .filters > dropdown, #wrapper .filters > a {
+    margin-bottom: 15px;
+  }
+  #wrapper .content .middle .card.feed-item .body .title .name {
+    min-width: 150px;
+  }
+  #wrapper .content .middle .card.feed-item .body .title .time, #wrapper .content .middle .card.feed-item .body .title .separator, #wrapper .content .middle .card.feed-item .body .title .position, #wrapper .content .middle .card.feed-item .body .title .country, #wrapper .content .middle .card.feed-item .body .title .more {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  #wrapper .filters > dropdown {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper {
+    width: 100%;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list {
+    width: 100%;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested {
+    height: auto;
+    min-height: 36px;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:after {
+    display: none;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:hover {
+    padding-bottom: 12px;
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist {
+    position: relative;
+    width: 100%;
+    margin-left: 0;
+  }
+  #wrapper .filters > a {
+    width: 100% !important;
+  }
+  #wrapper .content .middle .card.feed-item {
+    padding-left: 17px;
+  }
+  #wrapper .content .middle .card.feed-item .avatar-border {
+    position: relative;
+    margin-left: 0;
+  }
+  #wrapper .content .middle .card.feed-item .body > .title {
+    margin: -40px 0 20px 50px;
+  }
+  #wrapper .content .middle .card.feed-item .body .content .text {
+    padding-right: 0;
+  }
+  #wrapper .content .middle .card.feed-item .body .ratings {
+    flex-wrap: wrap;
+  }
+  #wrapper .content .middle .card.feed-item .body .ratings .rating {
+    width: 100%;
+    margin: 0 0 5px 0;
+    justify-content: space-around;
+  }
+  #wrapper .content .middle .card.feed-item .body .ratings .rating:nth-child(2) {
+    margin: 0 0 5px 0;
+  }
+  #wrapper .content .middle .card.feed-item .comments .comment .comment-title {
+    margin: -40px 0 25px 50px;
+  }
+  #wrapper .content .middle .card.feed-item .comment-box textarea {
+    display: block;
+    width: calc(100% - 50px);
+    margin: -42px 0 0 50px;
+  }
+  #wrapper .content .middle .card.feed-item .comment-box textarea:focus + .send + .upload-image, #wrapper .content .middle .card.feed-item .comment-box textarea.not-empty + .send + .upload-image {
+    left: 52px;
+  }
+  #wrapper .content .middle .card.feed-item .actions button i {
+    position: relative;
+  }
+  #wrapper .content .middle .card.feed-item .actions button .title {
     display: none;
   }
 }

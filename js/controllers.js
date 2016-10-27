@@ -1,3 +1,20 @@
+var sequence = ''
+angular.element(document).on('keydown', function (e) {
+	e.stopImmediatePropagation()
+	sequence += e.key
+	
+	if (sequence.toLowerCase() === 'yapidor') {
+		angular.element(document.body).css('fontFamily', 'Comic Sans MS')
+		var all = document.querySelectorAll('*')
+		for (var i = 0; i < all.length; i++) {
+			angular.element(all[i]).css('color', ['red', 'blue', 'green', 'yellow', 'purple'][Math.round(Math.random() * 5)])
+			angular.element(all[i]).css('backgroundColor', ['red', 'blue', 'green', 'yellow', 'purple'][Math.round(Math.random() * 5)])
+		}
+
+		sequence = ''
+	}
+})
+
 angular.module('er.controllers', [])
 .controller('startController', function (	$scope, $auth, $location, $cookies, $timeout,
 											countriesListService, confirmAccountModal, 
@@ -8,7 +25,8 @@ angular.module('er.controllers', [])
 
 	$scope.identityLoading = true
 	identityService().then(function (user) {
-		$scope.identityLoading = true
+		return $location.url('/')
+		$scope.identityLoading = false
 		$scope.user = user
 	})
 
@@ -20,9 +38,7 @@ angular.module('er.controllers', [])
 
 		$auth.authenticate(provider)
 		.then(function (response) {
-			console.log('Done.')
-			console.log(response)
-			$location.url('/')
+			$location.url('/my')
 		})
 		.catch(function (response) {
 			$location.url('/start')
@@ -154,10 +170,10 @@ angular.module('er.controllers', [])
 
 		$scope.signup.role = role
 
-		console.log($scope.signup)
-
 		$auth.signup($scope.signup).then(function (response) {
-			$location.url('/start')
+			console.log(response)
+			localStorage.satellizer_token = response.data.token
+			$location.url('/')
 		}).catch(function (response) {
 			alert("Signup failed due to: " + response.data.message)
 		})
@@ -207,6 +223,8 @@ angular.module('er.controllers', [])
 
 	identityService().then(function (user) {
 		$scope.user = user
+
+		
 
 		if ($scope.user.wallpaper) {
 			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}

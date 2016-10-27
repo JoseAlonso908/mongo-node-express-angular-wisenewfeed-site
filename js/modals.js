@@ -9,7 +9,7 @@ angular.module('er.modals', [])
 .controller('confirmAccountModalController', function ($scope, $parent, $interval, phone, confirmAccountModal, verifyPhoneService, verifyPhoneCodeService) {
 	$scope.phone = phone
 
-	$scope.maxResendTimerValue = 1
+	$scope.maxResendTimerValue = 30
 
 	var sendCode = function () {
 		$scope.resendTimer = $scope.maxResendTimerValue

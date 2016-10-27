@@ -78,7 +78,8 @@ angular.module('er.directives', [])
 		scope: {
 			image: '@',
 			color: '@',
-			number: '@'
+			number: '@',
+			role: '@',
 		},
 	}
 })

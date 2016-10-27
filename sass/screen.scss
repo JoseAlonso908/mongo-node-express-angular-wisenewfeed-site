@@ -169,6 +169,14 @@ a {
 	border-style: solid;
 	box-sizing: border-box;
 
+	&.nobadge {
+		border-color: transparent !important;
+
+		.badge .number {
+			display: none;
+		}
+	}
+
 	&.gold {
 		$color: #f4bf64;
 		border-color: $color;

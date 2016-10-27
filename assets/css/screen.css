@@ -232,6 +232,12 @@ a[disabled] {
   border-style: solid;
   box-sizing: border-box;
 }
+.avatar-border.nobadge {
+  border-color: transparent !important;
+}
+.avatar-border.nobadge .badge .number {
+  display: none;
+}
 .avatar-border.gold {
   border-color: #f4bf64;
 }

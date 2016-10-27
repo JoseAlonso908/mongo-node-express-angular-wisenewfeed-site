@@ -1,5 +1,5 @@
 <div class="card feed-item">
-	<avatar image="{{post.author.avatar}}" color="{{post.author.color}}" number="{{post.author.rating}}"></avatar>
+	<avatar image="{{post.author.avatar}}" role="{{post.author.role}}" color="{{post.author.color}}" number="{{post.author.rating}}"></avatar>
 
 	<div class="body">
 		<div class="title">
@@ -60,7 +60,7 @@
 
 	<div class="comments" ng-show="commentsVisible && post.comments.length > 0">
 		<div class="comment" ng-repeat="comment in post.comments">
-			<avatar image="{{comment.author.avatar}}" color="{{comment.author.color}}" number="{{comment.author.rating}}"></avatar>
+			<avatar image="{{comment.author.avatar}}" role="{{comment.author.role}}"  color="{{comment.author.color}}" number="{{comment.author.rating}}"></avatar>
 			<div class="comment-title">
 				<span class="name dark-bold">{{comment.author.name}}</span>
 				<span class="time small-light" am-time-ago="comment.createdAt"></span>
@@ -74,8 +74,8 @@
 			<div class="divider"></div>
 		</div>
 	</div>
-	<div class="comment-box" ng-if="user">
-		<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+	<div class="comment-box" ng-if="user && user.role != 'User'">
+		<avatar image="{{user.avatar}}" role="{{user.role}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
 		<textarea placeholder="Write a comment..." ng-class="{'not-empty': comment}" ng-model="comment"></textarea>
 		<button class="send">
 			<div>

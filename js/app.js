@@ -50,7 +50,12 @@ angular.module('er', [
 
 		var requireAuth = ['/my']
 
-		if (requireAuth.indexOf(nextURI) > -1 && !$cookies.get('user')) {
+		var userCookie = $cookies.get('user')
+
+		if (userCookie) userCookie = JSON.parse(userCookie)
+
+		console.log(userCookie)
+		if (requireAuth.indexOf(nextURI) > -1 && (!userCookie || userCookie.role == 'User')) {
 			event.preventDefault()
 			$location.url('/start')
 		}

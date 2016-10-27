@@ -48,7 +48,7 @@ angular.module('er.controllers', [])
 		.then(function (response) {
 			identityService().then(function (user) {
 				$scope.user = user
-				$location.url('/my')
+				$location.url('/')
 			})
 		})
 		.catch(function (response) {

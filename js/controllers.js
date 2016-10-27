@@ -77,7 +77,7 @@ angular.module('er.controllers', [])
 
 			if (!$scope.signup[field]) {
 				signupForm[field].$valid = false
-				return $scope.signup.error = 'All fields should be filled'
+				return $scope.signup.error = 'Please, check highlighted with red fields'
 			}
 		}
 

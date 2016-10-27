@@ -25,10 +25,18 @@ angular.module('er.controllers', [])
 
 	$scope.identityLoading = true
 	identityService().then(function (user) {
-		return $location.url('/')
 		$scope.identityLoading = false
 		$scope.user = user
+		return $location.url('/')
 	})
+
+	$scope.goHome = function () {
+		if (!$scope.user) {
+			return
+		} else {
+			$location.url('/')
+		}
+	}
 
 	// $cookies.remove('user')
 
@@ -80,9 +88,6 @@ angular.module('er.controllers', [])
 				$scope.signup.error = 'Please, check highlighted with red fields'
 			}
 		}
-
-		// console.log($scope.signupForm.$valid)
-		// console.log($scope.signupForm)
 
 		if (!$scope.signupForm.$valid) return
 
@@ -218,13 +223,11 @@ angular.module('er.controllers', [])
 		$scope.$apply()
 	})
 })
-.controller('profileController', function ($scope, identityService, feedService) {
+.controller('profileController', function ($scope, $location, identityService, feedService) {
 	$scope.wallpaperStyle = {}
 
 	identityService().then(function (user) {
 		$scope.user = user
-
-		
 
 		if ($scope.user.wallpaper) {
 			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
@@ -254,6 +257,8 @@ angular.module('er.controllers', [])
 	})
 
 	$scope.doReset = function () {
+		if (!$scope.resetpasswordForm.$valid) return
+
 		if (!$scope.newPassword) {
 			return $scope.newPasswordError = true
 		}

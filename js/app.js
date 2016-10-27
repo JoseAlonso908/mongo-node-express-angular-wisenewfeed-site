@@ -42,6 +42,20 @@ angular.module('er', [
 		});
 	}
 ])
-.run(function ($rootScope, $templateCache) {
+.run(function ($rootScope, $templateCache, $location, $cookies, identityService) {
 	$templateCache.removeAll()
+
+	$rootScope.$on('$locationChangeStart', function (event, next, current) {
+		var nextURI = next.split('#!')[1]
+
+		var requireAuth = ['/my']
+
+		console.log(nextURI)
+
+		if (requireAuth.indexOf(nextURI) > -1 && !$cookies.get('user')) {
+			console.log('nonono!')
+			event.preventDefault()
+			$location.url('/start')
+		}
+	})
 })

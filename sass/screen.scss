@@ -2013,6 +2013,14 @@ a {
 	}
 }
 
+.text {
+	font-size: 13px;
+
+	&.error {
+		color: red !important;
+	}
+}
+
 .backdrop {
 	display: flex; position: fixed;
 	justify-content: center;

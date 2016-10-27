@@ -133,41 +133,39 @@ angular.module('er.services', [])
 
 		var user = $cookies.getObject('user')
 		if (user) d.resolve(user)
+		else {
+			$http.get('/me', {
+				header: {
+					authorization: $auth.getToken()
+				}
+			}).then(function (response) {
+				var user = response.data
 
-		$http.get('/me', {
-			header: {
-				authorization: $auth.getToken()
-			}
-		}).then(function (response) {
-			var user = response.data
+				user.rating = user.rating || 1
+				user.color = user.color || 'bronze'
+				user.likes = user.likes || 0
+				user.xp = user.xp || 0
+				user.dislikes = user.dislikes || 0
+				user.reactions = user.reactions || 0
+				user.followers = user.followers || 0
+				user.following = user.following || 0
+				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 
-			user.rating = user.rating || 1
-			user.color = user.color || 'bronze'
-			user.likes = user.likes || 0
-			user.xp = user.xp || 0
-			user.dislikes = user.dislikes || 0
-			user.reactions = user.reactions || 0
-			user.followers = user.followers || 0
-			user.following = user.following || 0
-			user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-			user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+				console.log(localStorage.rememberLogin)
+				if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
+					$cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
+				} else {
+					$cookies.putObject('user', user)
+				}
 
-			var options = {
-				expires: new Date
-			}
+				localStorage.removeItem('satellizer_token')
 
-			console.log(localStorage.rememberLogin)
-			if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
-				options.expires = new Date(Date.now() + (168 * 3600 * 1000))
-			}
-
-			$cookies.putObject('user', user, options)
-			localStorage.removeItem('satellizer_token')
-
-			d.resolve(user)
-		}, function (error) {
-			d.reject(error.message)
-		})
+				d.resolve(user)
+			}, function (error) {
+				d.reject(error.message)
+			})
+		}
 
 		return d.promise
 	}

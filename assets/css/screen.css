@@ -1878,6 +1878,13 @@ a[disabled] {
   font-size: 13px;
 }
 
+.text {
+  font-size: 13px;
+}
+.text.error {
+  color: red !important;
+}
+
 .backdrop {
   display: flex;
   position: fixed;

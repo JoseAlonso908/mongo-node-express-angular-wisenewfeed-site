@@ -98,7 +98,7 @@
 								<li ng-if="signupForm.email.$error.email">Email should valid</li>
 							</ul>
 						</div> -->
-						<input type="password" name="password" ng-model="signup.password" placeholder="Password" ng-minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" required>
+						<input type="password" name="password" ng-class="{ngInvalid: !signup.password}" ng-model="signup.password" placeholder="Password" ng-minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" required>
 						<div class="field-tip" ng-class="{visible: (!signupForm.password.$valid && signupForm.password.$touched)}">
 							<ul>
 								<li ng-if="signupForm.password.$error.required">Password length should be present</li>

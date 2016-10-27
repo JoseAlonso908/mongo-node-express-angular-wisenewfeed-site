@@ -76,8 +76,8 @@ angular.module('er.controllers', [])
 			if (field === 'error') continue
 
 			if (!$scope.signup[field]) {
-				signupForm[field].$valid = false
-				return $scope.signup.error = 'Please, check highlighted with red fields'
+				angular.element(document.querySelector('form[name=signupForm] [name=' + field + ']')).triggerHandler('blur')
+				$scope.signup.error = 'Please, check highlighted with red fields'
 			}
 		}
 

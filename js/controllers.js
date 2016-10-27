@@ -268,7 +268,7 @@ angular.module('er.controllers', [])
 		}
 
 		resetPasswordService(token, $scope.newPassword).then(function (response) {
-			$location.url('/start')
+			$scope.done = true
 		}, function (error) {
 			$scope.customError = error
 			$scope.tokenValid = false

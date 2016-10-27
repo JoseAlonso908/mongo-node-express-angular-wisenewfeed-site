@@ -50,10 +50,7 @@ angular.module('er', [
 
 		var requireAuth = ['/my']
 
-		console.log(nextURI)
-
 		if (requireAuth.indexOf(nextURI) > -1 && !$cookies.get('user')) {
-			console.log('nonono!')
 			event.preventDefault()
 			$location.url('/start')
 		}

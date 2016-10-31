@@ -1,4 +1,4 @@
-<div id="wrapper" ng-controller="profileController">
+<div id="wrapper" ng-controller="editProfileController">
 	<topbar user="user"></topbar>
 
 	<div class="wallpaper-wrapper">
@@ -6,7 +6,7 @@
 
 		<div class="buttons">
 			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></div>
-			<a class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
+			<div class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></div>
 		</div>
 
 		<div class="wallpaper" style="wallpaperStyle"></div>

@@ -27,6 +27,9 @@ angular.module('er', [
 			.when('/my', {
 				templateUrl: 'assets/views/profile.htm'
 			})
+			.when('/editmy', {
+				templateUrl: 'assets/views/edit-profile.htm'
+			})
 			.when('/resetpassword', {
 				templateUrl: 'assets/views/resetpassword.htm'
 			})

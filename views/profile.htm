@@ -5,8 +5,8 @@
 		<bigratedavatar user="user" ng-if="user"></bigratedavatar>
 
 		<div class="buttons">
-			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></div>
-			<a class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
+			<a class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></a>
+			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
 
 		<div class="wallpaper" style="wallpaperStyle"></div>

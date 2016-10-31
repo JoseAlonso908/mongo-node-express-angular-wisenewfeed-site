@@ -118,6 +118,41 @@ input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
   border-color: red !important;
 }
 
+input.edit-profile-input,
+textarea.edit-profile-input {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  border: 1px solid #e6e9ec;
+  background: #ffffff;
+  border-radius: 3px;
+  color: #535659;
+  box-sizing: border-box;
+  -moz-transition: border-color 0.1s;
+  -o-transition: border-color 0.1s;
+  -webkit-transition: border-color 0.1s;
+  transition: border-color 0.1s;
+}
+input.edit-profile-input:focus,
+textarea.edit-profile-input:focus {
+  border-color: #43abe7;
+}
+input.edit-profile-input.error,
+textarea.edit-profile-input.error {
+  border-color: red;
+}
+
+input.edit-profile-input {
+  height: 36px;
+}
+
+textarea.edit-profile-input {
+  height: 150px;
+  padding: 8px 10px;
+  resize: none;
+}
+
 html, body {
   width: 100%;
   min-height: 100%;
@@ -370,6 +405,14 @@ a[disabled] {
   width: 1180px;
   height: 100%;
   margin: 0 auto 0;
+}
+#wrapper .left.inactive, #wrapper .right.inactive, #wrapper .middle.inactive {
+  opacity: .5;
+  pointer-events: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 #wrapper #top-bar {
   display: flex;
@@ -1405,7 +1448,7 @@ a[disabled] {
   position: absolute;
   margin: 285px 0 0 285px;
 }
-#wrapper .wallpaper-wrapper .buttons > div {
+#wrapper .wallpaper-wrapper .buttons > div, #wrapper .wallpaper-wrapper .buttons > a {
   display: flex;
   justify-content: space-between;
   height: 32px;
@@ -1422,19 +1465,19 @@ a[disabled] {
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions {
+#wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper .wallpaper-wrapper .buttons > a.questions {
   background-color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions:hover {
+#wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper .wallpaper-wrapper .buttons > a.questions:hover {
   background-color: #2ca1e4;
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile {
+#wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper .wallpaper-wrapper .buttons > a.edit-profile {
   background-color: rgba(255, 255, 255, 0.15);
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover {
+#wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
-#wrapper .wallpaper-wrapper .buttons > div i {
+#wrapper .wallpaper-wrapper .buttons > div i, #wrapper .wallpaper-wrapper .buttons > a i {
   margin: 6px 4px 0 0;
   font-size: 18px;
 }

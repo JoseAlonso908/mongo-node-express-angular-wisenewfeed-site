@@ -50,6 +50,38 @@ input, textarea {
 	}
 }
 
+input.edit-profile-input,
+textarea.edit-profile-input {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 16px;
+	padding: 0 10px;
+	border: 1px solid #e6e9ec;
+	background: #ffffff;
+	border-radius: 3px;
+	color: $soDark;
+	box-sizing: border-box;
+	@include transition(border-color .1s);
+
+	&:focus {
+		border-color: $activeBlue;
+	}
+
+	&.error {
+		border-color: red;
+	}
+}
+
+input.edit-profile-input {
+	height: 36px;
+}
+
+textarea.edit-profile-input {
+	height: 150px;
+	padding: 8px 10px;
+	resize: none;
+}
+
 html, body {
 	width: 100%;
 	min-height: 100%;
@@ -315,6 +347,14 @@ a {
 #wrapper {
 	width: 1180px; height: 100%;
 	margin: 0 auto 0;
+
+	.left, .right, .middle {
+		&.inactive {
+			opacity: .5;
+			pointer-events: none;
+			@include user-select(none);
+		}
+	}
 
 	#top-bar {
 		display: flex;
@@ -1499,7 +1539,7 @@ a {
 			position: absolute;
 			margin: 285px 0 0 285px;
 
-			& > div {
+			& > div, & > a {
 				display: flex;
 				justify-content: space-between;
 				height: 32px;

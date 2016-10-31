@@ -245,6 +245,25 @@ angular.module('er.controllers', [])
 		})
 	})
 })
+.controller('editProfileController', function ($scope, $location, identityService, feedService) {
+	$scope.wallpaperStyle = {}
+	
+	identityService().then(function (user) {
+		$scope.user = user
+
+		if ($scope.user.wallpaper) {
+			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
+		}
+		
+		$scope.feedLoading = true
+		$scope.feed = []
+		feedService.then(function (feed) {
+			$scope.feed = feed
+			$scope.feedLoading = false
+			$scope.$apply()
+		})
+	})
+})
 .controller('resetPasswordController', function ($scope, $location, checkPasswordTokenService, resetPasswordService) {
 	$scope.newPassword = ''
 	$scope.newPasswordRepeat = ''

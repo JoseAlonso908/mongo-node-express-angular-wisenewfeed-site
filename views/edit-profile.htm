@@ -5,8 +5,7 @@
 		<bigratedavatar user="user" ng-if="user"></bigratedavatar>
 
 		<div class="buttons">
-			<div class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></div>
-			<div class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></div>
+			<div class="change-avatar"><i class="material-icons">image</i> <div class="title">Change background</div></div>
 		</div>
 
 		<div class="wallpaper" style="wallpaperStyle"></div>
@@ -44,7 +43,8 @@
 	<div class="content">
 		<div class="left">
 			<div class="user-profile-info" ng-if="user">
-				<div class="name">{{user.name}}</div>
+				<input class="edit-profile-input" type="text" name="name" ng-model="user.name">
+				<!-- <div class="name">{{user.name}}</div> -->
 				<div class="position">{{user.position}}</div>
 
 				<div class="rating-wrapper" ng-if="user.likes_percentage">
@@ -58,9 +58,9 @@
 				</div>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.intro">
+			<div class="user-description-block">
 				<div class="title">Intro</div>
-				<div class="value">{{user.intro}}</div>
+				<textarea class="edit-profile-input" name="intro" ng-model="user.intro"></textarea>
 			</div>
 
 			<div class="user-description-block" ng-if="user && user.experience">
@@ -95,7 +95,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="middle">
+		<div class="middle inactive">
 			<div class="on-your-mind">
 				<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
 				<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
@@ -113,7 +113,7 @@
 			<div class="loader" ng-if="feedLoading"></div>
 			<post post="post" ng-repeat="post in feed"></post>
 		</div>
-		<div class="right">
+		<div class="right inactive">
 			<newquestions user="user" ng-if="user"></newquestions>
 
 			<familiarexperts></familiarexperts>

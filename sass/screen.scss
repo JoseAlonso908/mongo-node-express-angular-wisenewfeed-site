@@ -1564,11 +1564,15 @@ a {
 				width: 135px; height: 47px;
 				margin-right: 100px;
 				background-image: url('../images/logo.png');
+				background-size: contain;
+				background-position: center;
+				background-repeat: no-repeat;
 			}
 
 			#header-buttons {
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
 				margin-left: 220px;
 
 				a {
@@ -1918,6 +1922,10 @@ a {
 										@include transition(background-color .1s);
 									}
 								}
+							}
+
+							.forgot-password-link {
+								text-align: right;
 							}
 						}
 					}

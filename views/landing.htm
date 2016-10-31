@@ -53,7 +53,7 @@
 								<label for="remember" id="remember-label">Remember me</label>
 							</div>
 
-							<a href="javascript:void(0);" ng-click="forgotPassword()">Forgot password?</a>
+							<a href="javascript:void(0);" class="forgot-password-link" ng-click="forgotPassword()">Forgot password?</a>
 						</div>
 					</form>
 
@@ -83,7 +83,9 @@
 								<li ng-if="signupForm.name.$error.minlength">Name should be at least 6 symbols long</li>
 							</ul>
 						</div> -->
-						<input type="text" class="half" name="country" autocomplete="off" ng-model="signup.country" ng-model-options="{debounce: 300}" placeholder="Country"  ng-minlength="1" required><autosuggest ng-if="countries" suggestions="countries" ng-model="signup.country"></autosuggest><input type="text" class="half" name="phone" ng-model="signup.phone" placeholder="Phone number" ng-minlength="6" required>
+						<input type="text" class="half" name="country" autocomplete="off" ng-model="signup.country" ng-model-options="{debounce: 300}" placeholder="Country"  ng-minlength="1" required>
+						<autosuggest ng-if="countries" suggestions="countries" ng-model="signup.country"></autosuggest>
+						<input type="text" class="half" name="phone" ng-model="signup.phone" placeholder="Phone number" ng-minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" required>
 						<!-- <div class="field-tip" ng-class="{visible: ((!signupForm.phone.$valid && signupForm.phone.$touched) || !signupForm.country.$valid && signupForm.country.$touch)}">
 							<ul>
 								<li ng-if="signupForm.phone.$error.required">Phone number should be present</li>

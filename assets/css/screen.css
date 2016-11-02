@@ -148,9 +148,12 @@ input.edit-profile-input {
 }
 
 textarea.edit-profile-input {
-  height: 150px;
+  height: 200px;
   padding: 8px 10px;
   resize: none;
+}
+textarea.edit-profile-input.short {
+  height: 100px;
 }
 
 html, body {
@@ -1128,6 +1131,13 @@ a[disabled] {
 #wrapper > .content .left .user-description-block .address-element.fb:before {
   background-image: url("../images/facebook-logo.png");
 }
+#wrapper > .content .left .user-description-block .experience-block {
+  margin-bottom: 20px;
+}
+#wrapper > .content .left .user-description-block .experience-block a, #wrapper > .content .left .user-description-block .add-more-experience {
+  font-size: 13px;
+  font-weight: 900;
+}
 #wrapper > .content .left .photos {
   display: flex;
   justify-content: space-between;
@@ -1400,6 +1410,33 @@ a[disabled] {
   height: 204px;
   border-radius: 50%;
 }
+#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 3px);
+  height: calc(100% - 3px);
+  margin: 1px 0 0 1px;
+  border-radius: 50%;
+  z-index: 2;
+  -moz-transition: background 0.2s;
+  -o-transition: background 0.2s;
+  -webkit-transition: background 0.2s;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar i {
+  color: #ffffff;
+}
+#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form, #wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form input[type=file] {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
 #wrapper .wallpaper-wrapper .rated-avatar-wrapper .avatar {
   position: absolute;
   width: calc(100% - 3px);
@@ -1414,6 +1451,8 @@ a[disabled] {
 }
 #wrapper .wallpaper-wrapper .rated-avatar-wrapper canvas {
   position: absolute;
+  pointer-events: none;
+  z-index: 3;
 }
 #wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
   position: absolute;
@@ -1424,6 +1463,7 @@ a[disabled] {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  z-index: 4;
 }
 #wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.bronze {
   background-image: url("../images/bronze.png");
@@ -1471,10 +1511,10 @@ a[disabled] {
 #wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper .wallpaper-wrapper .buttons > a.questions:hover {
   background-color: #2ca1e4;
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper .wallpaper-wrapper .buttons > a.edit-profile {
+#wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper .wallpaper-wrapper .buttons > a.change-background {
   background-color: rgba(255, 255, 255, 0.15);
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover {
+#wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > a.change-background:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
 #wrapper .wallpaper-wrapper .buttons > div i, #wrapper .wallpaper-wrapper .buttons > a i {

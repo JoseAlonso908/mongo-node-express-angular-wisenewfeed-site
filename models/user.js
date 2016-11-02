@@ -16,6 +16,11 @@ var Model = function(mongoose) {
 		role 		: String,
 		title 		: String,
 		company		: String,
+		experience	: [{
+			time		: String,
+			place		: String,
+			description	: String,
+		}]
 	})
 
 	var Model = mongoose.model('user', schema);

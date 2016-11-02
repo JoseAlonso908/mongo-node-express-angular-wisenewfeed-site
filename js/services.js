@@ -152,12 +152,28 @@ angular.module('er.services', [])
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 
+				user.experience = user.experience || [
+					{
+						time: 'Aug \'13 - Jun \'15',
+						place: 'Co & Co',
+						description: 'Did nothing here',
+					},
+
+					{
+						time: 'Jun \'15 - Today',
+						place: 'Co & Co - 2',
+						description: 'Did a lot of things here',
+					},
+				]
+
 				console.log(localStorage.rememberLogin)
 				if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 					$cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
 				} else {
 					$cookies.putObject('user', user)
 				}
+
+				$cookies.put('token', $auth.getToken())
 
 				localStorage.removeItem('satellizer_token')
 
@@ -263,6 +279,46 @@ angular.module('er.services', [])
 	// 		resolve(user)
 	// 	}, 300)
 	// })
+})
+.factory('uploadAvatarService', function ($http, $cookies) {
+	return function (file) {
+		console.log(file.native)
+
+		return new Promise(function (resolve, reject) {
+			var fd = new FormData()
+			fd.append('file', file)
+			fd.token('token', $cookies.get('token'))
+
+			$http({
+				method: 'POST',
+				url: '/profile/edit/avatar',
+				headers: {
+					'Content-Type': undefined
+				},
+				fd,
+				// transformRequest: function (data, headersGetter) {
+				// 	var formData = new FormData();
+				// 	angular.forEach(data, function (value, key) {
+				// 		formData.append(key, value);
+				// 	});
+
+				// 	var headers = headersGetter();
+				// 	// delete headers['Content-Type'];
+
+				// 	console.log(formData)
+
+				// 	return formData;
+				// }
+			})
+			.success(function (data) {
+				console.log(data)
+			})
+			.error(function (data, status) {
+				console.log(data)
+				console.log(status)
+			})
+		})
+	}
 })
 .factory('feedService', function ($timeout, $sce) {
 	return new Promise(function (resolve, reject) {

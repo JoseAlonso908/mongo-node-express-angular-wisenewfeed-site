@@ -245,9 +245,46 @@ angular.module('er.controllers', [])
 		})
 	})
 })
-.controller('editProfileController', function ($scope, $location, identityService, feedService) {
+.controller('editProfileController', function ($scope, $location, identityService, uploadAvatarService, feedService) {
 	$scope.wallpaperStyle = {}
 	
+	$scope.changeAvatar = function (nativeFileObject, fileObject) {
+		console.log(nativeFileObject)
+		console.log(fileObject)
+
+
+		uploadAvatarService(nativeFileObject).then(function (result) {
+			console.log(result)
+		}).catch(function (error) {
+			console.log(error)
+		})
+	}
+
+	$scope.addExperience = function () {
+		$scope.user.experience.push({
+			time: '',
+			place: '',
+			description: '',
+		})
+	}
+
+	$scope.removeExperience = function (item) {
+		var originalExperience = $scope.user.experience
+
+		for (var i = 0; i < originalExperience.length; i++) {
+			if (JSON.stringify(originalExperience[i]) == JSON.stringify(item)) {
+				delete originalExperience[i]
+			}
+		}
+
+		$scope.user.experience = []
+		for (var i = 0; i < originalExperience.length; i++) {
+			if (originalExperience[i]) {
+				$scope.user.experience.push(originalExperience[i])
+			}
+		}
+	}
+
 	identityService().then(function (user) {
 		$scope.user = user
 

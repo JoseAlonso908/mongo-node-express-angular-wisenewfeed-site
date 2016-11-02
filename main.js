@@ -8,6 +8,7 @@ const
 	serveStatic = require('serve-static'),
 	path = require('path'),
 	bodyParser = require('body-parser'),
+	multer = require('multer'),
 	request = require('request'),
 	qs = require('querystring'),
 	validator = require('validator'),
@@ -21,6 +22,8 @@ let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
 let mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
+
+let upload = multer({dest: 'uploads/'})
 
 app.use(compression())
 app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
@@ -38,12 +41,15 @@ app.use(bodyParser.json())
 
 var mongoose = require('mongoose')
 mongoose.Promise = Promise
-mongoose.connect(config.MONGO[env].DSN);
-var User = require('./models/user')(mongoose)
-var Token = require('./models/token')(mongoose)
-var PhoneVerification = require('./models/phoneverification')(mongoose)
-var ResetPassword = require('./models/resetpassword')(mongoose)
-var FindAccount = require('./models/findaccount')(mongoose)
+console.log(`Connecting to ${config.MONGO[env].DSN}...`)
+var connection = mongoose.connect(config.MONGO[env].DSN);
+console.log('Connected!')
+console.log(connection)
+var User = require('./models/user')(connection)
+var Token = require('./models/token')(connection)
+var PhoneVerification = require('./models/phoneverification')(connection)
+var ResetPassword = require('./models/resetpassword')(connection)
+var FindAccount = require('./models/findaccount')(connection)
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
@@ -80,6 +86,7 @@ let getTokenAndRespond = (res, user) => {
 
 app.post('/auth/login', (req, res) => {
 	let {email, password} = req.body
+	console.log(`Email: ${email}, password: ${password}`)
 	User.getByCredentials(email, password, (err, user) => {
 		if (!user) return res.status(400).send({message: `No user with this credentials`})
 		else {
@@ -371,7 +378,7 @@ app.post('/auth/linkedin', function(req, res) {
 	})
 })
 
-app.post('/auth/twitter', function(req, res) {
+app.post('/auth/twitter', (req, res) => {
 	var requestTokenUrl = 'https://api.twitter.com/oauth/request_token'
 	var accessTokenUrl = 'https://api.twitter.com/oauth/access_token'
 	var profileUrl = 'https://api.twitter.com/1.1/account/verify_credentials.json'
@@ -433,6 +440,11 @@ app.post('/auth/twitter', function(req, res) {
 			})
 		})
 	}
+})
+
+app.post('/profile/edit/avatar', upload.single('file'), (req, res) => {
+	console.log(req.file)
+	console.log(req.body)
 })
 
 

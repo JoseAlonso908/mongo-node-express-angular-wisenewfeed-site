@@ -1,4 +1,8 @@
 <div class="rated-avatar-wrapper">
+	<div ng-if="editing" ng-click="chooseFile($event)" class="change-avatar">
+		<i class="material-icons">photo_camera</i>
+		<form><input name="avatar" type="file"></form>
+	</div>
 	<div class="avatar" ng-style="{'background-image': 'url(' + user.avatar + ')'}"></div>
 	<canvas></canvas>
 

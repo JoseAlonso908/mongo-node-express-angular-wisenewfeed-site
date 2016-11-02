@@ -159,12 +159,49 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/filters.htm',
 	}
 })
-.directive('bigratedavatar', function () {
+.directive('bigratedavatar', function ($timeout) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/big-rated-avatar.htm',
-		scope: {user: '='},
+		scope: {
+			user: '=',
+			onEdit: '&'
+		},
 		link: function ($scope, element, attr) {
+			if (typeof $scope.onEdit === 'function') {
+				$scope.editing = true
+				$scope.chooseFile = function (e) {
+					var fileInput = element[0].querySelector('input[type=file]')
+					angular.element(fileInput).on('change', function (e) {
+						e.stopImmediatePropagation()
+
+						$scope.$apply(function () {
+							var file = e.target.files[0]
+							var r = new FileReader()
+							// r.onload = function (e) {
+							// 	var fileObject = {
+							// 		name: file.name,
+							// 		size: file.size,
+							// 		type: file.type,
+							// 		b64: e.target.result
+							// 	}
+
+								$scope.onEdit({
+									file: {native: file},
+								})
+							// }
+
+							// r.readAsDataURL(file)
+						})
+					})
+
+					$timeout(function () {
+						fileInput.click()
+					}, 0)
+				}
+			}
+
+
 			var canvas = angular.element(element).find('canvas')[0],
 				ctx = canvas.getContext('2d')
 

@@ -9,7 +9,7 @@
 			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
 
-		<div class="wallpaper" style="wallpaperStyle"></div>
+		<div class="wallpaper" style="background-image: url('{{user.wallpaper}}')"></div>
 		<div class="footer">
 			<div class="stats">
 				<div class="stat">
@@ -70,11 +70,11 @@
 
 			<div class="user-description-block" ng-if="user && user.certificates">
 				<div class="title">Certificates</div>
-				<a href=javascript:void(0); class="file" ng-repeat="cert in user.certificates">{{cert.title}}</a>
+				<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in user.certificates">{{cert.filename}}</a>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.address">
-				<div class="title">Address</div>
+			<div class="user-description-block" ng-if="user">
+				<div class="title">Contacts</div>
 				<div class="address-element email" ng-if="user.address.email">{{user.address.email}}</div>
 				<div class="address-element phone" ng-if="user.address.phone">{{user.address.phone}}</div>
 				<div class="address-element skype" ng-if="user.address.skype">{{user.address.skype}}</div>
@@ -84,7 +84,7 @@
 
 			<div class="user-description-block" ng-if="user && user.downloads">
 				<div class="title">Downloads</div>
-				<a href=javascript:void(0); class="file-download" ng-repeat="file in user.downloads">{{file.title}}</a>
+				<a href="{{file.filepath}}" class="file-download" ng-repeat="file in user.downloads">{{file.filename}}</a>
 			</div>
 
 			<div class="user-description-block" ng-if="user && user.photos">

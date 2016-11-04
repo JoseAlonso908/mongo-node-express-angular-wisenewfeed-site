@@ -136,7 +136,7 @@ angular.module('er.services', [])
 		else {
 			$http.get('/me', {
 				header: {
-					authorization: $auth.getToken()
+					authorization: ($auth.getToken() || $cookies.get('token'))
 				}
 			}).then(function (response) {
 				var user = response.data
@@ -152,21 +152,24 @@ angular.module('er.services', [])
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 
-				user.experience = user.experience || [
-					{
-						time: 'Aug \'13 - Jun \'15',
-						place: 'Co & Co',
-						description: 'Did nothing here',
-					},
+				user.experience = user.experience
 
-					{
-						time: 'Jun \'15 - Today',
-						place: 'Co & Co - 2',
-						description: 'Did a lot of things here',
-					},
-				]
+				if (user.experience.length == 0) {
+					user.experience = [
+						{
+							time: 'Aug \'13 - Jun \'15',
+							place: 'Co & Co',
+							description: 'Did nothing here',
+						},
 
-				console.log(localStorage.rememberLogin)
+						{
+							time: 'Jun \'15 - Today',
+							place: 'Co & Co - 2',
+							description: 'Did a lot of things here',
+						},
+					]
+				}
+
 				if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 					$cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
 				} else {
@@ -175,7 +178,7 @@ angular.module('er.services', [])
 
 				$cookies.put('token', $auth.getToken())
 
-				localStorage.removeItem('satellizer_token')
+				// localStorage.removeItem('satellizer_token')
 
 				d.resolve(user)
 			}, function (error) {
@@ -282,12 +285,10 @@ angular.module('er.services', [])
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
 	return function (file) {
-		console.log(file.native)
-
 		return new Promise(function (resolve, reject) {
 			var fd = new FormData()
 			fd.append('file', file)
-			fd.token('token', $cookies.get('token'))
+			fd.append('token', $cookies.get('token'))
 
 			$http({
 				method: 'POST',
@@ -295,29 +296,123 @@ angular.module('er.services', [])
 				headers: {
 					'Content-Type': undefined
 				},
-				fd,
-				// transformRequest: function (data, headersGetter) {
-				// 	var formData = new FormData();
-				// 	angular.forEach(data, function (value, key) {
-				// 		formData.append(key, value);
-				// 	});
-
-				// 	var headers = headersGetter();
-				// 	// delete headers['Content-Type'];
-
-				// 	console.log(formData)
-
-				// 	return formData;
-				// }
+				data: fd,
 			})
 			.success(function (data) {
-				console.log(data)
+				resolve(data)
 			})
 			.error(function (data, status) {
-				console.log(data)
-				console.log(status)
+				reject(data)
 			})
 		})
+	}
+})
+.factory('uploadWallpaperService', function ($http, $cookies) {
+	return function (file) {
+		return new Promise(function (resolve, reject) {
+			var fd = new FormData()
+			fd.append('file', file)
+			fd.append('token', $cookies.get('token'))
+
+			$http({
+				method: 'POST',
+				url: '/profile/edit/wallpaper',
+				headers: {
+					'Content-Type': undefined
+				},
+				data: fd,
+			})
+			.success(function (data) {
+				resolve(data)
+			})
+			.error(function (data, status) {
+				reject(data)
+			})
+		})
+	}
+})
+.factory('certificatesService', function ($http, $cookies) {
+	return {
+		add: function (file) {
+			return new Promise(function (resolve, reject) {
+				var fd = new FormData()
+				fd.append('file', file)
+				fd.append('token', $cookies.get('token'))
+
+				$http({
+					method: 'POST',
+					url: '/profile/edit/addcertificate',
+					headers: {
+						'Content-Type': undefined
+					},
+					data: fd,
+				})
+				.success(function (data) {
+					resolve(data)
+				})
+				.error(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		remove: function (cert) {
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/profile/edit/removecertificate',
+					data: {
+						filename: cert.filename,
+						token: $cookies.get('token')
+					},
+				})
+				.success(resolve)
+				.error(function (data, status) {
+					reject(data)
+				})
+			})
+		}
+	}
+})
+.factory('downloadsService', function ($http, $cookies) {
+	return {
+		add: function (file) {
+			return new Promise(function (resolve, reject) {
+				var fd = new FormData()
+				fd.append('file', file)
+				fd.append('token', $cookies.get('token'))
+
+				$http({
+					method: 'POST',
+					url: '/profile/edit/adddownload',
+					headers: {
+						'Content-Type': undefined
+					},
+					data: fd,
+				})
+				.success(function (data) {
+					resolve(data)
+				})
+				.error(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		remove: function (file) {
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/profile/edit/removedownload',
+					data: {
+						filename: file.filename,
+						token: $cookies.get('token')
+					},
+				})
+				.success(resolve)
+				.error(function (data, status) {
+					reject(data)
+				})
+			})
+		},
 	}
 })
 .factory('feedService', function ($timeout, $sce) {

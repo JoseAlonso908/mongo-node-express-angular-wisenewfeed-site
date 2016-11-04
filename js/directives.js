@@ -165,7 +165,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/big-rated-avatar.htm',
 		scope: {
 			user: '=',
-			onEdit: '&'
+			onEdit: '='
 		},
 		link: function ($scope, element, attr) {
 			if (typeof $scope.onEdit === 'function') {
@@ -177,21 +177,7 @@ angular.module('er.directives', [])
 
 						$scope.$apply(function () {
 							var file = e.target.files[0]
-							var r = new FileReader()
-							// r.onload = function (e) {
-							// 	var fileObject = {
-							// 		name: file.name,
-							// 		size: file.size,
-							// 		type: file.type,
-							// 		b64: e.target.result
-							// 	}
-
-								$scope.onEdit({
-									file: {native: file},
-								})
-							// }
-
-							// r.readAsDataURL(file)
+							$scope.onEdit(file)
 						})
 					})
 

@@ -89,6 +89,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   outline: none;
 }
 
+.hidden-file-input {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
 .clear {
   clear: both;
 }
@@ -118,8 +124,13 @@ input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
   border-color: red !important;
 }
 
+form[name=profileForm] .ng-invalid {
+  border-color: red !important;
+}
+
 input.edit-profile-input,
-textarea.edit-profile-input {
+textarea.edit-profile-input,
+.address-element input {
   display: inline-block;
   width: 100%;
   margin-bottom: 16px;
@@ -135,11 +146,13 @@ textarea.edit-profile-input {
   transition: border-color 0.1s;
 }
 input.edit-profile-input:focus,
-textarea.edit-profile-input:focus {
+textarea.edit-profile-input:focus,
+.address-element input:focus {
   border-color: #43abe7;
 }
 input.edit-profile-input.error,
-textarea.edit-profile-input.error {
+textarea.edit-profile-input.error,
+.address-element input.error {
   border-color: red;
 }
 
@@ -416,6 +429,8 @@ a[disabled] {
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
 }
 #wrapper #top-bar {
   display: flex;
@@ -1074,6 +1089,15 @@ a[disabled] {
   font-size: 13px;
   line-height: 20px;
 }
+#wrapper > .content .left .user-description-block.editing a.file:before {
+  content: 'delete_forever' !important;
+}
+#wrapper > .content .left .user-description-block:not(.editing) a.file.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before {
+  content: 'picture_as_pdf';
+}
+#wrapper > .content .left .user-description-block:not(.editing) a.file.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file-download:before {
+  content: 'file_download';
+}
 #wrapper > .content .left .user-description-block a.file, #wrapper > .content .left .user-description-block a.file-download {
   display: block;
   padding-left: 20px;
@@ -1088,11 +1112,14 @@ a[disabled] {
   font-size: 16px;
   color: #b0bec8;
 }
-#wrapper > .content .left .user-description-block a.file.file:before, #wrapper > .content .left .user-description-block a.file-download.file:before {
-  content: 'picture_as_pdf';
+#wrapper > .content .left .user-description-block.editing .address-element:before {
+  height: 36px !important;
+  line-height: 36px;
 }
-#wrapper > .content .left .user-description-block a.file.file-download:before, #wrapper > .content .left .user-description-block a.file-download.file-download:before {
-  content: 'file_download';
+#wrapper > .content .left .user-description-block.editing .address-element input {
+  width: calc(100% - 10px);
+  height: 36px;
+  margin-left: 10px;
 }
 #wrapper > .content .left .user-description-block .address-element {
   color: #82898f;
@@ -1135,6 +1162,36 @@ a[disabled] {
   margin-bottom: 20px;
 }
 #wrapper > .content .left .user-description-block .experience-block a, #wrapper > .content .left .user-description-block .add-more-experience {
+  font-size: 13px;
+  font-weight: 900;
+}
+#wrapper > .content .left .user-description-block .attach-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  cursor: pointer;
+  border-radius: 18px;
+  background-color: rgba(67, 171, 231, 0.15);
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+#wrapper > .content .left .user-description-block .attach-file:hover {
+  background-color: rgba(67, 171, 231, 0.25);
+}
+#wrapper > .content .left .user-description-block .attach-file i {
+  margin-right: 5px;
+  font-size: 20px;
+}
+#wrapper > .content .left .user-description-block .attach-file i, #wrapper > .content .left .user-description-block .attach-file .title {
+  display: inline-block;
+  color: #43abe7;
+}
+#wrapper > .content .left .user-description-block .attach-file .title {
+  margin-bottom: 0;
   font-size: 13px;
   font-weight: 900;
 }
@@ -1486,6 +1543,7 @@ a[disabled] {
   display: flex;
   justify-content: space-between;
   position: absolute;
+  width: calc(100% - 285px - 15px);
   margin: 285px 0 0 285px;
 }
 #wrapper .wallpaper-wrapper .buttons > div, #wrapper .wallpaper-wrapper .buttons > a {
@@ -1516,6 +1574,13 @@ a[disabled] {
 }
 #wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > a.change-background:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+#wrapper .wallpaper-wrapper .buttons > div.save-changes, #wrapper .wallpaper-wrapper .buttons > a.save-changes {
+  color: #424242;
+  background-color: #ffffff;
+}
+#wrapper .wallpaper-wrapper .buttons > div.save-changes:hover, #wrapper .wallpaper-wrapper .buttons > a.save-changes:hover {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 #wrapper .wallpaper-wrapper .buttons > div i, #wrapper .wallpaper-wrapper .buttons > a i {
   margin: 6px 4px 0 0;

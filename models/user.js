@@ -7,6 +7,7 @@ var Model = function(mongoose) {
 		linkedin	: String,
 		twitter		: String,
 		avatar		: String,
+		wallpaper	: String,
 		name		: String,
 		email		: String,
 		password	: String,
@@ -16,6 +17,14 @@ var Model = function(mongoose) {
 		role 		: String,
 		title 		: String,
 		company		: String,
+		certificates: [{
+			filename	: String,
+			filepath	: String,
+		}],
+		downloads: [{
+			filename	: String,
+			filepath	: String,
+		}],
 		experience	: [{
 			time		: String,
 			place		: String,
@@ -55,6 +64,88 @@ var Model = function(mongoose) {
 			let user = new Model()
 			Object.assign(user, params)
 			user.save(callback)
+		},
+
+		setAvatar: (_id, avatar, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user, {avatar})
+				user.save(callback)
+			})
+		},
+
+		setWallpaper: (_id, wallpaper, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user, {wallpaper})
+				user.save(callback)
+			})
+		},
+
+		addCertificate: (_id, filename, filepath, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.certificates.push({filename, filepath})
+				user.save(callback)
+			})
+		},
+
+		getCertificateByName: (_id, filename, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				for (let cert of user.certificates) {
+					if (cert.filename === filename) {
+						return callback(cert)
+					}
+				}
+			})
+		},
+
+		removeCertificateByName: (_id, filename, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.certificates = user.certificates.filter((cert) => {
+					return cert.filename != filename
+				})
+				user.save(callback)
+			})
+		},
+
+		addDownload: (_id, filename, filepath, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.downloads.push({filename, filepath})
+				user.save(callback)
+			})
+		},
+
+		getDownloadByName: (_id, filename, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				for (let cert of user.downloads) {
+					if (cert.filename === filename) {
+						return callback(cert)
+					}
+				}
+			})
+		},
+
+		removeDownloadByName: (_id, filename, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.downloads = user.downloads.filter((file) => {
+					return file.filename != filename
+				})
+				user.save(callback)
+			})
 		},
 
 		updatePassword: (_id, password, callback) => {

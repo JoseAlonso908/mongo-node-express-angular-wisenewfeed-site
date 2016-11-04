@@ -179,7 +179,6 @@ angular.module('er.controllers', [])
 		$scope.signup.role = role
 
 		$auth.signup($scope.signup).then(function (response) {
-			console.log(response)
 			localStorage.satellizer_token = response.data.token
 			$location.url('/')
 		}).catch(function (response) {
@@ -245,18 +244,128 @@ angular.module('er.controllers', [])
 		})
 	})
 })
-.controller('editProfileController', function ($scope, $location, identityService, uploadAvatarService, feedService) {
+.controller('editProfileController', function (
+		$scope, $location, $cookies, $timeout, identityService,
+		uploadAvatarService, uploadWallpaperService, certificatesService,
+		downloadsService, feedService
+	) {
 	$scope.wallpaperStyle = {}
 	
-	$scope.changeAvatar = function (nativeFileObject, fileObject) {
-		console.log(nativeFileObject)
-		console.log(fileObject)
+	$scope.saveChanges = function () {
+		console.log({
+			name: $scope.user.name,
+			intro: $scope.user.intro,
+			experience: $scope.user.experience,
+			address: $scope.address,
+		})
 
 
-		uploadAvatarService(nativeFileObject).then(function (result) {
-			console.log(result)
+		console.log($scope.profileForm)
+		console.log($scope.profileForm.$valid)
+	}
+
+	$scope.changeAvatar = function (fileObject) {
+		uploadAvatarService(fileObject).then(function (result) {
+			$cookies.remove('user')
+			identityService().then(function (user) {
+				$scope.user = user
+			})
 		}).catch(function (error) {
-			console.log(error)
+			console.log('Avatar change error')
+		})
+	}
+
+	$scope.changeWallpaper = function () {
+		var wallpaperFileInput = document.querySelector('input[type=file][name=wallpaper]')
+		angular.element(wallpaperFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+
+			$scope.$apply(function () {
+				var file = e.target.files[0]
+				
+				uploadWallpaperService(file).then(function (result) {
+					$cookies.remove('user')
+					identityService().then(function (user) {
+						$scope.user = user
+					})
+				}).catch(function (error) {
+					console.log('Wallpaper change error')
+				})
+			})
+		})
+
+		$timeout(function () {
+			wallpaperFileInput.click()
+		}, 0)
+	}
+
+	$scope.attachCertificate = function () {
+		var certificateFileInput = document.querySelector('input[type=file][name=certificate]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+
+			$scope.$apply(function () {
+				var file = e.target.files[0]
+
+				certificatesService.add(file).then(function (result) {
+					$cookies.remove('user')
+					identityService().then(function (user) {
+						$scope.user = user
+					})
+				}).catch(function (error) {
+					console.log('Wallpaper change error')
+				})
+			})
+		})
+
+		$timeout(function () {
+			certificateFileInput.click()
+		}, 0)
+	}
+
+	$scope.removeCertificate = function (cert) {
+		certificatesService.remove(cert).then(function (result) {
+			$cookies.remove('user')
+			identityService().then(function (user) {
+				$scope.user = user
+			})
+		}).catch(function (error) {
+			console.log('Wallpaper change error')
+		})
+	}
+
+	$scope.attachDownload = function () {
+		var certificateFileInput = document.querySelector('input[type=file][name=download]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+
+			$scope.$apply(function () {
+				var file = e.target.files[0]
+
+				downloadsService.add(file).then(function (result) {
+					$cookies.remove('user')
+					identityService().then(function (user) {
+						$scope.user = user
+					})
+				}).catch(function (error) {
+					console.log('Wallpaper change error')
+				})
+			})
+		})
+
+		$timeout(function () {
+			certificateFileInput.click()
+		}, 0)
+	}
+
+	$scope.removeDownload = function (file) {
+		downloadsService.remove(file).then(function (result) {
+			$cookies.remove('user')
+			identityService().then(function (user) {
+				$scope.user = user
+			})
+		}).catch(function (error) {
+			console.log('Wallpaper change error')
 		})
 	}
 

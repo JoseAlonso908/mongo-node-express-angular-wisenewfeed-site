@@ -23,7 +23,7 @@ let mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
 
-let upload = multer({dest: 'uploads/'})
+let tempUploads = multer({dest: 'temp/'})
 
 app.use(compression())
 app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
@@ -36,15 +36,14 @@ app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 	dotfiles: 'ignore'
 }))
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
+
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 var mongoose = require('mongoose')
 mongoose.Promise = Promise
-console.log(`Connecting to ${config.MONGO[env].DSN}...`)
 var connection = mongoose.connect(config.MONGO[env].DSN);
-console.log('Connected!')
-console.log(connection)
 var User = require('./models/user')(connection)
 var Token = require('./models/token')(connection)
 var PhoneVerification = require('./models/phoneverification')(connection)
@@ -442,11 +441,165 @@ app.post('/auth/twitter', (req, res) => {
 	}
 })
 
-app.post('/profile/edit/avatar', upload.single('file'), (req, res) => {
-	console.log(req.file)
-	console.log(req.body)
+app.post('/profile/edit/avatar', tempUploads.single('file'), (req, res) => {
+	let token = req.body.token
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			let filename = req.file.filename,
+				extension = req.file.originalname.split('.').slice(-1),
+				tempPath = req.file.path,
+				newFilename = req.file.filename + '.' + extension
+
+			if (user.avatar) {
+				try {
+					fs.unlinkSync(path.join(__dirname, user.avatar))
+				} catch (e) {
+					console.log(`Can't remove old avatar:`)
+					console.log(e)
+				}
+			}
+
+			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'avatars', newFilename))
+
+			User.setAvatar(user._id, path.join('uploads', 'avatars', newFilename), () => {
+				res.send({ok: true})
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
 })
 
+app.post('/profile/edit/wallpaper', tempUploads.single('file'), (req, res) => {
+	let token = req.body.token
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			let filename = req.file.filename,
+				extension = req.file.originalname.split('.').slice(-1),
+				tempPath = req.file.path,
+				newFilename = req.file.filename + '.' + extension
+
+			if (user.wallpaper) {
+				try {
+					fs.unlinkSync(path.join(__dirname, user.wallpaper))
+				} catch (e) {
+					console.log(`Can't remove old wallpaper:`)
+					console.log(e)
+				}
+			}
+
+			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'wallpapers', newFilename))
+
+			User.setWallpaper(user._id, path.join('uploads', 'wallpapers', newFilename), () => {
+				res.send({ok: true})
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
+
+app.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, res) => {
+	console.log(req.file)
+
+	let token = req.body.token
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			let filename = req.file.filename,
+				extension = req.file.originalname.split('.').slice(-1),
+				tempPath = req.file.path,
+				newFilename = req.file.filename + '.' + extension
+
+			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'certificates', newFilename))
+
+			User.addCertificate(user._id, req.file.originalname, path.join('uploads', 'certificates', newFilename), () => {
+				res.send({ok: true})
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
+
+app.post('/profile/edit/removecertificate', (req, res) => {
+	console.log(req.body)
+
+	let {token, filename} = req.body
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			User.getCertificateByName(user._id, filename, (cert) => {
+				if (cert) {
+					try {
+						fs.unlinkSync(path.join(__dirname, cert.filepath))
+					} catch (e) {
+						console.log(`Can't unlink file`)
+						console.log(e)
+					}
+					User.removeCertificateByName(user._id, filename, () => {
+						res.send({ok: true})
+					})
+				} else {
+					res.status(400).send({message: 'Certificate not found'})
+				}
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
+
+app.post('/profile/edit/adddownload', tempUploads.single('file'), (req, res) => {
+	console.log(req.file)
+
+	let token = req.body.token
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			let filename = req.file.filename,
+				extension = req.file.originalname.split('.').slice(-1),
+				tempPath = req.file.path,
+				newFilename = req.file.filename + '.' + extension
+
+			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'downloads', newFilename))
+
+			User.addDownload(user._id, req.file.originalname, path.join('uploads', 'downloads', newFilename), () => {
+				res.send({ok: true})
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
+
+app.post('/profile/edit/removedownload', (req, res) => {
+	let {token, filename} = req.body
+
+	Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			const fs = require('fs')
+
+			User.getDownloadByName(user._id, filename, (file) => {
+				if (file) {
+					try {
+						fs.unlinkSync(path.join(__dirname, file.filepath))
+					} catch (e) {
+						console.log(`Can't unlink file`)
+						console.log(e)
+					}
+					User.removeDownloadByName(user._id, filename, () => {
+						res.send({ok: true})
+					})
+				} else {
+					res.status(400).send({message: 'Download not found'})
+				}
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
 
 app.listen(8006, () => {
 	console.log('kek')

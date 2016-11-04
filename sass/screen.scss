@@ -19,6 +19,11 @@ $soLight: #f1f5f7;
 	outline: none;
 }
 
+.hidden-file-input {
+	width: 0; height: 0;
+	visibility: hidden;
+}
+
 .clear {
 	clear: both;
 }
@@ -50,8 +55,15 @@ input, textarea {
 	}
 }
 
+form[name=profileForm] {
+	.ng-invalid {
+		border-color: red !important;
+	}
+}
+
 input.edit-profile-input,
-textarea.edit-profile-input {
+textarea.edit-profile-input,
+.address-element input {
 	display: inline-block;
 	width: 100%;
 	margin-bottom: 16px;
@@ -357,6 +369,7 @@ a {
 			opacity: .5;
 			pointer-events: none;
 			@include user-select(none);
+			@include filter(blur(10px));
 		}
 	}
 
@@ -1111,6 +1124,26 @@ a {
 					line-height: 20px;
 				}
 
+				&.editing {
+					a.file {
+						&:before {
+							content: 'delete_forever' !important;
+						}
+					}
+				}
+
+				&:not(.editing) {
+					a.file, a.file-download {
+						&.file:before {
+							content: 'picture_as_pdf';
+						}
+
+						&.file-download:before {
+							content: 'file_download';
+						}
+					}
+				}
+
 				a.file, a.file-download {
 					display: block;
 					padding-left: 20px;
@@ -1125,13 +1158,20 @@ a {
 						font-size: 16px;
 						color: $iconGrey;
 					}
+				}
 
-					&.file:before {
-						content: 'picture_as_pdf';
-					}
+				&.editing {
+					.address-element {
+						&:before {
+							height: 36px !important;
+							line-height: 36px;
+						}
 
-					&.file-download:before {
-						content: 'file_download';
+						input {
+							width: calc(100% - 10px);
+							height: 36px;
+							margin-left: 10px;
+						}
 					}
 				}
 
@@ -1186,6 +1226,37 @@ a {
 				.experience-block a, .add-more-experience {
 					font-size: 13px;
 					font-weight: 900;
+				}
+
+				.attach-file {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 100%; height: 36px;
+					cursor: pointer;
+					border-radius: 18px;
+					background-color: rgba($activeBlue, .15);
+					@include transition(background-color .2s);
+
+					&:hover {
+						background-color: rgba($activeBlue, .25);
+					}
+					
+					i {
+						margin-right: 5px;
+						font-size: 20px;
+					}
+
+					i, .title {
+						display: inline-block;
+						color: $activeBlue;
+					}
+
+					.title {
+						margin-bottom: 0;
+						font-size: 13px;
+						font-weight: 900;
+					}
 				}
 			}
 
@@ -1579,6 +1650,7 @@ a {
 			display: flex;
 			justify-content: space-between;
 			position: absolute;
+			width: calc(100% - 285px - 15px);
 			margin: 285px 0 0 285px;
 
 			& > div, & > a {
@@ -1610,6 +1682,15 @@ a {
 
 					&:hover {
 						background-color: rgba(#ffffff, .05);
+					}
+				}
+
+				&.save-changes {
+					color: #424242;
+					background-color: #ffffff;
+
+					&:hover {
+						background-color: rgba(#ffffff, .8);
 					}
 				}
 

@@ -63,28 +63,32 @@
 				<div class="value">{{user.intro}}</div>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.experience">
+			<div class="user-description-block" ng-if="user && user.experience.length > 0">
 				<div class="title">Experience</div>
-				<div class="value">{{user.experience}}</div>
+				<div class="experience-block" ng-repeat="experience in user.experience">
+					<div class="value">{{experience.place}}</div>
+					<div class="value">{{experience.time}}</div>
+					<div class="value">{{experience.description}}</div>
+				</div>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.certificates">
+			<div class="user-description-block" ng-if="user && user.certificates.length > 0">
 				<div class="title">Certificates</div>
 				<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in user.certificates">{{cert.filename}}</a>
 			</div>
 
-			<div class="user-description-block" ng-if="user">
+			<div class="user-description-block" ng-if="user && user.contact">
 				<div class="title">Contacts</div>
-				<div class="address-element email" ng-if="user.address.email">{{user.address.email}}</div>
-				<div class="address-element phone" ng-if="user.address.phone">{{user.address.phone}}</div>
-				<div class="address-element skype" ng-if="user.address.skype">{{user.address.skype}}</div>
-				<div class="address-element linkedin" ng-if="user.address.linkedin">{{user.address.linkedin}}</div>
-				<div class="address-element fb" ng-if="user.address.fb">{{user.address.fb}}</div>
+				<div class="address-element email" ng-if="user.contact.email">{{user.contact.email}}</div>
+				<div class="address-element phone" ng-if="user.contact.phone">{{user.contact.phone}}</div>
+				<div class="address-element skype" ng-if="user.contact.skype">{{user.contact.skype}}</div>
+				<div class="address-element linkedin" ng-if="user.contact.linkedin">{{user.contact.linkedin}}</div>
+				<div class="address-element fb" ng-if="user.contact.fb">{{user.contact.fb}}</div>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.downloads">
+			<div class="user-description-block" ng-if="user && user.downloads.length > 0">
 				<div class="title">Downloads</div>
-				<a href="{{file.filepath}}" class="file-download" ng-repeat="file in user.downloads">{{file.filename}}</a>
+				<a href="{{file.filepath}}" target="_blank" class="file-download" ng-repeat="file in user.downloads">{{file.filename}}</a>
 			</div>
 
 			<div class="user-description-block" ng-if="user && user.photos">
@@ -96,19 +100,7 @@
 			</div>
 		</div>
 		<div class="middle">
-			<div class="on-your-mind">
-				<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
-				<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
-				<button class="send">
-					<div>
-						<i class="material-icons">send</i>
-						<div class="title">Send</div>
-					</div>
-				</button>
-				<button class="upload-image"><i class="material-icons">camera_alt</i></button>
-
-				<div class="clear"></div>
-			</div>
+			<onyourmind ng-if="user" user="user"></onyourmind>
 
 			<div class="loader" ng-if="feedLoading"></div>
 			<post post="post" ng-repeat="post in feed"></post>

@@ -247,21 +247,29 @@ angular.module('er.controllers', [])
 .controller('editProfileController', function (
 		$scope, $location, $cookies, $timeout, identityService,
 		uploadAvatarService, uploadWallpaperService, certificatesService,
-		downloadsService, feedService
+		downloadsService, feedService, updateProfileService
 	) {
 	$scope.wallpaperStyle = {}
 	
+	$scope.saving = false
 	$scope.saveChanges = function () {
-		console.log({
-			name: $scope.user.name,
-			intro: $scope.user.intro,
-			experience: $scope.user.experience,
-			address: $scope.address,
-		})
+		if ($scope.saving) return
 
+		$scope.saving = true
+		if ($scope.profileForm.$valid) {
+			console.log($scope.user.intro)
 
-		console.log($scope.profileForm)
-		console.log($scope.profileForm.$valid)
+			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
+				$cookies.remove('user')
+				identityService().then(function (user) {
+					$scope.user = user
+					$scope.saving = false
+					$location.url('/my')
+				})
+			}).catch(function (error) {
+				$scope.saving = false
+			})
+		}
 	}
 
 	$scope.changeAvatar = function (fileObject) {

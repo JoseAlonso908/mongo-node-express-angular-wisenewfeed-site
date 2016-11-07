@@ -9,6 +9,7 @@ var Model = function(mongoose) {
 		avatar		: String,
 		wallpaper	: String,
 		name		: String,
+		intro		: String,
 		email		: String,
 		password	: String,
 		phone		: String,
@@ -17,6 +18,13 @@ var Model = function(mongoose) {
 		role 		: String,
 		title 		: String,
 		company		: String,
+		contact 	: {
+			email: String,
+			phone: String,
+			skype: String,
+			linkedin: String,
+			fb: String,
+		},
 		certificates: [{
 			filename	: String,
 			filepath	: String,
@@ -153,6 +161,15 @@ var Model = function(mongoose) {
 
 			Model.findOne({_id}, (err, user) => {
 				user.password = sha1(password)
+				user.save(callback)
+			})
+		},
+
+		updateProfile: (_id, contact, experience, intro, name, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user, {contact, experience, intro, name})
 				user.save(callback)
 			})
 		}

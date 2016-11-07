@@ -127,6 +127,29 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
+.factory('updateProfileService', function ($http, $cookies) {
+	return function (contact, experience, intro, name) {
+		return new Promise(function (resolve, reject) {
+			$http({
+				method: 'POST',
+				url: '/profile/edit/profile',
+				data: {
+					token: $cookies.get('token'),
+					contact: contact,
+					experience: experience,
+					intro: intro,
+					name: name,
+				},
+			})
+			.success(function (data) {
+				resolve(data)
+			})
+			.error(function (data, status) {
+				reject(data)
+			})
+		})
+	}
+})
 .factory('identityService', function ($timeout, $http, $cookies, $auth, $q) {
 	return function () {
 		var d = $q.defer()
@@ -151,6 +174,8 @@ angular.module('er.services', [])
 				user.following = user.following || 0
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+
+				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
 				user.experience = user.experience
 
@@ -650,5 +675,30 @@ angular.module('er.services', [])
 		d.resolve(response)
 
 		return d.promise
+	}
+})
+.factory('createPostService', function ($http, $cookies) {
+	return function (text, images) {
+		return new Promise(function (resolve, reject) {
+			var fd = new FormData()
+			// fd.append('file', file)
+			fd.append('text', text)
+
+			$http({
+				method: 'POST',
+				url: '/article/create',
+				headers: {
+					'Authorization': $cookies.get('token'),
+					'Content-Type': undefined,
+				},
+				data: fd,
+			})
+			.success(function (data) {
+				resolve(data)
+			})
+			.error(function (data, status) {
+				reject(data)
+			})
+		})
 	}
 })

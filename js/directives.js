@@ -83,6 +83,26 @@ angular.module('er.directives', [])
 		},
 	}
 })
+.directive('onyourmind', function (createPostService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/onyourmind.htm',
+		scope: {
+			user: '='
+		},
+		link: function ($scope, element, attr) {
+			$scope.text = 'Example!'
+
+			$scope.create = function () {
+				createPostService($scope.text).then(function (result) {
+					console.log(result)
+				}).catch(function (error) {
+					console.log(error)
+				})
+			}
+		}
+	}
+})
 .directive('post', function () {
 	return {
 		restrict: 'E',

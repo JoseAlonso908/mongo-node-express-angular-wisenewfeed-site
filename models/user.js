@@ -15,6 +15,8 @@ var Model = function(mongoose) {
 		phone		: String,
 		country		: String,
 		position	: String,
+		company 	: String,
+		field		: String,
 		role 		: String,
 		title 		: String,
 		company		: String,
@@ -167,6 +169,8 @@ var Model = function(mongoose) {
 
 		updateProfile: (_id, contact, experience, intro, name, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+
+			intro = intro.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
 			Model.findOne({_id}, (err, user) => {
 				Object.assign(user, {contact, experience, intro, name})

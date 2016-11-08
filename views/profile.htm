@@ -9,7 +9,7 @@
 			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
 
-		<div class="wallpaper" style="background-image: url('{{user.wallpaper}}')"></div>
+		<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
 		<div class="footer">
 			<div class="stats">
 				<div class="stat">
@@ -101,9 +101,7 @@
 		</div>
 		<div class="middle">
 			<onyourmind ng-if="user" user="user"></onyourmind>
-
-			<div class="loader" ng-if="feedLoading"></div>
-			<post post="post" ng-repeat="post in feed"></post>
+			<feed ng-if="user"></feed>
 		</div>
 		<div class="right">
 			<newquestions user="user" ng-if="user"></newquestions>

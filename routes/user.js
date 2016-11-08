@@ -1,8 +1,15 @@
 const 	express = require('express'),
-		multer = require('multer')
+		multer = require('multer'),
+		twilio = require('twilio'),
+		async = require('async'),
+		validator = require('validator'),
+		path = require('path')
 
-let tempUploads = multer({dest: 'temp/'})
+const config = require('./../config')
+
+let tempUploads = multer({dest: '../temp/'})
 let router = express.Router()
+let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
 
 router.get('/me', (req, res) => {
 	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
@@ -197,7 +204,7 @@ router.post('/auth/findaccount/signin', (req, res) => {
 })
 
 router.post('/auth/signup', (req, res) => {
-	let {email, password, name, country, phone} = req.body
+	let {email, password, name, country, phone, position, company, field} = req.body
 
 	async.series([
 		(callback) => {
@@ -387,14 +394,14 @@ router.post('/profile/edit/avatar', tempUploads.single('file'), (req, res) => {
 
 			if (user.avatar) {
 				try {
-					fs.unlinkSync(path.join(__dirname, user.avatar))
+					fs.unlinkSync(path.join(__root, user.avatar))
 				} catch (e) {
 					console.log(`Can't remove old avatar:`)
 					console.log(e)
 				}
 			}
 
-			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'avatars', newFilename))
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'avatars', newFilename))
 
 			models.User.setAvatar(user._id, path.join('uploads', 'avatars', newFilename), () => {
 				res.send({ok: true})
@@ -417,14 +424,14 @@ router.post('/profile/edit/wallpaper', tempUploads.single('file'), (req, res) =>
 
 			if (user.wallpaper) {
 				try {
-					fs.unlinkSync(path.join(__dirname, user.wallpaper))
+					fs.unlinkSync(path.join(__root, user.wallpaper))
 				} catch (e) {
 					console.log(`Can't remove old wallpaper:`)
 					console.log(e)
 				}
 			}
 
-			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'wallpapers', newFilename))
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'wallpapers', newFilename))
 
 			models.User.setWallpaper(user._id, path.join('uploads', 'wallpapers', newFilename), () => {
 				res.send({ok: true})
@@ -445,7 +452,7 @@ router.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, re
 				tempPath = req.file.path,
 				newFilename = req.file.filename + '.' + extension
 
-			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'certificates', newFilename))
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'certificates', newFilename))
 
 			models.User.addCertificate(user._id, req.file.originalname, path.join('uploads', 'certificates', newFilename), () => {
 				res.send({ok: true})
@@ -464,7 +471,7 @@ router.post('/profile/edit/removecertificate', (req, res) => {
 			models.User.getCertificateByName(user._id, filename, (cert) => {
 				if (cert) {
 					try {
-						fs.unlinkSync(path.join(__dirname, cert.filepath))
+						fs.unlinkSync(path.join(__root, cert.filepath))
 					} catch (e) {
 						console.log(`Can't unlink file`)
 						console.log(e)
@@ -492,7 +499,7 @@ router.post('/profile/edit/adddownload', tempUploads.single('file'), (req, res) 
 				tempPath = req.file.path,
 				newFilename = req.file.filename + '.' + extension
 
-			fs.renameSync(path.join(__dirname, tempPath), path.join(__dirname, 'uploads', 'downloads', newFilename))
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'downloads', newFilename))
 
 			models.User.addDownload(user._id, req.file.originalname, path.join('uploads', 'downloads', newFilename), () => {
 				res.send({ok: true})
@@ -511,7 +518,7 @@ router.post('/profile/edit/removedownload', (req, res) => {
 			models.User.getDownloadByName(user._id, filename, (file) => {
 				if (file) {
 					try {
-						fs.unlinkSync(path.join(__dirname, file.filepath))
+						fs.unlinkSync(path.join(__root, file.filepath))
 					} catch (e) {
 						console.log(`Can't unlink file`)
 						console.log(e)

@@ -11,7 +11,7 @@
 				<div ng-click="saveChanges()" class="save-changes"><i class="material-icons">save</i> <div class="title">Save changes</div></div>
 			</div>
 
-			<div class="wallpaper" style="background-image: url('{{user.wallpaper}}')"></div>
+			<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
 			<div class="footer">
 				<div class="stats">
 					<div class="stat">
@@ -88,11 +88,11 @@
 
 				<div class="user-description-block editing">
 					<div class="title">Contacts</div>
-					<div class="address-element email"><input ng-required="true" name="email" placeholder="Email" ng-model="user.contact.email"></div>
-					<div class="address-element phone"><input ng-required="true" name="phone" placeholder="Phone number" ng-model="user.contact.phone"></div>
-					<div class="address-element skype"><input ng-required="true" name="skype" placeholder="Skype" ng-model="user.contact.skype"></div>
-					<div class="address-element linkedin"><input ng-required="true" name="linkedin" placeholder="Linkedin" ng-model="user.contact.linkedin"></div>
-					<div class="address-element fb"><input ng-required="true" name="fb" placeholder="Facebook" ng-model="user.contact.fb"></div>
+					<div class="address-element email"><input name="email" placeholder="Email" ng-model="user.contact.email"></div>
+					<div class="address-element phone"><input name="phone" placeholder="Phone number" ng-model="user.contact.phone"></div>
+					<div class="address-element skype"><input name="skype" placeholder="Skype" ng-model="user.contact.skype"></div>
+					<div class="address-element linkedin"><input name="linkedin" placeholder="Linkedin" ng-model="user.contact.linkedin"></div>
+					<div class="address-element fb"><input name="fb" placeholder="Facebook" ng-model="user.contact.fb"></div>
 				</div>
 
 				<div class="user-description-block">
@@ -112,7 +112,7 @@
 			</div>
 			<div class="middle inactive">
 				<div class="on-your-mind">
-					<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+					<avatar user="user"></avatar>
 					<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
 					<button class="send">
 						<div>
@@ -125,8 +125,7 @@
 					<div class="clear"></div>
 				</div>
 
-				<div class="loader" ng-if="feedLoading"></div>
-				<post post="post" ng-repeat="post in feed"></post>
+				<feed ng-if="user"></feed>
 			</div>
 			<div class="right inactive">
 				<newquestions user="user" ng-if="user"></newquestions>

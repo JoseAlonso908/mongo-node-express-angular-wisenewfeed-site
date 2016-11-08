@@ -611,6 +611,12 @@ a {
 			color: $activeBlue;
 		}
 
+		.feed-empty {
+			font-size: 14px;
+			text-align: center;
+			color: $soDark;
+		}
+
 		.card {
 			background-color: #ffffff;
 			border-radius: 4px;
@@ -1502,8 +1508,10 @@ a {
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
-			// @include filter-gradient($soLight, #b0bec8, vertical);
-			@include background-image(linear-gradient(top, darken($soLight, 2%) 1%, #b0bec8 100%));
+			
+			&.empty {
+				@include background-image(linear-gradient(top, darken($soLight, 2%) 1%, #b0bec8 100%) !important);
+			}
 		}
 
 		.footer {

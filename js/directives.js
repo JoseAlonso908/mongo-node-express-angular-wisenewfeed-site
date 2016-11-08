@@ -76,30 +76,64 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/avatar.htm',
 		scope: {
-			image: '@',
-			color: '@',
-			number: '@',
-			role: '@',
-		},
-	}
-})
-.directive('onyourmind', function (createPostService) {
-	return {
-		restrict: 'E',
-		templateUrl: 'assets/views/directives/onyourmind.htm',
-		scope: {
 			user: '='
 		},
 		link: function ($scope, element, attr) {
-			$scope.text = 'Example!'
-
+			$scope.number = $scope.user.rating || 1
+			$scope.color = $scope.user.color || 'bronze'
+			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
+			$scope.role = $scope.user.role || 'User'
+		}
+	}
+})
+.directive('onyourmind', function ($rootScope, createPostService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/onyourmind.htm',
+		link: function ($scope, element, attr) {
+			$scope.user = $scope.$parent.user
 			$scope.create = function () {
 				createPostService($scope.text).then(function (result) {
+					$scope.$parent.$apply(function () {
+						$scope.text = ''
+						$scope.$parent.$emit('reloadfeed')
+					})
 					console.log(result)
 				}).catch(function (error) {
-					console.log(error)
+					console.error(error)
 				})
 			}
+		}
+	}
+})
+.directive('feed', function (feedService, commentService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/feed.htm',
+		link: function ($scope, element, attr) {
+			$scope.user = $scope.$parent.user
+
+			$scope.addComment = function (post) {
+				console.log(post)
+				commentService.add(post._id, post.commentText).then(function () {
+					init()
+				})
+			}
+
+			$scope.$parent.$on('reloadfeed', function () {
+				init()
+			})
+
+			var init = function () {
+				$scope.feedLoading = true
+				$scope.feed = []
+				feedService.get().then(function (feed) {
+					$scope.feedLoading = false
+					$scope.feed = feed
+				})
+			}
+
+			init()
 		}
 	}
 })
@@ -112,6 +146,18 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.user = $scope.$parent.user
+		}
+	}
+})
+.directive('postcomments', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/postcomments.htm',
+		scope: {
+			post: '='
+		},
+		link: function ($scope, element, attr) {
+			
 		}
 	}
 })
@@ -133,7 +179,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('newquestions', function ($timeout) {
+.directive('newquestions', function () {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/new-questions.htm',
@@ -145,7 +191,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('familiarexperts', function ($timeout, familiarExpertsService) {
+.directive('familiarexperts', function (familiarExpertsService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/familiar-experts.htm',

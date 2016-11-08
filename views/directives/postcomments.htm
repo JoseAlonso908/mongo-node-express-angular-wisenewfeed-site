@@ -1,0 +1,16 @@
+<div class="comments" ng-show="post.comments.length > 0">
+	<div class="comment" ng-repeat="comment in comments">
+		<avatar user="comment.author"></avatar>
+		<div class="comment-title">
+			<span class="name dark-bold">{{comment.author.name}}</span>
+			<span class="time small-light" am-time-ago="comment.createdAt"></span>
+		</div>
+		<div class="text" ng-bind-html="comment.text | textLinks"></div>
+		<div class="stats">
+			<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
+			<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>
+		</div>
+
+		<div class="divider"></div>
+	</div>
+</div>

@@ -150,7 +150,7 @@ angular.module('er.services', [])
 		})
 	}
 })
-.factory('identityService', function ($timeout, $http, $cookies, $auth, $q) {
+.factory('identityService', function ($http, $cookies, $auth, $q) {
 	return function () {
 		var d = $q.defer()
 
@@ -440,152 +440,76 @@ angular.module('er.services', [])
 		},
 	}
 })
-.factory('feedService', function ($timeout, $sce) {
-	return new Promise(function (resolve, reject) {
-		var feed = [
-			{
-				id: 1,
-				author: {
-					name: 'Nicholas Cage',
-					avatar: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-					rating: 1,
-					color: 'gold',
-					position: 'Director',
-					country: 'United States',
+.factory('feedService', function ($sce, $http, $cookies) {
+	return {
+		get: function () {
+			return $http({
+				method: 'GET',
+				url: '/article/my',
+				cache: false,
+				headers: {
+					'Authorization': $cookies.get('token'),
 				},
-				createdAt: new Date(Date.now() - (Math.round(Math.random() * 1000) * 1000)),
-				text: '@SomeGuy Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipisc eos, civibus.',
-				image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-				ratings: {
-					expert: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					journalist: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					visitor: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-				},
-				comments: [
-					{
-						id: 2,
-						author: {
-							name: 'Nicholas Cage',
-							avatar: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-							rating: 2,
-							color: 'silver',
-							position: 'Director',
-							country: 'United States',
-						},
-						createdAt: new Date(Date.now() - (Math.round(Math.random() * 1000) * 1000)),
-						text: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando! #DieHard',
-						likes: 12,
-						dislikes: 1
+			})
+			.then(function (result) {
+				var feed = result.data
+
+				for (var i in feed) {
+					var post = feed[i]
+
+					post.ratings.expert.likes = numeral(post.ratings.expert.likes).format('0a').toUpperCase()
+					post.ratings.expert.dislikes = numeral(post.ratings.expert.dislikes).format('0a').toUpperCase()
+					post.ratings.expert.shares = numeral(post.ratings.expert.shares).format('0a').toUpperCase()
+					post.ratings.journalist.likes = numeral(post.ratings.journalist.likes).format('0a').toUpperCase()
+					post.ratings.journalist.dislikes = numeral(post.ratings.journalist.dislikes).format('0a').toUpperCase()
+					post.ratings.journalist.shares = numeral(post.ratings.journalist.shares).format('0a').toUpperCase()
+					post.ratings.visitor.likes = numeral(post.ratings.visitor.likes).format('0a').toUpperCase()
+					post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
+					post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
+
+					// post.text = $sce.trustAsHtml(parseTextService(post.text))
+
+					if (post.comments) {
+						for (var j in post.comments) {
+							var comment = post.comments[j]
+							// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
+							post.comments[j] = comment
+						}
 					}
-				]
-			},
-			{
-				id: 2,
-				author: {
-					name: 'Nicholas Cage',
-					avatar: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-					rating: 1,
-					color: 'gold',
-					position: 'Director',
-					country: 'United States',
-				},
-				createdAt: new Date(Date.now() - (Math.round(Math.random() * 1000) * 1000)),
-				text: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipisc eos, civibus.',
-				image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-				ratings: {
-					expert: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					journalist: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					visitor: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-				},
-			},
-			{
-				id: 3,
-				author: {
-					name: 'John Lennon',
-					avatar: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-					rating: 1,
-					color: 'silver',
-					position: 'Singer',
-					country: 'United Kingdom',
-				},
-				createdAt: new Date(Date.now() - (Math.round(Math.random() * 1000) * 1000)),
-				text: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipisc eos, civibus.',
-				ratings: {
-					expert: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					journalist: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-					visitor: {
-						likes: 12432,
-						dislikes: 4230,
-						shares: 1320,
-					},
-				},
-			}
-		]
-
-		for (var i in feed) {
-			var post = feed[i]
-
-			post.ratings.expert.likes = numeral(post.ratings.expert.likes).format('0a').toUpperCase()
-			post.ratings.expert.dislikes = numeral(post.ratings.expert.dislikes).format('0a').toUpperCase()
-			post.ratings.expert.shares = numeral(post.ratings.expert.shares).format('0a').toUpperCase()
-			post.ratings.journalist.likes = numeral(post.ratings.journalist.likes).format('0a').toUpperCase()
-			post.ratings.journalist.dislikes = numeral(post.ratings.journalist.dislikes).format('0a').toUpperCase()
-			post.ratings.journalist.shares = numeral(post.ratings.journalist.shares).format('0a').toUpperCase()
-			post.ratings.visitor.likes = numeral(post.ratings.visitor.likes).format('0a').toUpperCase()
-			post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
-			post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
-
-			// post.text = $sce.trustAsHtml(parseTextService(post.text))
-
-			if (post.comments) {
-				for (var j in post.comments) {
-					var comment = post.comments[j]
-					// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
-					post.comments[j] = comment
+					
+					feed[i] = post
 				}
-			}
-			
-			feed[i] = post
+				
+				return feed
+			}, function (data, status) {
+				return data
+			})
 		}
-
-		$timeout(function () {
-			resolve(feed)
-		}, 500)
-	})
+	}
 })
-.factory('familiarExpertsService', function ($timeout) {
+.factory('commentService', function ($http, $cookies) {
+	return {
+		add: function (postId, text) {
+			return $http({
+				method: 'POST',
+				url: '/article/comment/add',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					postId: postId,
+					text: text,
+				}
+			})
+			.then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+		}
+	}
+})
+.factory('familiarExpertsService', function () {
 	return new Promise(function (resolve, reject) {
 		var familiarExperts = [
 			{
@@ -617,9 +541,7 @@ angular.module('er.services', [])
 			},
 		]
 
-		$timeout(function () {
-			resolve(familiarExperts)
-		}, 400)
+		resolve(familiarExperts)
 	})
 })
 .factory('categoriesService', function ($http, $q) {

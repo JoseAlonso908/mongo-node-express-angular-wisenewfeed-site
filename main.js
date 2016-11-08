@@ -1,6 +1,8 @@
 const config = require('./config')
 const env = 'development'
 
+global.__root = __dirname
+
 const
 	express = require('express'),
 	compression = require('compression'),
@@ -11,13 +13,8 @@ const
 	// multer = require('multer'),
 	request = require('request'),
 	qs = require('querystring'),
-	validator = require('validator'),
 	countriesList = require('countries-list'),
-	twilio = require('twilio'),
-	async = require('async'),
 	Mailgun = require('mailgun').Mailgun
-
-let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
 
 let mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
@@ -46,6 +43,7 @@ global.models = {
 	User: require('./models/user')(connection),
 	Token: require('./models/token')(connection),
 	Article: require('./models/article')(connection),
+	Comment: require('./models/comment')(connection),
 	PhoneVerification: require('./models/phoneverification')(connection),
 	ResetPassword: require('./models/resetpassword')(connection),
 	FindAccount: require('./models/findaccount')(connection),

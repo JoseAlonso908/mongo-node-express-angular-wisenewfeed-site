@@ -170,8 +170,9 @@ angular.module('er.controllers', [])
 			if (hasErrors) return false
 			else {
 				Object.assign($scope.signup, {
-					title: $scope.extra.title,
+					position: $scope.extra.title,
 					company: $scope.extra.company,
+					field: $scope.extra.field
 				})
 			}
 		}
@@ -186,7 +187,7 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('homeController', function ($scope, $timeout, categoriesService, groupedCountriesService, identityService, feedService) {
+.controller('homeController', function ($scope, $timeout, categoriesService, groupedCountriesService, identityService) {
 	categoriesService().then(function (result) {
 		for (var i in result) {
 			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
@@ -216,16 +217,8 @@ angular.module('er.controllers', [])
 	identityService().then(function (user) {
 		$scope.user = user
 	})
-
-	$scope.feedLoading = true
-	$scope.feed = []
-	feedService.then(function (feed) {
-		$scope.feed = feed
-		$scope.feedLoading = false
-		$scope.$apply()
-	})
 })
-.controller('profileController', function ($scope, $location, identityService, feedService) {
+.controller('profileController', function ($scope, $location, identityService) {
 	$scope.wallpaperStyle = {}
 
 	identityService().then(function (user) {
@@ -234,20 +227,12 @@ angular.module('er.controllers', [])
 		if ($scope.user.wallpaper) {
 			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
 		}
-		
-		$scope.feedLoading = true
-		$scope.feed = []
-		feedService.then(function (feed) {
-			$scope.feed = feed
-			$scope.feedLoading = false
-			$scope.$apply()
-		})
 	})
 })
 .controller('editProfileController', function (
 		$scope, $location, $cookies, $timeout, identityService,
 		uploadAvatarService, uploadWallpaperService, certificatesService,
-		downloadsService, feedService, updateProfileService
+		downloadsService, updateProfileService
 	) {
 	$scope.wallpaperStyle = {}
 	
@@ -408,14 +393,6 @@ angular.module('er.controllers', [])
 		if ($scope.user.wallpaper) {
 			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
 		}
-		
-		$scope.feedLoading = true
-		$scope.feed = []
-		feedService.then(function (feed) {
-			$scope.feed = feed
-			$scope.feedLoading = false
-			$scope.$apply()
-		})
 	})
 })
 .controller('resetPasswordController', function ($scope, $location, checkPasswordTokenService, resetPasswordService) {

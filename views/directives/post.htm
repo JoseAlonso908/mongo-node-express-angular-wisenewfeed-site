@@ -1,5 +1,5 @@
 <div class="card feed-item">
-	<avatar image="{{post.author.avatar}}" role="{{post.author.role}}" color="{{post.author.color}}" number="{{post.author.rating}}"></avatar>
+	<avatar user="post.author"></avatar>
 
 	<div class="body">
 		<div class="title">
@@ -20,21 +20,21 @@
 		</div>
 
 		<div class="ratings">
-			<div class="rating">
+			<div class="rating" ng-if="post.ratings.expert.likes > 0">
 				<div class="title">Expert</div>
 				<div class="value likes">{{post.ratings.expert.likes}}</div>
 				<div class="value dislikes">{{post.ratings.expert.dislikes}}</div>
 				<div class="value shares">{{post.ratings.expert.shares}}</div>
 			</div>
 
-			<div class="rating">
+			<div class="rating" ng-if="post.ratings.journalist.likes > 0">
 				<div class="title">Journalist</div>
 				<div class="value likes">{{post.ratings.journalist.likes}}</div>
 				<div class="value dislikes">{{post.ratings.journalist.dislikes}}</div>
 				<div class="value shares">{{post.ratings.journalist.shares}}</div>
 			</div>
 
-			<div class="rating">
+			<div class="rating" ng-if="post.ratings.visitor.likes > 0">
 				<div class="title">Visitor</div>
 				<div class="value likes">{{post.ratings.visitor.likes}}</div>
 				<div class="value dislikes">{{post.ratings.visitor.dislikes}}</div>
@@ -58,26 +58,11 @@
 
 	<div class="divider"></div>
 
-	<div class="comments" ng-show="commentsVisible && post.comments.length > 0">
-		<div class="comment" ng-repeat="comment in post.comments">
-			<avatar image="{{comment.author.avatar}}" role="{{comment.author.role}}"  color="{{comment.author.color}}" number="{{comment.author.rating}}"></avatar>
-			<div class="comment-title">
-				<span class="name dark-bold">{{comment.author.name}}</span>
-				<span class="time small-light" am-time-ago="comment.createdAt"></span>
-			</div>
-			<div class="text" ng-bind-html="comment.text | textLinks"></div>
-			<div class="stats">
-				<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
-				<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>
-			</div>
-
-			<div class="divider"></div>
-		</div>
-	</div>
+	<postcomments post="post"></postcomments>
 	<div class="comment-box" ng-if="user && user.role != 'User'">
-		<avatar image="{{user.avatar}}" role="{{user.role}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
-		<textarea placeholder="Write a comment..." ng-class="{'not-empty': comment}" ng-model="comment"></textarea>
-		<button class="send">
+		<avatar user="user"></avatar>
+		<textarea placeholder="Write a comment..." ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
+		<button ng-click="$parent.$parent.addComment(post)" class="send">
 			<div>
 				<i class="material-icons">send</i>
 				<div class="title">Send</div>

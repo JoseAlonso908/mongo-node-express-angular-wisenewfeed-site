@@ -7,8 +7,8 @@
 			<div class="title">Send</div>
 		</div>
 	</button>
-	<button class="upload-image-1" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
-	<button class="upload-image-2" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
+	<button class="upload-image-1" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
+	<button class="upload-image-2" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
 
 	<form><input type="file" name="file" class="hidden-file-input"></form>
 

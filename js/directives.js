@@ -200,7 +200,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function (commentService) {
+.directive('post', function ($timeout, commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -208,13 +208,61 @@ angular.module('er.directives', [])
 			post: '='
 		},
 		link: function ($scope, element, attr) {
+			$scope.files = []
+
 			$scope.user = $scope.$parent.user
 
 			$scope.addComment = function (post) {
-				commentService.add(post._id, post.commentText).then(function () {
-					post.commentText = ''
-					$scope.$emit('reloadcomments', post._id)
+				if ($scope.loading) return
+				$scope.loading = true
+
+				var fileObjects = $scope.files.map(function (file) {
+					return file.fileObject
 				})
+
+				var progress = function () {
+					
+				}
+
+				commentService.add(post._id, post.commentText, fileObjects).then(function () {
+					post.commentText = ''
+					$scope.files = []
+					$scope.$emit('reloadcomments', post._id)
+					$scope.loading = false
+				}, function () {
+					$scope.loading = false
+				})
+			}
+
+			$scope.addImage = function () {
+				if ($scope.loading) return
+
+				var fileFileInput = element[0].querySelector('input[type=file]')
+				angular.element(fileFileInput).on('change', function (e) {
+					e.stopImmediatePropagation()
+
+					var reader = new FileReader()
+					var file = e.target.files[0]
+
+					reader.addEventListener('load', function () {
+						$scope.$apply(function () {
+							$scope.files.push({
+								base64: reader.result,
+								fileObject: file
+							})
+
+							// Reset form to clean file input. This will
+							// let us upload the same file
+							angular.element(e.target).parent()[0].reset()
+						})
+					})
+
+					reader.readAsDataURL(file)
+				})
+
+				$timeout(function () {
+					fileFileInput.click()
+				}, 0)
 			}
 		}
 	}
@@ -367,6 +415,7 @@ angular.module('er.directives', [])
 		scope: {
 			suggestions: '=',
 			ngModel: '=',
+			viewTitle: '@',
 		},
 		link: function ($scope, element, attr) {
 			$scope.show = false
@@ -374,12 +423,13 @@ angular.module('er.directives', [])
 			var lastUserValue
 			
 			$scope.$watch('ngModel', function (newValue, oldValue) {
-				if (newValue && newValue != oldValue && oldValue != lastUserValue) {
+				if (newValue && newValue.title != oldValue.title && oldValue.title != lastUserValue) {
 					$scope.filteredSuggestions = []
 
 					for (var i = 0; i < $scope.suggestions.length; i++) {
 						var item = $scope.suggestions[i]
-						if (item.toLowerCase().indexOf(newValue.toLowerCase()) !== -1) {
+
+						if (item.title.toLowerCase().indexOf(newValue.title.toLowerCase()) !== -1) {
 							$scope.filteredSuggestions.push(item)
 						}
 					}
@@ -390,10 +440,10 @@ angular.module('er.directives', [])
 				} else {
 					$scope.show = false
 				}
-			})
+			}, true)
 
 			$scope.setSuggestion = function (value) {
-				lastUserValue = $scope.ngModel
+				lastUserValue = $scope.ngModel.title
 				$scope.ngModel = value
 				$scope.show = false
 			}

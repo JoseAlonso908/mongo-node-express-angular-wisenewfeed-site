@@ -8,6 +8,11 @@
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>
 		<div class="text" ng-bind-html="comment.text | textLinks"></div>
+
+		<div class="images">
+			<div class="image" ng-repeat="image in comment.images" style="background-image: url({{image}})"></div>
+		</div>
+
 		<div class="stats">
 			<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
 			<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>

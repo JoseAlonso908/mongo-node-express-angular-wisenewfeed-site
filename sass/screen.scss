@@ -697,6 +697,28 @@ a {
 							box-sizing: border-box;
 						}
 
+						.images {
+							display: flex;
+							justify-content: space-between;
+							flex-wrap: wrap;
+							margin: -1px;
+
+							// width: 100%;
+
+							.image {
+								// min-width: 150px;
+								flex: 2 1 0;
+								// width: 200px;
+								min-width: 200px;
+								height: 200px;
+								margin: 1px;
+								background-position: center;
+								background-repeat: no-repeat;
+								background-size: cover;
+								border-radius: 2px;
+							}
+						}
+
 						img {
 							display: block;
 							width: 100%;
@@ -891,6 +913,28 @@ a {
 								}
 							}
 						}
+
+						.images {
+							display: flex;
+							justify-content: space-between;
+							flex-wrap: wrap;
+							margin: 10px -1px -1px -1px;
+
+							// width: 100%;
+
+							.image {
+								// min-width: 150px;
+								flex: 2 1 0;
+								// width: 200px;
+								min-width: 200px;
+								height: 100px;
+								margin: 1px;
+								background-position: center;
+								background-repeat: no-repeat;
+								background-size: cover;
+								border-radius: 2px;
+							}
+						}
 					}
 				}
 
@@ -912,7 +956,7 @@ a {
 							border-color: $activeBlue;
 						}
 
-						&:focus, &.not-empty {
+						&.not-empty {
 							height: 76px;
 
 							& + .send {
@@ -979,6 +1023,41 @@ a {
 							}
 						}
 					}
+
+					.upload-files {
+						margin-top: 15px;
+						
+						.file {
+							width: 90px; height: 90px;
+							margin: 0 5px;
+							float: left;
+							background-position: center;
+							background-repeat: no-repeat;
+							background-size: cover;
+							border-radius: 3px;
+							overflow: hidden;
+
+							.remove {
+								position: absolute;
+								width: inherit; height: inherit;
+								background-color: rgba(0, 0, 0, .4);
+								color: #ffffff;
+								font-size: 24px;
+								text-align: center;
+								line-height: 90px;
+								opacity: 0;
+								border-radius: inherit;
+
+								@include transition(opacity .2s);
+							}
+
+							&:hover {
+								.remove {
+									opacity: 1;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -1020,7 +1099,7 @@ a {
 
 					// @include transition(height .1s);
 
-					&:focus, &.not-empty {
+					&.not-empty {
 						height: 72px;
 
 						& + .send {
@@ -1116,7 +1195,7 @@ a {
 					
 					.file {
 						width: 90px; height: 90px;
-						margin: 0 6px;
+						margin: 0 5px;
 						float: left;
 						background-position: center;
 						background-repeat: no-repeat;

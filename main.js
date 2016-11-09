@@ -1,5 +1,5 @@
 const config = require('./config')
-const env = 'development'
+const env = 'local'
 
 global.__root = __dirname
 
@@ -59,8 +59,12 @@ app.get('/static/countries', (req, res) => {
 	for (let code in countriesList.countries) {
 		let item = countriesList.countries[code]
 
-		// countryPhoneCodeList.push(`${item.name} +${item.phone}`)
-		countryPhoneCodeList.push(`${item.name}`)
+		countryPhoneCodeList.push({
+			title: `${item.name} +${item.phone}`,
+			country: item.name,
+			code: item.phone
+		})
+		// countryPhoneCodeList.push(`${item.name}`)
 	}
 
 	res.send(countryPhoneCodeList)

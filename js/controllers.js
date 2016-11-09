@@ -110,9 +110,11 @@ angular.module('er.controllers', [])
 				})
 			}
 		], function (err) {
+			console.log($scope.signup.country)
+
 			if (err) $scope.signup.error = err
 			else {
-				confirmAccountModal.activate({$parent: $scope, phone: $scope.signup.phone})
+				confirmAccountModal.activate({$parent: $scope, phone: '+' + $scope.signup.country.code + $scope.signup.phone})
 			}
 		})
 	}
@@ -145,7 +147,10 @@ angular.module('er.controllers', [])
 	]
 
 	$scope.signup = $cookies.getObject('signup-params')
-	
+
+	$scope.signup.phone = '+' + $scope.signup.country.code + $scope.signup.phone
+	$scope.signup.country = $scope.signup.country.chosenCountry
+
 	$scope.extra = {title: '', company: '', field: ''}
 	$scope.extraError = {title: '', company: '', field: ''}
 
@@ -240,8 +245,10 @@ angular.module('er.controllers', [])
 	$scope.saveChanges = function () {
 		if ($scope.saving) return
 
-		$scope.saving = true
+		console.log($scope.profileForm.$valid)
+
 		if ($scope.profileForm.$valid) {
+			$scope.saving = true
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
 				$cookies.remove('user')
 				identityService().then(function (user) {

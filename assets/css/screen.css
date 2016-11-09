@@ -722,6 +722,22 @@ a[disabled] {
   letter-spacing: .3px;
   box-sizing: border-box;
 }
+#wrapper > .content .card.feed-item .body .content .images {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: -1px;
+}
+#wrapper > .content .card.feed-item .body .content .images .image {
+  flex: 2 1 0;
+  min-width: 200px;
+  height: 200px;
+  margin: 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 2px;
+}
 #wrapper > .content .card.feed-item .body .content img {
   display: block;
   width: 100%;
@@ -878,6 +894,22 @@ a[disabled] {
   margin: 0 4px 0 0;
   font-size: 13px;
 }
+#wrapper > .content .card.feed-item .comments .comment .images {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 10px -1px -1px -1px;
+}
+#wrapper > .content .card.feed-item .comments .comment .images .image {
+  flex: 2 1 0;
+  min-width: 200px;
+  height: 100px;
+  margin: 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 2px;
+}
 #wrapper > .content .card.feed-item .comment-box {
   position: relative;
 }
@@ -896,15 +928,15 @@ a[disabled] {
 #wrapper > .content .card.feed-item .comment-box textarea:focus {
   border-color: #43abe7;
 }
-#wrapper > .content .card.feed-item .comment-box textarea:focus, #wrapper > .content .card.feed-item .comment-box textarea.not-empty {
+#wrapper > .content .card.feed-item .comment-box textarea.not-empty {
   height: 76px;
 }
-#wrapper > .content .card.feed-item .comment-box textarea:focus + .send, #wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send {
+#wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send {
   margin-top: 6px;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper > .content .card.feed-item .comment-box textarea:focus + .send + .upload-image, #wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send + .upload-image {
+#wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send + .upload-image {
   top: 85px;
   left: 0;
   right: auto;
@@ -958,6 +990,39 @@ a[disabled] {
   color: #ffffff;
   font-size: 13px;
 }
+#wrapper > .content .card.feed-item .comment-box .upload-files {
+  margin-top: 15px;
+}
+#wrapper > .content .card.feed-item .comment-box .upload-files .file {
+  width: 90px;
+  height: 90px;
+  margin: 0 5px;
+  float: left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 3px;
+  overflow: hidden;
+}
+#wrapper > .content .card.feed-item .comment-box .upload-files .file .remove {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  line-height: 90px;
+  opacity: 0;
+  border-radius: inherit;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#wrapper > .content .card.feed-item .comment-box .upload-files .file:hover .remove {
+  opacity: 1;
+}
 #wrapper > .content .left, #wrapper > .content .right {
   width: calc(25% - 34px);
 }
@@ -992,18 +1057,18 @@ a[disabled] {
   line-height: 16px;
   overflow: hidden;
 }
-#wrapper > .content .middle .on-your-mind textarea:focus, #wrapper > .content .middle .on-your-mind textarea.not-empty {
+#wrapper > .content .middle .on-your-mind textarea.not-empty {
   height: 72px;
 }
-#wrapper > .content .middle .on-your-mind textarea:focus + .send, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send {
   margin-top: 15px;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper > .content .middle .on-your-mind textarea:focus + .send + .upload-image-1, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 {
   display: none;
 }
-#wrapper > .content .middle .on-your-mind textarea:focus + .send + .upload-image-1 + .upload-image-2, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 + .upload-image-2 {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 + .upload-image-2 {
   display: block;
   margin: 15px 0 0 56px;
 }
@@ -1071,7 +1136,7 @@ a[disabled] {
 #wrapper > .content .middle .on-your-mind .upload-files .file {
   width: 90px;
   height: 90px;
-  margin: 0 6px;
+  margin: 0 5px;
   float: left;
   background-position: center;
   background-repeat: no-repeat;

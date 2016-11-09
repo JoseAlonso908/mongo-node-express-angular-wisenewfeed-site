@@ -1,5 +1,6 @@
 const 	express = require('express'),
-		multer = require('multer')
+		multer = require('multer'),
+		path = require('path')
 
 let tempUploads = multer({dest: 'temp/'})
 let router = express.Router()
@@ -22,9 +23,24 @@ router.use((req, res, next) => {
 router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	let {text} = req.body
 
-	console.log(req.files)
+	let filenames = []
 
-	models.Article.create(req.user._id, text, [], () => {
+	if (req.files && req.files.length > 0) {
+		const fs = require('fs')
+
+		for (let file of req.files) {
+			let filename = file.filename,
+				extension = file.originalname.split('.').slice(-1),
+				tempPath = file.path,
+				newFilename = file.filename + '.' + extension
+
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'posts', newFilename))
+			
+			filenames.push(path.join('uploads', 'posts', newFilename))
+		}
+	}
+
+	models.Article.create(req.user._id, text, filenames, () => {
 		res.send({ok: true})
 	})
 })
@@ -43,10 +59,27 @@ router.get('/comment/get', (req, res) => {
 	})
 })
 
-router.post('/comment/add', (req, res) => {
+router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	let {postId, text} = req.body
 
-	models.Comment.addComment(postId, req.user._id, text, (err, post) => {
+	let filenames = []
+
+	if (req.files && req.files.length > 0) {
+		const fs = require('fs')
+
+		for (let file of req.files) {
+			let filename = file.filename,
+				extension = file.originalname.split('.').slice(-1),
+				tempPath = file.path,
+				newFilename = file.filename + '.' + extension
+
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'comments', newFilename))
+			
+			filenames.push(path.join('uploads', 'comments', newFilename))
+		}
+	}
+
+	models.Comment.addComment(postId, req.user._id, text, filenames, (err, post) => {
 		res.send({ok: true})
 	})
 })

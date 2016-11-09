@@ -492,7 +492,6 @@ angular.module('er.services', [])
 		create: function (text, files) {
 			return new Promise(function (resolve, reject) {
 				var fd = new FormData()
-				// fd.append('file', file)
 				fd.append('text', text)
 
 				if (files.length > 0) {
@@ -544,17 +543,26 @@ angular.module('er.services', [])
 })
 .factory('commentService', function ($http, $cookies) {
 	return {
-		add: function (postId, text) {
+		add: function (postId, text, files) {
+			var fd = new FormData()
+
+			fd.append('postId', postId)
+			fd.append('text', text)
+
+			if (files.length > 0) {
+				for (var i in files) {
+					fd.append('files', files[i])
+				}
+			}
+
 			return $http({
 				method: 'POST',
 				url: '/article/comment/add',
 				headers: {
 					'Authorization': $cookies.get('token'),
+					'Content-Type': undefined,
 				},
-				data: {
-					postId: postId,
-					text: text,
-				}
+				data: fd,
 			})
 			.then(function (result) {
 				return result

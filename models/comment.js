@@ -9,6 +9,7 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'user',
 		},
+		images		: [String],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
 		likes		: {type: Number, default: 0},
@@ -18,13 +19,13 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('comment', schema);
 
 	return {
-		addComment: (post, author, text, callback) => {
+		addComment: (post, author, text, images, callback) => {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 			if (typeof author !== 'object') author = mongoose.Schema.Types.ObjectId(author)
 
 			let comment = new Model()
 			Object.assign(comment, {
-				author, post, text
+				author, post, text, images
 			})
 
 			comment.save(callback)

@@ -19,8 +19,10 @@ router.use((req, res, next) => {
 	}
 })
 
-router.post('/create', tempUploads.array('images', 5), (req, res) => {
+router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	let {text} = req.body
+
+	console.log(req.files)
 
 	models.Article.create(req.user._id, text, [], () => {
 		res.send({ok: true})
@@ -33,8 +35,12 @@ router.get('/my', (req, res) => {
 	})
 })
 
-router.post('/comment/get', (req, res) => {
-	let {postId} = req.body
+router.get('/comment/get', (req, res) => {
+	let {postId} = req.query
+
+	models.Comment.getPostComments(postId, (err, comments) => {
+		res.send(comments)
+	})
 })
 
 router.post('/comment/add', (req, res) => {

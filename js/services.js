@@ -487,6 +487,61 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('postService', function ($http, $cookies) {
+	return {
+		create: function (text, files) {
+			return new Promise(function (resolve, reject) {
+				var fd = new FormData()
+				// fd.append('file', file)
+				fd.append('text', text)
+
+				if (files.length > 0) {
+					for (var i in files) {
+						fd.append('files', files[i])
+					}
+				}
+
+				$http({
+					method: 'POST',
+					url: '/article/create',
+					headers: {
+						'Authorization': $cookies.get('token'),
+						'Content-Type': undefined,
+					},
+					uploadEventHandlers: {
+						progress: function (e) {
+							console.log(e.loaded, e.total)
+						},
+					},
+					data: fd,
+				})
+				.success(function (data) {
+					resolve(data)
+				})
+				.error(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		getComments: function (postId) {
+			return $http({
+				method: 'GET',
+				url: '/article/comment/get',
+				cache: false,
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					postId: postId
+				}
+			}).then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+	}
+})
 .factory('commentService', function ($http, $cookies) {
 	return {
 		add: function (postId, text) {
@@ -597,30 +652,5 @@ angular.module('er.services', [])
 		d.resolve(response)
 
 		return d.promise
-	}
-})
-.factory('createPostService', function ($http, $cookies) {
-	return function (text, images) {
-		return new Promise(function (resolve, reject) {
-			var fd = new FormData()
-			// fd.append('file', file)
-			fd.append('text', text)
-
-			$http({
-				method: 'POST',
-				url: '/article/create',
-				headers: {
-					'Authorization': $cookies.get('token'),
-					'Content-Type': undefined,
-				},
-				data: fd,
-			})
-			.success(function (data) {
-				resolve(data)
-			})
-			.error(function (data, status) {
-				reject(data)
-			})
-		})
 	}
 })

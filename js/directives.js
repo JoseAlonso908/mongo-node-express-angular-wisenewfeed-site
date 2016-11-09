@@ -86,23 +86,93 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('onyourmind', function ($rootScope, createPostService) {
+.directive('onyourmind', function ($rootScope, $timeout, postService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/onyourmind.htm',
 		link: function ($scope, element, attr) {
+			$scope.files = []
+
 			$scope.user = $scope.$parent.user
 			$scope.create = function () {
-				createPostService($scope.text).then(function (result) {
+				if ($scope.loading) return
+				$scope.loading = true
+
+				var fileObjects = $scope.files.map(function (file) {
+					return file.fileObject
+				})
+
+				var progress = function () {
+					
+				}
+
+				postService.create($scope.text, fileObjects, progress).then(function (result) {
 					$scope.$parent.$apply(function () {
 						$scope.text = ''
+						$scope.files = []
 						$scope.$parent.$emit('reloadfeed')
+
+						$scope.loading = false
 					})
-					console.log(result)
 				}).catch(function (error) {
 					console.error(error)
+					$scope.loading = false
 				})
 			}
+
+			$scope.addImage = function () {
+				if ($scope.loading) return
+
+				var fileFileInput = element[0].querySelector('input[type=file]')
+				angular.element(fileFileInput).on('change', function (e) {
+					e.stopImmediatePropagation()
+
+					var reader = new FileReader()
+					var file = e.target.files[0]
+
+					reader.addEventListener('load', function () {
+						$scope.$apply(function () {
+							$scope.files.push({
+								base64: reader.result,
+								fileObject: file
+							})
+
+							// Reset form to clean file input. This will
+							// let us upload the same file
+							angular.element(e.target).parent()[0].reset()
+						})
+					})
+
+					reader.readAsDataURL(file)
+				})
+
+				$timeout(function () {
+					fileFileInput.click()
+				}, 0)
+			}
+
+			$scope.removeUpload = function (index) {
+				if ($scope.loading) return
+
+				$scope.files = $scope.files.filter(function (file, fileIndex) {
+					if (index == fileIndex) return false
+					return true
+				})
+			}
+
+			angular.element(element[0].querySelector('textarea')).on('keyup keypress', function (e) {
+				var text = e.target.value,
+					linesCount = text.split(/\n/).length
+
+				var paddingTop = parseInt(window.getComputedStyle(e.target).paddingTop),
+					paddingBottom = parseInt(window.getComputedStyle(e.target).paddingBottom)
+
+				if (linesCount > 3) {
+					angular.element(e.target).css('height', (((linesCount + 1) * 16) + (paddingTop + paddingBottom + 2)) + 'px')
+				} else {
+					angular.element(e.target).css('height', '')
+				}
+			})
 		}
 	}
 })
@@ -112,13 +182,6 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/feed.htm',
 		link: function ($scope, element, attr) {
 			$scope.user = $scope.$parent.user
-
-			$scope.addComment = function (post) {
-				console.log(post)
-				commentService.add(post._id, post.commentText).then(function () {
-					init()
-				})
-			}
 
 			$scope.$parent.$on('reloadfeed', function () {
 				init()
@@ -137,7 +200,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function () {
+.directive('post', function (commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -146,10 +209,17 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.user = $scope.$parent.user
+
+			$scope.addComment = function (post) {
+				commentService.add(post._id, post.commentText).then(function () {
+					post.commentText = ''
+					$scope.$emit('reloadcomments', post._id)
+				})
+			}
 		}
 	}
 })
-.directive('postcomments', function () {
+.directive('postcomments', function (postService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/postcomments.htm',
@@ -157,7 +227,21 @@ angular.module('er.directives', [])
 			post: '='
 		},
 		link: function ($scope, element, attr) {
-			
+			$scope.comments = []
+
+			$scope.$parent.$on('reloadcomments', function (e, args) {
+				console.log(args)
+				init()
+			})
+
+			var init = function () {
+				postService.getComments($scope.post._id).then(function (comments) {
+					$scope.comments = comments
+					$scope.$parent.commentsCount = $scope.comments.length
+				})
+			}
+
+			init()
 		}
 	}
 })

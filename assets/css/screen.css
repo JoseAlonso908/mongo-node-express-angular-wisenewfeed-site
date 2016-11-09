@@ -830,6 +830,26 @@ a[disabled] {
 #wrapper > .content .card.feed-item .comments {
   margin-top: -10px;
 }
+#wrapper > .content .card.feed-item .comments .comment {
+  display: none;
+}
+#wrapper > .content .card.feed-item .comments .comment:nth-last-child(1), #wrapper > .content .card.feed-item .comments .comment:nth-last-child(2), #wrapper > .content .card.feed-item .comments .comment:nth-last-child(3) {
+  display: block;
+}
+#wrapper > .content .card.feed-item .comments .comment:nth-last-child(3):not(.moreShown) .comment-author-avatar,
+#wrapper > .content .card.feed-item .comments .comment:nth-last-child(3):not(.moreShown) .comment-title {
+  display: block !important;
+}
+#wrapper > .content .card.feed-item .comments.moreShown .comment {
+  display: block;
+}
+#wrapper > .content .card.feed-item .comments .comment.minified .comment-author-avatar,
+#wrapper > .content .card.feed-item .comments .comment.minified .comment-title {
+  display: none;
+}
+#wrapper > .content .card.feed-item .comments .comment.minified:not(:last-child) .divider {
+  display: none;
+}
 #wrapper > .content .card.feed-item .comments .comment .comment-title {
   padding-top: 12px;
 }
@@ -970,19 +990,22 @@ a[disabled] {
   box-sizing: border-box;
   resize: none;
   line-height: 16px;
+  overflow: hidden;
 }
 #wrapper > .content .middle .on-your-mind textarea:focus, #wrapper > .content .middle .on-your-mind textarea.not-empty {
-  height: 76px;
+  height: 72px;
 }
 #wrapper > .content .middle .on-your-mind textarea:focus + .send, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send {
   margin-top: 15px;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper > .content .middle .on-your-mind textarea:focus + .send + .upload-image, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image {
-  top: 110px;
-  left: 70px;
-  right: auto;
+#wrapper > .content .middle .on-your-mind textarea:focus + .send + .upload-image-1, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 {
+  display: none;
+}
+#wrapper > .content .middle .on-your-mind textarea:focus + .send + .upload-image-1 + .upload-image-2, #wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 + .upload-image-2 {
+  display: block;
+  margin: 15px 0 0 56px;
 }
 #wrapper > .content .middle .on-your-mind .send {
   width: 75px;
@@ -1014,10 +1037,11 @@ a[disabled] {
   color: #ffffff;
   font-size: 13px;
 }
-#wrapper > .content .middle .on-your-mind .upload-image {
-  position: absolute;
-  top: 25px;
-  right: 18px;
+#wrapper > .content .middle .on-your-mind .upload-image-2 {
+  display: none;
+  float: left;
+}
+#wrapper > .content .middle .on-your-mind .upload-image-1, #wrapper > .content .middle .on-your-mind .upload-image-2 {
   border: none;
   background-color: transparent;
   color: #43abe7;
@@ -1027,11 +1051,52 @@ a[disabled] {
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
-#wrapper > .content .middle .on-your-mind .upload-image i {
+#wrapper > .content .middle .on-your-mind .upload-image-1 i, #wrapper > .content .middle .on-your-mind .upload-image-2 i {
   font-size: 20px;
 }
-#wrapper > .content .middle .on-your-mind .upload-image:hover {
+#wrapper > .content .middle .on-your-mind .upload-image-1:hover, #wrapper > .content .middle .on-your-mind .upload-image-2:hover {
   color: #2ca1e4;
+}
+#wrapper > .content .middle .on-your-mind .upload-image-1 {
+  position: absolute;
+  top: 25px;
+  right: 18px;
+}
+#wrapper > .content .middle .on-your-mind.loading .upload-files .file:hover .remove {
+  opacity: 0;
+}
+#wrapper > .content .middle .on-your-mind .upload-files {
+  margin: 15px 0 0 54px;
+}
+#wrapper > .content .middle .on-your-mind .upload-files .file {
+  width: 90px;
+  height: 90px;
+  margin: 0 6px;
+  float: left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 3px;
+  overflow: hidden;
+}
+#wrapper > .content .middle .on-your-mind .upload-files .file .remove {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  line-height: 90px;
+  opacity: 0;
+  border-radius: inherit;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#wrapper > .content .middle .on-your-mind .upload-files .file:hover .remove {
+  opacity: 1;
 }
 #wrapper > .content .left {
   order: 1;

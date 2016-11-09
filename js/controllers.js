@@ -242,8 +242,6 @@ angular.module('er.controllers', [])
 
 		$scope.saving = true
 		if ($scope.profileForm.$valid) {
-			console.log($scope.user.intro)
-
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
 				$cookies.remove('user')
 				identityService().then(function (user) {

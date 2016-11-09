@@ -14,7 +14,7 @@ angular.module('er.filters', [])
 .filter('categories', function () {
 	return function (input) {
 		input = input || ''
-		return input.replace(/\$([a-z0-9]+)/gi, '<a href="#!/category/$1" class="text-category">$$1</a>')
+		return input.replace(/\$([a-z0-9]+)/gi, '<a href="#!/category/$1" class="text-category">$$$1</a>')
 	}
 })
 .filter('textLinks', function ($filter) {

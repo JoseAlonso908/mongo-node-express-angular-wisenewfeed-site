@@ -822,6 +822,42 @@ a {
 					margin-top: -10px;
 
 					.comment {
+						display: none;
+
+						&:nth-last-child(1),
+						&:nth-last-child(2),
+						&:nth-last-child(3) {
+							display: block;
+						}
+
+						&:nth-last-child(3):not(.moreShown) {
+							.comment-author-avatar,
+							.comment-title {
+								display: block !important;
+							}
+						}
+					}
+
+					&.moreShown {
+						.comment {
+							display: block;
+						}
+					}
+
+					.comment {
+						&.minified {
+							.comment-author-avatar,
+							.comment-title {
+								display: none;
+							}
+
+							&:not(:last-child) {
+								.divider {
+									display: none;
+								}
+							}
+						}
+
 						.comment-title {
 							padding-top: 12px;
 						}
@@ -980,9 +1016,12 @@ a {
 					box-sizing: border-box;
 					resize: none;
 					line-height: 16px;
+					overflow: hidden;
+
+					// @include transition(height .1s);
 
 					&:focus, &.not-empty {
-						height: 76px;
+						height: 72px;
 
 						& + .send {
 							margin-top: 15px;
@@ -990,9 +1029,13 @@ a {
 							pointer-events: auto;
 						}
 
-						& + .send + .upload-image {
-							top: 110px; left: 70px;
-							right: auto;
+						& + .send + .upload-image-1 {
+							display: none;
+						}
+
+						& + .send + .upload-image-1 + .upload-image-2 {
+							display: block;
+							margin: 15px 0 0 56px;
 						}
 					}
 				}
@@ -1031,10 +1074,12 @@ a {
 					}
 				}
 
-				.upload-image {
-					position: absolute;
-					top: 25px;
-					right: 18px;
+				.upload-image-2 {
+					display: none;
+					float: left;
+				}
+
+				.upload-image-1, .upload-image-2 {
 					border: none;
 					background-color: transparent;
 					color: $activeBlue;
@@ -1047,6 +1092,57 @@ a {
 
 					&:hover {
 						color: darken($activeBlue, 5%);
+					}
+				}
+
+				.upload-image-1 {
+					position: absolute;
+					top: 25px;
+					right: 18px;
+				}
+
+				&.loading {
+					.upload-files {
+						.file:hover {
+							.remove {
+								opacity: 0;
+							}
+						}
+					}
+				}
+
+				.upload-files {
+					margin: 15px 0 0 54px;
+					
+					.file {
+						width: 90px; height: 90px;
+						margin: 0 6px;
+						float: left;
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: cover;
+						border-radius: 3px;
+						overflow: hidden;
+
+						.remove {
+							position: absolute;
+							width: inherit; height: inherit;
+							background-color: rgba(0, 0, 0, .4);
+							color: #ffffff;
+							font-size: 24px;
+							text-align: center;
+							line-height: 90px;
+							opacity: 0;
+							border-radius: inherit;
+
+							@include transition(opacity .2s);
+						}
+
+						&:hover {
+							.remove {
+								opacity: 1;
+							}
+						}
 					}
 				}
 			}

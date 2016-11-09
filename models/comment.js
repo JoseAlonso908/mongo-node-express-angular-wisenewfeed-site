@@ -28,6 +28,12 @@ var Model = function(mongoose) {
 			})
 
 			comment.save(callback)
+		},
+
+		getPostComments: (post, callback) => {
+			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
+
+			Model.find({post}).populate('author').exec(callback)
 		}
 	}
 }

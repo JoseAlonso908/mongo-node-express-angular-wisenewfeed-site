@@ -52,7 +52,7 @@
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>
-			<div class="number">{{post.comments.length || 0}}</div>
+			<div class="number">{{commentsCount || 0}}</div>
 		</div>
 	</div>
 
@@ -62,7 +62,7 @@
 	<div class="comment-box" ng-if="user && user.role != 'User'">
 		<avatar user="user"></avatar>
 		<textarea placeholder="Write a comment..." ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
-		<button ng-click="$parent.$parent.addComment(post)" class="send">
+		<button ng-click="$parent.addComment(post)" class="send">
 			<div>
 				<i class="material-icons">send</i>
 				<div class="title">Send</div>

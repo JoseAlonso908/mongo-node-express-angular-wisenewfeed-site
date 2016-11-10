@@ -269,7 +269,7 @@ angular.module('er.controllers', [])
 	$scope.changeAvatar = function (fileObject) {
 		uploadAvatarService(fileObject).then(function (result) {
 			// $cookies.remove('user')
-			identityService().then(function (user) {
+			identityService(true).then(function (user) {
 				$scope.user = user
 			})
 		}).catch(function (error) {

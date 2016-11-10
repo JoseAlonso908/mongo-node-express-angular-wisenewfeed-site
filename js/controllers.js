@@ -220,7 +220,10 @@ angular.module('er.controllers', [])
 	$scope.r_categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4']
 
 	identityService().then(function (user) {
-		$scope.user = user
+		// Doesn't work without timeout
+		$timeout(function() {
+			$scope.user = user
+		})
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {

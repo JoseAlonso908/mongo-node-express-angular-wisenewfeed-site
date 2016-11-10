@@ -287,7 +287,7 @@ angular.module('er.controllers', [])
 				
 				uploadWallpaperService(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService().then(function (user) {
+					identityService(true).then(function (user) {
 						$scope.user = user
 					})
 				}).catch(function (error) {

@@ -103,7 +103,7 @@ angular.module('er.controllers', [])
 				})
 			},
 			function (callback) {
-				validatePhoneService($scope.signup.phone).then(function (response) {
+				validatePhoneService('+' + $scope.signup.country.code + $scope.signup.phone).then(function (response) {
 					callback()
 				}, function (error) {
 					callback(error)

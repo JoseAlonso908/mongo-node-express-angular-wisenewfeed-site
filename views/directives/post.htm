@@ -18,7 +18,7 @@
 			<div class="text" ng-bind-html="post.text | textLinks"></div>
 
 			<div class="images">
-				<div lightbox lb-href="image" class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></div>
+				<a ng-href="image" lightbox class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></a>
 			</div>
 		</div>
 

@@ -716,6 +716,10 @@ a {
 								background-repeat: no-repeat;
 								background-size: cover;
 								border-radius: 2px;
+
+								&:hover {
+									opacity: 1;
+								}
 							}
 						}
 
@@ -843,6 +847,21 @@ a {
 				.comments {
 					margin-top: -10px;
 
+					.show-more {
+						display: block;
+						width: 100%; height: 32px;
+						font-size: 13px;
+						line-height: 32px;
+						text-align: center;
+						// text-transform: uppercase;
+						@include transition(background-color .2s);
+
+						&:hover {
+							background-color: lighten($activeBlue, 35%);
+							opacity: 1;
+						}
+					}
+
 					.comment {
 						display: none;
 
@@ -933,6 +952,10 @@ a {
 								background-repeat: no-repeat;
 								background-size: cover;
 								border-radius: 2px;
+
+								&:hover {
+									opacity: 1;
+								}
 							}
 						}
 					}
@@ -2515,6 +2538,24 @@ a {
 				}
 			}
 		}
+	}
+}
+
+.backdrop {
+	display: flex;
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	z-index: 5;
+	background-color: rgba(0, 0, 0, .8);
+	padding: 50px;
+	box-sizing: border-box;
+
+	.image {
+		width: 100%; height: 100%;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
 	}
 }
 

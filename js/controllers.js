@@ -41,7 +41,7 @@ angular.module('er.controllers', [])
 	// $cookies.remove('user')
 
 	$scope.authenticate = function (provider) {
-		$cookies.remove('user')
+		// $cookies.remove('user')
 		$auth.logout()
 
 		$auth.authenticate(provider)
@@ -129,7 +129,7 @@ angular.module('er.controllers', [])
 
 	$scope.logout = function () {
 		$auth.logout()
-		$cookies.remove('user')
+		// $cookies.remove('user')
 		$scope.user = undefined
 	}
 
@@ -253,7 +253,7 @@ angular.module('er.controllers', [])
 		if ($scope.profileForm.$valid) {
 			$scope.saving = true
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
-				$cookies.remove('user')
+				// $cookies.remove('user')
 				identityService().then(function (user) {
 					$scope.user = user
 					$scope.saving = false
@@ -267,7 +267,7 @@ angular.module('er.controllers', [])
 
 	$scope.changeAvatar = function (fileObject) {
 		uploadAvatarService(fileObject).then(function (result) {
-			$cookies.remove('user')
+			// $cookies.remove('user')
 			identityService().then(function (user) {
 				$scope.user = user
 			})
@@ -285,7 +285,7 @@ angular.module('er.controllers', [])
 				var file = e.target.files[0]
 				
 				uploadWallpaperService(file).then(function (result) {
-					$cookies.remove('user')
+					// $cookies.remove('user')
 					identityService().then(function (user) {
 						$scope.user = user
 					})
@@ -309,7 +309,7 @@ angular.module('er.controllers', [])
 				var file = e.target.files[0]
 
 				certificatesService.add(file).then(function (result) {
-					$cookies.remove('user')
+					// $cookies.remove('user')
 					identityService().then(function (user) {
 						$scope.user = user
 					})
@@ -326,7 +326,7 @@ angular.module('er.controllers', [])
 
 	$scope.removeCertificate = function (cert) {
 		certificatesService.remove(cert).then(function (result) {
-			$cookies.remove('user')
+			// $cookies.remove('user')
 			identityService().then(function (user) {
 				$scope.user = user
 			})
@@ -344,7 +344,7 @@ angular.module('er.controllers', [])
 				var file = e.target.files[0]
 
 				downloadsService.add(file).then(function (result) {
-					$cookies.remove('user')
+					// $cookies.remove('user')
 					identityService().then(function (user) {
 						$scope.user = user
 					})
@@ -361,7 +361,7 @@ angular.module('er.controllers', [])
 
 	$scope.removeDownload = function (file) {
 		downloadsService.remove(file).then(function (result) {
-			$cookies.remove('user')
+			// $cookies.remove('user')
 			identityService().then(function (user) {
 				$scope.user = user
 			})

@@ -461,3 +461,38 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('lightbox', function () {
+	return {
+		restrict: 'A',
+		scope: {
+			ngHref: '=',
+		},
+		link: function ($scope, element, attr) {
+			var imageUrl = window.location.origin + '/' + $scope.ngHref
+			var body = angular.element(document.body)
+
+			element.on('click', function (e) {
+				e.preventDefault()
+
+				var backdrop = angular.element('<div class="backdrop"></div>'),
+					image = angular.element('<div class="image"></div>')
+
+				image.css('backgroundImage', 'url(' + imageUrl + ')')
+
+				backdrop.append(image)
+				body.append(backdrop)
+
+				var closeLightbox = function (e) {
+					backdrop.remove({})
+				}
+
+				backdrop.on('click', closeLightbox)
+				body.on('keydown', function (e) {
+					if (e.keyCode == 27) {
+						closeLightbox()
+					}
+				})
+			})
+		}
+	}
+})

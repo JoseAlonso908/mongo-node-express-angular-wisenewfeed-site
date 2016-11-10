@@ -53,13 +53,14 @@ angular.module('er', [
 
 		var requireAuth = ['/my']
 
-		var userCookie = $cookies.get('user')
-
-		if (userCookie) userCookie = JSON.parse(userCookie)
-
-		if (requireAuth.indexOf(nextURI) > -1 && (!userCookie || userCookie.role == 'User')) {
+		identityService().then(function (user) {
+			if (requireAuth.indexOf(nextURI) > -1 && (!user || user.role == 'User')) {
+				event.preventDefault()
+				$location.url('/start')
+			}
+		}, function () {
 			event.preventDefault()
 			$location.url('/start')
-		}
+		})
 	})
 })

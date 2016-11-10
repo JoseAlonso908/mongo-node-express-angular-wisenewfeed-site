@@ -738,6 +738,9 @@ a[disabled] {
   background-size: cover;
   border-radius: 2px;
 }
+#wrapper > .content .card.feed-item .body .content .images .image:hover {
+  opacity: 1;
+}
 #wrapper > .content .card.feed-item .body .content img {
   display: block;
   width: 100%;
@@ -846,6 +849,22 @@ a[disabled] {
 #wrapper > .content .card.feed-item .comments {
   margin-top: -10px;
 }
+#wrapper > .content .card.feed-item .comments .show-more {
+  display: block;
+  width: 100%;
+  height: 32px;
+  font-size: 13px;
+  line-height: 32px;
+  text-align: center;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+#wrapper > .content .card.feed-item .comments .show-more:hover {
+  background-color: #e1f2fb;
+  opacity: 1;
+}
 #wrapper > .content .card.feed-item .comments .comment {
   display: none;
 }
@@ -909,6 +928,9 @@ a[disabled] {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 2px;
+}
+#wrapper > .content .card.feed-item .comments .comment .images .image:hover {
+  opacity: 1;
 }
 #wrapper > .content .card.feed-item .comment-box {
   position: relative;
@@ -2312,6 +2334,26 @@ a[disabled] {
 }
 .backdrop .popup .footer button.confirm:hover {
   background-color: #1c95db;
+}
+
+.backdrop {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 50px;
+  box-sizing: border-box;
+}
+.backdrop .image {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 @media (max-width: 1235px) {

@@ -151,12 +151,19 @@ angular.module('er.services', [])
 	}
 })
 .factory('identityService', function ($http, $cookies, $auth, $q) {
+	var _user = undefined
+	console.log('Remembered user')
+	console.log(_user)
+
 	return function () {
 		var d = $q.defer()
 
-		var user = $cookies.getObject('user')
-		if (user) d.resolve(user)
-		else {
+		// var user = $cookies.getObject('user')
+		if (_user) {
+			console.log('Returning remembered')
+			console.log(_user)
+			d.resolve(_user)
+		} else {
 			$http.get('/me', {
 				header: {
 					authorization: ($auth.getToken() || $cookies.get('token'))
@@ -196,10 +203,12 @@ angular.module('er.services', [])
 				}
 
 				if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
-					$cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
+					// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
 				} else {
-					$cookies.putObject('user', user)
+					// $cookies.putObject('user', user)
 				}
+
+				_user = user
 
 				$cookies.put('token', $auth.getToken())
 

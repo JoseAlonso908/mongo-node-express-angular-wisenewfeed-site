@@ -255,7 +255,7 @@ angular.module('er.controllers', [])
 			$scope.saving = true
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
 				// $cookies.remove('user')
-				identityService().then(function (user) {
+				identityService(true).then(function (user) {
 					$scope.user = user
 					$scope.saving = false
 					$location.url('/my')
@@ -312,7 +312,7 @@ angular.module('er.controllers', [])
 
 				certificatesService.add(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService().then(function (user) {
+					identityService(true).then(function (user) {
 						$scope.user = user
 					})
 				}).catch(function (error) {

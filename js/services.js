@@ -155,11 +155,11 @@ angular.module('er.services', [])
 	console.log('Remembered user')
 	console.log(_user)
 
-	return function () {
+	return function (clean) {
 		var d = $q.defer()
 
 		// var user = $cookies.getObject('user')
-		if (_user) {
+		if (_user && clean === undefined || clean === false) {
 			console.log('Returning remembered')
 			console.log(_user)
 			d.resolve(_user)

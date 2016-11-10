@@ -442,7 +442,50 @@ angular.module('er.services', [])
 })
 .factory('feedService', function ($sce, $http, $cookies) {
 	return {
-		get: function () {
+		all: function () {
+			return $http({
+				method: 'GET',
+				url: '/article/all',
+				cache: false,
+				headers: {
+					'Authorization': $cookies.get('token') || 'guest',
+				},
+			})
+			.then(function (result) {
+				var feed = result.data
+
+				for (var i in feed) {
+					var post = feed[i]
+
+					post.ratings.expert.likes = numeral(post.ratings.expert.likes).format('0a').toUpperCase()
+					post.ratings.expert.dislikes = numeral(post.ratings.expert.dislikes).format('0a').toUpperCase()
+					post.ratings.expert.shares = numeral(post.ratings.expert.shares).format('0a').toUpperCase()
+					post.ratings.journalist.likes = numeral(post.ratings.journalist.likes).format('0a').toUpperCase()
+					post.ratings.journalist.dislikes = numeral(post.ratings.journalist.dislikes).format('0a').toUpperCase()
+					post.ratings.journalist.shares = numeral(post.ratings.journalist.shares).format('0a').toUpperCase()
+					post.ratings.visitor.likes = numeral(post.ratings.visitor.likes).format('0a').toUpperCase()
+					post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
+					post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
+
+					// post.text = $sce.trustAsHtml(parseTextService(post.text))
+
+					if (post.comments) {
+						for (var j in post.comments) {
+							var comment = post.comments[j]
+							// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
+							post.comments[j] = comment
+						}
+					}
+					
+					feed[i] = post
+				}
+				
+				return feed
+			}, function (data, status) {
+				return data
+			})
+		},
+		my: function () {
 			return $http({
 				method: 'GET',
 				url: '/article/my',

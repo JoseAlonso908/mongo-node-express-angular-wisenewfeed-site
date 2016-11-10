@@ -12,10 +12,8 @@ router.use((req, res, next) => {
 		req.access_token = req.headers.authorization.split(' ')[1]
 
 		models.Token.getUserByToken(req.access_token, (err, user) => {
-			if (user) {
-				req.user = user
-				next()
-			} else res.status(400).send({message: 'Invalid token'})
+			req.user = user
+			next()
 		})
 	}
 })
@@ -45,7 +43,15 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	})
 })
 
+router.get('/all', (req, res) => {
+	models.Article.getAll((err, articles) => {
+		res.send(articles)
+	})
+})
+
 router.get('/my', (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+
 	models.Article.getByUser(req.user._id, (err, articles) => {
 		res.send(articles)
 	})
@@ -60,6 +66,8 @@ router.get('/comment/get', (req, res) => {
 })
 
 router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	
 	let {postId, text} = req.body
 
 	let filenames = []

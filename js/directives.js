@@ -189,10 +189,15 @@ angular.module('er.directives', [])
 				init()
 			})
 
+			var feedType = 'my'
+			if (!$scope.user) {
+				feedType = 'all'
+			}
+
 			var init = function () {
 				$scope.feedLoading = true
 				$scope.feed = []
-				feedService.get().then(function (feed) {
+				feedService[feedType]().then(function (feed) {
 					$scope.feedLoading = false
 					$scope.feed = feed
 				})

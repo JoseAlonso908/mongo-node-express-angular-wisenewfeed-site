@@ -47,6 +47,10 @@ var Model = function(mongoose) {
 			article.save(callback)
 		},
 
+		getAll: (callback) => {
+			Model.find().select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
 		getByUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Schema.Types.ObjectId(author)
 

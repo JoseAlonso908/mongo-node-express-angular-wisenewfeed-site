@@ -55,12 +55,16 @@ angular.module('er', [
 
 		identityService.get().then(function (user) {
 			if (requireAuth.indexOf(nextURI) > -1 && (!user || user.role == 'User')) {
+				console.log('Prevented to go to', nextURI)
 				event.preventDefault()
 				$location.url('/start')
 			}
 		}, function () {
-			event.preventDefault()
-			$location.url('/start')
+			if (requireAuth.indexOf(nextURI) > -1) {
+				console.log('Prevented to go to', nextURI)
+				event.preventDefault()
+				$location.url('/start')
+			}
 		})
 	})
 })

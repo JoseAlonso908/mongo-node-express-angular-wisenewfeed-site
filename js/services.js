@@ -155,72 +155,77 @@ angular.module('er.services', [])
 	console.log('Remembered user')
 	console.log(_user)
 
-	return function (clean) {
-		var d = $q.defer()
+	return {
+		get: function (clean) {
+			var d = $q.defer()
 
-		// var user = $cookies.getObject('user')
-		if (_user && clean === undefined || clean === false) {
-			console.log('Returning remembered')
-			console.log(_user)
-			d.resolve(_user)
-		} else {
-			$http.get('/me', {
-				header: {
-					authorization: ($auth.getToken() || $cookies.get('token'))
-				}
-			}).then(function (response) {
-				var user = response.data
+			// var user = $cookies.getObject('user')
+			if (_user && clean === undefined || clean === false) {
+				console.log('Returning remembered')
+				console.log(_user)
+				d.resolve(_user)
+			} else {
+				$http.get('/me', {
+					header: {
+						authorization: ($auth.getToken() || $cookies.get('token'))
+					}
+				}).then(function (response) {
+					var user = response.data
 
-				user.rating = user.rating || 1
-				user.color = user.color || 'bronze'
-				user.likes = user.likes || 0
-				user.xp = user.xp || 0
-				user.dislikes = user.dislikes || 0
-				user.reactions = user.reactions || 0
-				user.followers = user.followers || 0
-				user.following = user.following || 0
-				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+					user.rating = user.rating || 1
+					user.color = user.color || 'bronze'
+					user.likes = user.likes || 0
+					user.xp = user.xp || 0
+					user.dislikes = user.dislikes || 0
+					user.reactions = user.reactions || 0
+					user.followers = user.followers || 0
+					user.following = user.following || 0
+					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 
-				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
+					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
-				user.experience = user.experience
+					user.experience = user.experience
 
-				if (user.experience.length == 0) {
-					user.experience = [
-						{
-							time: 'Aug \'13 - Jun \'15',
-							place: 'Co & Co',
-							description: 'Did nothing here',
-						},
+					// if (user.experience.length == 0) {
+					// 	user.experience = [
+					// 		{
+					// 			time: 'Aug \'13 - Jun \'15',
+					// 			place: 'Co & Co',
+					// 			description: 'Did nothing here',
+					// 		},
 
-						{
-							time: 'Jun \'15 - Today',
-							place: 'Co & Co - 2',
-							description: 'Did a lot of things here',
-						},
-					]
-				}
+					// 		{
+					// 			time: 'Jun \'15 - Today',
+					// 			place: 'Co & Co - 2',
+					// 			description: 'Did a lot of things here',
+					// 		},
+					// 	]
+					// }
 
-				if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
-					// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
-				} else {
-					// $cookies.putObject('user', user)
-				}
+					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
+						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
+					} else {
+						// $cookies.putObject('user', user)
+					}
 
-				_user = user
+					_user = user
 
-				$cookies.put('token', $auth.getToken())
+					$cookies.put('token', $auth.getToken())
 
-				// localStorage.removeItem('satellizer_token')
+					// localStorage.removeItem('satellizer_token')
 
-				d.resolve(user)
-			}, function (error) {
-				d.reject(error.message)
-			})
+					d.resolve(user)
+				}, function (error) {
+					d.reject(error.message)
+				})
+			}
+
+			return d.promise
+		},
+		clean: function () {
+			_user = undefined
 		}
-
-		return d.promise
 	}
 
 	// return new Promise(function (resolve, reject) {

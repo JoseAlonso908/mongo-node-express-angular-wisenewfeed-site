@@ -1250,7 +1250,7 @@ a[disabled] {
   font-size: 13px;
   line-height: 20px;
 }
-#wrapper > .content .left .user-description-block.editing a.file:before {
+#wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file-download:before {
   content: 'delete_forever' !important;
 }
 #wrapper > .content .left .user-description-block:not(.editing) a.file.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before {
@@ -1265,6 +1265,9 @@ a[disabled] {
   font-size: 13px;
   font-weight: 900;
   line-height: 25px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #wrapper > .content .left .user-description-block a.file:before, #wrapper > .content .left .user-description-block a.file-download:before {
   position: absolute;

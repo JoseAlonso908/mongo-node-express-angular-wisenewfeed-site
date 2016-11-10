@@ -24,7 +24,7 @@ angular.module('er.controllers', [])
 	// $auth.logout()
 
 	$scope.identityLoading = true
-	identityService().then(function (user) {
+	identityService.get().then(function (user) {
 		$scope.identityLoading = false
 		$scope.user = user
 		return $location.url('/')
@@ -46,7 +46,7 @@ angular.module('er.controllers', [])
 
 		$auth.authenticate(provider)
 		.then(function (response) {
-			identityService().then(function (user) {
+			identityService.get().then(function (user) {
 				$scope.user = user
 				$location.url('/')
 			})
@@ -219,7 +219,7 @@ angular.module('er.controllers', [])
 	$scope.r_people = ['Guy 1', 'Guy 2', 'Guy 3', 'Guy 4', 'Guy 5', 'Guy 6', 'Guy 7']
 	$scope.r_categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4']
 
-	identityService().then(function (user) {
+	identityService.get().then(function (user) {
 		// Doesn't work without timeout
 		$timeout(function() {
 			$scope.user = user
@@ -230,7 +230,7 @@ angular.module('er.controllers', [])
 .controller('profileController', function ($scope, $location, identityService) {
 	$scope.wallpaperStyle = {}
 
-	identityService().then(function (user) {
+	identityService.get().then(function (user) {
 		$scope.user = user
 
 		if ($scope.user.wallpaper) {
@@ -255,7 +255,7 @@ angular.module('er.controllers', [])
 			$scope.saving = true
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
 				// $cookies.remove('user')
-				identityService(true).then(function (user) {
+				identityService.get(true).then(function (user) {
 					$scope.user = user
 					$scope.saving = false
 					$location.url('/my')
@@ -269,7 +269,7 @@ angular.module('er.controllers', [])
 	$scope.changeAvatar = function (fileObject) {
 		uploadAvatarService(fileObject).then(function (result) {
 			// $cookies.remove('user')
-			identityService(true).then(function (user) {
+			identityService.get(true).then(function (user) {
 				$scope.user = user
 			})
 		}).catch(function (error) {
@@ -287,7 +287,7 @@ angular.module('er.controllers', [])
 				
 				uploadWallpaperService(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService(true).then(function (user) {
+					identityService.get(true).then(function (user) {
 						$scope.user = user
 					})
 				}).catch(function (error) {
@@ -312,7 +312,7 @@ angular.module('er.controllers', [])
 
 				certificatesService.add(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService(true).then(function (user) {
+					identityService.get(true).then(function (user) {
 						$scope.user = user
 					})
 				}).catch(function (error) {
@@ -329,7 +329,7 @@ angular.module('er.controllers', [])
 	$scope.removeCertificate = function (cert) {
 		certificatesService.remove(cert).then(function (result) {
 			// $cookies.remove('user')
-			identityService().then(function (user) {
+			identityService.get(true).then(function (user) {
 				$scope.user = user
 			})
 		}).catch(function (error) {
@@ -347,7 +347,7 @@ angular.module('er.controllers', [])
 
 				downloadsService.add(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService().then(function (user) {
+					identityService.get().then(function (user) {
 						$scope.user = user
 					})
 				}).catch(function (error) {
@@ -365,7 +365,7 @@ angular.module('er.controllers', [])
 	$scope.removeDownload = function (file) {
 		downloadsService.remove(file).then(function (result) {
 			// $cookies.remove('user')
-			identityService().then(function (user) {
+			identityService.get().then(function (user) {
 				$scope.user = user
 			})
 		}).catch(function (error) {
@@ -398,7 +398,7 @@ angular.module('er.controllers', [])
 		}
 	}
 
-	identityService().then(function (user) {
+	identityService.get().then(function (user) {
 		$scope.user = user
 
 		if ($scope.user.wallpaper) {

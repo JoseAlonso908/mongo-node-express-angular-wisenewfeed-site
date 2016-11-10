@@ -1329,7 +1329,7 @@ a {
 				}
 
 				&.editing {
-					a.file {
+					a.file, a.file-download {
 						&:before {
 							content: 'delete_forever' !important;
 						}
@@ -1354,6 +1354,9 @@ a {
 					font-size: 13px;
 					font-weight: 900;
 					line-height: 25px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
 
 					&:before {
 						position: absolute;

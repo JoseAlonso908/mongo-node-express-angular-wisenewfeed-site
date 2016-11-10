@@ -53,7 +53,7 @@ angular.module('er', [
 
 		var requireAuth = ['/my']
 
-		identityService().then(function (user) {
+		identityService.get().then(function (user) {
 			if (requireAuth.indexOf(nextURI) > -1 && (!user || user.role == 'User')) {
 				event.preventDefault()
 				$location.url('/start')

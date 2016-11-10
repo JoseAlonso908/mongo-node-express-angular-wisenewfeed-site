@@ -48,7 +48,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('usermenu', function ($auth, $rootScope, $cookies, $location) {
+.directive('usermenu', function ($auth, $rootScope, $cookies, $location, identityService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/usermenu.htm',
@@ -57,6 +57,7 @@ angular.module('er.directives', [])
 			$scope.logout = function () {
 				$cookies.remove('user')
 				$auth.logout()
+				identityService.clean()
 				$location.url('/start')
 			}
 

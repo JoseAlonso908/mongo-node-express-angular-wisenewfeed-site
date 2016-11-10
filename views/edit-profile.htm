@@ -95,7 +95,7 @@
 					<div class="address-element fb"><input name="fb" placeholder="Facebook" ng-model="user.contact.fb"></div>
 				</div>
 
-				<div class="user-description-block">
+				<div class="user-description-block editing">
 					<div class="title">Downloads</div>
 					<a href="javascript:void(0);" ng-click="removeDownload(file)" class="file-download" ng-repeat="file in user.downloads">{{file.filename}}</a>
 					<input type="file" name="download" class="hidden-file-input">

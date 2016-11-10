@@ -102,9 +102,7 @@ angular.module('er.directives', [])
 					return file.fileObject
 				})
 
-				var progress = function () {
-					
-				}
+				var progress = function () {}
 
 				postService.create($scope.text, fileObjects, progress).then(function (result) {
 					$scope.$parent.$apply(function () {
@@ -129,6 +127,10 @@ angular.module('er.directives', [])
 
 					var reader = new FileReader()
 					var file = e.target.files[0]
+
+					if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+						return
+					}
 
 					reader.addEventListener('load', function () {
 						$scope.$apply(function () {
@@ -243,6 +245,10 @@ angular.module('er.directives', [])
 
 					var reader = new FileReader()
 					var file = e.target.files[0]
+
+					if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+						return
+					}
 
 					reader.addEventListener('load', function () {
 						$scope.$apply(function () {

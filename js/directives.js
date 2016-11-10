@@ -150,6 +150,7 @@ angular.module('er.directives', [])
 
 				$timeout(function () {
 					fileFileInput.click()
+					$timeout.cancel(this)
 				}, 0)
 			}
 
@@ -273,6 +274,7 @@ angular.module('er.directives', [])
 
 				$timeout(function () {
 					fileFileInput.click()
+					$timeout.cancel(this)
 				}, 0)
 			}
 		}
@@ -392,6 +394,7 @@ angular.module('er.directives', [])
 
 					$timeout(function () {
 						fileInput.click()
+						$timeout.cancel(this)
 					}, 0)
 				}
 			}

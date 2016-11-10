@@ -223,6 +223,7 @@ angular.module('er.controllers', [])
 		// Doesn't work without timeout
 		$timeout(function() {
 			$scope.user = user
+			$timeout.cancel(this)
 		})
 	})
 })
@@ -297,6 +298,7 @@ angular.module('er.controllers', [])
 
 		$timeout(function () {
 			wallpaperFileInput.click()
+			$timeout.cancel(this)
 		}, 0)
 	}
 
@@ -356,6 +358,7 @@ angular.module('er.controllers', [])
 
 		$timeout(function () {
 			certificateFileInput.click()
+			$timeout.cancel(this)
 		}, 0)
 	}
 

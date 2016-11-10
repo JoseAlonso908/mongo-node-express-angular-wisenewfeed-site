@@ -2,3 +2,5 @@ node_modules/
 .sass-cache/
 assets/.sass-cache/
 token
+uploads/
+temp/

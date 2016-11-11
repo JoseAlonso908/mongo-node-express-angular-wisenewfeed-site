@@ -1,7 +1,7 @@
 <div class="comments" ng-show="comments.length > 0">
 	<a href="javascript:void(0);" class="show-more" ng-if="comments.length > 3">Show more</a>
 
-	<div class="comment" ng-repeat="comment in comments" ng-class="{minified: comment.author._id == comments[$index - 1].author._id}">
+	<div class="comment" ng-repeat="comment in comments">
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
 			<span class="name dark-bold">{{comment.author.name}}</span>

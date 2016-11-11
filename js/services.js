@@ -376,8 +376,8 @@ angular.module('er.services', [])
 		add: function (file) {
 			return new Promise(function (resolve, reject) {
 				var fd = new FormData()
-				fd.append('file', file)
 				fd.append('token', $cookies.get('token'))
+				fd.append('file', file)
 
 				$http({
 					method: 'POST',
@@ -418,8 +418,8 @@ angular.module('er.services', [])
 		add: function (file) {
 			return new Promise(function (resolve, reject) {
 				var fd = new FormData()
-				fd.append('file', file)
 				fd.append('token', $cookies.get('token'))
+				fd.append('file', file)
 
 				$http({
 					method: 'POST',

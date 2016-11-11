@@ -56,6 +56,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.logout = function () {
 				$cookies.remove('user')
+				$cookies.remove('token')
 				$auth.logout()
 				identityService.clean()
 				$location.url('/start')

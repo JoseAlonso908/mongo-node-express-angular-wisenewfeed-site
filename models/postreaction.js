@@ -19,6 +19,10 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('postreaction', schema);
 
 	return {
+		find: (query, callback) => {
+			Model.find(query).exec(callback)
+		},
+
 		react: (author, post, type, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)

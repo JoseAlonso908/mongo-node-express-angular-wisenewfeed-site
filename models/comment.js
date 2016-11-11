@@ -39,6 +39,16 @@ var Model = function(mongoose) {
 			Model.find({post}).populate('author').exec((err, comments) => {
 				callback(err, comments)
 			})
+		},
+
+		getByUser: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+
+			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
+		getByArticles: (articlesIds, callback) => {
+			Model.find({post: {$in: articlesIds}}).exec(callback)
 		}
 	}
 }

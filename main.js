@@ -1,5 +1,5 @@
 const config = require('./config')
-const env = 'development'
+const env = 'local'
 
 global.__root = __dirname
 
@@ -12,7 +12,6 @@ const
 	bodyParser = require('body-parser'),
 	// multer = require('multer'),
 	request = require('request'),
-	qs = require('querystring'),
 	countriesList = require('countries-list'),
 	Mailgun = require('mailgun').Mailgun
 

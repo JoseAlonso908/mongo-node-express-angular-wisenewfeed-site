@@ -3,7 +3,7 @@
 
 	<div class="body">
 		<div class="title">
-			<div class="name dark-bold">{{post.author.name}}</div>
+			<a ng-href="#!/person/{{post.author._id}}" class="name dark-bold">{{post.author.name}}</a>
 			<div class="time small-light" am-time-ago="post.createdAt"></div>
 			<div class="separator" ng-show="post.author.position">&bull;</div>
 			<div class="position small-light" ng-show="post.author.position">{{post.author.position}}</div>
@@ -47,7 +47,7 @@
 	<div class="divider" ng-if="user"></div>
 
 	<postcomments post="post"></postcomments>
-	<div class="comment-box" ng-if="user && user.role != 'User'">
+	<div class="comment-box" ng-if="user">
 		<avatar user="user"></avatar>
 		<textarea placeholder="Write a comment..." ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
 		<button ng-click="$parent.addComment(post)" class="send">

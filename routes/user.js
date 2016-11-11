@@ -4,7 +4,8 @@ const 	express = require('express'),
 		async = require('async'),
 		validator = require('validator'),
 		path = require('path'),
-		request = require('request')
+		request = require('request'),
+		qs = require('querystring')
 
 const config = require('./../config')
 
@@ -38,6 +39,29 @@ router.get('/me', (req, res) => {
 
 	models.Token.getUserByToken(token, (err, user) => {
 		res.send(user)
+	})
+})
+
+router.get('/user', (req, res) => {
+	let {id} = req.query
+
+	let result = {}
+
+	async.series([
+		(callback) => {
+			models.User.findById(id, (err, user) => {
+				result = user.toObject()
+				callback()
+			})
+		},
+		(callback) => {
+			models.User.getReactionsOnUser(id, (reactions) => {
+				result.reactions = reactions
+				callback()
+			})
+		}
+	], (err) => {
+		res.send(result)
 	})
 })
 
@@ -323,7 +347,7 @@ router.post('/auth/linkedin', function(req, res) {
 				if (user) getTokenAndRespond(res, user)
 				else {
 					models.User.createUser({
-						twitter: profile.id,
+						linkedin: profile.id,
 						avatar: profile.pictureUrl,
 						name: profile.firstName + ' ' + profile.lastName,
 					}, (err, user) => {

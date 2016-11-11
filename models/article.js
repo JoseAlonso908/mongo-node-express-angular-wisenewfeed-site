@@ -8,23 +8,23 @@ var Model = function(mongoose) {
 		images		: [String],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
-		ratings		: {
-			expert: {
-				likes: Number,
-				dislikes: Number,
-				shares: Number,
-			},
-			journalist: {
-				likes: Number,
-				dislikes: Number,
-				shares: Number,
-			},
-			visitor: {
-				likes: Number,
-				dislikes: Number,
-				shares: Number,
-			},
-		}
+		// ratings		: {
+		// 	expert: {
+		// 		likes: Number,
+		// 		dislikes: Number,
+		// 		shares: Number,
+		// 	},
+		// 	journalist: {
+		// 		likes: Number,
+		// 		dislikes: Number,
+		// 		shares: Number,
+		// 	},
+		// 	visitor: {
+		// 		likes: Number,
+		// 		dislikes: Number,
+		// 		shares: Number,
+		// 	},
+		// }
 	})
 
 	var Model = mongoose.model('article', schema);
@@ -38,11 +38,11 @@ var Model = function(mongoose) {
 			let article = new Model()
 			Object.assign(article, {
 				author, images, text,
-				ratings: {
-					expert: {likes: 0, dislikes: 0, shares: 0},
-					journalist: {likes: 0, dislikes: 0, shares: 0},
-					visitor: {likes: 0, dislikes: 0, shares: 0},
-				}
+				// ratings: {
+				// 	expert: {likes: 0, dislikes: 0, shares: 0},
+				// 	journalist: {likes: 0, dislikes: 0, shares: 0},
+				// 	visitor: {likes: 0, dislikes: 0, shares: 0},
+				// }
 			})
 			article.save(callback)
 		},
@@ -52,7 +52,7 @@ var Model = function(mongoose) {
 		},
 
 		getByUser: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Schema.Types.ObjectId(author)
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
 		},

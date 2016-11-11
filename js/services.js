@@ -157,6 +157,37 @@ angular.module('er.services', [])
 	// console.log(_user)
 
 	return {
+		getOther: function (id) {
+			return $http({
+				method: 'GET',
+				url: '/user',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+				params: {
+					id: id,
+				}
+			})
+			.then(function (result) {
+				var user = result.data
+
+				user.rating = user.rating || 1
+				user.color = user.color || 'bronze'
+				user.likes = user.likes || 0
+				user.xp = user.xp || 0
+				user.dislikes = user.dislikes || 0
+				user.reactions = user.reactions || 0
+				user.followers = user.followers || 0
+				user.following = user.following || 0
+				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
+
+				return user
+			}, function (data, status) {
+				return data
+			})
+		},
 		get: function (clean) {
 			var d = $q.defer()
 
@@ -185,10 +216,7 @@ angular.module('er.services', [])
 					user.following = user.following || 0
 					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
-
 					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
-
-					user.experience = user.experience
 
 					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})

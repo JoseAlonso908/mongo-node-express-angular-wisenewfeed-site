@@ -25,7 +25,12 @@ angular.module('er', [
 				templateUrl: 'assets/views/home.htm'
 			})
 			.when('/my', {
-				templateUrl: 'assets/views/profile.htm'
+				templateUrl: 'assets/views/person.htm',
+				controller: 'profileController'
+			})
+			.when('/person/:id', {
+				templateUrl: 'assets/views/person.htm',
+				controller: 'personController',
 			})
 			.when('/editmy', {
 				templateUrl: 'assets/views/edit-profile.htm'

@@ -1,10 +1,10 @@
-<div id="wrapper" ng-controller="profileController">
+<div id="wrapper">
 	<topbar user="user"></topbar>
 
 	<div class="wallpaper-wrapper">
 		<bigratedavatar user="profile" ng-if="profile"></bigratedavatar>
 
-		<div class="buttons">
+		<div class="buttons" ng-if="user._id == profile._id && user.role != 'User'">
 			<a class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></a>
 			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
@@ -14,17 +14,17 @@
 			<div class="stats">
 				<div class="stat">
 					<i class="material-icons">thumb_up</i>
-					<div class="value">{{profile.likes}}</div>
+					<div class="value">{{profile.reactions.likes}}</div>
 					<div class="title">Like</div>
 				</div>
 				<div class="stat">
 					<i class="material-icons">thumb_down</i>
-					<div class="value">{{profile.dislikes}}</div>
+					<div class="value">{{profile.reactions.dislikes}}</div>
 					<div class="title">Dislike</div>
 				</div>
 				<div class="stat">
 					<i class="material-icons">chat_bubble</i>
-					<div class="value">{{profile.reactions}}</div>
+					<div class="value">{{profile.reactions.reacts}}</div>
 					<div class="title">React</div>
 				</div>
 				<div class="stat">

@@ -19,6 +19,10 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('commentreaction', schema);
 
 	return {
+		find: (query, callback) => {
+			Model.find(query).exec(callback)
+		},
+		
 		react: (author, comment, type, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)

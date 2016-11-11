@@ -234,14 +234,17 @@ angular.module('er.controllers', [])
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {
-	$scope.wallpaperStyle = {}
-
 	identityService.get().then(function (user) {
 		$scope.user = user
-
-		if ($scope.user.wallpaper) {
-			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
-		}
+		$scope.profile = user
+	})
+})
+.controller('personController', function ($routeParams, $scope, $location, identityService) {
+	identityService.get().then(function (user) {
+		identityService.getOther($routeParams.id).then(function (profile) {
+			$scope.user = user
+			$scope.profile = profile
+		})
 	})
 })
 .controller('editProfileController', function (

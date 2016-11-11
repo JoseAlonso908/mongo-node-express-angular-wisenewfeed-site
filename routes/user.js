@@ -3,7 +3,8 @@ const 	express = require('express'),
 		twilio = require('twilio'),
 		async = require('async'),
 		validator = require('validator'),
-		path = require('path')
+		path = require('path'),
+		request = require('request')
 
 const config = require('./../config')
 

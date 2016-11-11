@@ -1,5 +1,5 @@
 const config = require('./config')
-const env = 'development'
+const env = 'local'
 
 global.__root = __dirname
 

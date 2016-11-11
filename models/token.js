@@ -32,9 +32,9 @@ var Model = function(mongoose) {
 		},
 
 		getUserByToken: (token, callback) => {
-			Model.findOne({token}).populate('user').exec((err, token) => {
-				if (token && token.user) {
-					callback(err, token.user)
+			Model.findOne({token}).populate('user').exec((err, result) => {
+				if (result && result.user) {
+					callback(err, result.user)
 				} else {
 					callback(err, false)
 				}

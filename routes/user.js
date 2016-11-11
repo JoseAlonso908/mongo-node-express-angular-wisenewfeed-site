@@ -458,7 +458,7 @@ router.post('/profile/edit/wallpaper', tempUploads.single('file'), (req, res) =>
 	})
 })
 
-router.post('/profile/edit/addcertificate', (req, res) => {
+router.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, res) => {
 	let token = req.body.token
 
 	// if (!req.files) {
@@ -466,6 +466,9 @@ router.post('/profile/edit/addcertificate', (req, res) => {
 	// }
 
 	models.Token.getUserByToken(token, (err, user) => {
+		console.log(err)
+		console.log(user)
+
 		if (user) {
 			const fs = require('fs')
 

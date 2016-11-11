@@ -1,6 +1,7 @@
 const 	express = require('express'),
 		multer = require('multer'),
-		path = require('path')
+		path = require('path'),
+		async = require('async')
 
 let tempUploads = multer({dest: 'temp/'})
 let router = express.Router()
@@ -70,10 +71,6 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	
 	let {postId, text} = req.body
 
-	console.log('qweqwe')
-	console.log(req.body)
-	console.log(req.files)
-
 	let filenames = []
 
 	if (req.files && req.files.length > 0) {
@@ -104,6 +101,26 @@ router.get('/reactions', (req, res) => {
 	})
 })
 
+router.get('/reactions/few', (req, res) => {
+	let {postIds} = req.query,
+		postIdsArray = postIds.split(',')
+
+	let result = {}
+
+	// async.eachOfSeries(postIdsArray, (post, i, callback) => {
+	// 	models.PostReaction.getByPost(req.user._id, post, (err, reactions) => {
+	// 		result[post] = reactions
+	// 		callback(err)
+	// 	})
+	// }, (err) => {
+	// 	res.send(result)
+	// })
+
+	models.PostReaction.getByPostIds(req.user._id, postIdsArray, (err, reactions) => {
+		res.send(reactions)
+	})
+})
+
 router.post('/react', (req, res) => {
 	let {post, type} = req.body
 
@@ -114,8 +131,6 @@ router.post('/react', (req, res) => {
 
 router.delete('/react', (req, res) => {
 	let {post, type} = req.query
-
-	console.log('-' + type)
 
 	models.PostReaction.unreact(req.user._id, post, type, (err, result) => {
 		res.send({ok: true})

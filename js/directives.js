@@ -327,6 +327,9 @@ angular.module('er.directives', [])
 
 			var init = function () {
 				reactionsService.get($scope.post._id).then(function (reactionInfo) {
+					console.log('WOOOW')
+					console.log(reactionInfo.reactions.journalist.likes)
+
 					$scope.post.youdid = reactionInfo.youdid
 
 					var reactions = reactionInfo.reactions
@@ -342,6 +345,7 @@ angular.module('er.directives', [])
 					reactions.user.shares = numeral(reactions.user.shares).format('0a').toUpperCase()
 
 					$scope.reactions = reactions
+					$scope.$apply()
 				}, function (error) {
 					console.error(error)
 				})
@@ -364,6 +368,8 @@ angular.module('er.directives', [])
 			post: '='
 		},
 		link: function ($scope, element, attr) {
+			$scope.showmore = false
+
 			$scope.comments = []
 
 			$scope.$parent.$on('reloadcomments', function (e, args) {

@@ -39,6 +39,52 @@ var Model = function(mongoose) {
 			Model.remove({author, post, type}, callback)
 		},
 
+		getByPostIds: (user, postIds, callback) => {
+			let result = {}
+			for (let id of postIds) {
+				result[id] = {
+					youdid: {
+						like: false,
+						dislike: false,
+						share: false,
+					},
+					reactions: {
+						expert: {
+							likes: 0,
+							dislikes: 0,
+							shares: 0,
+						},
+						journalist: {
+							likes: 0,
+							dislikes: 0,
+							shares: 0,
+						},
+						user: {
+							likes: 0,
+							dislikes: 0,
+							shares: 0,
+						},
+					},
+				}
+			}
+
+			postIds = postIds.map((id) => {
+				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+			})
+
+			Model.find({post: {$in: postIds}}).populate('author').exec((err, reactions) => {
+				for (let r of reactions) {
+					if (r.author._id.toString() == user) {
+						result[r.post.toString()].youdid[r.type] = true
+					}
+
+					result[r.post.toString()].reactions[r.author.role][`${r.type}s`]++
+				}
+
+				callback(err, result)
+			})
+		},
+
 		getByPost: (user, post, callback) => {
 			// if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)

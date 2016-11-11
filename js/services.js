@@ -588,9 +588,74 @@ angular.module('er.services', [])
 		}
 	}
 })
-.factory('reactionsService', function ($http, $cookies) {
+.factory('reactionsService', function ($http, $cookies, $timeout) {
 	return {
+		queue: [],
+		delay: 500,
+		timer: undefined,
 		get: function (postId) {
+			var externalResolve, externalReject
+			var promise = new Promise(function (resolve, reject) {
+				externalResolve = resolve
+				externalReject = reject
+			}).then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+
+			this.queue.push({
+				postId: postId,
+				promise: promise,
+				resolve: externalResolve,
+				reject: externalReject,
+			})
+
+			$timeout.cancel(this.timer)
+
+			this.timer = $timeout(function (service) {
+				var postIds = []
+
+				for (var i in service.queue) {
+					var item = service.queue[i]
+					postIds.push(item.postId)
+				}
+
+				return $http({
+					method: 'GET',
+					url: '/article/reactions/few',
+					headers: {
+						'Authorization': $cookies.get('token'),
+					},
+					params: {
+						postIds: postIds.join(',')
+					}
+				})
+				.then(function (result) {
+					var reactions = result.data
+
+					for (var postId in reactions) {
+						var rs = reactions[postId]
+
+						for (var j in service.queue) {
+							if (service.queue[j].postId == postId) {
+								console.log('Resolve!')
+								console.log(rs.reactions.journalist.likes)
+								service.queue[j].resolve(rs)
+							}
+						}
+					}
+				}, function (data, status) {
+					return data
+				})
+
+				console.log(service.queue.length)
+				$timeout.cancel(service.timer)
+			}, this.delay, false, this)
+
+			return promise
+		},
+		getImmediate: function (postId) {
 			return $http({
 				method: 'GET',
 				url: '/article/reactions',

@@ -1,5 +1,7 @@
-<div class="comments" ng-show="comments.length > 0">
-	<a href="javascript:void(0);" class="show-more" ng-if="comments.length > 3">Show more</a>
+<div class="comments" ng-init="showmore=false" ng-class="{moreShown: showmore}" ng-show="comments.length > 0">
+	<a href="javascript:void(0);" ng-click="$parent.showmore=!$parent.showmore" class="show-more" ng-if="comments.length > 3">
+		{{($parent.showmore ? 'Collapse' : 'Show more')}}
+	</a>
 
 	<div class="comment" ng-repeat="comment in comments">
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>

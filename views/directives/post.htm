@@ -22,36 +22,21 @@
 			</div>
 		</div>
 
-		<div class="ratings">
-			<div class="rating" ng-if="post.ratings.expert.likes > 0">
-				<div class="title">Expert</div>
-				<div class="value likes">{{post.ratings.expert.likes}}</div>
-				<div class="value dislikes">{{post.ratings.expert.dislikes}}</div>
-				<div class="value shares">{{post.ratings.expert.shares}}</div>
-			</div>
-
-			<div class="rating" ng-if="post.ratings.journalist.likes > 0">
-				<div class="title">Journalist</div>
-				<div class="value likes">{{post.ratings.journalist.likes}}</div>
-				<div class="value dislikes">{{post.ratings.journalist.dislikes}}</div>
-				<div class="value shares">{{post.ratings.journalist.shares}}</div>
-			</div>
-
-			<div class="rating" ng-if="post.ratings.visitor.likes > 0">
-				<div class="title">Visitor</div>
-				<div class="value likes">{{post.ratings.visitor.likes}}</div>
-				<div class="value dislikes">{{post.ratings.visitor.dislikes}}</div>
-				<div class="value shares">{{post.ratings.visitor.shares}}</div>
-			</div>
-		</div>
+		<postreactions post="post"></postreactions>
 	</div>
 
 	<div class="divider"></div>
 
 	<div class="actions">
-		<button><i class="material-icons">thumb_up</i> <span class="title">Like</span></button>
-		<button><i class="material-icons">thumb_down</i> <span class="title">Dislike</span></button>
-		<button><i class="material-icons">share</i> <span class="title">Share</span></button>
+		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
+			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
+		</button>
+		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
+			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
+		</button>
+		<button ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
+			<i class="material-icons">share</i> <span class="title">Share</span>
+		</button>
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>

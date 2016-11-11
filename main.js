@@ -44,10 +44,12 @@ global.models = {
 	Token: require('./models/token')(connection),
 	Article: require('./models/article')(connection),
 	Comment: require('./models/comment')(connection),
+	PostReaction: require('./models/postreaction')(connection),
 	PhoneVerification: require('./models/phoneverification')(connection),
 	ResetPassword: require('./models/resetpassword')(connection),
 	FindAccount: require('./models/findaccount')(connection),
 }
+
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))

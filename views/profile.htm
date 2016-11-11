@@ -77,7 +77,7 @@
 				<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in user.certificates">{{cert.filename}}</a>
 			</div>
 
-			<div class="user-description-block" ng-if="user && user.contact">
+			<div class="user-description-block" ng-if="user && user.contact && (user.contact.email || user.contact.phone || user.contact.skype || user.contact.linkedin || user.contact.fb)">
 				<div class="title">Contacts</div>
 				<div class="address-element email" ng-if="user.contact.email">{{user.contact.email}}</div>
 				<div class="address-element phone" ng-if="user.contact.phone">{{user.contact.phone}}</div>

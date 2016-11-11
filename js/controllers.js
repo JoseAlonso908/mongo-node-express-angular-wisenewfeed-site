@@ -249,11 +249,9 @@ angular.module('er.controllers', [])
 	$scope.saveChanges = function () {
 		if ($scope.saving) return
 
-		console.log($scope.profileForm.$valid)
-
 		if ($scope.profileForm.$valid) {
 			$scope.saving = true
-			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name).then(function () {
+			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name, $scope.user.position).then(function () {
 				// $cookies.remove('user')
 				identityService.get(true).then(function (user) {
 					$scope.user = user
@@ -267,6 +265,8 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.changeAvatar = function (fileObject) {
+		if (fileObject.type.split('/')[0] != 'image') return alert('You can upload only images')
+
 		uploadAvatarService(fileObject).then(function (result) {
 			// $cookies.remove('user')
 			identityService.get(true).then(function (user) {
@@ -285,6 +285,8 @@ angular.module('er.controllers', [])
 			$scope.$apply(function () {
 				var file = e.target.files[0]
 				
+				if (file.type.split('/')[0] != 'image') return alert('You can upload only images')
+
 				uploadWallpaperService(file).then(function (result) {
 					// $cookies.remove('user')
 					identityService.get(true).then(function (user) {
@@ -313,10 +315,11 @@ angular.module('er.controllers', [])
 				certificatesService.add(file).then(function (result) {
 					// $cookies.remove('user')
 					identityService.get(true).then(function (user) {
-						$scope.user = user
+						$scope.user.certificates = user.certificates
 					})
 				}).catch(function (error) {
-					console.log('Wallpaper change error')
+					console.log(error)
+					alert(error.message)
 				})
 			})
 		})
@@ -330,10 +333,10 @@ angular.module('er.controllers', [])
 		certificatesService.remove(cert).then(function (result) {
 			// $cookies.remove('user')
 			identityService.get(true).then(function (user) {
-				$scope.user = user
+				$scope.user.certificates = user.certificates
 			})
 		}).catch(function (error) {
-			console.log('Wallpaper change error')
+			
 		})
 	}
 
@@ -347,11 +350,11 @@ angular.module('er.controllers', [])
 
 				downloadsService.add(file).then(function (result) {
 					// $cookies.remove('user')
-					identityService.get().then(function (user) {
-						$scope.user = user
+					identityService.get(true).then(function (user) {
+						$scope.user.downloads = user.downloads
 					})
 				}).catch(function (error) {
-					console.log('Wallpaper change error')
+					alert(error.message)
 				})
 			})
 		})
@@ -365,11 +368,11 @@ angular.module('er.controllers', [])
 	$scope.removeDownload = function (file) {
 		downloadsService.remove(file).then(function (result) {
 			// $cookies.remove('user')
-			identityService.get().then(function (user) {
-				$scope.user = user
+			identityService.get(true).then(function (user) {
+				$scope.user.downloads = user.downloads
 			})
 		}).catch(function (error) {
-			console.log('Wallpaper change error')
+			
 		})
 	}
 

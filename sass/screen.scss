@@ -606,6 +606,7 @@ a {
 		justify-content: space-between;
 		flex-direction: row;
 		// flex-wrap: wrap;
+		padding-bottom: 20px;
 
 		a {
 			color: $activeBlue;
@@ -810,7 +811,7 @@ a {
 						cursor: pointer;
 						@include transition(background-color .2s);
 
-						&:hover {
+						&.active, &:hover {
 							background-color: darken($buttonBg, 3%);
 						}
 

@@ -191,12 +191,18 @@ angular.module('er.directives', [])
 				init()
 			})
 
-			var feedType = 'my'
-			if (!$scope.user) {
-				feedType = 'all'
-			}
+			$scope.$watch('user', function (newValue, oldValue) {
+				if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+					init()
+				}
+			})
 
 			var init = function () {
+				var feedType = 'all'
+				if (!$scope.user) {
+					feedType = 'all'
+				}
+
 				$scope.feedLoading = true
 				$scope.feed = []
 				feedService[feedType]().then(function (feed) {
@@ -209,7 +215,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($timeout, commentService) {
+.directive('post', function ($timeout, commentService, reactionsService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -278,7 +284,76 @@ angular.module('er.directives', [])
 					$timeout.cancel(this)
 				}, 0)
 			}
+
+			$scope.react = function (post, type, unreact) {
+				var action = 'react'
+				if (unreact) action = 'unreact'
+
+				reactionsService[action](post._id, type).then(function (result) {
+					$scope.$emit('reloadreactions', post._id)
+				}, function (error) {
+					console.log('Reaction failed')
+					console.log(error)
+				})
+			}
 		}
+	}
+})
+.directive('postreactions', function ($rootScope, reactionsService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/postreactions.htm',
+		scope: {
+			post: '='
+		},
+		link: function ($scope, element, attr) {
+			$scope.reactions = {
+				expert: {
+					likes: 0,
+					dislikes: 0,
+					shares: 0,
+				},
+				journalist: {
+					likes: 0,
+					dislikes: 0,
+					shares: 0,
+				},
+				user: {
+					likes: 0,
+					dislikes: 0,
+					shares: 0,
+				},
+			}
+
+			var init = function () {
+				reactionsService.get($scope.post._id).then(function (reactionInfo) {
+					$scope.post.youdid = reactionInfo.youdid
+
+					var reactions = reactionInfo.reactions
+
+					reactions.expert.likes = numeral(reactions.expert.likes).format('0a').toUpperCase()
+					reactions.expert.dislikes = numeral(reactions.expert.dislikes).format('0a').toUpperCase()
+					reactions.expert.shares = numeral(reactions.expert.shares).format('0a').toUpperCase()
+					reactions.journalist.likes = numeral(reactions.journalist.likes).format('0a').toUpperCase()
+					reactions.journalist.dislikes = numeral(reactions.journalist.dislikes).format('0a').toUpperCase()
+					reactions.journalist.shares = numeral(reactions.journalist.shares).format('0a').toUpperCase()
+					reactions.user.likes = numeral(reactions.user.likes).format('0a').toUpperCase()
+					reactions.user.dislikes = numeral(reactions.user.dislikes).format('0a').toUpperCase()
+					reactions.user.shares = numeral(reactions.user.shares).format('0a').toUpperCase()
+
+					$scope.reactions = reactions
+				}, function (error) {
+					console.error(error)
+				})
+			}
+
+			init()
+
+			$scope.$parent.$on('reloadreactions', function (event, postId) {
+				if (postId != $scope.post._id) return
+				init()
+			})
+		},
 	}
 })
 .directive('postcomments', function (postService) {
@@ -292,7 +367,7 @@ angular.module('er.directives', [])
 			$scope.comments = []
 
 			$scope.$parent.$on('reloadcomments', function (e, args) {
-				console.log(args)
+				// console.log(args)
 				init()
 			})
 

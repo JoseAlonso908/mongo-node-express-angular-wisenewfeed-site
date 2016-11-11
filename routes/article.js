@@ -70,6 +70,10 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	
 	let {postId, text} = req.body
 
+	console.log('qweqwe')
+	console.log(req.body)
+	console.log(req.files)
+
 	let filenames = []
 
 	if (req.files && req.files.length > 0) {
@@ -88,6 +92,32 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	}
 
 	models.Comment.addComment(postId, req.user._id, text, filenames, (err, post) => {
+		res.send({ok: true})
+	})
+})
+
+router.get('/reactions', (req, res) => {
+	let {post} = req.query
+
+	models.PostReaction.getByPost(req.user._id, post, (err, reactions) => {
+		res.send(reactions)
+	})
+})
+
+router.post('/react', (req, res) => {
+	let {post, type} = req.body
+
+	models.PostReaction.react(req.user._id, post, type, (err, result) => {
+		res.send({ok: true})
+	})
+})
+
+router.delete('/react', (req, res) => {
+	let {post, type} = req.query
+
+	console.log('-' + type)
+
+	models.PostReaction.unreact(req.user._id, post, type, (err, result) => {
 		res.send({ok: true})
 	})
 })

@@ -7,8 +7,27 @@ const 	express = require('express'),
 
 const config = require('./../config')
 
-let tempUploads = multer({dest: '../temp/'})
+let tempUploads = multer({
+	dest: '../temp/',
+	limits: {
+		fileSize: 5 * 1024 * 1024
+	}
+})
+
 let router = express.Router()
+
+// router.use(tempUploads.single('file'))
+
+router.use(function (err, req, res, next) {
+	console.log(err)
+
+	if (err.code === 'LIMIT_FILE_SIZE') {
+		return res.status(400).send({message: `Can't upload file: ${err.message}`})
+	} else {
+		next()
+	}
+})
+
 let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
 
 router.get('/me', (req, res) => {
@@ -170,8 +189,7 @@ router.post('/auth/findaccount/request', (req, res) => {
 			if (foundValue.hasOwnProperty('email')) {
 				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, value,
 				`Account verification code`,
-				`Put this code into corresponding input:
-${findaccount.code}`)
+				`Put this code into corresponding input: ${findaccount.code}`)
 			}
 
 			if (foundValue.hasOwnProperty('phone')) {
@@ -440,8 +458,12 @@ router.post('/profile/edit/wallpaper', tempUploads.single('file'), (req, res) =>
 	})
 })
 
-router.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, res) => {
+router.post('/profile/edit/addcertificate', (req, res) => {
 	let token = req.body.token
+
+	// if (!req.files) {
+	// 	return res.status(400).send({message: `Can't upload file: ${err.message}`})
+	// }
 
 	models.Token.getUserByToken(token, (err, user) => {
 		if (user) {
@@ -461,7 +483,7 @@ router.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, re
 	})
 })
 
-router.post('/profile/edit/removecertificate', (req, res) => {
+router.post('/profile/edit/removecertificate', tempUploads.single('file'), (req, res) => {
 	let {token, filename} = req.body
 
 	models.Token.getUserByToken(token, (err, user) => {
@@ -489,6 +511,10 @@ router.post('/profile/edit/removecertificate', (req, res) => {
 
 router.post('/profile/edit/adddownload', tempUploads.single('file'), (req, res) => {
 	let token = req.body.token
+
+	// if (!req.files) {
+	// 	return res.status(400).send({message: `Can't upload file: ${err.message}`})
+	// }
 
 	models.Token.getUserByToken(token, (err, user) => {
 		if (user) {
@@ -535,11 +561,11 @@ router.post('/profile/edit/removedownload', (req, res) => {
 })
 
 router.post('/profile/edit/profile', tempUploads.single('file'), (req, res) => {
-	let {token, contact, experience, intro, name} = req.body
+	let {token, contact, experience, intro, name, position} = req.body
 
 	models.Token.getUserByToken(token, (err, user) => {
 		if (user) {
-			models.User.updateProfile(user._id, contact, experience, intro, name, () => {
+			models.User.updateProfile(user._id, contact, experience, intro, name, position, () => {
 				res.send({ok: true})
 			})
 		} else res.status(400).send({message: 'Invalid token'})

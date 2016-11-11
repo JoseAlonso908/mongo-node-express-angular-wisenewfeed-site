@@ -128,7 +128,7 @@ angular.module('er.services', [])
 	}
 })
 .factory('updateProfileService', function ($http, $cookies) {
-	return function (contact, experience, intro, name) {
+	return function (contact, experience, intro, name, position) {
 		return new Promise(function (resolve, reject) {
 			$http({
 				method: 'POST',
@@ -139,6 +139,7 @@ angular.module('er.services', [])
 					experience: experience,
 					intro: intro,
 					name: name,
+					position: position,
 				},
 			})
 			.success(function (data) {
@@ -152,8 +153,8 @@ angular.module('er.services', [])
 })
 .factory('identityService', function ($http, $cookies, $auth, $q) {
 	var _user = undefined
-	console.log('Remembered user')
-	console.log(_user)
+	// console.log('Remembered user')
+	// console.log(_user)
 
 	return {
 		get: function (clean) {
@@ -161,8 +162,8 @@ angular.module('er.services', [])
 
 			// var user = $cookies.getObject('user')
 			if (_user && clean === undefined || clean === false) {
-				console.log('Returning remembered')
-				console.log(_user)
+				// console.log('Returning remembered')
+				// console.log(_user)
 				d.resolve(_user)
 			} else {
 				$http.get('/me', {
@@ -466,35 +467,7 @@ angular.module('er.services', [])
 				},
 			})
 			.then(function (result) {
-				var feed = result.data
-
-				for (var i in feed) {
-					var post = feed[i]
-
-					post.ratings.expert.likes = numeral(post.ratings.expert.likes).format('0a').toUpperCase()
-					post.ratings.expert.dislikes = numeral(post.ratings.expert.dislikes).format('0a').toUpperCase()
-					post.ratings.expert.shares = numeral(post.ratings.expert.shares).format('0a').toUpperCase()
-					post.ratings.journalist.likes = numeral(post.ratings.journalist.likes).format('0a').toUpperCase()
-					post.ratings.journalist.dislikes = numeral(post.ratings.journalist.dislikes).format('0a').toUpperCase()
-					post.ratings.journalist.shares = numeral(post.ratings.journalist.shares).format('0a').toUpperCase()
-					post.ratings.visitor.likes = numeral(post.ratings.visitor.likes).format('0a').toUpperCase()
-					post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
-					post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
-
-					// post.text = $sce.trustAsHtml(parseTextService(post.text))
-
-					if (post.comments) {
-						for (var j in post.comments) {
-							var comment = post.comments[j]
-							// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
-							post.comments[j] = comment
-						}
-					}
-					
-					feed[i] = post
-				}
-				
-				return feed
+				return result.data
 			}, function (data, status) {
 				return data
 			})
@@ -509,35 +482,7 @@ angular.module('er.services', [])
 				},
 			})
 			.then(function (result) {
-				var feed = result.data
-
-				for (var i in feed) {
-					var post = feed[i]
-
-					post.ratings.expert.likes = numeral(post.ratings.expert.likes).format('0a').toUpperCase()
-					post.ratings.expert.dislikes = numeral(post.ratings.expert.dislikes).format('0a').toUpperCase()
-					post.ratings.expert.shares = numeral(post.ratings.expert.shares).format('0a').toUpperCase()
-					post.ratings.journalist.likes = numeral(post.ratings.journalist.likes).format('0a').toUpperCase()
-					post.ratings.journalist.dislikes = numeral(post.ratings.journalist.dislikes).format('0a').toUpperCase()
-					post.ratings.journalist.shares = numeral(post.ratings.journalist.shares).format('0a').toUpperCase()
-					post.ratings.visitor.likes = numeral(post.ratings.visitor.likes).format('0a').toUpperCase()
-					post.ratings.visitor.dislikes = numeral(post.ratings.visitor.dislikes).format('0a').toUpperCase()
-					post.ratings.visitor.shares = numeral(post.ratings.visitor.shares).format('0a').toUpperCase()
-
-					// post.text = $sce.trustAsHtml(parseTextService(post.text))
-
-					if (post.comments) {
-						for (var j in post.comments) {
-							var comment = post.comments[j]
-							// comment.text = $sce.trustAsHtml(parseTextService(comment.text))
-							post.comments[j] = comment
-						}
-					}
-					
-					feed[i] = post
-				}
-				
-				return feed
+				return result.data
 			}, function (data, status) {
 				return data
 			})
@@ -548,22 +493,29 @@ angular.module('er.services', [])
 	return {
 		create: function (text, files) {
 			return new Promise(function (resolve, reject) {
-				var fd = new FormData()
-				fd.append('text', text)
+				var headers = {
+					'Authorization': $cookies.get('token'),
+				}
 
 				if (files.length > 0) {
+					var fd = new FormData()
+					fd.append('text', text)
+
 					for (var i in files) {
 						fd.append('files', files[i])
+					}
+
+					headers['Content-Type'] = undefined
+				} else {
+					fd = {
+						text: text
 					}
 				}
 
 				$http({
 					method: 'POST',
 					url: '/article/create',
-					headers: {
-						'Authorization': $cookies.get('token'),
-						'Content-Type': undefined,
-					},
+					headers: headers,
 					uploadEventHandlers: {
 						progress: function (e) {
 							console.log(e.loaded, e.total)
@@ -601,24 +553,31 @@ angular.module('er.services', [])
 .factory('commentService', function ($http, $cookies) {
 	return {
 		add: function (postId, text, files) {
-			var fd = new FormData()
-
-			fd.append('postId', postId)
-			fd.append('text', text)
+			var headers = {
+				'Authorization': $cookies.get('token'),
+			}
 
 			if (files.length > 0) {
+				var fd = new FormData()
+				fd.append('postId', postId)
+				fd.append('text', text)
+
 				for (var i in files) {
 					fd.append('files', files[i])
+				}
+
+				headers['Content-Type'] = undefined
+			} else {
+				var fd = {
+					postId: postId,
+					text: text
 				}
 			}
 
 			return $http({
 				method: 'POST',
 				url: '/article/comment/add',
-				headers: {
-					'Authorization': $cookies.get('token'),
-					'Content-Type': undefined,
-				},
+				headers: headers,
 				data: fd,
 			})
 			.then(function (result) {
@@ -627,6 +586,63 @@ angular.module('er.services', [])
 				return data
 			})
 		}
+	}
+})
+.factory('reactionsService', function ($http, $cookies) {
+	return {
+		get: function (postId) {
+			return $http({
+				method: 'GET',
+				url: '/article/reactions',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					post: postId
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		react: function (postId, type) {
+			return $http({
+				method: 'POST',
+				url: '/article/react',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					post: postId,
+					type: type
+				},
+			})
+			.then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+		},
+		unreact: function (postId, type) {
+			return $http({
+				method: 'DELETE',
+				url: '/article/react',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					post: postId,
+					type: type
+				},
+			})
+			.then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+		},
 	}
 })
 .factory('familiarExpertsService', function () {

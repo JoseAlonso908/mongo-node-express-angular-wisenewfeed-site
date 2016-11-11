@@ -167,13 +167,13 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateProfile: (_id, contact, experience, intro, name, callback) => {
+		updateProfile: (_id, contact, experience, intro, name, position, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			intro = intro.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {contact, experience, intro, name})
+				Object.assign(user, {contact, experience, intro, name, position})
 				user.save(callback)
 			})
 		}

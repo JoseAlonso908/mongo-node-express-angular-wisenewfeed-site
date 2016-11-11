@@ -648,6 +648,7 @@ a[disabled] {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  padding-bottom: 20px;
 }
 #wrapper > .content a {
   color: #43abe7;
@@ -816,7 +817,7 @@ a[disabled] {
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
-#wrapper > .content .card.feed-item .actions button:hover {
+#wrapper > .content .card.feed-item .actions button.active, #wrapper > .content .card.feed-item .actions button:hover {
   background-color: #daeffa;
 }
 #wrapper > .content .card.feed-item .actions button i {

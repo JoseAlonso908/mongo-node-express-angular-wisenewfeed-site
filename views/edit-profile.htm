@@ -7,7 +7,7 @@
 
 			<div class="buttons">
 				<div ng-click="changeWallpaper()" class="change-background"><i class="material-icons">image</i> <div class="title">Change background</div></div>
-				<input type="file" name="wallpaper" class="hidden-file-input">
+				<input type="file" name="wallpaper" accept="image/*" class="hidden-file-input">
 				<div ng-click="saveChanges()" class="save-changes"><i class="material-icons">save</i> <div class="title">Save changes</div></div>
 			</div>
 
@@ -48,7 +48,7 @@
 				<div class="user-profile-info" ng-if="user">
 					<input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name">
 					<!-- <div class="name">{{user.name}}</div> -->
-					<div class="position">{{user.position}}</div>
+					<input class="edit-profile-input" type="text" ng-required="true" name="position" ng-model="user.position">
 
 					<div class="rating-wrapper" ng-if="user.likes_percentage">
 						<i class="material-icons like">thumb_up</i>

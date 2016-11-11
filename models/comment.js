@@ -7,7 +7,7 @@ var Model = function(mongoose) {
 		},
 		post		: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user',
+			ref: 'article',
 		},
 		images		: [String],
 		text		: String,
@@ -20,8 +20,10 @@ var Model = function(mongoose) {
 
 	return {
 		addComment: (post, author, text, images, callback) => {
+			console.log(`--${post}`)
+
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
-			if (typeof author !== 'object') author = mongoose.Schema.Types.ObjectId(author)
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			let comment = new Model()
 			Object.assign(comment, {
@@ -34,7 +36,9 @@ var Model = function(mongoose) {
 		getPostComments: (post, callback) => {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 
-			Model.find({post}).populate('author').exec(callback)
+			Model.find({post}).populate('author').exec((err, comments) => {
+				callback(err, comments)
+			})
 		}
 	}
 }

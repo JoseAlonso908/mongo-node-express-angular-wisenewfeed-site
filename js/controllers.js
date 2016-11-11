@@ -273,7 +273,7 @@ angular.module('er.controllers', [])
 				$scope.user = user
 			})
 		}).catch(function (error) {
-			console.log('Avatar change error')
+			alert('Can\'t upload avatar. File size should not exceed 5 megabytes.')
 		})
 	}
 
@@ -293,7 +293,7 @@ angular.module('er.controllers', [])
 						$scope.user = user
 					})
 				}).catch(function (error) {
-					console.log('Wallpaper change error')
+					alert('Can\'t upload wallpaper. File size should not exceed 5 megabytes.')
 				})
 			})
 		})

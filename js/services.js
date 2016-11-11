@@ -151,7 +151,7 @@ angular.module('er.services', [])
 		})
 	}
 })
-.factory('identityService', function ($http, $cookies, $auth, $q) {
+.factory('identityService', function ($http, $cookies, $auth, $q, $rootScope) {
 	var _user = undefined
 	// console.log('Remembered user')
 	// console.log(_user)
@@ -161,14 +161,16 @@ angular.module('er.services', [])
 			var d = $q.defer()
 
 			// var user = $cookies.getObject('user')
-			if (_user && clean === undefined || clean === false) {
-				// console.log('Returning remembered')
-				// console.log(_user)
-				d.resolve(_user)
-			} else {
-				$http.get('/me', {
-					header: {
-						authorization: ($auth.getToken() || $cookies.get('token'))
+			// if (_user && (clean === undefined || clean === false)) {
+			// 	console.log('Returning remembered')
+			// 	console.log(_user)
+			// 	d.resolve(_user)
+			// } else {
+				$http({
+					method: 'GET',
+					url: '/me',
+					headers: {
+						Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
 					}
 				}).then(function (response) {
 					var user = response.data
@@ -188,39 +190,21 @@ angular.module('er.services', [])
 
 					user.experience = user.experience
 
-					// if (user.experience.length == 0) {
-					// 	user.experience = [
-					// 		{
-					// 			time: 'Aug \'13 - Jun \'15',
-					// 			place: 'Co & Co',
-					// 			description: 'Did nothing here',
-					// 		},
-
-					// 		{
-					// 			time: 'Jun \'15 - Today',
-					// 			place: 'Co & Co - 2',
-					// 			description: 'Did a lot of things here',
-					// 		},
-					// 	]
-					// }
-
 					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
 					} else {
 						// $cookies.putObject('user', user)
 					}
 
-					_user = user
-
 					$cookies.put('token', $auth.getToken())
 
-					// localStorage.removeItem('satellizer_token')
-
 					d.resolve(user)
+					return user
 				}, function (error) {
 					d.reject(error.message)
+					return error
 				})
-			}
+			// }
 
 			return d.promise
 		},
@@ -228,100 +212,6 @@ angular.module('er.services', [])
 			_user = undefined
 		}
 	}
-
-	// return new Promise(function (resolve, reject) {
-	// 	$timeout(function () {
-	// 		var user = {
-	// 			name: 'Jack Daniels',
-	// 			position: 'Director',
-	// 			avatar: 'http://i.imgur.com/wq43v5T.jpg',
-	// 			rating: 1,
-	// 			color: 'bronze',
-	// 			wallpaper: 'https://metrouk2.files.wordpress.com/2015/04/mm1-e1429271504595.png',
-	// 			xp: 72,
-	// 			likes: 4223,
-	// 			dislikes: 23,
-	// 			reactions: 1200,
-	// 			following: 23200,
-	// 			followers: 43002,
-	// 			likes_percentage: 45,
-	// 			intro: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei. Facete dolorum aliquando duo ne, pro an delenit praesentea perpetua adipiscing eos, civibus.',
-	// 			experience: 'Lorem ipsum dolor sit amet, neglegentur vituperatoribus cum ei.',
-	// 			certificates: [
-	// 				{title: 'Lorem Ipsum certificate'},
-	// 				{title: 'Dolor certificate'}
-	// 			],
-	// 			downloads: [
-	// 				{title: 'DESIGN.PSD'},
-	// 				{title: 'PROTOTYPE.PDF'},
-	// 			],
-	// 			address: {
-	// 				email: 'test@example.com',
-	// 				phone: '+1 234 567 89 00',
-	// 				skype: 'test.example',
-	// 				linkedin: 'linked.in',
-	// 				fb: 'fb.name',
-	// 			},
-	// 			photos: [
-	// 				{url: 'http://statici.behindthevoiceactors.com/behindthevoiceactors/_img/actors/danny-devito-19.9.jpg'},
-	// 				{url: 'https://www.picsofcelebrities.com/celebrity/danny-devito/pictures/large/danny-devito-family.jpg'},
-	// 				{url: 'http://vignette2.wikia.nocookie.net/godfather-fanon/images/a/aa/Tommy_DeVito.jpg/revision/latest?cb=20121121213421'},
-	// 				{url: 'http://img2.rnkr-static.com/list_img_v2/2752/102752/870/danny-devito-movies-and-films-and-filmography-u2.jpg'},
-	// 				{url: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTkkc5M14e2-ePKz8nRrlUEAm64QmscRx2MneSFew1M2uL45CpW'},
-	// 				{url: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSE78J23sFfj0hRZcFc_iZ8wgXKbSNoazvfLSydHE-FP7dVunyo'},
-	// 				{url: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQRyoFyo7FBvCUFlEY8lIRRHREIBmXmXGxNt7-lEbRAQX7s27qAPw'},
-	// 				{url: 'http://www.mcmbuzz.com/wp-content/uploads/2012/07/Danny-DeVito-at-the-London-MCM-Expo-3.jpg'},
-	// 				{url: 'http://img.mypopulars.com/images/danny-devito/danny-devito_18.jpg'},
-	// 				{url: 'http://www.filmreference.com/images/sjff_03_img1053.jpg'},
-	// 				{url: 'http://i.dailymail.co.uk/i/pix/2015/01/19/24D7DB8200000578-0-image-a-1_1421687572450.jpg'},
-	// 				{url: 'http://images.onionstatic.com/starwipe/6670/original/780.jpg'},
-	// 				{url: 'https://s-media-cache-ak0.pinimg.com/236x/38/13/88/381388169d3c32162073fa96876d07e4.jpg'},
-	// 			],
-	// 			questions: [
-	// 				{
-	// 					author: {
-	// 						name: 'Alla Pugacheva',
-	// 						avatar: 'http://ua-reporter.com/sites/default/files/pug_zzz.jpg',
-	// 						rating: 1,
-	// 						color: 'bronze',
-	// 						role: 'Visitor',
-	// 						country: 'Russia',
-	// 					},
-	// 					text: 'Lorem ipsum dolor sit amet?',
-	// 					likes: '3'
-	// 				},
-	// 			]
-	// 		}
-
-	// 		var chosenPhotos = []
-	// 		user.randomPhotos = []
-
-	// 		if (user.photos.length <= 8) {
-	// 			user.randomPhotos = user.photos
-
-	// 			for (var i = user.randomPhotos.length; i < 9; i++) {
-	// 				user.randomPhotos.push({url: ''})
-	// 			}
-	// 		} else {
-	// 			for (var i = 0; i < 8;) {
-	// 				var randomPhotoKey = Math.floor(Math.random() * user.photos.length)
-	// 				if (chosenPhotos.indexOf(randomPhotoKey) === -1) {
-	// 					user.randomPhotos.push(user.photos[randomPhotoKey])
-	// 					chosenPhotos.push(randomPhotoKey)
-	// 					i++
-	// 				}
-	// 			}
-	// 		}
-
-	// 		user.likes = numeral(user.likes).format('0a').toUpperCase()
-	// 		user.dislikes = numeral(user.dislikes).format('0a').toUpperCase()
-	// 		user.reactions = numeral(user.reactions).format('0a').toUpperCase()
-	// 		user.following= numeral(user.following).format('0a').toUpperCase()
-	// 		user.followers = numeral(user.followers).format('0a').toUpperCase()
-
-	// 		resolve(user)
-	// 	}, 300)
-	// })
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
 	return function (file) {
@@ -639,8 +529,6 @@ angular.module('er.services', [])
 
 						for (var j in service.queue) {
 							if (service.queue[j].postId == postId) {
-								console.log('Resolve!')
-								console.log(rs.reactions.journalist.likes)
 								service.queue[j].resolve(rs)
 							}
 						}
@@ -649,7 +537,6 @@ angular.module('er.services', [])
 					return data
 				})
 
-				console.log(service.queue.length)
 				$timeout.cancel(service.timer)
 			}, this.delay, false, this)
 
@@ -694,6 +581,125 @@ angular.module('er.services', [])
 			return $http({
 				method: 'DELETE',
 				url: '/article/react',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					post: postId,
+					type: type
+				},
+			})
+			.then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+		},
+	}
+})
+.factory('commentReactionsService', function ($http, $cookies, $timeout) {
+	return {
+		queue: [],
+		delay: 500,
+		timer: undefined,
+		get: function (commentId) {
+			var externalResolve, externalReject
+			var promise = new Promise(function (resolve, reject) {
+				externalResolve = resolve
+				externalReject = reject
+			}).then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+
+			this.queue.push({
+				commentId: commentId,
+				promise: promise,
+				resolve: externalResolve,
+				reject: externalReject,
+			})
+
+			$timeout.cancel(this.timer)
+
+			this.timer = $timeout(function (service) {
+				var commentIds = []
+
+				for (var i in service.queue) {
+					var item = service.queue[i]
+					commentIds.push(item.commentId)
+				}
+
+				return $http({
+					method: 'GET',
+					url: '/article/comment/reactions/few',
+					headers: {
+						'Authorization': $cookies.get('token'),
+					},
+					params: {
+						commentIds: commentIds.join(',')
+					}
+				})
+				.then(function (result) {
+					var reactions = result.data
+
+					for (var commentId in reactions) {
+						var rs = reactions[commentId]
+
+						for (var j in service.queue) {
+							if (service.queue[j].commentId == commentId) {
+								service.queue[j].resolve(rs)
+							}
+						}
+					}
+				}, function (data, status) {
+					return data
+				})
+
+				$timeout.cancel(service.timer)
+			}, this.delay, false, this)
+
+			return promise
+		},
+		getImmediate: function (postId) {
+			return $http({
+				method: 'GET',
+				url: '/article/comment/reactions',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					post: postId
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		react: function (postId, type) {
+			return $http({
+				method: 'POST',
+				url: '/article/comment/react',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					post: postId,
+					type: type
+				},
+			})
+			.then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+		},
+		unreact: function (postId, type) {
+			return $http({
+				method: 'DELETE',
+				url: '/article/comment/react',
 				headers: {
 					'Authorization': $cookies.get('token'),
 				},

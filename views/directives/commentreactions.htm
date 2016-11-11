@@ -1,0 +1,4 @@
+<div class="stats">
+	<a href="javascript:void(0);" ng-click="react(comment, 'like', comment.youdid.like)" ng-class="{active: comment.youdid.like}"><i class="material-icons">thumb_up</i> <div class="number">{{reactions.likes || 0}}</div></a>
+	<a href="javascript:void(0);" ng-click="react(comment, 'dislike', comment.youdid.dislike)" ng-class="{active: comment.youdid.dislike}"><i class="material-icons">thumb_down</i> <div class="number">{{reactions.dislikes || 0}}</div></a>
+</div>

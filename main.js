@@ -1,5 +1,5 @@
 const config = require('./config')
-const env = 'development'
+const env = 'local'
 
 global.__root = __dirname
 
@@ -45,6 +45,7 @@ global.models = {
 	Article: require('./models/article')(connection),
 	Comment: require('./models/comment')(connection),
 	PostReaction: require('./models/postreaction')(connection),
+	CommentReaction: require('./models/commentreaction')(connection),
 	PhoneVerification: require('./models/phoneverification')(connection),
 	ResetPassword: require('./models/resetpassword')(connection),
 	FindAccount: require('./models/findaccount')(connection),

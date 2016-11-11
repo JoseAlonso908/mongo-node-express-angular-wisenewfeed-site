@@ -15,10 +15,8 @@
 			<a ng-href="image" lightbox class="image" ng-repeat="image in comment.images" style="background-image: url({{image}})"></a>
 		</div>
 
-		<div class="stats">
-			<div><i class="material-icons">thumb_up</i> <div class="number">{{comment.likes || 0}}</div></div>
-			<div><i class="material-icons">thumb_down</i> <div class="number">{{comment.dislikes || 0}}</div></div>
-		</div>
+		{{user | json}}
+		<commentreactions comment="comment"></commentreactions>
 
 		<div class="divider"></div>
 	</div>

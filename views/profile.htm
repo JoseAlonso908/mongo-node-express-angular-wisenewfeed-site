@@ -82,8 +82,8 @@
 				<div class="address-element email" ng-if="user.contact.email">{{user.contact.email}}</div>
 				<div class="address-element phone" ng-if="user.contact.phone">{{user.contact.phone}}</div>
 				<div class="address-element skype" ng-if="user.contact.skype">{{user.contact.skype}}</div>
-				<div class="address-element linkedin" ng-if="user.contact.linkedin">{{user.contact.linkedin}}</div>
-				<div class="address-element fb" ng-if="user.contact.fb">{{user.contact.fb}}</div>
+				<a ng-href="{{user.contact.linkedin}}" target="_blank" class="address-element linkedin" ng-if="user.contact.linkedin">{{user.contact.linkedin}}</a>
+				<a ng-href="{{user.contact.fb}}" target="_blank" class="address-element fb" ng-if="user.contact.fb">{{user.contact.fb}}</a>
 			</div>
 
 			<div class="user-description-block" ng-if="user && user.downloads.length > 0">

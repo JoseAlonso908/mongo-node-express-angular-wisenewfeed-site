@@ -278,6 +278,10 @@ a[disabled] {
   line-height: 36px;
   font-size: 13px;
 }
+.cta-button.view-all {
+  min-width: 45px;
+  margin-left: 10px;
+}
 
 .avatar-border {
   width: 42px;
@@ -715,7 +719,7 @@ a[disabled] {
   font-size: 20px;
 }
 #wrapper > .content .card.feed-item .body .content .text {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   padding-right: 40px;
   color: #82898f;
   font-size: 13px;
@@ -899,20 +903,28 @@ a[disabled] {
 #wrapper > .content .card.feed-item .comments .comment .stats {
   margin-top: 12px;
 }
-#wrapper > .content .card.feed-item .comments .comment .stats > div {
+#wrapper > .content .card.feed-item .comments .comment .stats > a {
   display: inline-block;
   margin-right: 17px;
   font-weight: 900;
   font-size: 13px;
   color: #b0bec8;
+  -moz-transition: color;
+  -o-transition: color;
+  -webkit-transition: color;
+  transition: color;
 }
-#wrapper > .content .card.feed-item .comments .comment .stats > div i, #wrapper > .content .card.feed-item .comments .comment .stats > div div {
+#wrapper > .content .card.feed-item .comments .comment .stats > a i, #wrapper > .content .card.feed-item .comments .comment .stats > a div {
   display: block;
   float: left;
 }
-#wrapper > .content .card.feed-item .comments .comment .stats > div i {
+#wrapper > .content .card.feed-item .comments .comment .stats > a i {
   margin: 0 4px 0 0;
   font-size: 13px;
+}
+#wrapper > .content .card.feed-item .comments .comment .stats > a.active, #wrapper > .content .card.feed-item .comments .comment .stats > a:hover {
+  color: #43abe7;
+  opacity: 1;
 }
 #wrapper > .content .card.feed-item .comments .comment .images {
   display: flex;
@@ -1287,10 +1299,14 @@ a[disabled] {
   margin-left: 10px;
 }
 #wrapper > .content .left .user-description-block .address-element {
+  display: block;
   color: #82898f;
   font-size: 13px;
   padding-left: 20px;
   line-height: 25px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #wrapper > .content .left .user-description-block .address-element:before {
   position: absolute;

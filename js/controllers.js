@@ -86,9 +86,14 @@ angular.module('er.controllers', [])
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
 
-			if (!$scope.signup[field]) {
+			if (!$scope.signup[field] || (field == 'country' && !$scope.signup.country.code)) {
 				angular.element(document.querySelector('form[name=signupForm] [name=' + field + ']')).triggerHandler('blur')
 				$scope.signup.error = 'Please, check highlighted with red fields'
+				$scope.signupForm.$valid = false
+
+				if (field === 'country') {
+					angular.element(document.querySelector('form[name=signupForm] [name=' + field + ']')).removeClass('ng-valid').addClass('ng-invalid')
+				}
 			}
 		}
 
@@ -222,9 +227,10 @@ angular.module('er.controllers', [])
 	identityService.get().then(function (user) {
 		// Doesn't work without timeout
 		$timeout(function() {
+			// $scope.$apply()
 			$scope.user = user
 			$timeout.cancel(this)
-		})
+		}, 0)
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {
@@ -318,8 +324,7 @@ angular.module('er.controllers', [])
 						$scope.user.certificates = user.certificates
 					})
 				}).catch(function (error) {
-					console.log(error)
-					alert(error.message)
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
 				})
 			})
 		})
@@ -354,7 +359,7 @@ angular.module('er.controllers', [])
 						$scope.user.downloads = user.downloads
 					})
 				}).catch(function (error) {
-					alert(error.message)
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
 				})
 			})
 		})

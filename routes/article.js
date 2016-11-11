@@ -105,17 +105,6 @@ router.get('/reactions/few', (req, res) => {
 	let {postIds} = req.query,
 		postIdsArray = postIds.split(',')
 
-	let result = {}
-
-	// async.eachOfSeries(postIdsArray, (post, i, callback) => {
-	// 	models.PostReaction.getByPost(req.user._id, post, (err, reactions) => {
-	// 		result[post] = reactions
-	// 		callback(err)
-	// 	})
-	// }, (err) => {
-	// 	res.send(result)
-	// })
-
 	models.PostReaction.getByPostIds(req.user._id, postIdsArray, (err, reactions) => {
 		res.send(reactions)
 	})
@@ -133,6 +122,31 @@ router.delete('/react', (req, res) => {
 	let {post, type} = req.query
 
 	models.PostReaction.unreact(req.user._id, post, type, (err, result) => {
+		res.send({ok: true})
+	})
+})
+
+router.get('/comment/reactions/few', (req, res) => {
+	let {commentIds} = req.query,
+		commentIdsArray = commentIds.split(',')
+
+	models.CommentReaction.getByCommentIds(req.user._id, commentIdsArray, (err, reactions) => {
+		res.send(reactions)
+	})
+})
+
+router.post('/comment/react', (req, res) => {
+	let {post, type} = req.body
+
+	models.CommentReaction.react(req.user._id, post, type, (err, result) => {
+		res.send({ok: true})
+	})
+})
+
+router.delete('/comment/react', (req, res) => {
+	let {post, type} = req.query
+
+	models.CommentReaction.unreact(req.user._id, post, type, (err, result) => {
 		res.send({ok: true})
 	})
 })

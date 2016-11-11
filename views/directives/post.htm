@@ -5,8 +5,8 @@
 		<div class="title">
 			<div class="name dark-bold">{{post.author.name}}</div>
 			<div class="time small-light" am-time-ago="post.createdAt"></div>
-			<div class="separator">&bull;</div>
-			<div class="position small-light">{{post.author.position}}</div>
+			<div class="separator" ng-show="post.author.position">&bull;</div>
+			<div class="position small-light" ng-show="post.author.position">{{post.author.position}}</div>
 			<div class="separator">&bull;</div>
 			<div class="country small-light">{{post.author.country}}</div>
 
@@ -27,7 +27,7 @@
 
 	<div class="divider"></div>
 
-	<div class="actions">
+	<div class="actions" ng-if="user">
 		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
 			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
 		</button>
@@ -44,7 +44,7 @@
 		</div>
 	</div>
 
-	<div class="divider"></div>
+	<div class="divider" ng-if="user"></div>
 
 	<postcomments post="post"></postcomments>
 	<div class="comment-box" ng-if="user && user.role != 'User'">
@@ -67,6 +67,5 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-	</div>
 	</div>
 </div>

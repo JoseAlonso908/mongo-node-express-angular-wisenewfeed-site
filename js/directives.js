@@ -72,7 +72,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('avatar', function () {
+.directive('avatar', function ($rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/avatar.htm',
@@ -94,7 +94,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.files = []
 
-			$scope.user = $scope.$parent.user
+			// $scope.user = $scope.$parent.user
 			$scope.create = function () {
 				if ($scope.loading) return
 				$scope.loading = true
@@ -180,12 +180,12 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('feed', function (feedService, commentService) {
+.directive('feed', function ($rootScope, feedService, commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
 		link: function ($scope, element, attr) {
-			$scope.user = $scope.$parent.user
+			// $scope.user = $scope.$parent.user
 
 			$scope.$parent.$on('reloadfeed', function () {
 				init()
@@ -199,7 +199,7 @@ angular.module('er.directives', [])
 
 			var init = function () {
 				var feedType = 'all'
-				if (!$scope.user) {
+				if (!$rootScope.user) {
 					feedType = 'all'
 				}
 
@@ -327,9 +327,6 @@ angular.module('er.directives', [])
 
 			var init = function () {
 				reactionsService.get($scope.post._id).then(function (reactionInfo) {
-					console.log('WOOOW')
-					console.log(reactionInfo.reactions.journalist.likes)
-
 					$scope.post.youdid = reactionInfo.youdid
 
 					var reactions = reactionInfo.reactions
@@ -388,6 +385,51 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('commentreactions', function ($rootScope, commentReactionsService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/commentreactions.htm',
+		scope: {
+			comment: '='
+		},
+		link: function ($scope, element, attr) {
+			var init = function () {
+				commentReactionsService.get($scope.comment._id).then(function (reactionInfo) {
+					$scope.comment.youdid = reactionInfo.youdid
+
+					var reactions = reactionInfo.reactions
+
+					reactions.likes = numeral(reactions.likes).format('0a').toUpperCase()
+					reactions.dislikes = numeral(reactions.dislikes).format('0a').toUpperCase()
+
+					$scope.reactions = reactions
+					$scope.$apply()
+				}, function (error) {
+					console.error(error)
+				})
+			}
+
+			init()
+
+			$scope.$parent.$on('reloadcommentreactions', function (event, commentId) {
+				if (commentId != $scope.comment._id) return
+				init()
+			})
+
+			$scope.react = function (comment, type, unreact) {
+				var action = 'react'
+				if (unreact) action = 'unreact'
+
+				commentReactionsService[action](comment._id, type).then(function (result) {
+					$scope.$emit('reloadcommentreactions', comment._id)
+				}, function (error) {
+					console.log('Reaction failed')
+					console.log(error)
+				})
+			}
+		},
+	}
+})
 .directive('question', function () {
 	return {
 		restrict: 'E',
@@ -406,7 +448,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('newquestions', function () {
+.directive('newquestions', function ($rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/new-questions.htm',
@@ -414,7 +456,7 @@ angular.module('er.directives', [])
 			user: '='
 		},
 		link: function ($scope, element, attr) {
-			$scope.questions = $scope.user.questions
+			$scope.questions = $rootScope.user.questions
 		}
 	}
 })
@@ -452,7 +494,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/filters.htm',
 	}
 })
-.directive('bigratedavatar', function ($timeout) {
+.directive('bigratedavatar', function ($timeout, $rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/big-rated-avatar.htm',
@@ -494,7 +536,7 @@ angular.module('er.directives', [])
 			var borderWidth = 4
 
 			// Get user XP in radians
-			var radsXP = ($scope.user.xp / 100 * 2) + 1.5
+			var radsXP = ($rootScope.user.xp / 100 * 2) + 1.5
 
 			ctx.lineWidth = borderWidth
 			ctx.strokeStyle = '#43abe7'

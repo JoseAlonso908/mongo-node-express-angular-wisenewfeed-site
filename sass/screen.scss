@@ -208,6 +208,11 @@ a {
 		line-height: 36px;
 		font-size: 13px;
 	}
+
+	&.view-all {
+		min-width: 45px;
+		margin-left: 10px;
+	}
 }
 
 .avatar-border {
@@ -689,7 +694,7 @@ a {
 
 					.content {
 						.text {
-							margin-bottom: 20px;
+							margin-bottom: 12px;
 							padding-right: 40px;
 							color: $middleGrey;
 							font-size: 13px;
@@ -915,12 +920,13 @@ a {
 						.stats {
 							margin-top: 12px;
 
-							> div {
+							> a {
 								display: inline-block;
 								margin-right: 17px;
 								font-weight: 900;
 								font-size: 13px;
 								color: $iconGrey;
+								@include transition(color);
 
 								i, div {
 									display: block;
@@ -930,6 +936,12 @@ a {
 								i {
 									margin: 0 4px 0 0;
 									font-size: 13px;
+								}
+
+								&.active, &:hover {
+									color: $activeBlue;
+									opacity: 1;
+									// background-color: darken($buttonBg, 3%);
 								}
 							}
 						}
@@ -1384,10 +1396,14 @@ a {
 				}
 
 				.address-element {
+					display: block;
 					color: $middleGrey;
 					font-size: 13px;
 					padding-left: 20px;
 					line-height: 25px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
 
 					&:before {
 						position: absolute;

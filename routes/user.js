@@ -344,6 +344,10 @@ router.post('/auth/linkedin', function(req, res) {
 		// Step 2. Retrieve profile information about the current user.
 		request.get({ url: peopleApiUrl, qs: params, json: true }, function(err, response, profile) {
 			models.User.findOne({linkedin: profile.id}, (err, user) => {
+				console.log(1)
+				console.log(err)
+				console.log(user)
+
 				if (user) getTokenAndRespond(res, user)
 				else {
 					models.User.createUser({
@@ -351,6 +355,9 @@ router.post('/auth/linkedin', function(req, res) {
 						avatar: profile.pictureUrl,
 						name: profile.firstName + ' ' + profile.lastName,
 					}, (err, user) => {
+						console.log(2)
+						console.log(err)
+						console.log(user)
 						getTokenAndRespond(res, user)
 					})
 				}

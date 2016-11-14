@@ -237,7 +237,21 @@ angular.module('er.services', [])
 		},
 		clean: function () {
 			_user = undefined
-		}
+		},
+		updateSettings: function (data) {
+			return $http({
+				method: 'POST',
+				url: '/profile/edit/settings',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+				data: data
+			}).then(function (response) {
+				return response.data
+			}, function (error) {
+				return error
+			})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {

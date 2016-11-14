@@ -1,4 +1,62 @@
 angular.module('er.modals', [])
+.factory('confirmPhoneModal', function (btfModal) {
+	return btfModal({
+		controller: 'confirmAccountModalController',
+		controllerAs: 'modal',
+		templateUrl: 'assets/views/modals/confirm-account.htm',
+	})
+})
+.controller('confirmPhoneModalController' function ($scope, $parent, $interval, phone, callback, verifyPhoneService, verifyPhoneCodeService) {
+	$scope.phone = phone
+
+	$scope.maxResendTimerValue = 30
+
+	var sendCode = function () {
+		$scope.resendTimer = $scope.maxResendTimerValue
+
+		$scope.ready = false
+		$scope.loading = true
+		verifyPhoneService(phone).then(function () {
+			$scope.ready = true
+			$scope.loading = false
+
+			$interval(function () {
+				$scope.resendTimer--
+			}, 1000, $scope.maxResendTimerValue)
+		})
+	}
+	sendCode()
+
+	$scope.close = function () {
+		confirmPhoneModal.deactivate()
+		callback(false)
+	}
+
+	$scope.resend = function () {
+		if ($scope.resendTimer == 0) {
+			sendCode()
+		}
+	}
+
+	$scope.confirm = function () {
+		if (!$scope.code) {
+			return $scope.codeError = true
+		}
+
+		$scope.loading = true
+		verifyPhoneCodeService(phone, $scope.code).then(function (response) {
+			$scope.loading = false
+			confirmPhoneModal.deactivate()
+			callback(true)
+			console.log(response)
+		}, function (error) {
+			$scope.loading = false
+			$scope.codeError = true
+			console.log(error)
+		})
+	}
+})
+
 .factory('confirmAccountModal', function (btfModal) {
 	return btfModal({
 		controller: 'confirmAccountModalController',

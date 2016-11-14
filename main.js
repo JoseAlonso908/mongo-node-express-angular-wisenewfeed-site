@@ -66,7 +66,6 @@ app.get('/static/countries', (req, res) => {
 			country: item.name,
 			code: item.phone
 		})
-		// countryPhoneCodeList.push(`${item.name}`)
 	}
 
 	res.send(countryPhoneCodeList)

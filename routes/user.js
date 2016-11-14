@@ -34,7 +34,6 @@ let twilioClient = twilio(config.TWILIO.TEST.SID, config.TWILIO.TEST.AUTHTOKEN)
 
 router.get('/me', (req, res) => {
 	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
-
 	let token = req.headers.authorization.split(' ')[1]
 
 	let result = {}
@@ -598,6 +597,21 @@ router.post('/profile/edit/removedownload', (req, res) => {
 				} else {
 					res.status(400).send({message: 'Download not found'})
 				}
+			})
+		} else res.status(400).send({message: 'Invalid token'})
+	})
+})
+
+router.post('/profile/edit/settings', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+	
+	let {name, email, phone, country, language} = req.body
+
+	models.Token.getUserByToken(token, (err, user) => {
+		if (user) {
+			models.User.updateSettings(user._id, name, email, phone, country, language, () => {
+				res.send({ok: true})
 			})
 		} else res.status(400).send({message: 'Invalid token'})
 	})

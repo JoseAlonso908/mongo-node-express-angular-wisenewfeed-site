@@ -11,8 +11,10 @@ angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
 	'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
-.config(['$locationProvider', '$routeProvider', '$authProvider',
-	function config($locationProvider, $routeProvider, $authProvider) {
+.config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider',
+	function config($locationProvider, $routeProvider, $authProvider, $compileProvider) {
+		$compileProvider.debugInfoEnabled(false)
+
 		$locationProvider.hashPrefix('!')
 		$routeProvider
 			.when('/start', {
@@ -41,6 +43,10 @@ angular.module('er', [
 			})
 			.when('/resetpassword', {
 				templateUrl: 'assets/views/resetpassword.htm'
+			})
+			.when('/settings', {
+				templateUrl: 'assets/views/settings.htm',
+				controller: 'settingsController'
 			})
 
 

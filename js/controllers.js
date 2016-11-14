@@ -469,3 +469,46 @@ angular.module('er.controllers', [])
 		})
 	}
 })
+.controller('settingsController', function ($scope, $location, identityService, countriesListService) {
+	$scope.pages = ['general', 'password', 'notifications']
+	$scope.activePage = 'general'
+
+	$scope.savingFuncs = {
+		general: function (e) {
+			e.preventDefault()
+
+			var form = {
+				name: e.target.name.value,
+				email: e.target.email.value,
+				phone: e.target.phone.value,
+				country: e.target.country.value,
+				language: e.target.language.value,
+			}
+
+			if ($scope.profileSettings.$valid) {
+				var a = identityService.updateSettings(form).then(function (result) {
+					return $location.url('/my')
+				}, function (error) {
+					alert('Failed to update settings. Please, try again later.')
+				})
+			}
+		}
+	}
+
+	async.parallel([
+		function () {
+			identityService.get().then(function (user) {
+				$scope.user = user
+			})
+		},
+		function () {
+			countriesListService().then(function (list) {
+				$scope.countries = list.map(function (item) {
+					return item.country
+				})
+			})
+		},
+	], function () {
+		$scope.$apply()
+	})
+})

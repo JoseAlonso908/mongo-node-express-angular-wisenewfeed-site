@@ -15,6 +15,13 @@ $soLight: #f1f5f7;
 
 @import "loader";
 
+h3 {
+	font-size: 18px;
+	font-weight: 700;
+	color: $soDark;
+	line-height: 2em;
+}
+
 * {
 	outline: none;
 }
@@ -383,7 +390,7 @@ a {
 		justify-content: space-between;
 
 		width: 100%; height: 90px;
-		margin-top: 27px;
+		padding-top: 27px;
 		
 		#logo {
 			display: block;
@@ -1261,6 +1268,147 @@ a {
 					}
 				}
 			}
+
+			.settings-wrapper {
+				display: none;
+				position: relative;
+				padding: 32px 24px;
+				background-color: #ffffff;
+				border-radius: 4px;
+				box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
+				box-sizing: border-box;
+
+				&.active {
+					display: block;
+				}
+
+				.subtitle {
+					color: $middleGrey;
+					font-size: 13px;
+					line-height: 20px;
+				}
+
+				.divider {
+					width: 100%; height: 0;
+					margin: 27px 0 27px -24px;
+					padding-right: 48px;
+					border-top: 1px solid #f0f2f4;
+				}
+
+				.settings-field-block {
+					margin-bottom: 16px;
+
+					label {
+						display: inline-block;
+						width: 112px;
+						padding-right: 24px;
+						line-height: 36px;
+						font-size: 13px;
+						color: #82898f;
+						text-align: right;
+					}
+
+					select {
+						@include appearance(none);
+
+						background-origin: content-box;
+						background-image: url('../images/select-down.png');
+						background-repeat: no-repeat;
+						background-position: center right;
+
+						@include user-select(none);
+					}
+
+					select, input {
+						display: inline-block;
+						width: 300px; height: 36px;
+						padding: 0 10px;
+						border: 1px solid #e6e9ec;
+						background-color: #ffffff;
+						border-radius: 3px;
+						color: $soDark;
+						box-sizing: border-box;
+						@include transition(border-color .1s);
+
+						&:focus {
+							border-color: $activeBlue;
+						}
+
+						&.error {
+							border-color: red;
+						}
+					}
+				}
+
+				.cta-button {
+					margin-left: calc(112px + 24px);
+					padding: 0 20px;
+					color: #ffffff;
+					font-family: 'Roboto', sans-serif;
+					font-size: 13px;
+					font-weight: 900;
+				}
+
+				.checkbox-wrapper {
+					height: 20px;
+					line-height: 20px;
+					margin: 0 0 10px 134px;
+
+					input[type=checkbox] {
+						display: none;
+						width: 0; height: 0;
+						margin: 0;
+						visibility: hidden;
+
+						&:checked + label {
+							&:before {
+								content: 'check' !important;
+								background-color: $activeBlue;
+								border-color: $activeBlue;
+							}
+						}
+					}
+
+					.label {
+						display: block;
+						height: 20px;
+						position: relative;
+						padding-left: 20px;
+						font-size: 13px;
+						color: $middleGrey;
+						line-height: 22px;
+						cursor: pointer;
+						@include user-select(none);
+
+						&:before {
+							$size: 12px;
+
+							position: absolute;
+							width: $size; height: $size;
+							top: 50%;
+							margin: -(($size / 2) + 1px) 0 0 -20px;
+							font-family: 'Material Icons';
+							color: #ffffff;
+							line-height: $size;
+							font-size: 12px;
+							text-align: center;
+							border: 1px solid $iconGrey;
+							content: ' ';
+							border-radius: 2px;
+							@include transition(background-color .1s);
+						}
+					}
+				}
+
+				.top-link {
+					position: absolute;
+					font-size: 13px;
+					font-weight: 900;
+					color: $activeBlue;
+					right: 24px;
+					margin-top: 20px;
+				}
+			}
 		}
 
 		.left {
@@ -1283,6 +1431,7 @@ a {
 
 			.user-profile-info {
 				.name {
+					margin-bottom: 10px;
 					font-size: 20px;
 					font-weight: 500;
 					color: #424242;
@@ -1527,6 +1676,51 @@ a {
 					border-radius: 2px;
 				}
 			}
+
+			.settings-list {
+				position: relative;
+				padding: 16px 0;
+				margin-bottom: 32px;
+				background-color: #ffffff;
+				border-radius: 4px;
+				box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
+				box-sizing: border-box;
+
+				a {
+					display: block;
+					height: 36px;
+					padding: 0 23px;
+					box-sizing: border-box;
+					font-size: 14px;
+					color: $soDark !important;
+					line-height: 36px;
+					cursor: pointer;
+					@include transition(font-weight .1s, background-color .1s);
+
+					&:after {
+						position: absolute;
+						right: 6px;
+						font-family: 'Material Icons';
+						font-size: 20px;
+						content: 'keyboard_arrow_right';
+					}
+
+					&:hover, &.active {
+						background-color: #f2f3f4;
+					}
+
+					&.active {
+						font-weight: 900;
+					}
+				}
+
+				.divider {
+					width: 100%; height: 0;
+					margin: 15px 0 15px 0;
+					// padding-right: 50px;
+					border-top: 1px solid #f0f2f4;
+				}
+			}
 		}
 
 		.right {
@@ -1685,28 +1879,28 @@ a {
 					}
 				}
 			}
+		}
 
-			.about-box {
-				padding: 15px;
-				box-sizing: border-box;
+		.about-box {
+			padding: 15px;
+			box-sizing: border-box;
+			font-size: 13px;
+			color: #8899a6;
+			line-height: 20px;
+
+			a {
 				font-size: 13px;
+			}
+
+			a:not(.advertise) {
 				color: #8899a6;
-				line-height: 20px;
+			}
 
-				a {
-					font-size: 13px;
-				}
-
-				a:not(.advertise) {
-					color: #8899a6;
-				}
-
-				.divider {
-					width: 100%; height: 0;
-					margin: 10px 0 10px -15px;
-					padding-right: 50px;
-					border-top: 1px solid #f0f2f4;
-				}
+			.divider {
+				width: 100%; height: 0;
+				margin: 10px 0 10px -15px;
+				padding-right: 50px;
+				border-top: 1px solid #f0f2f4;
 			}
 		}
 	}

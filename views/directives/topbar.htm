@@ -31,7 +31,7 @@
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">
 		<avatar user="user"></avatar>
-		<a class="name dark-bold" ng-click="$parent.openUserMenu($event)" href="javascript:void(0);">{{user.name}}</a>
+		<a class="name dark-bold" ng-click="$parent.openUserMenu($event)" href="javascript:void(0);">{{user.name || 'Unnamed'}}</a>
 		<a class="view-profile" ng-if="user.role != 'User'" ng-href="#!/my">View profile</a>
 
 		<usermenu user="user" ng-if="$parent.user"></usermenu>

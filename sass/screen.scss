@@ -1781,7 +1781,16 @@ a {
 						text-align: center;
 					}
 
+					&.active {
+						background-color: $activeBlue;
+
+						i, .value, .title {
+							color: #ffffff;
+						}
+					}
+
 					&:hover {
+						opacity: 1;
 						border-bottom-color: $activeBlue;
 					}
 				}

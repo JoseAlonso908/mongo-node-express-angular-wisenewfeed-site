@@ -1639,7 +1639,14 @@ a[disabled] {
   font-size: 11px;
   text-align: center;
 }
+#wrapper .wallpaper-wrapper .footer .stats .stat.active {
+  background-color: #43abe7;
+}
+#wrapper .wallpaper-wrapper .footer .stats .stat.active i, #wrapper .wallpaper-wrapper .footer .stats .stat.active .value, #wrapper .wallpaper-wrapper .footer .stats .stat.active .title {
+  color: #ffffff;
+}
 #wrapper .wallpaper-wrapper .footer .stats .stat:hover {
+  opacity: 1;
   border-bottom-color: #43abe7;
 }
 #wrapper .wallpaper-wrapper .rated-avatar-wrapper {

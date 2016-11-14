@@ -231,23 +231,23 @@ var Model = function(mongoose) {
 						cb(null, commentsIds)
 					})
 				},
-				// Get reactions on user's comments
-				(commentsIds, cb) => {
-					models.CommentReaction.find({comment: {$in: commentsIds}}, (err, commentsreactions) => {
-						for (let reaction of commentsreactions) {
-							switch (reaction.type) {
-								case 'like':
-									result.likes++
-									break
-								case 'dislike':
-									result.dislikes++
-									break
-							}
-						}
+				// // Get reactions on user's comments
+				// (commentsIds, cb) => {
+				// 	models.CommentReaction.find({comment: {$in: commentsIds}}, (err, commentsreactions) => {
+				// 		for (let reaction of commentsreactions) {
+				// 			switch (reaction.type) {
+				// 				case 'like':
+				// 					result.likes++
+				// 					break
+				// 				case 'dislike':
+				// 					result.dislikes++
+				// 					break
+				// 			}
+				// 		}
 
-						cb()
-					})
-				},
+				// 		cb()
+				// 	})
+				// },
 			], (err) => {
 				callback(result)
 			})

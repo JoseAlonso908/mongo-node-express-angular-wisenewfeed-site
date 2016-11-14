@@ -37,8 +37,23 @@ router.get('/me', (req, res) => {
 
 	let token = req.headers.authorization.split(' ')[1]
 
-	models.Token.getUserByToken(token, (err, user) => {
-		res.send(user)
+	let result = {}
+
+	async.waterfall([
+		(callback) => {
+			models.Token.getUserByToken(token, (err, user) => {
+				result = user.toObject()
+				callback(null, user._id)
+			})
+		},
+		(id, callback) => {
+			models.User.getReactionsOnUser(id, (reactions) => {
+				result.reactions = reactions
+				callback()
+			})
+		}
+	], (err) => {
+		res.send(result)
 	})
 })
 

@@ -153,8 +153,8 @@ angular.module('er.services', [])
 })
 .factory('identityService', function ($http, $cookies, $auth, $q, $rootScope) {
 	var _user = undefined
-	// console.log('Remembered user')
-	// console.log(_user)
+	console.log('Remembered user')
+	console.log(_user)
 
 	return {
 		getOther: function (id) {
@@ -192,11 +192,11 @@ angular.module('er.services', [])
 			var d = $q.defer()
 
 			// var user = $cookies.getObject('user')
-			// if (_user && (clean === undefined || clean === false)) {
-			// 	console.log('Returning remembered')
-			// 	console.log(_user)
-			// 	d.resolve(_user)
-			// } else {
+			if (_user && (clean === undefined || clean === false)) {
+				console.log('Returning remembered')
+				console.log(_user)
+				d.resolve(_user)
+			} else {
 				$http({
 					method: 'GET',
 					url: '/me',
@@ -208,10 +208,7 @@ angular.module('er.services', [])
 
 					user.rating = user.rating || 1
 					user.color = user.color || 'bronze'
-					user.likes = user.likes || 0
 					user.xp = user.xp || 0
-					user.dislikes = user.dislikes || 0
-					user.reactions = user.reactions || 0
 					user.followers = user.followers || 0
 					user.following = user.following || 0
 					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
@@ -226,13 +223,15 @@ angular.module('er.services', [])
 
 					$cookies.put('token', $auth.getToken())
 
+					_user = user
+
 					d.resolve(user)
 					return user
 				}, function (error) {
 					d.reject(error.message)
 					return error
 				})
-			// }
+			}
 
 			return d.promise
 		},
@@ -404,7 +403,25 @@ angular.module('er.services', [])
 			}, function (data, status) {
 				return data
 			})
-		}
+		},
+		reacted: function (user, type) {
+			return $http({
+				method: 'GET',
+				url: '/article/feed/' + type,
+				cache: false,
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					user: user
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
 	}
 })
 .factory('postService', function ($http, $cookies) {

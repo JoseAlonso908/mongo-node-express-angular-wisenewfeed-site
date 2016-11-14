@@ -1,0 +1,27 @@
+<div class="stats">
+	<a ng-href="#!/profilefeed/{{profile._id}}/liked" ng-class="{active: active == 'liked'}" class="stat">
+		<i class="material-icons">thumb_up</i>
+		<div class="value">{{profile.reactions.likes || 0}}</div>
+		<div class="title">Like</div>
+	</a>
+	<a ng-href="#!/profilefeed/{{profile._id}}/disliked" ng-class="{active: active == 'disliked'}" class="stat">
+		<i class="material-icons">thumb_down</i>
+		<div class="value">{{profile.reactions.dislikes || 0}}</div>
+		<div class="title">Dislike</div>
+	</a>
+	<a ng-href="#!/profilefeed/{{profile._id}}/commented" ng-class="{active: active == 'commented'}" class="stat">
+		<i class="material-icons">chat_bubble</i>
+		<div class="value">{{profile.reactions.reacts || 0}}</div>
+		<div class="title">React</div>
+	</a>
+	<a href="javascript:void(0);" class="stat">
+		<i class="material-icons">person</i>
+		<div class="value">{{profile.following}}</div>
+		<div class="title">Following</div>
+	</a>
+	<a href="javascript:void(0);" class="stat">
+		<i class="material-icons">people</i>
+		<div class="value">{{profile.followers}}</div>
+		<div class="title">Followers</div>
+	</a>
+</div>

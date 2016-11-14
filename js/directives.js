@@ -181,13 +181,32 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('profilereactions', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/profilereactions.htm',
+		scope: {
+			active: '=',
+			profile: '='
+		},
+	}
+})
+.directive('aboutbox', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/aboutbox.htm',
+	}
+})
 .directive('feed', function ($rootScope, feedService, commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
+		scope: {
+			type: '=',
+			id: '=',
+			user: '=',
+		},
 		link: function ($scope, element, attr) {
-			// $scope.user = $scope.$parent.user
-
 			$scope.$parent.$on('reloadfeed', function () {
 				init()
 			})
@@ -204,12 +223,21 @@ angular.module('er.directives', [])
 					feedType = 'all'
 				}
 
-				$scope.feedLoading = true
-				$scope.feed = []
-				feedService[feedType]().then(function (feed) {
-					$scope.feedLoading = false
-					$scope.feed = feed
-				})
+				if ($scope.type) {
+					$scope.feedLoading = true
+					$scope.feed = []
+					feedService.reacted($scope.id, $scope.type).then(function (feed) {
+						$scope.feedLoading = false
+						$scope.feed = feed
+					})
+				} else {
+					$scope.feedLoading = true
+					$scope.feed = []
+					feedService[feedType]().then(function (feed) {
+						$scope.feedLoading = false
+						$scope.feed = feed
+					})
+				}
 			}
 
 			init()
@@ -221,7 +249,7 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
 		scope: {
-			post: '='
+			post: '=',
 		},
 		link: function ($scope, element, attr) {
 			$scope.files = []

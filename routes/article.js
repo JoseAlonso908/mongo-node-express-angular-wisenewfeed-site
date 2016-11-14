@@ -58,6 +58,27 @@ router.get('/my', (req, res) => {
 	})
 })
 
+router.get('/feed/liked', (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	models.Article.getLikedOfUser(req.user._id, (err, articles) => {
+		res.send(articles)
+	})
+})
+
+router.get('/feed/disliked', (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	models.Article.getDislikedOfUser(req.user._id, (err, articles) => {
+		res.send(articles)
+	})
+})
+
+router.get('/feed/commented', (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	models.Article.getCommentedOfUser(req.user._id, (err, articles) => {
+		res.send(articles)
+	})
+})
+
 router.get('/comment/get', (req, res) => {
 	let {postId} = req.query
 

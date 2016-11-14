@@ -14,31 +14,31 @@
 			<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
 			<div class="footer">
 				<div class="stats">
-					<div class="stat">
+					<a href="javascript:void(0);" class="stat">
 						<i class="material-icons">thumb_up</i>
-						<div class="value">{{user.likes}}</div>
+						<div class="value">{{user.reactions.likes || 0}}</div>
 						<div class="title">Like</div>
-					</div>
-					<div class="stat">
+					</a>
+					<a href="javascript:void(0);" class="stat">
 						<i class="material-icons">thumb_down</i>
-						<div class="value">{{user.dislikes}}</div>
+						<div class="value">{{user.reactions.dislikes || 0}}</div>
 						<div class="title">Dislike</div>
-					</div>
-					<div class="stat">
+					</a>
+					<a href="javascript:void(0);" class="stat">
 						<i class="material-icons">chat_bubble</i>
-						<div class="value">{{user.reactions}}</div>
+						<div class="value">{{user.reactions.reacts || 0}}</div>
 						<div class="title">React</div>
-					</div>
-					<div class="stat">
+					</a>
+					<a href="javascript:void(0);" class="stat">
 						<i class="material-icons">person</i>
 						<div class="value">{{user.following}}</div>
 						<div class="title">Following</div>
-					</div>
-					<div class="stat">
+					</a>
+					<a href="javascript:void(0);" class="stat">
 						<i class="material-icons">people</i>
 						<div class="value">{{user.followers}}</div>
 						<div class="title">Followers</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>

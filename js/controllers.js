@@ -234,9 +234,28 @@ angular.module('er.controllers', [])
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {
+	// Get profile from cache (if exists)
 	identityService.get().then(function (user) {
 		$scope.user = user
 		$scope.profile = user
+
+		// Get profile from backend to refresh user's data
+		identityService.get(true).then(function (user) {
+			$scope.user = user
+			$scope.profile = user
+		})
+	})
+})
+.controller('profileFeedController', function ($routeParams, $scope, identityService) {
+	$scope.type = $routeParams.type
+	$scope.id = $routeParams.id
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+
+		identityService.getOther($routeParams.id).then(function (profile) {
+			$scope.profile = profile
+		})
 	})
 })
 .controller('personController', function ($routeParams, $scope, $location, identityService) {

@@ -8,23 +8,6 @@ var Model = function(mongoose) {
 		images		: [String],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
-		// ratings		: {
-		// 	expert: {
-		// 		likes: Number,
-		// 		dislikes: Number,
-		// 		shares: Number,
-		// 	},
-		// 	journalist: {
-		// 		likes: Number,
-		// 		dislikes: Number,
-		// 		shares: Number,
-		// 	},
-		// 	visitor: {
-		// 		likes: Number,
-		// 		dislikes: Number,
-		// 		shares: Number,
-		// 	},
-		// }
 	})
 
 	var Model = mongoose.model('article', schema);
@@ -38,11 +21,6 @@ var Model = function(mongoose) {
 			let article = new Model()
 			Object.assign(article, {
 				author, images, text,
-				// ratings: {
-				// 	expert: {likes: 0, dislikes: 0, shares: 0},
-				// 	journalist: {likes: 0, dislikes: 0, shares: 0},
-				// 	visitor: {likes: 0, dislikes: 0, shares: 0},
-				// }
 			})
 			article.save(callback)
 		},
@@ -55,6 +33,90 @@ var Model = function(mongoose) {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
+		getLikedOfUser: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+
+			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+				let postIds = articles.map((article) => {return article._id})
+
+				let likedArticles = []
+
+				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
+					articles.filter((article) => {
+						let postReactions = reactions[article._id.toString()].reactions
+
+						if (postReactions.expert.likes + postReactions.journalist.likes + postReactions.user.likes > 0) {
+							return true
+						}
+
+						return false
+					})
+
+					likedArticles = articles
+					callback(err, likedArticles)
+				})
+			})
+		},
+
+		getDislikedOfUser: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+
+			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+				let postIds = articles.map((article) => {return article._id})
+
+				let likedArticles = []
+
+				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
+					articles.filter((article) => {
+						let postReactions = reactions[article._id.toString()].reactions
+
+						if (postReactions.expert.dislikes + postReactions.journalist.dislikes + postReactions.user.dislikes > 0) {
+							return true
+						}
+
+						return false
+					})
+
+					likedArticles = articles
+					callback(err, likedArticles)
+				})
+			})
+		},
+
+		getCommentedOfUser: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+
+			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+				let postIds = articles.map((article) => {return article._id})
+
+				let commentedArticles = []
+
+				models.Comment.getByArticles(postIds, (err, comments) => {
+					for (let comment of comments) {
+						let articleFound = false
+
+						for (let article of commentedArticles) {
+							if (comment.post.toString() == article._id.toString()) {
+								articleFound = true
+								break
+							}
+						}
+
+						if (!articleFound) {
+							for (let article of articles) {
+								if (comment.post.toString() == article._id.toString()) {
+									commentedArticles.push(article)
+									break
+								}
+							}
+						}
+					}
+
+					callback(err, commentedArticles)
+				})
+			})
 		},
 	}
 }

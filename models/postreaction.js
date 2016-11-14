@@ -74,6 +74,7 @@ var Model = function(mongoose) {
 
 			postIds = postIds.map((id) => {
 				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+				else return id
 			})
 
 			Model.find({post: {$in: postIds}}).populate('author').exec((err, reactions) => {

@@ -25,11 +25,15 @@ angular.module('er', [
 				templateUrl: 'assets/views/home.htm'
 			})
 			.when('/my', {
-				templateUrl: 'assets/views/person.htm',
+				templateUrl: 'assets/views/profile.htm',
 				controller: 'profileController'
 			})
+			.when('/profilefeed/:id/:type', {
+				templateUrl: 'assets/views/profilefeed.htm',
+				controller: 'profileFeedController'
+			})
 			.when('/person/:id', {
-				templateUrl: 'assets/views/person.htm',
+				templateUrl: 'assets/views/profile.htm',
 				controller: 'personController',
 			})
 			.when('/editmy', {

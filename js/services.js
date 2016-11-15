@@ -284,7 +284,23 @@ angular.module('er.services', [])
 			}, function (error) {
 				return error
 			})
-		}
+		},
+		disconnectSocial: function (provider) {
+			return $http({
+				method: 'POST',
+				url: '/profile/settings/disconnectsocial',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+				data: {
+					provider: provider,
+				},
+			}).then(function (response) {
+				return response.data
+			}, function (error) {
+				return error
+			})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {

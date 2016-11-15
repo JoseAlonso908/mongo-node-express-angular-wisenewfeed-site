@@ -150,8 +150,8 @@
 					</div>
 
 					<div class="actions">
-						<button ng-if="!user.facebook" ng-click="connect('facebook')">Connect</button>
-						<div ng-if="user.facebook" class="sign"><i class="material-icons">check</i></div>
+						<button ng-show="!user.facebook" ng-click="connect('facebook')">Connect</button>
+						<button ng-show="user.facebook" ng-click="disconnect('facebook')">Disconnect</button>
 					</div>
 
 					<div class="clear"></div>
@@ -168,8 +168,8 @@
 					</div>
 
 					<div class="actions">
-						<button ng-if="!user.linkedin" ng-click="connect('linkedin')">Connect</button>
-						<div ng-if="user.linkedin" class="sign"><i class="material-icons">check</i></div>
+						<button ng-show="!user.linkedin" ng-click="connect('linkedin')">Connect</button>
+						<button ng-show="user.linkedin" ng-click="disconnect('linkedin')">Disconnect</button>
 					</div>
 
 					<div class="clear"></div>
@@ -186,8 +186,8 @@
 					</div>
 
 					<div class="actions">
-						<button ng-if="!user.twitter" ng-click="connect('twitter')">Connect</button>
-						<div ng-if="user.twitter" class="sign"><i class="material-icons">check</i></div>
+						<button ng-show="!user.twitter" ng-click="connect('twitter')">Connect</button>
+						<button ng-show="user.twitter" ng-click="disconnect('twitter')">Disconnect</button>
 					</div>
 
 					<div class="clear"></div>

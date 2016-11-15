@@ -486,6 +486,17 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	$scope.disconnect = function (provider) {
+		identityService.disconnectSocial(provider).then(function (response) {
+			console.log(response)
+			identityService.get(true).then(function (user) {
+				$scope.user = user
+			})
+		}, function (error) {
+			alert('Unable to disconnect social network profile. Please, try again later.')
+		})
+	}
+
 	$scope.savingFuncs = {
 		general: function (e) {
 			e.preventDefault()

@@ -708,4 +708,25 @@ router.post('/profile/settings/setPassword', (req, res) => {
 	})
 })
 
+router.post('/profile/settings/disconnectsocial', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+
+	let {provider} = req.body,
+		providerName = `${provider}Name`
+
+	models.Token.getUserByToken(token, (err, user) => {
+		let updates = {}
+		updates[provider] = undefined
+		updates[providerName] = undefined
+
+		models.User.update(user._id, updates, (err, result) => {
+			console.log(result)
+
+			if (err) return res.status(400).send({message: 'Unable to update user'})
+			else return res.send({ok: true})
+		})
+	})
+})
+
 module.exports = router

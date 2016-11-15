@@ -41,8 +41,10 @@ router.get('/me', (req, res) => {
 	async.waterfall([
 		(callback) => {
 			models.Token.getUserByToken(token, (err, user) => {
-				result = user.toObject()
-				callback(null, user._id)
+				if (user) {
+					result = user.toObject()
+					callback(null, user._id)
+				} else return res.send({message: 'User not found'})
 			})
 		},
 		(id, callback) => {

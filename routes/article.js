@@ -44,6 +44,17 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	})
 })
 
+router.post('/remove', (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+
+	let {article} = req.body
+
+	models.Article.remove(req.user._id, article, (err, result) => {
+		if (!err) return res.send({ok: true})
+		else res.status(400).send(err)
+	})
+})
+
 router.get('/all', (req, res) => {
 	models.Article.getAll((err, articles) => {
 		res.send(articles)

@@ -11,7 +11,16 @@
 			<div class="country small-light">{{post.author.country}}</div>
 
 			<button class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
-			<button class="more small-icon" title="More"><i class="material-icons">more_vert</i></button>
+			<button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
+
+			<div class="post-menu" ng-class="{active: post.menu}">
+				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>
+				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Hide this post</a>
+				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Unfollow this expert</a>
+				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Mute</a>
+				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Report</a>
+				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Block</a>
+			</div>
 		</div>
 
 		<div class="content">

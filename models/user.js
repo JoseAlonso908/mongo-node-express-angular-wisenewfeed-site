@@ -62,6 +62,17 @@ var Model = function(mongoose) {
 			Model.findOne({email, password}, callback)
 		},
 
+		isPasswordValid: (_id, password, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+			
+			password = sha1(password)
+
+			Model.findOne({_id, password}, (err, user) => {
+				if (user) return callback(true)
+				else return callback(false)
+			})
+		},
+
 		findByEmail: (email, callback) => {
 			Model.findOne({email}, callback)
 		},

@@ -1,18 +1,20 @@
 angular.module('er.modals', [])
 .factory('confirmPhoneModal', function (btfModal) {
 	return btfModal({
-		controller: 'confirmAccountModalController',
+		controller: 'confirmPhoneModalController',
 		controllerAs: 'modal',
 		templateUrl: 'assets/views/modals/confirm-account.htm',
 	})
 })
-.controller('confirmPhoneModalController', function ($scope, $parent, $interval, phone, callback, verifyPhoneService, verifyPhoneCodeService) {
+.controller('confirmPhoneModalController', function ($scope, $parent, $interval, phone, callback, confirmPhoneModal, verifyPhoneService, verifyPhoneCodeService) {
 	$scope.phone = phone
 
 	$scope.maxResendTimerValue = 30
+	$scope.errormessage = ''
 
 	var sendCode = function () {
 		$scope.resendTimer = $scope.maxResendTimerValue
+		$scope.errormessage = ''
 
 		$scope.ready = false
 		$scope.loading = true
@@ -23,6 +25,12 @@ angular.module('er.modals', [])
 			$interval(function () {
 				$scope.resendTimer--
 			}, 1000, $scope.maxResendTimerValue)
+		}, function (error) {
+			$scope.ready = true
+			$scope.loading = false
+
+			$scope.errormessage = error
+			console.log(error)
 		})
 	}
 	sendCode()

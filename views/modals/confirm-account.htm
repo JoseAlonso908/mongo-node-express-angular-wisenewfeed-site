@@ -4,6 +4,8 @@
 		<div class="text">You should receive a text at {{phone}} with your confirm code soon.</div>
 		<div class="text" ng-if="!ready">Sending code...</div>
 
+		<div class="text error">{{errormessage}}</div>
+
 		<div class="small-loader" ng-if="loading"></div>
 		<input type="text" ng-disabled="loading || !ready" ng-change="codeError = false" ng-class="{error: codeError}" ng-model="code" placeholder="Enter your code">
 

@@ -23,14 +23,17 @@
 
 					<div class="settings-field-block">
 						<label>Full name</label><input type="text" name="name" ng-model="user.name" minlength="6" required>
+						<div class="clear"></div>
 					</div>
 
 					<div class="settings-field-block">
-						<label>Email</label><input type="text" name="email" ng-model="user.email" minlength="1" required>
+						<label>Email</label><input type="text" name="email" minlength="1" value="{{user.email}}" required>
+						<div class="clear"></div>
 					</div>
 
 					<div class="settings-field-block">
-						<label>Phone</label><input type="text" name="phone" ng-model="user.phone" minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" required>
+						<label>Phone</label><input type="text" name="phone" minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" value="{{user.phone}}" required>
+						<div class="clear"></div>
 					</div>
 
 					<div class="divider"></div>
@@ -40,6 +43,7 @@
 						<select ng-model="user.country" name="country">
 							<option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
 						</select>
+						<div class="clear"></div>
 					</div>
 
 					<div class="settings-field-block">
@@ -49,6 +53,7 @@
 							<option>Spanish</option>
 							<option>Russian</option>
 						</select>
+						<div class="clear"></div>
 					</div>
 
 					<div class="divider"></div>
@@ -58,26 +63,42 @@
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'password'}">
-				<h3>Change password</h3>
-				<div class="subtitle">Change your password or recover your current one.</div>
+				<form name="changePassword" ng-submit="savingFuncs['password']($event)">
+					<h3>Change password</h3>
+					<div class="subtitle">Change your password or recover your current one.</div>
 
-				<div class="divider"></div>
+					<div class="divider"></div>
 
-				<div class="settings-field-block">
-					<label>Current</label><input type="text">
-				</div>
+					<div class="settings-field-block">
+						<label>Current</label><input name="oldPassword" type="{{(oldPasswordShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="oldPassword" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="oldPasswordShow = !oldPasswordShow">
+							<i class="material-icons">{{(oldPasswordShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
 
-				<div class="settings-field-block">
-					<label>New</label><input type="text">
-				</div>
+					<div class="settings-field-block">
+						<label>New</label><input name="newPassword" type="{{(newPasswordShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="newPassword" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="newPasswordShow = !newPasswordShow">
+							<i class="material-icons">{{(newPasswordShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
 
-				<div class="settings-field-block">
-					<label>Repeat</label><input type="text">
-				</div>
+					<div class="settings-field-block">
+						<label>Repeat</label><input name="newPasswordRepeat" type="{{(newPasswordRepeatShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="newPasswordRepeat" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="newPasswordRepeatShow = !newPasswordRepeatShow">
+							<i class="material-icons">{{(newPasswordRepeatShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
 
-				<div class="divider"></div>
+					<div class="tip">Password should be shorter than 8 symbols and contain at least one digit and one letter.</div>
 
-				<button class="cta-button">Save changes</button>
+					<div class="divider"></div>
+
+					<input type="submit" class="cta-button" value="Save changes">
+				</form>
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'notifications'}">

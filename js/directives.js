@@ -244,7 +244,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($timeout, commentService, reactionsService) {
+.directive('post', function ($timeout, postService, commentService, reactionsService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -252,6 +252,10 @@ angular.module('er.directives', [])
 			post: '=',
 		},
 		link: function ($scope, element, attr) {
+			angular.element(document.body).on('click', function () {
+				$scope.post.menu = false
+			})
+
 			$scope.files = []
 
 			$scope.user = $scope.$parent.user
@@ -323,6 +327,15 @@ angular.module('er.directives', [])
 				}, function (error) {
 					console.log('Reaction failed')
 					console.log(error)
+				})
+			}
+
+			$scope.removePost = function (post) {
+				console.log(post)
+				postService.remove(post._id).then(function () {
+					$scope.$parent.$emit('reloadfeed')
+				}, function () {
+					alert('Unable to remove post. Please, try again later.')
 				})
 			}
 		}

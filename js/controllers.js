@@ -469,9 +469,13 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($scope, $location, identityService, countriesListService) {
+.controller('settingsController', function ($scope, $location, identityService, countriesListService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
-	$scope.activePage = 'general'
+	$scope.activePage = 'password'
+
+	$scope.oldPassword = 'a12345678'
+	$scope.newPassword = 'z12345678'
+	$scope.newPasswordRepeat = 'z12345678'
 
 	$scope.savingFuncs = {
 		general: function (e) {
@@ -486,13 +490,51 @@ angular.module('er.controllers', [])
 			}
 
 			if ($scope.profileSettings.$valid) {
-				var a = identityService.updateSettings(form).then(function (result) {
-					return $location.url('/my')
-				}, function (error) {
-					alert('Failed to update settings. Please, try again later.')
+				var saveSettings = function (success) {
+					if (!success) {
+						return
+					}
+
+					identityService.updateSettings(form).then(function (result) {
+						return $location.url('/my')
+					}, function (error) {
+						alert('Failed to update settings. Please, try again later.')
+					})
+				}
+
+				if (/*$scope.profileSettings.phone.$untouched || */form.phone == $scope.user.phone) {
+					saveSettings(true)
+				} else {
+					confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+				}
+			}
+		},
+		password: function (e) {
+			e.preventDefault()
+
+			var form = {
+				oldPassword: $scope.oldPassword,
+				newPassword: $scope.newPassword,
+			}
+
+
+			console.log($scope.changePassword)
+
+			if ($scope.changePassword.$valid) {
+				identityService.isPasswordValid(form.oldPassword).then(function (valid) {
+					if (!valid) {
+						return $scope.changePassword.oldPassword.$setValidity('required', false)
+					}
+
+					if ($scope.newPassword != $scope.newPasswordRepeat) {
+						return $scope.changePassword.newPasswordRepeat.$setValidity('required', false)
+					}
+
+
 				})
 			}
-		}
+			// identityService.isPasswordValid()
+		},
 	}
 
 	async.parallel([

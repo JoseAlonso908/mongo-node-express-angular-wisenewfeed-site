@@ -14,7 +14,7 @@ var Model = function(mongoose) {
 
 	return {
 		create: (author, text, images, callback) => {
-			if (typeof author !== 'object') author = mongoose.Schema.Types.ObjectId(author)
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
@@ -23,6 +23,13 @@ var Model = function(mongoose) {
 				author, images, text,
 			})
 			article.save(callback)
+		},
+
+		remove: (author, _id, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+
+			Model.remove({_id, author}, callback)
 		},
 
 		getAll: (callback) => {

@@ -252,6 +252,22 @@ angular.module('er.services', [])
 				return error
 			})
 		},
+		isPasswordValid: function (password) {
+			return $http({
+				method: 'POST',
+				url: '/profile/settings/isPasswordValid',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+				data: {
+					password: password
+				},
+			}).then(function (response) {
+				return response.data.valid
+			}, function (error) {
+				return error
+			})
+		}
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -478,6 +494,22 @@ angular.module('er.services', [])
 				.error(function (data, status) {
 					reject(data)
 				})
+			})
+		},
+		remove: function (postId) {
+			return $http({
+				method: 'POST',
+				url: '/article/remove',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					article: postId
+				}
+			}).then(function (result) {
+				return result.data
+			}, function (error) {
+				return error
 			})
 		},
 		getComments: function (postId) {

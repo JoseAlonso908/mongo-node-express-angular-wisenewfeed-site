@@ -631,4 +631,17 @@ router.post('/profile/edit/profile', tempUploads.single('file'), (req, res) => {
 	})
 })
 
+router.post('/profile/settings/isPasswordValid', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+
+	let {password} = req.body
+
+	models.Token.getUserByToken(token, (err, user) => {
+		models.User.isPasswordValid(user._id, password, (valid) => {
+			res.send({valid})
+		})
+	})
+})
+
 module.exports = router

@@ -265,7 +265,7 @@ angular.module('er.services', [])
 			}).then(function (response) {
 				return response.data.valid
 			}, function (error) {
-				return error
+				return error.data
 			})
 		},
 		updatePassword: function (oldPassword, newPassword) {

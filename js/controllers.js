@@ -476,12 +476,13 @@ angular.module('er.controllers', [])
 	$scope.connect = function (provider) {
 		$auth.authenticate(provider, {updateExisting: $scope.user._id})
 		.then(function (response) {
-			console.log(response)
-
-			
+			identityService.get(true).then(function (user) {
+				$scope.user = user
+			})
 		})
 		.catch(function (error) {
-			console.error(error)
+			alert(error.message)
+			console.error(error.data.message)
 		})
 	}
 

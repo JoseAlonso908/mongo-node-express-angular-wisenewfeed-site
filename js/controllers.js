@@ -481,8 +481,8 @@ angular.module('er.controllers', [])
 			})
 		})
 		.catch(function (error) {
-			alert(error.message)
-			console.error(error.data.message)
+			alert(error.data.message)
+			console.error(error)
 		})
 	}
 

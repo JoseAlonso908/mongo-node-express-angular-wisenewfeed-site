@@ -220,10 +220,6 @@ angular.module('er.controllers', [])
 		$scope.chosenCountry = item
 	}
 
-	$scope.r_tags = ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']
-	$scope.r_people = ['Guy 1', 'Guy 2', 'Guy 3', 'Guy 4', 'Guy 5', 'Guy 6', 'Guy 7']
-	$scope.r_categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4']
-
 	identityService.get().then(function (user) {
 		// Doesn't work without timeout
 		$timeout(function() {
@@ -471,7 +467,7 @@ angular.module('er.controllers', [])
 })
 .controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
-	$scope.activePage = 'socialconnect'
+	$scope.activePage = 'general'
 
 	$scope.connect = function (provider) {
 		$auth.authenticate(provider, {updateExisting: $scope.user._id})

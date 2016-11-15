@@ -665,3 +665,15 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('pieces', function (piecesService) {
+	return {
+		restric: 'E',
+		templateUrl: 'assets/views/directives/pieces.htm',
+		link: function ($scope, element, attr) {
+			piecesService.get().then(function (result) {
+				$scope.pieces = result
+				console.log(result)
+			}, function () {})
+		}
+	}
+})

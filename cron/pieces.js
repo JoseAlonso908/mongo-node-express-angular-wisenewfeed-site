@@ -1,5 +1,5 @@
 const config = require('./../config')
-const env = 'development'
+const env = 'local'
 
 const path = require('path')
 
@@ -13,6 +13,7 @@ global.models = {
 	User: require('./../models/user')(connection),
 	Article: require('./../models/article')(connection),
 	Comment: require('./../models/comment')(connection),
+	Piece: require('./../models/piece')(connection),
 }
 
 let pieces = {
@@ -40,7 +41,7 @@ models.Article.getAll((err, articles) => {
 		for (let aPiece of aPieces) {
 			let typeChar = aPiece[0]
 
-			if (typeof pieces[typeChar].list[aPiece] === undefined) {
+			if (pieces[typeChar].list[aPiece] === undefined) {
 				pieces[typeChar].list[aPiece] = 1
 			} else {
 				pieces[typeChar].list[aPiece]++
@@ -48,7 +49,21 @@ models.Article.getAll((err, articles) => {
 		}
 	}
 
-	console.log(pieces)
+	let insertionItems = []
+	for (let typeChar in pieces) {
+		let group = pieces[typeChar]
 
-	mongoose.connection.close()
+		for (let piece in group.list) {
+			insertionItems.push({
+				title: piece,
+				type: group.type,
+				amount: group.list[piece]
+			})
+		}
+	}
+
+	models.Piece.clearAll(() => {
+		models.Piece.addMulti(insertionItems)
+		mongoose.connection.close()
+	})
 })

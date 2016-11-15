@@ -183,4 +183,10 @@ router.delete('/comment/react', (req, res) => {
 	})
 })
 
+router.get('/pieces', (req, res) => {
+	models.Piece.getTopGrouped((result) => {
+		res.send(result)
+	})
+})
+
 module.exports = router

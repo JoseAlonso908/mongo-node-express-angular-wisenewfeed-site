@@ -17,20 +17,7 @@
 				</div>
 			</div>
 
-			<div class="recent-list">
-				<div class="title"><span class="so-bold">Recent</span> #Tags</div>
-				<a href=javascript:void(0); class="item" ng-repeat="tag in r_tags">#{{tag}}</a>
-			</div>
-
-			<div class="recent-list">
-				<div class="title"><span class="so-bold">Recent</span> @PeopleName</div>
-				<a href=javascript:void(0); class="item" ng-repeat="guy in r_people">@{{guy}}</a>
-			</div>
-
-			<div class="recent-list">
-				<div class="title"><span class="so-bold">Recent</span> $Category</div>
-				<a href=javascript:void(0); class="item" ng-repeat="cat in r_categories">${{cat}}</a>
-			</div>
+			<pieces></pieces>
 		</div>
 		<div class="middle">
 			<onyourmind ng-if="user"></onyourmind>

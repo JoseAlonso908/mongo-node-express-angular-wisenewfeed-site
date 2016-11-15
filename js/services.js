@@ -721,6 +721,24 @@ angular.module('er.services', [])
 		},
 	}
 })
+.factory('piecesService', function ($http, $cookies) {
+	return {
+		get: function () {
+			return $http({
+				method: 'GET',
+				url: '/article/pieces',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+	}
+})
 .factory('commentReactionsService', function ($http, $cookies, $timeout) {
 	return {
 		queue: [],

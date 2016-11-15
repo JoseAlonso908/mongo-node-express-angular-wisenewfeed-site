@@ -6,7 +6,7 @@ angular.module('er.modals', [])
 		templateUrl: 'assets/views/modals/confirm-account.htm',
 	})
 })
-.controller('confirmPhoneModalController' function ($scope, $parent, $interval, phone, callback, verifyPhoneService, verifyPhoneCodeService) {
+.controller('confirmPhoneModalController', function ($scope, $parent, $interval, phone, callback, verifyPhoneService, verifyPhoneCodeService) {
 	$scope.phone = phone
 
 	$scope.maxResendTimerValue = 30

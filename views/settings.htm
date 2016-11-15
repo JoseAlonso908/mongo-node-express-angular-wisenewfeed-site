@@ -141,9 +141,57 @@
 
 				<div class="divider"></div>
 
-				<div class="divider"></div>
+				<div class="social-network facebook">
+					<div class="icon"></div>
 
-				<button class="cta-button">Save changes</button>
+					<div class="info">
+						<div class="title">Facebook</div>
+						<div class="name">{{user.facebookName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-if="!user.facebook" ng-click="connect('facebook')">Connect</button>
+						<div ng-if="user.facebook" class="sign"><i class="material-icons">check</i></div>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+
+				<div class="divider narrow"></div>
+
+				<div class="social-network linkedin">
+					<div class="icon"></div>
+
+					<div class="info">
+						<div class="title">Linkedin</div>
+						<div class="name">{{user.linkedinName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-if="!user.linkedin" ng-click="connect('linkedin')">Connect</button>
+						<div ng-if="user.linkedin" class="sign"><i class="material-icons">check</i></div>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+
+				<div class="divider narrow"></div>
+
+				<div class="social-network twitter">
+					<div class="icon"></div>
+
+					<div class="info">
+						<div class="title">Twitter</div>
+						<div class="name">{{user.twitterName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-if="!user.twitter" ng-click="connect('twitter')">Connect</button>
+						<div ng-if="user.twitter" class="sign"><i class="material-icons">check</i></div>
+					</div>
+
+					<div class="clear"></div>
+				</div>
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'importcontacts'}">
@@ -151,10 +199,6 @@
 				<div class="subtitle">Choosing a service will open a window for you to log in securely and import your contacts to Expert Reaction. We won't email anyone without your consent, but we may use contact information to improve Expert and Followers suggestions</div>
 
 				<div class="divider"></div>
-
-				<div class="divider"></div>
-
-				<button class="cta-button">Save changes</button>
 			</div>
 		</div>
 		<div class="right">

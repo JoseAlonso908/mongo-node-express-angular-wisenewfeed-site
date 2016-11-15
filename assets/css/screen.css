@@ -1274,6 +1274,10 @@ a[disabled] {
   padding-right: 48px;
   border-top: 1px solid #f0f2f4;
 }
+#wrapper > .content .middle .settings-wrapper .divider.narrow {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
 #wrapper > .content .middle .settings-wrapper .settings-field-block {
   margin-bottom: 16px;
 }
@@ -1406,6 +1410,85 @@ a[disabled] {
   margin-left: 136px;
   font-size: 13px;
   color: #82898f;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.facebook .icon {
+  background-image: url("../images/svg/facebook.svg");
+}
+#wrapper > .content .middle .settings-wrapper .social-network.facebook .info .title, #wrapper > .content .middle .settings-wrapper .social-network.facebook .info .name {
+  color: #3b5998;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.facebook .actions .sign {
+  color: #3b5998;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.linkedin .icon {
+  background-image: url("../images/svg/linkedin.svg");
+}
+#wrapper > .content .middle .settings-wrapper .social-network.linkedin .info .title, #wrapper > .content .middle .settings-wrapper .social-network.linkedin .info .name {
+  color: #0e76a8;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.linkedin .actions .sign {
+  color: #0e76a8;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.twitter .icon {
+  background-image: url("../images/svg/twitter.svg");
+}
+#wrapper > .content .middle .settings-wrapper .social-network.twitter .info .title, #wrapper > .content .middle .settings-wrapper .social-network.twitter .info .name {
+  color: #26a6d1;
+}
+#wrapper > .content .middle .settings-wrapper .social-network.twitter .actions .sign {
+  color: #26a6d1;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .icon {
+  width: 32px;
+  height: 32px;
+  float: left;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 32px;
+  margin-left: 15px;
+  float: left;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .info .title, #wrapper > .content .middle .settings-wrapper .social-network .info .name {
+  flex-wrap: wrap;
+  width: 100%;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .info .title {
+  font-size: 14px;
+  font-weight: 700;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .info .name {
+  font-size: 13px;
+  opacity: .7;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .actions {
+  float: right;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .actions button {
+  display: flex;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #43abe7;
+  line-height: 32px;
+  cursor: pointer;
+  background-color: rgba(67, 171, 231, 0.15);
+  border: none;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+#wrapper > .content .middle .settings-wrapper .social-network .actions button:hover {
+  background-color: rgba(44, 161, 228, 0.15);
 }
 #wrapper > .content .left {
   order: 1;

@@ -298,6 +298,8 @@ router.post('/auth/signup', (req, res) => {
 })
 
 router.post('/auth/facebook', (req, res) => {
+	let {updateExisting} = req.body
+
 	let fields = ['id', 'email', 'first_name', 'last_name', 'link', 'name'];
 	let accessTokenUrl = 'https://graph.facebook.com/v2.5/oauth/access_token';
 	let graphApiUrl = 'https://graph.facebook.com/v2.5/me?fields=' + fields.join(',');
@@ -321,15 +323,30 @@ router.post('/auth/facebook', (req, res) => {
 			}
 
 			models.User.findOne({facebook: profile.id}, (err, user) => {
-				if (user) getTokenAndRespond(res, user)
-				else {
-					models.User.createUser({
-						facebook: profile.id,
-						avatar: `https://graph.facebook.com/${profile.id}/picture?type=large`,
-						name: profile.name,
-					}, (err, user) => {
+				if (user) {
+					if (updateExisting) {
+						return res.status(400).send({message: 'This account is already taken. Contact us to request details.'})
+					} else {
 						getTokenAndRespond(res, user)
-					})
+					}
+				} else {
+					if (updateExisting) {
+						models.User.update(updateExisting, {
+							facebook: profile.id,
+							facebookName: profile.name,
+						}, (err, user) => {
+							res.send(user)
+						})
+					} else {
+						models.User.createUser({
+							facebook: profile.id,
+							facebookName: profile.name,
+							avatar: `https://graph.facebook.com/${profile.id}/picture?type=large`,
+							name: profile.name,
+						}, (err, user) => {
+							getTokenAndRespond(res, user)
+						})
+					}
 				}
 			})
 		})
@@ -337,6 +354,8 @@ router.post('/auth/facebook', (req, res) => {
 })
 
 router.post('/auth/linkedin', function(req, res) {
+	let {updateExisting} = req.body
+
 	var accessTokenUrl = 'https://www.linkedin.com/uas/oauth2/accessToken'
 	var peopleApiUrl = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address,picture-url)'
 	var params = {
@@ -360,15 +379,30 @@ router.post('/auth/linkedin', function(req, res) {
 		// Step 2. Retrieve profile information about the current user.
 		request.get({ url: peopleApiUrl, qs: params, json: true }, function(err, response, profile) {
 			models.User.findOne({linkedin: profile.id}, (err, user) => {
-				if (user) getTokenAndRespond(res, user)
-				else {
-					models.User.createUser({
-						linkedin: profile.id,
-						avatar: profile.pictureUrl,
-						name: profile.firstName + ' ' + profile.lastName,
-					}, (err, user) => {
+				if (user) {
+					if (updateExisting) {
+						return res.status(400).send({message: 'This account is already taken. Contact us to request details.'})
+					} else {
 						getTokenAndRespond(res, user)
-					})
+					}
+				} else {
+					if (updateExisting) {
+						models.User.update(updateExisting, {
+							linkedin: profile.id,
+							linkedinName: profile.firstName + ' ' + profile.lastName,
+						}, (err, user) => {
+							res.send(user)
+						})
+					} else {
+						models.User.createUser({
+							linkedin: profile.id,
+							linkedinName: profile.firstName + ' ' + profile.lastName,
+							avatar: profile.pictureUrl,
+							name: profile.firstName + ' ' + profile.lastName,
+						}, (err, user) => {
+							getTokenAndRespond(res, user)
+						})
+					}
 				}
 			})
 		})
@@ -376,6 +410,8 @@ router.post('/auth/linkedin', function(req, res) {
 })
 
 router.post('/auth/twitter', (req, res) => {
+	let {updateExisting} = req.body
+
 	var requestTokenUrl = 'https://api.twitter.com/oauth/request_token'
 	var accessTokenUrl = 'https://api.twitter.com/oauth/access_token'
 	var profileUrl = 'https://api.twitter.com/1.1/account/verify_credentials.json'
@@ -421,17 +457,31 @@ router.post('/auth/twitter', (req, res) => {
 				oauth: profileOauth,
 				json: true
 			}, function(err, response, profile) {
-
 				models.User.findOne({twitter: profile.id}, (err, user) => {
-					if (user) getTokenAndRespond(res, user)
-					else {
-						models.User.createUser({
-							twitter: profile.id,
-							avatar: profile.profile_image_url_https.replace('_normal', ''),
-							name: profile.name,
-						}, (err, user) => {
+					if (user) {
+						if (updateExisting) {
+							return res.status(400).send({message: 'This account is already taken. Contact us to request details.'})
+						} else {
 							getTokenAndRespond(res, user)
-						})
+						}
+					} else {
+						if (updateExisting) {
+							models.User.update(updateExisting, {
+								twitter: profile.id,
+								twitterName: profile.name,
+							}, (err, user) => {
+								res.send(user)
+							})
+						} else {
+							models.User.createUser({
+								twitter: profile.id,
+								twitterName: profile.name,
+								avatar: profile.profile_image_url_https.replace('_normal', ''),
+								name: profile.name,
+							}, (err, user) => {
+								getTokenAndRespond(res, user)
+							})
+						}
 					}
 				})
 			})
@@ -640,6 +690,20 @@ router.post('/profile/settings/isPasswordValid', (req, res) => {
 	models.Token.getUserByToken(token, (err, user) => {
 		models.User.isPasswordValid(user._id, password, (valid) => {
 			res.send({valid})
+		})
+	})
+})
+
+router.post('/profile/settings/setPassword', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+
+	let {oldPassword, newPassword} = req.body
+
+	models.Token.getUserByToken(token, (err, user) => {
+		models.User.updateOldPassword(user._id, oldPassword, newPassword, (err, result) => {
+			if (!err) return res.send({ok: true})
+			else return res.status(400).send(err)
 		})
 	})
 })

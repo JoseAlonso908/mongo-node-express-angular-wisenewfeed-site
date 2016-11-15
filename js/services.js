@@ -267,6 +267,23 @@ angular.module('er.services', [])
 			}, function (error) {
 				return error
 			})
+		},
+		updatePassword: function (oldPassword, newPassword) {
+			return $http({
+				method: 'POST',
+				url: '/profile/settings/setPassword',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+				data: {
+					oldPassword: oldPassword,
+					newPassword: newPassword,
+				},
+			}).then(function (response) {
+				return response.data
+			}, function (error) {
+				return error
+			})
 		}
 	}
 })

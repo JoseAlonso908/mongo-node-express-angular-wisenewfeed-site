@@ -62,7 +62,7 @@ var Model = function(mongoose) {
 				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
 			})
 
-			Model.find({comment: {$in: commentIds}}).populate('author').exec((err, reactions) => {
+			Model.find({comment: {$in: commentIds}}).populate('author', '-password').exec((err, reactions) => {
 				for (let r of reactions) {
 					if (r.author._id.toString() == user) {
 						result[r.comment.toString()].youdid[r.type] = true
@@ -79,7 +79,7 @@ var Model = function(mongoose) {
 			// if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
 			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
 
-			Model.find({comment}).populate('author').exec((err, reactions) => {
+			Model.find({comment}).populate('author', '-password').exec((err, reactions) => {
 				if (err) return callback(err)
 
 				let result = {

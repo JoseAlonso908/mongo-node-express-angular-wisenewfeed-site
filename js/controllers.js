@@ -469,13 +469,21 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($scope, $location, identityService, countriesListService, confirmPhoneModal) {
+.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
-	$scope.activePage = 'password'
+	$scope.activePage = 'socialconnect'
 
-	$scope.oldPassword = 'a12345678'
-	$scope.newPassword = 'z12345678'
-	$scope.newPasswordRepeat = 'z12345678'
+	$scope.connect = function (provider) {
+		$auth.authenticate(provider, {updateExisting: $scope.user._id})
+		.then(function (response) {
+			console.log(response)
+
+			
+		})
+		.catch(function (error) {
+			console.error(error)
+		})
+	}
 
 	$scope.savingFuncs = {
 		general: function (e) {
@@ -520,7 +528,7 @@ angular.module('er.controllers', [])
 
 			console.log($scope.changePassword)
 
-			if ($scope.changePassword.$valid) {
+			if ($scope.changePassword.$valid && !$scope.changePassword.$pristine) {
 				identityService.isPasswordValid(form.oldPassword).then(function (valid) {
 					if (!valid) {
 						return $scope.changePassword.oldPassword.$setValidity('required', false)
@@ -530,7 +538,12 @@ angular.module('er.controllers', [])
 						return $scope.changePassword.newPasswordRepeat.$setValidity('required', false)
 					}
 
-
+					identityService.updatePassword($scope.oldPassword, $scope.newPassword).then(function (result) {
+						return $location.url('/my')
+					}, function (error) {
+						console.error(error)
+						alert('Unable to update password. Please, try again later.')
+					})
 				})
 			}
 			// identityService.isPasswordValid()

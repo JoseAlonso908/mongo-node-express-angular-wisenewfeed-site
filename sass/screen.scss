@@ -1337,6 +1337,11 @@ a {
 					margin: 27px 0 27px -24px;
 					padding-right: 48px;
 					border-top: 1px solid #f0f2f4;
+
+					&.narrow {
+						margin-top: 24px;
+						margin-bottom: 24px;
+					}
 				}
 
 				.settings-field-block {
@@ -1475,6 +1480,128 @@ a {
 					margin-left: 136px;
 					font-size: 13px;
 					color: $middleGrey;
+				}
+
+				.social-network {
+					$height: 32px;
+
+					&.facebook {
+						$color: #3b5998;
+
+						.icon {
+							background-image: url('../images/svg/facebook.svg');
+						}
+
+						.info {
+							.title, .name {
+								color: $color;
+							}
+						}
+
+						.actions {
+							.sign {
+								color: $color;
+							}
+						}
+					}
+
+					&.linkedin {
+						$color: #0e76a8;
+
+						.icon {
+							background-image: url('../images/svg/linkedin.svg');
+						}
+
+						.info {
+							.title, .name {
+								color: $color;
+							}
+						}
+
+						.actions {
+							.sign {
+								color: $color;
+							}
+						}
+					}
+
+					&.twitter {
+						$color: #26a6d1;
+
+						.icon {
+							background-image: url('../images/svg/twitter.svg');
+						}
+
+						.info {
+							.title, .name {
+								color: $color;
+							}
+						}
+
+						.actions {
+							.sign {
+								color: $color;
+							}
+						}
+					}
+
+					.icon {
+						width: $height; height: $height;
+						float: left;
+						background-repeat: no-repeat;
+						background-position: center;
+						background-size: contain;
+					}
+
+					.info {
+						display: flex;
+						justify-content: center;
+						flex-direction: column;
+						// align-items: center;
+						height: $height;
+						margin-left: 15px;
+						float: left;
+
+						.title, .name {
+							flex-wrap: wrap;
+							width: 100%;
+						}
+
+						.title {
+							font-size: 14px;
+							font-weight: 700;
+						}
+
+						.name {
+							font-size: 13px;
+							opacity: .7;
+						}
+					}
+
+					.actions {
+						float: right;
+
+						button {
+							display: flex;
+							justify-content: space-between;
+							height: $height;
+							padding: 0 12px;
+							border-radius: 16px;
+							font-size: 13px;
+							font-weight: 900;
+							color: $activeBlue;
+							line-height: $height;
+							cursor: pointer;
+							background-color: rgba($activeBlue, .15);
+							border: none;
+
+							@include transition(background-color .2s);
+
+							&:hover {
+								background-color: darken(rgba($activeBlue, .15), 5%);
+							}
+						}
+					}
 				}
 			}
 		}

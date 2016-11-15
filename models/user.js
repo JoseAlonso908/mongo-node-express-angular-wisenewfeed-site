@@ -5,24 +5,27 @@ var Model = function(mongoose) {
 
 	var schema = new mongoose.Schema({
 		ObjectId: mongoose.Schema.ObjectId,
-		facebook	: String,
-		linkedin	: String,
-		twitter		: String,
-		avatar		: String,
-		wallpaper	: String,
-		name		: String,
-		intro		: String,
-		email		: String,
-		password	: String,
-		phone		: String,
-		country		: String,
-		position	: String,
-		company 	: String,
-		field		: String,
-		role 		: String,
-		title 		: String,
-		company		: String,
-		contact 	: {
+		facebook		: String,
+		linkedin		: String,
+		twitter			: String,
+		facebookName	: String,
+		linkedinName	: String,
+		twitterName		: String,
+		avatar			: String,
+		wallpaper		: String,
+		name			: String,
+		intro			: String,
+		email			: String,
+		password		: {type: String, select: false},
+		phone			: String,
+		country			: String,
+		position		: String,
+		company 		: String,
+		field			: String,
+		role 			: String,
+		title 			: String,
+		company			: String,
+		contact 		: {
 			email: String,
 			phone: String,
 			skype: String,
@@ -176,11 +179,35 @@ var Model = function(mongoose) {
 			})
 		},
 
+		update: (_id, data, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user, data)
+				user.save(callback)
+			})
+		},
+
 		updatePassword: (_id, password, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
 				user.password = sha1(password)
+				user.save(callback)
+			})
+		},
+
+		updateOldPassword: (_id, password, newPassword, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+
+			password = sha1(password)
+
+			Model.findOne({_id, password}, (err, user) => {
+				if (!user) {
+					return callback({message: 'User not found'})
+				}
+
+				user.password = sha1(newPassword)
 				user.save(callback)
 			})
 		},

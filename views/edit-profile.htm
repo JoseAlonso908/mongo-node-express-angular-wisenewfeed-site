@@ -48,7 +48,7 @@
 				<div class="user-profile-info" ng-if="user">
 					<!-- <input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name"> -->
 					<div class="name">{{user.name}}</div>
-					<input class="edit-profile-input" type="text" ng-required="true" name="position" ng-model="user.position">
+					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" ng-required="true" name="position" ng-model="user.position">
 
 					<div class="rating-wrapper" ng-if="user.likes_percentage">
 						<i class="material-icons like">thumb_up</i>

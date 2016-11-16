@@ -167,8 +167,8 @@ angular.module('er.services', [])
 })
 .factory('identityService', function ($http, $cookies, $auth, $q, $rootScope) {
 	var _user = undefined
-	console.log('Remembered user')
-	console.log(_user)
+	// console.log('Remembered user')
+	// console.log(_user)
 
 	return {
 		getOther: function (id) {
@@ -207,8 +207,8 @@ angular.module('er.services', [])
 
 			// var user = $cookies.getObject('user')
 			if (_user && (clean === undefined || clean === false)) {
-				console.log('Returning remembered')
-				console.log(_user)
+				// console.log('Returning remembered')
+				// console.log(_user)
 				d.resolve(_user)
 			} else {
 				$http({
@@ -451,7 +451,16 @@ angular.module('er.services', [])
 })
 .factory('feedService', function ($sce, $http, $cookies) {
 	return {
-		all: function () {
+		all: function (category, country) {
+			var params = {}
+			if (category != undefined) {
+				params['category'] = category
+			}
+
+			if (country != undefined) {
+				params['country'] = country
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/article/all',
@@ -459,6 +468,7 @@ angular.module('er.services', [])
 				headers: {
 					'Authorization': $cookies.get('token') || 'guest',
 				},
+				params: params,
 			})
 			.then(function (result) {
 				return result.data
@@ -501,7 +511,7 @@ angular.module('er.services', [])
 		},
 	}
 })
-.factory('postService', function ($http, $cookies) {
+.factory('postService', function ($http, $cookies, $timeout) {
 	return {
 		create: function (text, files) {
 			return new Promise(function (resolve, reject) {
@@ -530,7 +540,7 @@ angular.module('er.services', [])
 					headers: headers,
 					uploadEventHandlers: {
 						progress: function (e) {
-							console.log(e.loaded, e.total)
+							// console.log(e.loaded, e.total)
 						},
 					},
 					data: fd,
@@ -559,7 +569,69 @@ angular.module('er.services', [])
 				return error
 			})
 		},
+		queue: [],
+		delay: 500,
+		timer: undefined,
 		getComments: function (postId) {
+			var externalResolve, externalReject
+			var promise = new Promise(function (resolve, reject) {
+				externalResolve = resolve
+				externalReject = reject
+			}).then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+
+			this.queue.push({
+				postId: postId,
+				promise: promise,
+				resolve: externalResolve,
+				reject: externalReject,
+			})
+
+			$timeout.cancel(this.timer)
+
+			this.timer = $timeout(function (service) {
+				var postIds = []
+
+				for (var i in service.queue) {
+					var item = service.queue[i]
+					postIds.push(item.postId)
+				}
+
+				return $http({
+					method: 'GET',
+					url: '/article/comment/get/few',
+					headers: {
+						'Authorization': $cookies.get('token'),
+					},
+					params: {
+						postIds: postIds.join(',')
+					}
+				})
+				.then(function (result) {
+					var reactions = result.data
+
+					for (var postId in reactions) {
+						var rs = reactions[postId]
+
+						for (var j in service.queue) {
+							if (service.queue[j].postId == postId) {
+								service.queue[j].resolve(rs)
+							}
+						}
+					}
+				}, function (data, status) {
+					return data
+				})
+
+				$timeout.cancel(service.timer)
+			}, this.delay, false, this)
+
+			return promise
+		},
+		getCommentsImmediate: function (postId) {
 			return $http({
 				method: 'GET',
 				url: '/article/comment/get',
@@ -575,7 +647,7 @@ angular.module('er.services', [])
 			}, function (data, status) {
 				return data
 			})
-		},
+		}
 	}
 })
 .factory('commentService', function ($http, $cookies) {
@@ -935,30 +1007,45 @@ angular.module('er.services', [])
 	}
 })
 .factory('groupedCountriesService', function ($http, $q) {
-	return function (code) {
-		var d = $q.defer()
-
-		// $http.post('/auth/findaccount/signin', {code: code}).then(function (response) {
-		// 	d.resolve(response.data)
-		// }, function (error) {
-		// 	d.reject(error.data.message)
-		// })
-
-		var response = [
-			{id: 1, title: 'North America', sub: [
-				{id: 2, title: 'United States'},
-				{id: 3, title: 'Canada'},
-				{id: 4, title: 'Mexico'},
-			]},
-			{id: 5, title: 'Central & South America', sub: [
-				{id: 6, title: 'Brazil'},
-				{id: 7, title: 'Chile'},
-				{id: 8, title: 'Argentina'},
-			]}
-		]
-
-		d.resolve(response)
-
-		return d.promise
+	return {
+		get: function () {
+			return $http({
+				method: 'GET',
+				url: '/static/countries/grouped',
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		}
 	}
+
+
+	// return function (code) {
+	// 	var d = $q.defer()
+
+	// 	// $http.post('/auth/findaccount/signin', {code: code}).then(function (response) {
+	// 	// 	d.resolve(response.data)
+	// 	// }, function (error) {
+	// 	// 	d.reject(error.data.message)
+	// 	// })
+
+	// 	var response = [
+	// 		{id: 1, title: 'North America', sub: [
+	// 			{id: 2, title: 'United States'},
+	// 			{id: 3, title: 'Canada'},
+	// 			{id: 4, title: 'Mexico'},
+	// 		]},
+	// 		{id: 5, title: 'Central & South America', sub: [
+	// 			{id: 6, title: 'Brazil'},
+	// 			{id: 7, title: 'Chile'},
+	// 			{id: 8, title: 'Argentina'},
+	// 		]}
+	// 	]
+
+	// 	d.resolve(response)
+
+	// 	return d.promise
+	// }
 })

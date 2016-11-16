@@ -34,8 +34,14 @@ var Model = function(mongoose) {
 			Model.remove({_id, author}, callback)
 		},
 
-		getAll: (callback) => {
-			Model.find().select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		getAll: (category, country, start = 0, limit = 10, callback) => {
+			let query = {}
+			if (category) Object.assign(query, {category})
+			if (country) Object.assign(query, {country})
+
+			console.log(query)
+
+			Model.find(query).select('-__v').populate('author').sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
 		},
 
 		getAllLean: (callback) => {

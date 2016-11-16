@@ -56,7 +56,9 @@ router.post('/remove', (req, res) => {
 })
 
 router.get('/all', (req, res) => {
-	models.Article.getAll((err, articles) => {
+	let {category, country, start, limit} = req.query
+
+	models.Article.getAll(category, country, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -87,6 +89,15 @@ router.get('/feed/commented', (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 	models.Article.getCommentedOfUser(req.user._id, (err, articles) => {
 		res.send(articles)
+	})
+})
+
+router.get('/comment/get/few', (req, res) => {
+	let {postIds} = req.query,
+		postIdsArray = postIds.split(',')
+
+	models.Comment.getPostsComments(postIdsArray, (err, comments) => {
+		res.send(comments)
 	})
 })
 

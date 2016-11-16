@@ -50,6 +50,12 @@ router.get('/me', (req, res) => {
 		(id, callback) => {
 			models.User.getReactionsOnUser(id, (reactions) => {
 				result.reactions = reactions
+
+				result.likes_percentage = 0
+				if (reactions.likes > 0 || reactions.dislikes > 0) {
+					result.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
+				}
+
 				callback()
 			})
 		}
@@ -73,6 +79,12 @@ router.get('/user', (req, res) => {
 		(callback) => {
 			models.User.getReactionsOnUser(id, (reactions) => {
 				result.reactions = reactions
+
+				result.likes_percentage = 0
+				if (reactions.likes > 0 || reactions.dislikes > 0) {
+					result.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
+				}
+				
 				callback()
 			})
 		}

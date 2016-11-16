@@ -210,15 +210,38 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
+			$scope.lastCategory = undefined,
+			$scope.lastCountry = undefined
+
 			$scope.$parent.$on('reloadfeed', function () {
 				init()
 			})
 
-			$scope.$watch('user', function (newValue, oldValue) {
-				if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
-					init()
+			$rootScope.$on('feedCategory', function (event, category) {
+				if (category.id === 0) {
+					$scope.lastCategory = undefined
+				} else {
+					$scope.lastCategory = category.title
 				}
+
+				init()
 			})
+
+			$rootScope.$on('feedCountry', function (event, country) {
+				if (country.id === 0) {
+					$scope.lastCountry = undefined
+				} else {
+					$scope.lastCountry = country.title
+				}
+
+				init()
+			})
+
+			// $scope.$watch('user', function (newValue, oldValue) {
+			// 	if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+			// 		init()
+			// 	}
+			// })
 
 			var init = function () {
 				var feedType = 'all'
@@ -236,7 +259,7 @@ angular.module('er.directives', [])
 				} else {
 					$scope.feedLoading = true
 					$scope.feed = []
-					feedService[feedType]().then(function (feed) {
+					feedService.all($scope.lastCategory, $scope.lastCountry).then(function (feed) {
 						$scope.feedLoading = false
 						$scope.feed = feed
 					})
@@ -253,6 +276,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/post.htm',
 		scope: {
 			post: '=',
+			user: '=',
 		},
 		link: function ($scope, element, attr) {
 			angular.element(document.body).on('click', function () {
@@ -261,7 +285,8 @@ angular.module('er.directives', [])
 
 			$scope.files = []
 
-			$scope.user = $scope.$parent.user
+			// $scope.user = $scope.$parent.user
+			// console.log($scope.user)
 
 			$scope.addComment = function (post) {
 				if ($scope.loading) return
@@ -334,7 +359,6 @@ angular.module('er.directives', [])
 			}
 
 			$scope.removePost = function (post) {
-				console.log(post)
 				postService.remove(post._id).then(function () {
 					$scope.$parent.$emit('reloadfeed')
 				}, function () {
@@ -415,7 +439,6 @@ angular.module('er.directives', [])
 			$scope.comments = []
 
 			$scope.$parent.$on('reloadcomments', function (e, args) {
-				// console.log(args)
 				init()
 			})
 
@@ -423,6 +446,7 @@ angular.module('er.directives', [])
 				postService.getComments($scope.post._id).then(function (comments) {
 					$scope.comments = comments
 					$scope.$parent.commentsCount = $scope.comments.length
+					$scope.$apply()
 				})
 			}
 
@@ -675,7 +699,6 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			piecesService.get().then(function (result) {
 				$scope.pieces = result
-				console.log(result)
 			}, function () {})
 		}
 	}

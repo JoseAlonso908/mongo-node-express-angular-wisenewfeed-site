@@ -525,9 +525,10 @@ a {
 			position: relative;
 		}
 
-		.dropdown-list, .sublist {
+		.dropdown-list, .sublist-wrapper {
 			display: block; position: absolute;
-			width: 240px;
+			min-width: 240px;
+			max-height: 400px;
 			padding: 15px 0;
 			z-index: 3;
 			background-color: #ffffff;
@@ -552,6 +553,7 @@ a {
 				color: $soDark;
 				line-height: 36px;
 				cursor: pointer;
+				white-space: nowrap;
 				@include transition(font-weight .1s, background-color .1s);
 
 				&.nested {
@@ -571,7 +573,7 @@ a {
 				}
 
 				&:hover {
-					.sublist {
+					.sublist-wrapper {
 						display: block;
 						opacity: 1;
 						pointer-events: auto;
@@ -582,30 +584,34 @@ a {
 					font-weight: 900;
 				}
 
-				.sublist {
+				.sublist-wrapper {
 					display: none;
 					top: 0;
 					margin-left: 217px;
 					pointer-events: none;
+					overflow-x: hidden;
+					overflow-y: auto;
 
-					li {
-						font-weight: 400;
+					.sublist {
+						li {
+							font-weight: 400;
 
-						&.active {
-							background-color: #ffffff;
-							
-							&:after {
-								position: absolute;
-								right: 23px;
-								content: 'check';
-								font-family: 'Material Icons';
-								font-size: 16px;
-								color: $soDark;
+							&.active {
+								background-color: #ffffff;
+								
+								&:after {
+									position: absolute;
+									right: 23px;
+									content: 'check';
+									font-family: 'Material Icons';
+									font-size: 16px;
+									color: $soDark;
+								}
 							}
-						}
 
-						&:hover {
-							background-color: #f2f3f4;
+							&:hover {
+								background-color: #f2f3f4;
+							}
 						}
 					}
 				}

@@ -56,6 +56,35 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
 })
 
+app.get('/static/countries/grouped', (req, res) => {
+	let result = []
+
+	for (let continentCode in countriesList.continents) {
+		let continent = countriesList.continents[continentCode]
+
+		result.push({
+			id: continentCode,
+			title: continent,
+			sub: [],
+		})
+	}
+
+	for (let countryCode in countriesList.countries) {
+		let country = countriesList.countries[countryCode]
+
+		for (let continent of result) {
+			if (continent.id == country.continent) {
+				continent.sub.push({
+					id: countryCode,
+					title: country.name
+				})
+			}
+		}
+	}
+
+	res.send(result)
+})
+
 app.get('/static/countries', (req, res) => {
 	let countryPhoneCodeList = []
 

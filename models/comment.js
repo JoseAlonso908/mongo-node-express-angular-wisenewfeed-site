@@ -31,6 +31,29 @@ var Model = function(mongoose) {
 			comment.save(callback)
 		},
 
+		getPostsComments: (postIds, callback) => {
+			let result = {}
+
+			postIds = postIds.map((id) => {
+				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+				else return id
+			})
+
+			Model.find({post: {$in: postIds}}).populate('author').exec((err, comments) => {
+				for (let comment of comments) {
+					let postId = comment.post
+
+					if (result[postId] === undefined) {
+						result[postId] = []
+					}
+
+					result[postId].push(comment)
+				}
+
+				callback(err, result)
+			})
+		},
+
 		getPostComments: (post, callback) => {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 

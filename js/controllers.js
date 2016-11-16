@@ -115,8 +115,6 @@ angular.module('er.controllers', [])
 				})
 			}
 		], function (err) {
-			console.log($scope.signup.country)
-
 			if (err) $scope.signup.error = err
 			else {
 				confirmAccountModal.activate({$parent: $scope, phone: '+' + $scope.signup.country.code + $scope.signup.phone})
@@ -143,13 +141,18 @@ angular.module('er.controllers', [])
 		$scope.countries = list
 	})
 })
-.controller('confirmSignupController', function ($scope, $cookies, $auth, $location) {
-	$scope.fields = [
-		'Field 1',
-		'Field 2',
-		'Field 3',
-		'Field 4'
-	]
+.controller('confirmSignupController', function ($scope, $cookies, $auth, $location, fieldsListService) {
+	fieldsListService.get().then(function (result) {
+		for (var i in result) {
+			if (result[i].count == 0) continue
+
+			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+		}
+
+		$scope.fields = result.map(function (item) {
+			return item.title
+		})
+	})
 
 	$scope.signup = $cookies.getObject('signup-params')
 
@@ -162,7 +165,6 @@ angular.module('er.controllers', [])
 	$scope.doSignup = function (role) {
 		var roles = ['expert', 'journalist', 'user']
 		if (roles.indexOf(role) === -1) return false
-
 
 		if (role == 'expert' || role == 'journalist') {
 			// Validate additional options for expert and journalist
@@ -197,28 +199,41 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('homeController', function ($scope, $timeout, fieldsListService, groupedCountriesService, identityService) {
+.controller('homeController', function ($scope, $rootScope, $timeout, fieldsListService, groupedCountriesService, identityService) {
 	fieldsListService.get().then(function (result) {
 		for (var i in result) {
+			if (result[i].count == 0) continue
+
 			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
 		}
+
+		result.unshift({
+			id: 0,
+			title: 'All'
+		})
 
 		$scope.categories = result
 		$scope.chosenCategory = result[0]
 	})
 
 	$scope.setActiveCategory = function (item) {
-		console.log(item)
 		$scope.chosenCategory = item
+		$rootScope.$emit('feedCategory', item)
 	}
 
-	groupedCountriesService().then(function (result) {
+	groupedCountriesService.get().then(function (result) {
+		result.unshift({
+			id: 0,
+			title: 'All'
+		})
+
 		$scope.countries = result
-		$scope.chosenCountry = result[0].sub[0]
+		$scope.chosenCountry = result[0]
 	})
 
 	$scope.setActiveCountry = function (item) {
 		$scope.chosenCountry = item
+		$rootScope.$emit('feedCountry', item)
 	}
 
 	identityService.get().then(function (user) {
@@ -485,7 +500,6 @@ angular.module('er.controllers', [])
 
 	$scope.disconnect = function (provider) {
 		identityService.disconnectSocial(provider).then(function (response) {
-			console.log(response)
 			identityService.get(true).then(function (user) {
 				$scope.user = user
 			})
@@ -534,9 +548,6 @@ angular.module('er.controllers', [])
 				oldPassword: $scope.oldPassword,
 				newPassword: $scope.newPassword,
 			}
-
-
-			console.log($scope.changePassword)
 
 			if ($scope.changePassword.$valid && !$scope.changePassword.$pristine) {
 				identityService.isPasswordValid(form.oldPassword).then(function (valid) {

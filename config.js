@@ -5,8 +5,8 @@ module.exports = {
 	TWITTER_SECRET: 'FVKbagnUXxEtmuFqys7ofkWkZh0WjYKeMzA5nf9bAlRKFrSm75',
 	TWILIO: {
 		TEST: {
-			SID: 'AC7068da0ae17547de728142af764c31e3',
-			AUTHTOKEN: 'd807444cc043e663cfd0c35f70ceb95e',
+			SID: 'AC8009e363eceb3634a9b202fd4e7866cb',
+			AUTHTOKEN: 'a88e2420bc2431ed3e954ffe4095a1b6',
 		}
 	},
 	MAILGUN: {

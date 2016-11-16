@@ -197,8 +197,8 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('homeController', function ($scope, $timeout, categoriesService, groupedCountriesService, identityService) {
-	categoriesService().then(function (result) {
+.controller('homeController', function ($scope, $timeout, fieldsListService, groupedCountriesService, identityService) {
+	fieldsListService.get().then(function (result) {
 		for (var i in result) {
 			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
 		}
@@ -208,6 +208,7 @@ angular.module('er.controllers', [])
 	})
 
 	$scope.setActiveCategory = function (item) {
+		console.log(item)
 		$scope.chosenCategory = item
 	}
 
@@ -465,7 +466,7 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, confirmPhoneModal) {
+.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, fieldsListService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
 
@@ -502,6 +503,7 @@ angular.module('er.controllers', [])
 				email: e.target.email.value,
 				phone: e.target.phone.value,
 				country: e.target.country.value,
+				field: e.target.field.value,
 				language: e.target.language.value,
 			}
 
@@ -569,6 +571,11 @@ angular.module('er.controllers', [])
 				$scope.countries = list.map(function (item) {
 					return item.country
 				})
+			})
+		},
+		function () {
+			fieldsListService.get().then(function (list) {
+				$scope.fields = list
 			})
 		},
 	], function () {

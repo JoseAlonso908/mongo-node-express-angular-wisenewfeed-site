@@ -20,8 +20,6 @@ var Model = function(mongoose) {
 
 	return {
 		addComment: (post, author, text, images, callback) => {
-			console.log(`--${post}`)
-
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 

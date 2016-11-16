@@ -4,18 +4,7 @@
 
 	<div class="content">
 		<div class="left">
-			<div class="card user-info" ng-if="user">
-				<div class="name dark-bold">{{$parent.user.name}}</div>
-				<div class="status">{{$parent.user.role}}</div>
-
-				<div ng-if="user.role == 'User'" class="divider"></div>
-
-				<div ng-if="user.role == 'User'">
-					<a href=javascript:void(0);>Upgrade to Expert</a>
-					<br>
-					<a href=javascript:void(0);>Upgrade to Journalist</a>
-				</div>
-			</div>
+			<profilecard ng-if="user" user="user"></profilecard>
 
 			<pieces></pieces>
 		</div>

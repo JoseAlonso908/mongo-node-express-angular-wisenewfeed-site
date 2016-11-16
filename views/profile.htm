@@ -18,8 +18,10 @@
 	<div class="content">
 		<div class="left">
 			<div class="user-profile-info" ng-if="profile">
-				<div class="name">{{profile.name}}</div>
-				<div class="position">{{profile.position}}</div>
+				<div class="info">
+					<div class="name">{{profile.name}}</div>
+					<div class="position">{{profile.position}}</div>
+				</div>
 
 				<div class="rating-wrapper" ng-if="profile.likes_percentage">
 					<i class="material-icons like">thumb_up</i>

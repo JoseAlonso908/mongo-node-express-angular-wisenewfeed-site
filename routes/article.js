@@ -39,7 +39,7 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		}
 	}
 
-	models.Article.create(req.user._id, text, filenames, () => {
+	models.Article.create(req.user._id, req.user.country, req.user.field, text, filenames, () => {
 		res.send({ok: true})
 	})
 })

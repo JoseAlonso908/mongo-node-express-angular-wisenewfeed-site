@@ -639,13 +639,38 @@ a {
 			&.user-info {
 				padding: 25px;
 
-				.name {
-					line-height: 20px;
+				.mini-wallpaper {
+					width: calc(100% + (25px * 2)); height: 64px;
+					margin: -25px 0 0 -25px;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
 				}
 
-				.status {
-					font-size: 13px;
-					color: $iconGrey;
+				.avatar {
+					width: 64px; height: 64px;
+					margin-top: -32px;
+					border-radius: 50%;
+					border: 2px solid #ffffff;
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+					box-sizing: border-box;
+					box-shadow: 0px 0px 5px rgba(#000000, .25);
+				}
+
+
+				.info {
+					margin: -20px 0 0 80px;
+
+					.name {
+						line-height: 20px;
+					}
+
+					.status {
+						font-size: 13px;
+						color: $iconGrey;
+					}
 				}
 
 				.divider {

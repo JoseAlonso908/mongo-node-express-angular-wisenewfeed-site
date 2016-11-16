@@ -72,6 +72,33 @@ app.get('/static/countries', (req, res) => {
 	res.send(countryPhoneCodeList)
 })
 
+app.get('/static/categories', (req, res) => {
+	let categories = [
+		{id: 1, title: 'World News', count: 0},
+		{id: 2, title: 'Canada News', count: 0},
+		{id: 3, title: 'Buzz News', count: 0},
+		{id: 4, title: 'Science', count: 0},
+		{id: 5, title: 'Business', count: 0},
+		{id: 6, title: 'Health', count: 0},
+		{id: 7, title: 'Technology', count: 0},
+		{id: 8, title: 'Sport', count: 0},
+		{id: 9, title: 'Entertainment', count: 0},
+	]
+
+	models.Article.getAllLean((err, articles) => {
+		for (let article of articles) {
+			for (let category of categories) {
+				if (article.category == category.title) {
+					category.count++
+					break
+				}
+			}
+		}
+
+		res.send(categories)
+	})
+})
+
 let userRoutes = require('./routes/user')
 app.use(userRoutes)
 

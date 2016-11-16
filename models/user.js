@@ -212,11 +212,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (_id, name, email, phone, country, language, callback) => {
+		updateSettings: (_id, name, email, phone, country, field, language, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, language})
+				Object.assign(user, {name, email, phone, country, field, language})
 				user.save(callback)
 			})
 		},

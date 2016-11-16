@@ -47,6 +47,14 @@
 					</div>
 
 					<div class="settings-field-block">
+						<label>Field</label>
+						<select ng-model="user.field" name="field">
+							<option ng-repeat="field in fields" value="{{field.title}}">{{field.title}}</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
 						<label>Language</label>
 						<select name="language">
 							<option>English</option>

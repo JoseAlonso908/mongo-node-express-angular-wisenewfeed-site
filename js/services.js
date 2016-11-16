@@ -127,6 +127,20 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
+.factory('fieldsListService', function ($http) {
+	return {
+		get: function () {
+			return $http({
+				method: 'GET',
+				url: '/static/categories',
+			}).then(function (result) {
+				return result.data
+			}, function (error) {
+				return error
+			})
+		},
+	}
+})
 .factory('updateProfileService', function ($http, $cookies) {
 	return function (contact, experience, intro, name, position) {
 		return new Promise(function (resolve, reject) {

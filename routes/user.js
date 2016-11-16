@@ -140,7 +140,7 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 	models.PhoneVerification.createCode(phone, (err, result) => {
 		twilioClient.messages.create({
 			to: phone,
-			from: '+16692316392',
+			from: '+18443256002',
 			body: `Expert Reaction verification code: ${result.code}`
 		}, (err, message) => {
 			if (err) return res.status(err.status).send(err)
@@ -658,11 +658,11 @@ router.post('/profile/edit/settings', (req, res) => {
 	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
 	let token = req.headers.authorization.split(' ')[1]
 	
-	let {name, email, phone, country, language} = req.body
+	let {name, email, phone, country, field, language} = req.body
 
 	models.Token.getUserByToken(token, (err, user) => {
 		if (user) {
-			models.User.updateSettings(user._id, name, email, phone, country, language, () => {
+			models.User.updateSettings(user._id, name, email, phone, country, field, language, () => {
 				res.send({ok: true})
 			})
 		} else res.status(400).send({message: 'Invalid token'})

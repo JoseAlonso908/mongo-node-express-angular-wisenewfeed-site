@@ -22,6 +22,9 @@ angular.module('er.directives', [])
 			})
 
 			dropdownList.on('click', function (e) {e.stopImmediatePropagation()})
+			dropdownList.on('mouseleave', function (e) {
+				dropdownLists.removeClass('active')
+			})
 
 			dropdownButton.on('click', function (e) {
 				dropdownLists.removeClass('active')
@@ -674,6 +677,18 @@ angular.module('er.directives', [])
 				$scope.pieces = result
 				console.log(result)
 			}, function () {})
+		}
+	}
+})
+.directive('profilecard', function () {
+	return {
+		restric: 'E',
+		templateUrl: 'assets/views/directives/profilecard.htm',
+		scope: {
+			user: '='
+		},
+		link: function ($scope, element, attr) {
+			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
 		}
 	}
 })

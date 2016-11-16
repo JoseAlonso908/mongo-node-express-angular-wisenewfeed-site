@@ -8,19 +8,21 @@ var Model = function(mongoose) {
 		images		: [String],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
+		country		: String,
+		category	: String,
 	})
 
 	var Model = mongoose.model('article', schema);
 
 	return {
-		create: (author, text, images, callback) => {
+		create: (author, country, category, text, images, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, text,
+				author, images, text, country, category,
 			})
 			article.save(callback)
 		},
@@ -34,6 +36,10 @@ var Model = function(mongoose) {
 
 		getAll: (callback) => {
 			Model.find().select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
+		getAllLean: (callback) => {
+			Model.find().lean().exec(callback)
 		},
 
 		getByUser: (author, callback) => {

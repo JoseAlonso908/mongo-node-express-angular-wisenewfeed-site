@@ -60,8 +60,16 @@ angular.module('er', [
 		});
 	}
 ])
-.run(function ($rootScope, $templateCache, $location, $cookies, identityService) {
-	$templateCache.removeAll()
+.run(['$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
+function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService) {
+	// $templateCache.removeAll()
+
+	var url;
+	for (var i in $route.routes) {
+		if (url = $route.routes[i].templateUrl) {
+			$http.get(url, { cache: $templateCache });
+		}
+	}
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		var nextURI = next.split('#!')[1]
@@ -82,4 +90,4 @@ angular.module('er', [
 			}
 		})
 	})
-})
+}])

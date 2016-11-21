@@ -5,7 +5,6 @@
 
 @import "compass/reset";
 @import "compass/css3"; 
-// @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&subset=cyrillic-ext');
 
 $activeBlue: #43abe7; 
 $iconGrey: #b0bec8;
@@ -704,19 +703,29 @@ a {
 
 				.body {
 					.title {
-						display: flex;
-						justify-content: space-between;
+						// display: flex;
+						// justify-content: space-between;
 						position: relative;
 						height: 36px;
 						line-height: 36px;
 
+						.separator, .name, .time, .position, .country {
+							float: left;
+						}
+
+						.add, .more {
+							float: right;
+						}
+
 						.separator {
+							margin: 0 7px;
 							font-size: 8px;
 							color: $iconGrey;
 						}
 
 						.name {
 							height: 36px;
+							margin-right: 8px;
 							line-height: 36px;
 						}
 
@@ -816,61 +825,78 @@ a {
 							width: 100%;
 							border-radius: 4px;
 						}
-					}
 
-					.ratings {
+						.shared {
+							margin-left: 10px;
+							border-left: 2px solid #E7EBEE;
+							padding-left: 10px;
+
+							> .title {
+								margin-left: 52px;
+							}
+
+							> .content {
+								.text {
+									margin-top: 25px;
+									margin-left: 7px;
+								}
+							}
+						}
+					}
+				}
+
+				.ratings {
+					display: flex;
+					justify-content: space-between;
+					margin-top: 13px;
+
+					$ratingsText: rgba($activeBlue, .5);
+
+					.rating {
 						display: flex;
 						justify-content: space-between;
-						margin-top: 13px;
+						flex-flow: wrap;
+						padding: 6px 10px;
+						background-color: #f2f7fb;
+						border-radius: 4px;
 
-						$ratingsText: rgba($activeBlue, .5);
+						.title {
+							display: block;
+							width: 100%; height: auto;
+							margin-bottom: 4px;
+							font-size: 10px;
+							color: $ratingsText;
+							text-align: center;
+							line-height: normal;
+						}
 
-						.rating {
-							display: flex;
-							justify-content: space-between;
-							flex-flow: wrap;
-							padding: 6px 10px;
-							background-color: #f2f7fb;
-							border-radius: 4px;
+						.value {
+							padding-left: 15px;
+							color: $ratingsText;
+							font-size: 13px;
+							font-weight: 900;
 
-							.title {
-								display: block;
-								width: 100%; height: auto;
-								margin-bottom: 4px;
-								font-size: 10px;
-								color: $ratingsText;
-								text-align: center;
-								line-height: normal;
+							&:before {
+								display: inline-block; position: absolute;
+								margin: 0 0 0 -15px;
+								font-family: 'Material Icons';
 							}
 
-							.value {
-								padding-left: 15px;
-								color: $ratingsText;
-								font-size: 13px;
-								font-weight: 900;
-
-								&:before {
-									display: inline-block; position: absolute;
-									margin: 0 0 0 -15px;
-									font-family: 'Material Icons';
-								}
-
-								&.likes:before {
-									content: 'thumb_up';
-								}
-
-								&.dislikes:before {
-									content: 'thumb_down';
-								}
-
-								&.shares:before {
-									content: 'share';
-								}
+							&.likes:before {
+								content: 'thumb_up';
 							}
 
-							&:nth-child(2) {
-								margin: 0 10px;
+							&.dislikes:before {
+								content: 'thumb_down';
 							}
+
+							&.shares:before {
+								content: 'share';
+							}
+						}
+
+						&:nth-child(2) {
+							margin: 0 10px;
 						}
 					}
 				}
@@ -2308,6 +2334,10 @@ a {
 			width: calc(100% - 285px - 15px);
 			margin: 285px 0 0 285px;
 
+			&.narrow {
+				justify-content: flex-start;
+			}
+
 			& > div, & > a {
 				display: flex;
 				justify-content: space-between;
@@ -2323,7 +2353,7 @@ a {
 
 				@include transition(background-color .2s);
 
-				&.questions {
+				&.questions, &.ask-question, &.message, &.follow {
 					background-color: $activeBlue;
 
 					&:hover {

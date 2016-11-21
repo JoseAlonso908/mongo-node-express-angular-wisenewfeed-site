@@ -237,12 +237,6 @@ angular.module('er.directives', [])
 				init()
 			})
 
-			// $scope.$watch('user', function (newValue, oldValue) {
-			// 	if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
-			// 		init()
-			// 	}
-			// })
-
 			var init = function () {
 				var feedType = 'all'
 				if (!$rootScope.user) {
@@ -259,7 +253,11 @@ angular.module('er.directives', [])
 				} else {
 					$scope.feedLoading = true
 					$scope.feed = []
-					feedService.all($scope.lastCategory, $scope.lastCountry).then(function (feed) {
+
+					var feedAttributes = [$scope.lastCategory, $scope.lastCountry]
+					if ($scope.user) feedAttributes.push($scope.user._id)
+
+					feedService.feed.apply(feedService, feedAttributes).then(function (feed) {
 						$scope.feedLoading = false
 						$scope.feed = feed
 					})
@@ -270,7 +268,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($timeout, postService, commentService, reactionsService) {
+.directive('post', function ($timeout, postService, commentService, reactionsService, followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -283,10 +281,23 @@ angular.module('er.directives', [])
 				$scope.post.menu = false
 			})
 
-			$scope.files = []
+			followService.isFollowing($scope.post.author._id).then(function (result) {
+				$scope.post.author.isFollowing = result
+			})
 
-			// $scope.user = $scope.$parent.user
-			// console.log($scope.user)
+			$scope.follow = function (post) {
+				followService.follow(post.author._id).then(function (result) {
+					$scope.post.author.isFollowing = result
+				})
+			}
+
+			$scope.unfollow = function (post) {
+				followService.unfollow(post.author._id).then(function (result) {
+					$scope.post.author.isFollowing = result
+				})
+			}
+
+			$scope.files = []
 
 			$scope.addComment = function (post) {
 				if ($scope.loading) return

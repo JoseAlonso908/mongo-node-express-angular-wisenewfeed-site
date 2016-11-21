@@ -256,7 +256,7 @@ angular.module('er.controllers', [])
 			$scope.user = user
 			$scope.profile = user
 		})
-	})
+	})	
 })
 .controller('profileFeedController', function ($routeParams, $scope, identityService) {
 	$scope.type = $routeParams.type
@@ -270,13 +270,29 @@ angular.module('er.controllers', [])
 		})
 	})
 })
-.controller('personController', function ($routeParams, $scope, $location, identityService) {
+.controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
 	identityService.get().then(function (user) {
 		identityService.getOther($routeParams.id).then(function (profile) {
 			$scope.user = user
 			$scope.profile = profile
+
+			followService.isFollowing($scope.profile._id).then(function (result) {
+				$scope.profile.isFollowing = result
+			})
 		})
 	})
+
+	$scope.follow = function (user) {
+		followService.follow($scope.profile._id).then(function (result) {
+			$scope.profile.isFollowing = result
+		})
+	}
+
+	$scope.unfollow = function (user) {
+		followService.unfollow($scope.profile._id).then(function (result) {
+			$scope.profile.isFollowing = result
+		})
+	}
 })
 .controller('editProfileController', function (
 		$scope, $location, $cookies, $timeout, identityService,

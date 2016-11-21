@@ -71,6 +71,63 @@ router.get('/my', (req, res) => {
 	})
 })
 
+router.get('/feed', (req, res) => {
+	let {category, country, start, limit} = req.query
+	let userId = req.query.userId || req.user._id
+
+	let authors = []
+	authors.push(userId)
+
+	let shares = []
+
+	async.waterfall([
+		(cb) => {
+			models.Follow.followingByFollower(userId, (err, following) => {
+				for (let user of following) {
+					authors.push(user.following._id)
+				}
+
+				cb()
+			})
+		},
+		(cb) => {
+			models.PostReaction.getUserShares(userId, (err, userShares) => {
+				shares = userShares.map((reaction) => {
+					return reaction.post.toString()
+				})
+
+				cb()
+			})
+		},
+	], () => {
+		models.Article.getByUsers(authors, shares, category, country, start, limit, (err, articles) => {
+			if (err) res.status(400).send(err)
+			else {
+				// articles = articles.map((article) => {
+				// 	article = article.toObject()
+
+				// 	if (shares.indexOf(article._id.toString()) > -1) {
+				// 		article.shared = true
+				// 	}
+
+				// 	return article
+				// })
+
+				res.send(articles)
+			}
+		})
+	})
+
+	// Add posts of guys who you follow
+	models.Follow.followingByFollower(userId, (err, following) => {
+		for (let user of following) {
+			authors.push(user.following._id)
+		}
+
+		
+	})
+})
+
 router.get('/feed/liked', (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 	models.Article.getLikedOfUser(req.user._id, (err, articles) => {
@@ -157,7 +214,13 @@ router.post('/react', (req, res) => {
 	let {post, type} = req.body
 
 	models.PostReaction.react(req.user._id, post, type, (err, result) => {
-		res.send({ok: true})
+		let done = () => {
+			res.send({ok: true})
+		}
+
+		if (type === 'share') {
+			models.Article.share(req.user._id, post, done)
+		} else done()
 	})
 })
 
@@ -165,7 +228,13 @@ router.delete('/react', (req, res) => {
 	let {post, type} = req.query
 
 	models.PostReaction.unreact(req.user._id, post, type, (err, result) => {
-		res.send({ok: true})
+		let done = () => {
+			res.send({ok: true})
+		}
+
+		if (type === 'share') {
+			models.Article.unshare(req.user._id, post, done)
+		} else done()
 	})
 })
 

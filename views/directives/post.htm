@@ -1,6 +1,8 @@
 <div class="card feed-item">
 	<avatar user="post.author"></avatar>
 
+	<!-- <div ng-if="post.shared">{{post | json}}</div> -->
+
 	<div class="body">
 		<div class="title">
 			<a ng-href="#!/person/{{post.author._id}}" class="name dark-bold">{{post.author.name}}</a>
@@ -10,13 +12,14 @@
 			<div class="separator">&bull;</div>
 			<div class="country small-light">{{post.author.country}}</div>
 
-			<button class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 			<button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
+			
+			<button ng-if="post.author.isFollowing === false && post.author._id != user._id" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 
 			<div class="post-menu" ng-class="{active: post.menu}">
 				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Hide this post</a>
-				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Unfollow this expert</a>
+				<a href="javascript:void(0);" ng-click="unfollow(post)" ng-if="post.author._id != user._id && post.author.isFollowing">Unfollow this expert</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Mute</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Report</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Block</a>
@@ -29,10 +32,33 @@
 			<div class="images">
 				<a ng-href="image" lightbox class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></a>
 			</div>
-		</div>
 
-		<postreactions post="post"></postreactions>
+			<div class="shared" ng-if="!!post.sharedFrom">
+				<div class="title">
+					<avatar user="post.sharedFrom.author"></avatar>
+
+					<a ng-href="#!/person/{{post.sharedFrom.author._id}}" class="name dark-bold">{{post.sharedFrom.author.name}}</a>
+					<div class="time small-light" am-time-ago="post.sharedFrom.createdAt"></div>
+					<div class="separator" ng-show="post.sharedFrom.author.position">&bull;</div>
+					<div class="position small-light" ng-show="post.sharedFrom.author.position">{{post.sharedFrom.author.position}}</div>
+					<div class="separator">&bull;</div>
+					<div class="country small-light">{{post.sharedFrom.author.country}}</div>
+
+					<button ng-if="post.sharedFrom.author.isFollowing === false && post.sharedFrom.author._id != user._id" ng-click="follow(post.sharedFrom)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
+				</div>
+
+				<div class="content">
+					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
+
+					<div class="images">
+						<a ng-href="image" lightbox class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image}})"></a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
+	<postreactions post="post"></postreactions>
 
 	<div class="divider"></div>
 
@@ -43,7 +69,7 @@
 		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
 			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
 		</button>
-		<button ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
+		<button ng-if="!post.sharedFrom || post.author._id.toString() != user._id" ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
 			<i class="material-icons">share</i> <span class="title">Share</span>
 		</button>
 

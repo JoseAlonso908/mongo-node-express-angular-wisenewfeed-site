@@ -16,8 +16,6 @@ var Model = function(mongoose) {
 
 	return {
 		addMulti: (pieces, callback) => {
-			console.log(pieces)
-
 			Model.collection.insert(pieces, callback)
 		},
 

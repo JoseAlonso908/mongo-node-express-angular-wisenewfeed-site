@@ -21,8 +21,6 @@ let router = express.Router()
 // router.use(tempUploads.single('file'))
 
 router.use(function (err, req, res, next) {
-	console.log(err)
-
 	if (err.code === 'LIMIT_FILE_SIZE') {
 		return res.status(400).send({message: `Can't upload file: ${err.message}`})
 	} else {
@@ -569,9 +567,6 @@ router.post('/profile/edit/addcertificate', tempUploads.single('file'), (req, re
 	// }
 
 	models.Token.getUserByToken(token, (err, user) => {
-		console.log(err)
-		console.log(user)
-
 		if (user) {
 			const fs = require('fs')
 
@@ -733,8 +728,6 @@ router.post('/profile/settings/disconnectsocial', (req, res) => {
 		updates[providerName] = undefined
 
 		models.User.update(user._id, updates, (err, result) => {
-			console.log(result)
-
 			if (err) return res.status(400).send({message: 'Unable to update user'})
 			else return res.send({ok: true})
 		})

@@ -237,6 +237,8 @@ var Model = function(mongoose) {
 				likes: 0,
 				dislikes: 0,
 				reacts: 0,
+				following: 0,
+				followers: 0,
 			}
 
 			async.waterfall([
@@ -278,23 +280,18 @@ var Model = function(mongoose) {
 						cb(null, commentsIds)
 					})
 				},
-				// // Get reactions on user's comments
-				// (commentsIds, cb) => {
-				// 	models.CommentReaction.find({comment: {$in: commentsIds}}, (err, commentsreactions) => {
-				// 		for (let reaction of commentsreactions) {
-				// 			switch (reaction.type) {
-				// 				case 'like':
-				// 					result.likes++
-				// 					break
-				// 				case 'dislike':
-				// 					result.dislikes++
-				// 					break
-				// 			}
-				// 		}
-
-				// 		cb()
-				// 	})
-				// },
+				(commentsIds, cb) => {
+					models.Follow.followingByFollower(_id, (err, following) => {
+						result.following = following.length
+						cb()
+					})
+				},
+				(cb) => {
+					models.Follow.followersByFollowing(_id, (err, followers) => {
+						result.followers = followers.length
+						cb()
+					})
+				},
 			], (err) => {
 				callback(result)
 			})

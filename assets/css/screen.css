@@ -733,18 +733,24 @@ a[disabled] {
   margin-left: -52px;
 }
 #wrapper > .content .card.feed-item .body .title {
-  display: flex;
-  justify-content: space-between;
   position: relative;
   height: 36px;
   line-height: 36px;
 }
+#wrapper > .content .card.feed-item .body .title .separator, #wrapper > .content .card.feed-item .body .title .name, #wrapper > .content .card.feed-item .body .title .time, #wrapper > .content .card.feed-item .body .title .position, #wrapper > .content .card.feed-item .body .title .country {
+  float: left;
+}
+#wrapper > .content .card.feed-item .body .title .add, #wrapper > .content .card.feed-item .body .title .more {
+  float: right;
+}
 #wrapper > .content .card.feed-item .body .title .separator {
+  margin: 0 7px;
   font-size: 8px;
   color: #b0bec8;
 }
 #wrapper > .content .card.feed-item .body .title .name {
   height: 36px;
+  margin-right: 8px;
   line-height: 36px;
 }
 #wrapper > .content .card.feed-item .body .title .add {
@@ -830,12 +836,24 @@ a[disabled] {
   width: 100%;
   border-radius: 4px;
 }
-#wrapper > .content .card.feed-item .body .ratings {
+#wrapper > .content .card.feed-item .body .content .shared {
+  margin-left: 10px;
+  border-left: 2px solid #E7EBEE;
+  padding-left: 10px;
+}
+#wrapper > .content .card.feed-item .body .content .shared > .title {
+  margin-left: 52px;
+}
+#wrapper > .content .card.feed-item .body .content .shared > .content .text {
+  margin-top: 25px;
+  margin-left: 7px;
+}
+#wrapper > .content .card.feed-item .ratings {
   display: flex;
   justify-content: space-between;
   margin-top: 13px;
 }
-#wrapper > .content .card.feed-item .body .ratings .rating {
+#wrapper > .content .card.feed-item .ratings .rating {
   display: flex;
   justify-content: space-between;
   flex-flow: wrap;
@@ -843,7 +861,7 @@ a[disabled] {
   background-color: #f2f7fb;
   border-radius: 4px;
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .title {
+#wrapper > .content .card.feed-item .ratings .rating .title {
   display: block;
   width: 100%;
   height: auto;
@@ -853,28 +871,28 @@ a[disabled] {
   text-align: center;
   line-height: normal;
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .value {
+#wrapper > .content .card.feed-item .ratings .rating .value {
   padding-left: 15px;
   color: rgba(67, 171, 231, 0.5);
   font-size: 13px;
   font-weight: 900;
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .value:before {
+#wrapper > .content .card.feed-item .ratings .rating .value:before {
   display: inline-block;
   position: absolute;
   margin: 0 0 0 -15px;
   font-family: 'Material Icons';
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .value.likes:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.likes:before {
   content: 'thumb_up';
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .value.dislikes:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before {
   content: 'thumb_down';
 }
-#wrapper > .content .card.feed-item .body .ratings .rating .value.shares:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.shares:before {
   content: 'share';
 }
-#wrapper > .content .card.feed-item .body .ratings .rating:nth-child(2) {
+#wrapper > .content .card.feed-item .ratings .rating:nth-child(2) {
   margin: 0 10px;
 }
 #wrapper > .content .card.feed-item .divider {
@@ -2098,6 +2116,9 @@ a[disabled] {
   width: calc(100% - 285px - 15px);
   margin: 285px 0 0 285px;
 }
+#wrapper .wallpaper-wrapper .buttons.narrow {
+  justify-content: flex-start;
+}
 #wrapper .wallpaper-wrapper .buttons > div, #wrapper .wallpaper-wrapper .buttons > a {
   display: flex;
   justify-content: space-between;
@@ -2115,10 +2136,10 @@ a[disabled] {
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper .wallpaper-wrapper .buttons > a.questions {
+#wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper .wallpaper-wrapper .buttons > div.ask-question, #wrapper .wallpaper-wrapper .buttons > div.message, #wrapper .wallpaper-wrapper .buttons > div.follow, #wrapper .wallpaper-wrapper .buttons > a.questions, #wrapper .wallpaper-wrapper .buttons > a.ask-question, #wrapper .wallpaper-wrapper .buttons > a.message, #wrapper .wallpaper-wrapper .buttons > a.follow {
   background-color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper .wallpaper-wrapper .buttons > a.questions:hover {
+#wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper .wallpaper-wrapper .buttons > div.ask-question:hover, #wrapper .wallpaper-wrapper .buttons > div.message:hover, #wrapper .wallpaper-wrapper .buttons > div.follow:hover, #wrapper .wallpaper-wrapper .buttons > a.questions:hover, #wrapper .wallpaper-wrapper .buttons > a.ask-question:hover, #wrapper .wallpaper-wrapper .buttons > a.message:hover, #wrapper .wallpaper-wrapper .buttons > a.follow:hover {
   background-color: #2ca1e4;
 }
 #wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper .wallpaper-wrapper .buttons > a.change-background {

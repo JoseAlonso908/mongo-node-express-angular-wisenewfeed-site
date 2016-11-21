@@ -471,7 +471,9 @@ angular.module('er.services', [])
 				params: params,
 			})
 			.then(function (result) {
-				return result.data
+				var articles = result.data
+
+				return articles
 			}, function (data, status) {
 				return data
 			})
@@ -487,6 +489,52 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		feed: function (category, country, userId) {
+			var params = {}
+			if (userId) {
+				params.userId = userId
+			}
+
+			return $http({
+				method: 'GET',
+				url: '/article/feed',
+				cache: false,
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: params
+			})
+			.then(function (result) {
+				var articles = result.data
+
+				// articles = articles.map(function (article) {
+				// 	if (article.sharedFrom) {
+				// 		var shareProperties = {
+				// 			author: article.author,
+				// 			date: article.createdAt,
+				// 			text: article.text,
+				// 			images: article.images,
+				// 			createdAt: article.createdAt,
+				// 		}
+
+				// 		article.author = article.sharedFrom.author
+				// 		article.text = article.sharedFrom.text
+				// 		article.images = article.sharedFrom.images
+
+				// 		article.shareProperties = shareProperties
+				// 		article.shared = true
+
+				// 		console.log(article)
+				// 	}
+
+				// 	return article
+				// })
+
+				return articles
 			}, function (data, status) {
 				return data
 			})
@@ -570,7 +618,7 @@ angular.module('er.services', [])
 			})
 		},
 		queue: [],
-		delay: 500,
+		delay: 1000,
 		timer: undefined,
 		getComments: function (postId) {
 			var externalResolve, externalReject
@@ -801,6 +849,61 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				return result
+			}, function (data, status) {
+				return data
+			})
+		},
+	}
+})
+.factory('followService', function ($http, $cookies) {
+	return {
+		isFollowing: function (following) {
+			return $http({
+				method: 'GET',
+				url: '/follow/isFollowing',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					following: following
+				},
+			})
+			.then(function (result) {
+				return result.data.isFollowing
+			}, function (data, status) {
+				return data
+			})
+		},
+		follow: function (following) {
+			return $http({
+				method: 'POST',
+				url: '/follow/follow',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					following: following
+				},
+			})
+			.then(function (result) {
+				return result.data.isFollowing
+			}, function (data, status) {
+				return data
+			})
+		},
+		unfollow: function (following) {
+			return $http({
+				method: 'POST',
+				url: '/follow/unfollow',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					following: following
+				},
+			})
+			.then(function (result) {
+				return result.data.isFollowing
 			}, function (data, status) {
 				return data
 			})

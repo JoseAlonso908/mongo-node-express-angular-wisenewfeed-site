@@ -5,6 +5,10 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'user',
 		},
+		sharedFrom	: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'article',
+		},
 		images		: [String],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
@@ -15,6 +19,8 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('article', schema);
 
 	return {
+		Model,
+
 		create: (author, country, category, text, images, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
@@ -25,6 +31,29 @@ var Model = function(mongoose) {
 				author, images, text, country, category,
 			})
 			article.save(callback)
+		},
+
+		share: (author, sharedFrom, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
+
+			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
+				let article = new Model()
+				Object.assign(article, {
+					author,
+					sharedFrom: sharedFrom._id,
+					country: sharedFrom.country,
+					category: sharedFrom.category,
+				})
+				article.save(callback)
+			})
+		},
+
+		unshare: (author, sharedFrom, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
+			
+			Model.remove({author, sharedFrom}, callback)
 		},
 
 		remove: (author, _id, callback) => {
@@ -39,8 +68,6 @@ var Model = function(mongoose) {
 			if (category) Object.assign(query, {category})
 			if (country) Object.assign(query, {country})
 
-			console.log(query)
-
 			Model.find(query).select('-__v').populate('author').sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
 		},
 
@@ -52,6 +79,29 @@ var Model = function(mongoose) {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
+		getByUsers: (authors, shares, category, country, start = 0, limit = 10, callback) => {
+			authors = authors.map((id) => {
+				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+				else return id
+			})
+
+			shares = shares.map((id) => {
+				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+				else return id
+			})
+
+			let query = {$or: [{author: {$in: authors}}, {_id: {$in: shares}}]}
+			if (category) Object.assign(query, {category})
+			if (country) Object.assign(query, {country})
+
+			Model.find(query).populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
 		},
 
 		getLikedOfUser: (author, callback) => {

@@ -49,6 +49,7 @@ global.models = {
 	ResetPassword: require('./models/resetpassword')(connection),
 	FindAccount: require('./models/findaccount')(connection),
 	Piece: require('./models/piece')(connection),
+	Follow: require('./models/follow')(connection),
 }
 
 
@@ -133,6 +134,9 @@ app.use(userRoutes)
 
 let articleRoutes = require('./routes/article')
 app.use('/article', articleRoutes)
+
+let followRoutes = require('./routes/follow')
+app.use('/follow', followRoutes)
 
 app.listen(8006, () => {
 	console.log('kek')

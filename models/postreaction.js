@@ -159,6 +159,12 @@ var Model = function(mongoose) {
 				callback(err, result)
 			})
 		},
+
+		getUserShares: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+
+			Model.find({author, type: 'share'}).lean().exec(callback)
+		},
 	}
 }
 

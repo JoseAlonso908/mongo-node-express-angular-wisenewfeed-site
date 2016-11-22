@@ -246,29 +246,67 @@ angular.module('er.controllers', [])
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {
+	$scope.feedType = 'feed'
+
 	// Get profile from cache (if exists)
 	identityService.get().then(function (user) {
 		$scope.user = user
 		$scope.profile = user
 
 		// Get profile from backend to refresh user's data
-		identityService.get(true).then(function (user) {
-			$scope.user = user
-			$scope.profile = user
-		})
+		// identityService.get(true).then(function (user) {
+		// 	$scope.user = user
+		// 	$scope.profile = user
+		// })
 	})	
 })
 .controller('profileFeedController', function ($routeParams, $scope, identityService) {
 	$scope.type = $routeParams.type
+	$scope.feedType = 'feed'
 	$scope.id = $routeParams.id
 
-	identityService.get().then(function (user) {
-		$scope.user = user
+	async.parallel([
+		function () {
+			identityService.get().then(function (user) {
+				$scope.user = user
+			})
+		},
+		function () {
+			identityService.getOther($scope.id).then(function (profile) {
+				$scope.profile = profile
+			})
+		},
+	])
+})
+.controller('profilePeopleController', function ($routeParams, $scope, identityService, followService) {
+	$scope.type = $routeParams.type
+	$scope.feedType = 'people'
+	$scope.id = $routeParams.id
 
-		identityService.getOther($routeParams.id).then(function (profile) {
-			$scope.profile = profile
-		})
-	})
+	async.parallel([
+		function () {
+			identityService.get().then(function (user) {
+				$scope.user = user
+			})
+		},
+		function () {
+			identityService.getOther($scope.id).then(function (profile) {
+				$scope.profile = profile
+			})
+		},
+		function () {
+			followService[$scope.type]($scope.id).then(function (people) {
+				$scope.people = people
+
+				if ($scope.type == 'following') {
+					$scope.people = $scope.people.map(function (person) {
+						person.isFollowing = true
+						return person
+					})
+				}
+			})
+		},
+	])
 })
 .controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
 	identityService.get().then(function (user) {

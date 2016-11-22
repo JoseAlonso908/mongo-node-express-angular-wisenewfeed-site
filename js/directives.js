@@ -510,6 +510,41 @@ angular.module('er.directives', [])
 		},
 	}
 })
+.directive('person', function (followService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/person.htm',
+		scope: {
+			person: '=',
+		},
+		link: function ($scope, element, attr) {
+			angular.element(document.body).on('click', function () {
+				$scope.person.menu = false
+				$scope.$apply()
+			})
+
+			$scope.person.role = $scope.person.role[0].toUpperCase() + $scope.person.role.substr(1)
+
+			if (typeof $scope.person.isFollowing === 'undefined') {
+				followService.isFollowing($scope.person._id).then(function (result) {
+					$scope.person.isFollowing = result
+				})
+			}
+
+			$scope.toggleFollow = function (person) {
+				if (person.isFollowing) {
+					followService.unfollow(person._id).then(function (result) {
+						$scope.person.isFollowing = result
+					})
+				} else {
+					followService.follow(person._id).then(function (result) {
+						$scope.person.isFollowing = result
+					})
+				}
+			}
+		}
+	}
+})
 .directive('question', function () {
 	return {
 		restrict: 'E',
@@ -547,7 +582,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.users = []
 			$scope.familiarExpertsLoading = true
-			familiarExpertsService.then(function (users) {
+			familiarExpertsService.get().then(function (users) {
 				$scope.users = users
 				$scope.familiarExpertsLoading = false
 				$scope.$apply()
@@ -716,13 +751,35 @@ angular.module('er.directives', [])
 })
 .directive('profilecard', function () {
 	return {
-		restric: 'E',
+		restrict: 'E',
 		templateUrl: 'assets/views/directives/profilecard.htm',
 		scope: {
-			user: '='
+			user: '=',
 		},
 		link: function ($scope, element, attr) {
 			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
+		}
+	}
+})
+.directive('notificationsicon', function (notificationService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/notificationsicon.htm',
+		scope: {
+			user: '=',
+		},
+		link: function ($scope, element, attr) {
+			$scope.count = 0
+
+			angular.element(document.body).on('click', function () {
+				$scope.showdropdown = false
+				$scope.$apply()
+			})
+
+			notificationService.get().then(function (notifications) {
+				$scope.count = notifications.length
+				$scope.notifications = notifications
+			})
 		}
 	}
 })

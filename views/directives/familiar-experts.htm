@@ -4,10 +4,10 @@
 		<a href="javascript:void(0);" class="cta-button view-all">View all</a>
 	</div>
 
-	<div class="loader" ng-if="familiarExpertsLoading"></div>
+	<div class="loader" ng-show="familiarExpertsLoading"></div>
 
 	<familiarexpert user="expert" ng-repeat="expert in users"></familiarexpert>
-	<div class="footer" ng-if="!familiarExpertsLoading">
+	<div class="footer" ng-show="!familiarExpertsLoading">
 		<a href=javascript:void(0);><i class="material-icons">refresh</i> Refresh</a>
 		<a href=javascript:void(0);>Find Expert</a>
 	</div>

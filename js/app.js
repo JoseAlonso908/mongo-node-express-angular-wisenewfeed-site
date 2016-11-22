@@ -14,6 +14,7 @@ angular.module('er', [
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider',
 	function config($locationProvider, $routeProvider, $authProvider, $compileProvider) {
 		$compileProvider.debugInfoEnabled(false)
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(http|https|javascript):/)
 
 		$locationProvider.hashPrefix('!')
 		$routeProvider
@@ -31,8 +32,12 @@ angular.module('er', [
 				controller: 'profileController'
 			})
 			.when('/profilefeed/:id/:type', {
-				templateUrl: 'assets/views/profilefeed.htm',
+				templateUrl: 'assets/views/profile.htm',
 				controller: 'profileFeedController'
+			})
+			.when('/profilepeople/:id/:type', {
+				templateUrl: 'assets/views/profile.htm',
+				controller: 'profilePeopleController'
 			})
 			.when('/person/:id', {
 				templateUrl: 'assets/views/profile.htm',
@@ -67,16 +72,18 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 	var url;
 	for (var i in $route.routes) {
 		if (url = $route.routes[i].templateUrl) {
-			$http.get(url, { cache: $templateCache });
+			$http.get(url, {cache: $templateCache});
 		}
 	}
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		var nextURI = next.split('#!')[1]
 
-		var requireAuth = ['/my']
+		var requireAuth = ['/my', '/settings']
 
 		identityService.get().then(function (user) {
+			$rootScope.user = user
+
 			if (requireAuth.indexOf(nextURI) > -1 && (!user || user.role == 'User')) {
 				console.log('Prevented to go to', nextURI)
 				event.preventDefault()

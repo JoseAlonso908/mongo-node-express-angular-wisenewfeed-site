@@ -55,7 +55,7 @@ router.post('/unfollow', (req, res) => {
 })
 
 router.get('/followers', (req, res) => {
-	let {following} = req.body
+	let {following} = req.query
 
 	models.Follow.followersByFollowing(following, (err, result) => {
 		if (err) res.status(400).send(err)
@@ -64,7 +64,7 @@ router.get('/followers', (req, res) => {
 })
 
 router.get('/following', (req, res) => {
-	let {follower} = req.body
+	let {follower} = req.query
 
 	models.Follow.followingByFollower(follower, (err, result) => {
 		if (err) res.status(400).send(err)

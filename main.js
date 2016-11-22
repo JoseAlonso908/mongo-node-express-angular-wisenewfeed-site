@@ -24,7 +24,7 @@ app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 	setHeaders: function (res, path, stat) {
 		res.set('Access-Control-Allow-Origin', '*')
 		res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-		// res.set('Cache-Control', 'public, max-age=259200')
+		res.set('Cache-Control', 'public, max-age=259200')
 	},
 	// maxAge: (5 * 60) * 1000,
 	dotfiles: 'ignore'
@@ -35,23 +35,12 @@ app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-var mongoose = require('mongoose')
-mongoose.Promise = Promise
-let connection = mongoose.connect(config.MONGO[env].DSN)
-global.models = {
-	User: require('./models/user')(connection),
-	Token: require('./models/token')(connection),
-	Article: require('./models/article')(connection),
-	Comment: require('./models/comment')(connection),
-	PostReaction: require('./models/postreaction')(connection),
-	CommentReaction: require('./models/commentreaction')(connection),
-	PhoneVerification: require('./models/phoneverification')(connection),
-	ResetPassword: require('./models/resetpassword')(connection),
-	FindAccount: require('./models/findaccount')(connection),
-	Piece: require('./models/piece')(connection),
-	Follow: require('./models/follow')(connection),
-}
+app.use((req, res, next) => {
+	res.set('Cache-Control', 'max-age=86400')
+	next()
+})
 
+global.models = require('./model')(config.MONGO[env].DSN, __dirname)
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
@@ -129,14 +118,10 @@ app.get('/static/categories', (req, res) => {
 	})
 })
 
-let userRoutes = require('./routes/user')
-app.use(userRoutes)
-
-let articleRoutes = require('./routes/article')
-app.use('/article', articleRoutes)
-
-let followRoutes = require('./routes/follow')
-app.use('/follow', followRoutes)
+app.use(require('./routes/user'))
+app.use('/article', require('./routes/article'))
+app.use('/follow', require('./routes/follow'))
+app.use('/n', require('./routes/notification'))
 
 app.listen(8006, () => {
 	console.log('kek')

@@ -241,46 +241,45 @@ var Model = function(mongoose) {
 				followers: 0,
 			}
 
-			async.waterfall([
-				// Get articles made by user
+			async.parallel([
 				(cb) => {
-					models.Article.getByUser(_id, (err, articles) => {
-						let articlesIds = articles.map((article) => {return article._id})
-						cb(null, articlesIds)
-					})
-				},
-				// Get reactions to user's articles
-				(articlesIds, cb) => {
-					models.PostReaction.find({post: {$in: articlesIds}}, (err, postsreactions) => {
-						for (let reaction of postsreactions) {
-							switch (reaction.type) {
-								case 'like':
-									result.likes++
-									break
-								case 'dislike':
-									result.dislikes++
-									break
-							}
-						}
+					async.waterfall([
+						// Get articles made by user
+						(cb) => {
+							models.Article.getByUserLean(_id, (err, articles) => {
+								let articlesIds = articles.map((article) => {return article._id})
+								cb(null, articlesIds)
+							})
+						},
+						// Get reactions to user's articles
+						(articlesIds, cb) => {
+							models.PostReaction.findLean({post: {$in: articlesIds}}, (err, postsreactions) => {
+								for (let reaction of postsreactions) {
+									switch (reaction.type) {
+										case 'like':
+											result.likes++
+											break
+										case 'dislike':
+											result.dislikes++
+											break
+									}
+								}
 
-						cb(null, articlesIds)
-					})
-				},
-				// Get comment on user's articles
-				(articlesIds, cb) => {
-					models.Comment.getByArticles(articlesIds, (err, comments) => {
-						result.reacts = comments.length
+								cb(null, articlesIds)
+							})
+						},
+						// Get comment on user's articles
+						(articlesIds, cb) => {
+							models.Comment.getByArticlesLean(articlesIds, (err, comments) => {
+								result.reacts = comments.length
+								cb()
+							})
+						}
+					], (err) => {
 						cb()
 					})
 				},
-				// Get comments made by user
 				(cb) => {
-					models.Comment.getByUser(_id, (err, comments) => {
-						let commentsIds = comments.map((comment) => {return comment._id})
-						cb(null, commentsIds)
-					})
-				},
-				(commentsIds, cb) => {
 					models.Follow.followingByFollower(_id, (err, following) => {
 						result.following = following.length
 						cb()

@@ -21,6 +21,16 @@ var Model = function(mongoose) {
 	return {
 		Model,
 
+		findOneById: (_id, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+			Model.findOne({_id}).populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).lean().exec(callback)
+		},
+
 		create: (author, country, category, text, images, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
@@ -77,8 +87,12 @@ var Model = function(mongoose) {
 
 		getByUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
-
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+		},
+
+		getByUserLean: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).lean().exec(callback)
 		},
 
 		getByUsers: (authors, shares, category, country, start = 0, limit = 10, callback) => {
@@ -107,13 +121,18 @@ var Model = function(mongoose) {
 		getLikedOfUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
-			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+			Model.find({author}).populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
 				let likedArticles = []
 
 				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
-					articles.filter((article) => {
+					articles = articles.filter((article) => {
 						let postReactions = reactions[article._id.toString()].reactions
 
 						if (postReactions.expert.likes + postReactions.journalist.likes + postReactions.user.likes > 0) {
@@ -123,8 +142,7 @@ var Model = function(mongoose) {
 						return false
 					})
 
-					likedArticles = articles
-					callback(err, likedArticles)
+					callback(err, articles)
 				})
 			})
 		},
@@ -132,13 +150,16 @@ var Model = function(mongoose) {
 		getDislikedOfUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
-			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+			Model.find({author}).populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
-				let likedArticles = []
-
 				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
-					articles.filter((article) => {
+					articles = articles.filter((article) => {
 						let postReactions = reactions[article._id.toString()].reactions
 
 						if (postReactions.expert.dislikes + postReactions.journalist.dislikes + postReactions.user.dislikes > 0) {
@@ -148,8 +169,7 @@ var Model = function(mongoose) {
 						return false
 					})
 
-					likedArticles = articles
-					callback(err, likedArticles)
+					callback(err, articles)
 				})
 			})
 		},
@@ -157,7 +177,12 @@ var Model = function(mongoose) {
 		getCommentedOfUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
-			Model.find({author}).populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+			Model.find({author}).populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
 				let commentedArticles = []

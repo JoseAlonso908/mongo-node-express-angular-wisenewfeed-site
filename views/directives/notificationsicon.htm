@@ -1,0 +1,30 @@
+<button class="small-icon" title="Notifications" ng-click="$event.stopImmediatePropagation();showdropdown = !showdropdown">
+	<div class="badge">
+		<div class="value">{{count}}</div>
+	</div>
+	<i class="material-icons">notifications</i>
+</button>
+
+<div class="notifications" ng-class="{active: showdropdown}">
+	<div class="notification" ng-repeat="n in notifications">
+		<div class="time" am-time-ago="n.createdAt" am-without-suffix="false"></div>
+
+		<avatar user="n.from"></avatar>
+
+		<div class="text">
+			<a ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
+			<div class="action">
+				<span ng-switch="n.type">
+					<span ng-switch-when="like">liked</span>
+					<span ng-switch-when="dislike">disliked</span>
+					<span ng-switch-when="share">shared</span>
+					<span ng-switch-when="comment">reacts on</span>
+					<span ng-switch-when="follow">is following you</span>
+				</span>
+
+				<span ng-show="n.post != undefined">your post</span>
+				<span ng-show="n.comment != undefined">your comment</span>
+			</div>
+		</div>
+	</div>
+</div>

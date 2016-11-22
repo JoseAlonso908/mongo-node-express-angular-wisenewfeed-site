@@ -19,6 +19,13 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('comment', schema);
 
 	return {
+		Model,
+
+		findOneById: (_id, callback) => {
+			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+			Model.findOne({_id}).populate('author').lean().exec(callback)
+		},
+
 		addComment: (post, author, text, images, callback) => {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
@@ -70,7 +77,11 @@ var Model = function(mongoose) {
 
 		getByArticles: (articlesIds, callback) => {
 			Model.find({post: {$in: articlesIds}}).exec(callback)
-		}
+		},
+
+		getByArticlesLean: (articlesIds, callback) => {
+			Model.find({post: {$in: articlesIds}}).exec(callback)
+		},
 	}
 }
 

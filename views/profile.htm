@@ -2,10 +2,10 @@
 	<topbar user="user"></topbar>
 
 	<div class="wallpaper-wrapper">
-		<bigratedavatar user="profile" ng-if="profile"></bigratedavatar>
+		<bigratedavatar user="profile" ng-show="profile"></bigratedavatar>
 
-		<div ng-show="user && user.role != 'User'">
-			<div class="buttons narrow" ng-show="user._id != profile._id">
+		<div ng-show="user && profile && user.role != 'User'">
+			<div class="buttons narrow" ng-hide="user._id == profile._id">
 				<a class="ask-question"><i class="material-icons">help</i> <div class="title">Ask question</div></a>
 				<a class="message"><i class="material-icons">message</i> <div class="title">Message</div></a>
 
@@ -21,7 +21,7 @@
 
 		<div class="wallpaper" ng-class="{empty: !profile.wallpaper}" style="background-image: url('{{profile.wallpaper}}')"></div>
 		<div class="footer">
-			<profilereactions profile="profile"></profilereactions>
+			<profilereactions active="type" profile="profile"></profilereactions>
 		</div>
 	</div>
 
@@ -85,11 +85,16 @@
 				</div>
 			</div>
 		</div>
-		<div class="middle">
+		<div class="middle" ng-if="feedType != 'people'">
 			<onyourmind ng-if="user && user._id == profile._id" user="user"></onyourmind>
-			<feed user="profile" ng-if="profile"></feed>
+			<feed id="profile._id" type="type" user="profile" ng-if="profile"></feed>
 		</div>
-		<div class="right">
+		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
+			<div class="people">
+				<person person="person" ng-repeat="person in people"></person>
+			</div>
+		</div>
+		<div class="right" ng-if="feedType != 'people'">
 			<newquestions user="profile" ng-if="profile"></newquestions>
 			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>

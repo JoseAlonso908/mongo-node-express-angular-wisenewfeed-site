@@ -100,51 +100,38 @@ router.get('/feed', (req, res) => {
 			})
 		},
 	], () => {
-		models.Article.getByUsers(authors, shares, category, country, start, limit, (err, articles) => {
+		models.Article.getByUsers(authors, [], category, country, start, limit, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else {
-				// articles = articles.map((article) => {
-				// 	article = article.toObject()
-
-				// 	if (shares.indexOf(article._id.toString()) > -1) {
-				// 		article.shared = true
-				// 	}
-
-				// 	return article
-				// })
-
 				res.send(articles)
 			}
 		})
 	})
-
-	// Add posts of guys who you follow
-	models.Follow.followingByFollower(userId, (err, following) => {
-		for (let user of following) {
-			authors.push(user.following._id)
-		}
-
-		
-	})
 })
 
 router.get('/feed/liked', (req, res) => {
+	let userId = req.query.user || req.user._id
+
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getLikedOfUser(req.user._id, (err, articles) => {
+	models.Article.getLikedOfUser(userId, (err, articles) => {
 		res.send(articles)
 	})
 })
 
 router.get('/feed/disliked', (req, res) => {
+	let userId = req.query.user || req.user._id
+
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getDislikedOfUser(req.user._id, (err, articles) => {
+	models.Article.getDislikedOfUser(userId, (err, articles) => {
 		res.send(articles)
 	})
 })
 
 router.get('/feed/commented', (req, res) => {
+	let userId = req.query.user || req.user._id
+
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getCommentedOfUser(req.user._id, (err, articles) => {
+	models.Article.getCommentedOfUser(userId, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -215,7 +202,21 @@ router.post('/react', (req, res) => {
 
 	models.PostReaction.react(req.user._id, post, type, (err, result) => {
 		let done = () => {
-			res.send({ok: true})
+			async.waterfall([
+				(cb) => {
+					models.Article.findOneById(post, (err, post) => {
+						cb(err, post.author._id)
+					})
+				},
+				(author, cb) => {
+					models.Notification.create(author, req.user._id, post, null, type, () => {
+						cb()
+					})
+				},
+			], (err) => {
+				if (err) res.status(400).send(err)
+				else res.send({ok: true})
+			})
 		}
 
 		if (type === 'share') {
@@ -248,17 +249,31 @@ router.get('/comment/reactions/few', (req, res) => {
 })
 
 router.post('/comment/react', (req, res) => {
-	let {post, type} = req.body
+	let {comment, type} = req.body
 
-	models.CommentReaction.react(req.user._id, post, type, (err, result) => {
-		res.send({ok: true})
+	models.CommentReaction.react(req.user._id, comment, type, (err, result) => {
+		async.waterfall([
+			(cb) => {
+				models.Comment.findOneById(comment, (err, comment) => {
+					cb(err, comment.author._id)
+				})
+			},
+			(author, cb) => {
+				models.Notification.create(author, req.user._id, null, comment, type, () => {
+					cb()
+				})
+			},
+		], (err) => {
+			if (err) res.status(400).send(err)
+			else res.send({ok: true})
+		})
 	})
 })
 
 router.delete('/comment/react', (req, res) => {
-	let {post, type} = req.query
+	let {comment, type} = req.query
 
-	models.CommentReaction.unreact(req.user._id, post, type, (err, result) => {
+	models.CommentReaction.unreact(req.user._id, comment, type, (err, result) => {
 		res.send({ok: true})
 	})
 })

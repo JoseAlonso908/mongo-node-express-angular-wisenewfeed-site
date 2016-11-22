@@ -25,6 +25,10 @@ var Model = function(mongoose) {
 			Model.find(query).exec(callback)
 		},
 
+		findLean: (query, callback) => {
+			Model.find(query).lean().exec(callback)
+		},
+
 		react: (author, post, type, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)

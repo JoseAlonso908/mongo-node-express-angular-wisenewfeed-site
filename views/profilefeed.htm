@@ -2,12 +2,22 @@
 	<topbar user="user"></topbar>
 
 	<div class="wallpaper-wrapper">
-		<bigratedavatar user="profile" ng-if="profile"></bigratedavatar>
+		<bigratedavatar user="profile" ng-show="profile"></bigratedavatar>
 
-		<!-- <div class="buttons" ng-if="user._id == profile._id && user.role != 'User'">
-			<a class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></a>
-			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
-		</div> -->
+		<div ng-show="user && user.role != 'User'">
+			<div class="buttons narrow" ng-show="user._id != profile._id">
+				<a class="ask-question"><i class="material-icons">help</i> <div class="title">Ask question</div></a>
+				<a class="message"><i class="material-icons">message</i> <div class="title">Message</div></a>
+
+				<a ng-show="!profile.isFollowing" class="follow" ng-click="follow(profile)"><i class="material-icons">person_add</i> <div class="title">Follow</div></a>
+				<a ng-show="profile.isFollowing" class="follow" ng-click="unfollow(profile)"><i class="material-icons">person_outline</i> <div class="title">Unfollow</div></a>
+			</div>
+
+			<div class="buttons" ng-show="user._id == profile._id">
+				<a class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.questions.length || 0}})</div></a>
+				<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
+			</div>
+		</div>
 
 		<div class="wallpaper" ng-class="{empty: !profile.wallpaper}" style="background-image: url('{{profile.wallpaper}}')"></div>
 		<div class="footer">
@@ -18,8 +28,10 @@
 	<div class="content">
 		<div class="left">
 			<div class="user-profile-info" ng-if="profile">
-				<div class="name">{{profile.name}}</div>
-				<div class="position">{{profile.position}}</div>
+				<div class="info">
+					<div class="name">{{profile.name}}</div>
+					<div class="position">{{profile.position}}</div>
+				</div>
 
 				<div class="rating-wrapper" ng-if="profile.likes_percentage">
 					<i class="material-icons like">thumb_up</i>

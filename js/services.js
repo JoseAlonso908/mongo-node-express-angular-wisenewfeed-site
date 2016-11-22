@@ -171,7 +171,20 @@ angular.module('er.services', [])
 	// console.log(_user)
 
 	return {
+		otherCache: {
+
+		},
 		getOther: function (id) {
+			var self = this
+
+			if (self.otherCache[id]) {
+				var d = $q.defer()
+
+				d.resolve(self.otherCache[id])
+				
+				return d.promise
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/user',
@@ -196,6 +209,8 @@ angular.module('er.services', [])
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
+
+				self.otherCache[id] = user
 
 				return user
 			}, function (data, status) {
@@ -229,6 +244,8 @@ angular.module('er.services', [])
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
+					_user = user
+
 					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
 					} else {
@@ -236,8 +253,6 @@ angular.module('er.services', [])
 					}
 
 					$cookies.put('token', $auth.getToken())
-
-					_user = user
 
 					d.resolve(user)
 					return user
@@ -510,30 +525,6 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				var articles = result.data
-
-				// articles = articles.map(function (article) {
-				// 	if (article.sharedFrom) {
-				// 		var shareProperties = {
-				// 			author: article.author,
-				// 			date: article.createdAt,
-				// 			text: article.text,
-				// 			images: article.images,
-				// 			createdAt: article.createdAt,
-				// 		}
-
-				// 		article.author = article.sharedFrom.author
-				// 		article.text = article.sharedFrom.text
-				// 		article.images = article.sharedFrom.images
-
-				// 		article.shareProperties = shareProperties
-				// 		article.shared = true
-
-				// 		console.log(article)
-				// 	}
-
-				// 	return article
-				// })
-
 				return articles
 			}, function (data, status) {
 				return data
@@ -547,7 +538,7 @@ angular.module('er.services', [])
 				headers: {
 					'Authorization': $cookies.get('token'),
 				},
-				data: {
+				params: {
 					user: user
 				}
 			})
@@ -908,6 +899,44 @@ angular.module('er.services', [])
 				return data
 			})
 		},
+		following: function (follower) {
+			return $http({
+				method: 'GET',
+				url: '/follow/following',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					follower: follower
+				},
+			})
+			.then(function (result) {
+				return result.data.map(function (person) {
+					return person.following
+				})
+			}, function (data, status) {
+				return data
+			})
+		},
+		followers: function (following) {
+			return $http({
+				method: 'GET',
+				url: '/follow/followers',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					following: following
+				},
+			})
+			.then(function (result) {
+				return result.data.map(function (person) {
+					return person.follower
+				})
+			}, function (data, status) {
+				return data
+			})
+		},
 	}
 })
 .factory('piecesService', function ($http, $cookies) {
@@ -1000,7 +1029,7 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				},
 				params: {
-					post: postId
+					comment: commentId
 				}
 			})
 			.then(function (result) {
@@ -1009,7 +1038,7 @@ angular.module('er.services', [])
 				return data
 			})
 		},
-		react: function (postId, type) {
+		react: function (commentId, type) {
 			return $http({
 				method: 'POST',
 				url: '/article/comment/react',
@@ -1017,7 +1046,7 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				},
 				data: {
-					post: postId,
+					comment: commentId,
 					type: type
 				},
 			})
@@ -1027,7 +1056,7 @@ angular.module('er.services', [])
 				return data
 			})
 		},
-		unreact: function (postId, type) {
+		unreact: function (commentId, type) {
 			return $http({
 				method: 'DELETE',
 				url: '/article/comment/react',
@@ -1035,7 +1064,7 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				},
 				params: {
-					post: postId,
+					comment: commentId,
 					type: type
 				},
 			})
@@ -1048,39 +1077,43 @@ angular.module('er.services', [])
 	}
 })
 .factory('familiarExpertsService', function () {
-	return new Promise(function (resolve, reject) {
-		var familiarExperts = [
-			{
-				id: 1,
-				name: 'Keanu Reeves',
-				role: 'Expert',
-				image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-				color: 'bronze',
-				rating: 2,
-				likes_percentage: 70,
-			},
-			{
-				id: 2,
-				name: 'Keanu Reeves',
-				role: 'Expert',
-				image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-				color: 'bronze',
-				rating: 2,
-				likes_percentage: 70,
-			},
-			{
-				id: 3,
-				name: 'Keanu Reeves',
-				role: 'Expert',
-				image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-				color: 'bronze',
-				rating: 2,
-				likes_percentage: 70,
-			},
-		]
+	return {
+		get: function () {
+			return new Promise(function (resolve, reject) {
+				var familiarExperts = [
+					{
+						id: 1,
+						name: 'Keanu Reeves',
+						role: 'Expert',
+						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+						color: 'bronze',
+						rating: 2,
+						likes_percentage: 70,
+					},
+					{
+						id: 2,
+						name: 'Keanu Reeves',
+						role: 'Expert',
+						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+						color: 'bronze',
+						rating: 2,
+						likes_percentage: 70,
+					},
+					{
+						id: 3,
+						name: 'Keanu Reeves',
+						role: 'Expert',
+						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+						color: 'bronze',
+						rating: 2,
+						likes_percentage: 70,
+					},
+				]
 
-		resolve(familiarExperts)
-	})
+				resolve(familiarExperts)
+			})
+		}
+	}
 })
 .factory('categoriesService', function ($http, $q) {
 	return function (code) {
@@ -1151,4 +1184,22 @@ angular.module('er.services', [])
 
 	// 	return d.promise
 	// }
+})
+.factory('notificationService', function ($http, $cookies) {
+	return {
+		get: function () {
+			return $http({
+				method: 'GET',
+				url: '/n/get',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		}
+	}
 })

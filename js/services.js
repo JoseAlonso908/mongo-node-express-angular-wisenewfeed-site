@@ -166,7 +166,7 @@ angular.module('er.services', [])
 	}
 })
 .factory('identityService', function ($http, $cookies, $auth, $q, $rootScope) {
-	var _user = undefined
+	// var _user = undefined
 	// console.log('Remembered user')
 	// console.log(_user)
 
@@ -217,14 +217,16 @@ angular.module('er.services', [])
 				return data
 			})
 		},
+		_user: {},
 		get: function (clean) {
-			var d = $q.defer()
+			var d = $q.defer(),
+				self = this
 
 			// var user = $cookies.getObject('user')
-			if (_user && (clean === undefined || clean === false)) {
+			if (self._user && (clean === undefined || clean === false)) {
 				// console.log('Returning remembered')
 				// console.log(_user)
-				d.resolve(_user)
+				d.resolve(self._user)
 			} else {
 				$http({
 					method: 'GET',
@@ -244,7 +246,7 @@ angular.module('er.services', [])
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
-					_user = user
+					self._user = user
 
 					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
 						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
@@ -265,7 +267,8 @@ angular.module('er.services', [])
 			return d.promise
 		},
 		clean: function () {
-			_user = undefined
+			this._user = undefined
+			this.otherCache = {}
 		},
 		updateSettings: function (data) {
 			return $http({
@@ -846,7 +849,7 @@ angular.module('er.services', [])
 		},
 	}
 })
-.factory('followService', function ($http, $cookies) {
+.factory('followService', function ($http, $cookies, identityService) {
 	return {
 		isFollowing: function (following) {
 			return $http({
@@ -877,6 +880,9 @@ angular.module('er.services', [])
 				},
 			})
 			.then(function (result) {
+				identityService._user.reactions.following++
+				if (identityService.otherCache[following]) identityService.otherCache[following].reactions.followers++
+
 				return result.data.isFollowing
 			}, function (data, status) {
 				return data
@@ -894,6 +900,9 @@ angular.module('er.services', [])
 				},
 			})
 			.then(function (result) {
+				identityService._user.reactions.following--
+				if (identityService.otherCache[following]) identityService.otherCache[following].reactions.followers--
+
 				return result.data.isFollowing
 			}, function (data, status) {
 				return data

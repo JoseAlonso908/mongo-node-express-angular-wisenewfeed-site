@@ -1705,6 +1705,10 @@ a.small-icon, button.small-icon {
 						margin: -46px 0 0 22px;
 						background-color: #ffffff;
 
+						.avatar {
+							width: 82px; height: 82px;
+						}
+
 						.badge {
 							margin: 80px 0 0 36px;
 						}

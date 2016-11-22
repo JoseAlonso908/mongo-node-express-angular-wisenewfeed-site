@@ -1581,6 +1581,10 @@ a.small-icon, button.small-icon {
   margin: -46px 0 0 22px;
   background-color: #ffffff;
 }
+#wrapper > .content .middle .people .person .avatar-border .avatar {
+  width: 82px;
+  height: inherit;
+}
 #wrapper > .content .middle .people .person .avatar-border .badge {
   margin: 80px 0 0 36px;
 }

@@ -38,6 +38,10 @@ var Model = function(mongoose) {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
 
+			if (to.toString() === from.toString()) {
+				return callback()
+			}
+
 			let n = new Model()
 			Object.assign(n, {to, from, post, comment, type})
 			n.save(callback)

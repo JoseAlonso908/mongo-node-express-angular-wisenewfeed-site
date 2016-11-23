@@ -48,16 +48,20 @@ var Model = function(mongoose) {
 			})
 		},
 
-		followingByFollower: (follower, callback) => {
+		followingByFollower: (follower, callback, lean) => {
 			if (typeof follower !== 'object') follower = mongoose.Types.ObjectId(follower)
 
-			Model.find({follower}).populate('following').exec(callback)
+			let query = Model.find({follower}).populate('follower following')
+			if (lean === true) query.lean()
+			query.exec(callback)
 		},
 
-		followersByFollowing: (following, callback) => {
+		followersByFollowing: (following, callback, lean) => {
 			if (typeof following !== 'object') following = mongoose.Types.ObjectId(following)
-			
-			Model.find({following}).populate('follower').exec(callback)
+
+			let query = Model.find({following}).populate('follower following')
+			if (lean === true) query.lean()
+			query.exec(callback)
 		},
 	}
 }

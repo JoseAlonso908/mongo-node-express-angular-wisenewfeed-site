@@ -3216,7 +3216,7 @@ a.small-icon, button.small-icon {
 	}
 }
 
-.notifications {
+.notifications, .followers {
 	position: absolute;
 	width: 300px;
 	margin: 0 0 0 -130px;
@@ -3230,12 +3230,19 @@ a.small-icon, button.small-icon {
 	box-sizing: border-box;
 	@include transition(opacity .2s);
 
+	.empty {
+		padding: 16px;
+		font-size: 13px;
+		text-align: center;
+		color: $middleGrey;
+	}
+
 	&.active {
 		opacity: 1;
 		pointer-events: auto;
 	}
 
-	.notification {
+	.notification, .follower {
 		position: relative;
 		height: 42px;
 		padding: 16px;
@@ -3246,10 +3253,11 @@ a.small-icon, button.small-icon {
 		}
 
 		.text {
-			display: flex;
+			// display: flex;
 			height: 42px;
-			flex-direction: column;
-			justify-content: center;
+			padding-top: 5px;
+			// flex-direction: column;
+			// justify-content: center;
 
 			.name {
 				font-size: 14px;
@@ -3257,20 +3265,41 @@ a.small-icon, button.small-icon {
 				color: #545759;
 			}
 
-			.action {
+			.action, .role {
 				margin-top: 5px;
 				color: $iconGrey;
 				font-size: 13px;
 			}
 		}
 
-		.time {
+		.time, button {
+			display: block;
 			position: absolute;
 			height: 42px;
 			line-height: 42px;
 			right: 16px;
 			color: $iconGrey;
 			font-size: 13px;
+		}
+
+		button {
+			height: 24px;
+			margin-top: 9px;
+			padding: 0 9px;
+			line-height: 24px;
+			background: transparent;
+			border-radius: 12px;
+			border: none;
+			color: $activeBlue;
+			font-size: 12px;
+			font-weight: 900;
+			cursor: pointer;
+			@include transition(background-color .2s, color .2s);
+
+			&.following {
+				background-color: $activeBlue;
+				color: #ffffff;
+			}
 		}
 	}
 }

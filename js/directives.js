@@ -761,7 +761,53 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('notificationsicon', function (notificationService) {
+.directive('followersicon', function ($interval, $timeout, followService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/followersicon.htm',
+		scope: {
+			user: '=',
+		},
+		link: function ($scope, element, attr) {
+			$scope.count = 0
+
+			$scope.toggleFollow = function (person, $event) {
+				$event.stopImmediatePropagation()
+
+				if (person.isFollowing) {
+					followService.unfollow(person._id).then(function (result) {
+						person.isFollowing = result
+					})
+				} else {
+					followService.follow(person._id).then(function (result) {
+						person.isFollowing = result
+					})
+				}
+			}
+
+			angular.element(document.body).on('click', function () {
+				$scope.showdropdown = false
+				$scope.$apply()
+			})
+
+			var updateFollowers = function () {
+				followService.followers($scope.user._id).then(function (followers) {
+					followers = followers.map(function (person) {
+						person.role = person.role[0].toUpperCase() + person.role.substr(1)
+						return person
+					})
+
+					$scope.count = followers.length
+					$scope.followers = followers
+				})
+			}
+
+			// $interval(updateFollowers, 3000)
+			updateFollowers()
+		},
+	}
+})
+.directive('notificationsicon', function ($interval, notificationService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/notificationsicon.htm',
@@ -776,10 +822,15 @@ angular.module('er.directives', [])
 				$scope.$apply()
 			})
 
-			notificationService.get().then(function (notifications) {
-				$scope.count = notifications.length
-				$scope.notifications = notifications
-			})
+			var updateNotifications = function () {
+				notificationService.get().then(function (notifications) {
+					$scope.count = notifications.length
+					$scope.notifications = notifications
+				})
+			}
+
+			$interval(updateNotifications, 3000)
+			updateNotifications()
 		}
 	}
 })

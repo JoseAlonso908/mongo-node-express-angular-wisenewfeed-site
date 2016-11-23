@@ -62,18 +62,33 @@ router.post('/unfollow', (req, res) => {
 router.get('/followers', (req, res) => {
 	let {following} = req.query
 
-	models.Follow.followersByFollowing(following, (err, result) => {
+	models.Follow.followersByFollowing(following, (err, followers) => {
 		if (err) res.status(400).send(err)
-		else res.send(result)
-	})
+		else {
+			models.Follow.followingByFollower(following, (err, following) => {
+				followers = followers.map((follower) => {
+					for (let followee of following) {
+						if (follower.follower._id.toString() === followee.following._id.toString()) {
+							follower.isFollowing = true
+							break
+						}
+					}
+
+					return follower
+				})
+
+				res.send(followers)
+			}, true)
+		}
+	}, true)
 })
 
 router.get('/following', (req, res) => {
 	let {follower} = req.query
 
-	models.Follow.followingByFollower(follower, (err, result) => {
+	models.Follow.followingByFollower(follower, (err, following) => {
 		if (err) res.status(400).send(err)
-		else res.send(result)
+		else res.send(following)
 	})
 })
 

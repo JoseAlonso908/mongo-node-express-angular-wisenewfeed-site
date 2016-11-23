@@ -519,7 +519,7 @@ angular.module('er.services', [])
 
 			return $http({
 				method: 'GET',
-				url: '/article/feed',
+				url: '/article/feed?r=' + Math.random(),
 				cache: false,
 				headers: {
 					'Authorization': $cookies.get('token'),
@@ -940,7 +940,10 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				return result.data.map(function (person) {
-					return person.follower
+					var follower = person.follower
+					Object.assign(follower, {isFollowing: person.isFollowing})
+
+					return follower
 				})
 			}, function (data, status) {
 				return data
@@ -1196,15 +1199,19 @@ angular.module('er.services', [])
 })
 .factory('notificationService', function ($http, $cookies) {
 	return {
+		list: [],
 		get: function () {
+			var self = this
+
 			return $http({
 				method: 'GET',
-				url: '/n/get',
+				url: '/n/get?r=' + Math.random(),
 				headers: {
 					'Authorization': $cookies.get('token'),
 				},
 			})
 			.then(function (result) {
+				self.list = result.data
 				return result.data
 			}, function (data, status) {
 				return data

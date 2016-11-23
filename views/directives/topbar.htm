@@ -11,10 +11,8 @@
 		<div class="title">Make post</div>
 	</div>
 
-	<button class="small-icon" title="Profile">
-		<i class="material-icons">person</i>
-	</button>
-
+	<followersicon ng-if="user" user="user"></followersicon>
+	
 	<button class="small-icon" title="Messages">
 		<div class="badge">
 			<div class="value">12</div>
@@ -22,7 +20,7 @@
 		<i class="material-icons">forum</i>
 	</button>
 
-	<notificationsicon user="user"></notificationsicon>
+	<notificationsicon ng-if="user" user="user"></notificationsicon>
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">
 		<avatar user="user"></avatar>

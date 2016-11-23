@@ -2936,7 +2936,7 @@ a.small-icon, button.small-icon {
   background-size: contain;
 }
 
-.notifications {
+.notifications, .followers {
   position: absolute;
   width: 300px;
   margin: 0 0 0 -130px;
@@ -2952,42 +2952,68 @@ a.small-icon, button.small-icon {
   -webkit-transition: opacity 0.2s;
   transition: opacity 0.2s;
 }
-.notifications.active {
+.notifications .empty, .followers .empty {
+  padding: 16px;
+  font-size: 13px;
+  text-align: center;
+  color: #82898f;
+}
+.notifications.active, .followers.active {
   opacity: 1;
   pointer-events: auto;
 }
-.notifications .notification {
+.notifications .notification, .notifications .follower, .followers .notification, .followers .follower {
   position: relative;
   height: 42px;
   padding: 16px;
 }
-.notifications .notification .avatar-border {
+.notifications .notification .avatar-border, .notifications .follower .avatar-border, .followers .notification .avatar-border, .followers .follower .avatar-border {
   float: left;
   margin-right: 8px;
 }
-.notifications .notification .text {
-  display: flex;
+.notifications .notification .text, .notifications .follower .text, .followers .notification .text, .followers .follower .text {
   height: 42px;
-  flex-direction: column;
-  justify-content: center;
+  padding-top: 5px;
 }
-.notifications .notification .text .name {
+.notifications .notification .text .name, .notifications .follower .text .name, .followers .notification .text .name, .followers .follower .text .name {
   font-size: 14px;
   font-weight: 900;
   color: #545759;
 }
-.notifications .notification .text .action {
+.notifications .notification .text .action, .notifications .notification .text .role, .notifications .follower .text .action, .notifications .follower .text .role, .followers .notification .text .action, .followers .notification .text .role, .followers .follower .text .action, .followers .follower .text .role {
   margin-top: 5px;
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification .time {
+.notifications .notification .time, .notifications .notification button, .notifications .follower .time, .notifications .follower button, .followers .notification .time, .followers .notification button, .followers .follower .time, .followers .follower button {
+  display: block;
   position: absolute;
   height: 42px;
   line-height: 42px;
   right: 16px;
   color: #b0bec8;
   font-size: 13px;
+}
+.notifications .notification button, .notifications .follower button, .followers .notification button, .followers .follower button {
+  height: 24px;
+  margin-top: 9px;
+  padding: 0 9px;
+  line-height: 24px;
+  background: transparent;
+  border-radius: 12px;
+  border: none;
+  color: #43abe7;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  -moz-transition: background-color 0.2s, color 0.2s;
+  -o-transition: background-color 0.2s, color 0.2s;
+  -webkit-transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
+}
+.notifications .notification button.following, .notifications .follower button.following, .followers .notification button.following, .followers .follower button.following {
+  background-color: #43abe7;
+  color: #ffffff;
 }
 
 @media (max-width: 1235px) {

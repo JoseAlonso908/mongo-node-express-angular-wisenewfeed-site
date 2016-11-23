@@ -829,7 +829,13 @@ angular.module('er.directives', [])
 				})
 			}
 
-			$interval(updateNotifications, 3000)
+			var refreshInterval = $interval(updateNotifications, 3000)
+
+			element.on('$destroy', function () {
+				$interval.cancel(refreshInterval)
+				console.log('bye')
+			})
+
 			updateNotifications()
 		}
 	}

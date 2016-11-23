@@ -188,7 +188,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			},
 			(postAuthor, cb) => {
 				// Add comment notification
-				models.Notification.create(postAuthor, req.user._id, post, null, 'comment', () => {
+				models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
 					cb(null, postAuthor)
 				})
 			},
@@ -203,7 +203,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 							return cb()
 						}
 
-						models.Notification.create(postAuthor, recipientId, post, null, 'commentilike', (err) => {
+						models.Notification.create(postAuthor, recipientId, postId, null, 'commentilike', (err) => {
 							if (!err) {
 								receivedNotificationsIds.push(recipientId.toString())
 							}

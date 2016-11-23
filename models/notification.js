@@ -46,7 +46,9 @@ var Model = function(mongoose) {
 		getForUser: (to, settings, callback, lean, skip = 0, limit = 10) => {
 			if (typeof to !== 'object') to = mongoose.Types.ObjectId(to)
 
-			Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'}).lean().exec((err, notifications) => {
+			let query = Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'})
+			if (lean) query.lean()
+			query.exec((err, notifications) => {
 				notifications = notifications.filter((n) => {
 					let keepIt = true
 

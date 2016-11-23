@@ -34,7 +34,12 @@ router.post('/follow', (req, res) => {
 		else {
 			models.Follow.isFollowing(req.user._id, following, (err, isFollowing) => {
 				if (err) res.status(400).send(err)
-				else res.send({isFollowing})
+				else {
+					// Add following notification
+					models.Notification.create(following, req.user._id, null, null, 'follow', () => {
+						res.send({isFollowing})
+					})
+				}
 			})
 		}
 	})

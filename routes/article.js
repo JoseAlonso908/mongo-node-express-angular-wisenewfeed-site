@@ -176,7 +176,20 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	}
 
 	models.Comment.addComment(postId, req.user._id, text, filenames, (err, post) => {
-		res.send({ok: true})
+		async.waterfall([
+			(cb) => {
+				models.Article.findOneById(post, (err, post) => {
+					cb(err, post.author._id)
+				})
+			},
+			(author, cb) => {
+				// Add comment notification
+				models.Notification.create(author, req.user._id, post, null, 'follow', () => {
+					res.send({ok: true})
+				})
+			}
+		])
+		
 	})
 })
 

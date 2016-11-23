@@ -177,13 +177,13 @@ angular.module('er.services', [])
 		getOther: function (id) {
 			var self = this
 
-			if (self.otherCache[id]) {
-				var d = $q.defer()
+			// if (self.otherCache[id]) {
+			// 	var d = $q.defer()
 
-				d.resolve(self.otherCache[id])
+			// 	d.resolve(self.otherCache[id])
 				
-				return d.promise
-			}
+			// 	return d.promise
+			// }
 
 			return $http({
 				method: 'GET',
@@ -210,7 +210,7 @@ angular.module('er.services', [])
 				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
-				self.otherCache[id] = user
+				// self.otherCache[id] = user
 
 				return user
 			}, function (data, status) {

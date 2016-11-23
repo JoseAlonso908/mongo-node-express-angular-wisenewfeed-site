@@ -18,7 +18,14 @@ router.use((req, res, next) => {
 })
 
 router.get('/get', (req, res) => {
-	models.Notification.getForUserLean(req.user._id, (err, notifications) => {
+	async.waterfall([
+		(cb) => {
+			models.User.findById(req.user._id, cb)
+		},
+		(user, cb) => {
+			models.Notification.getForUser(req.user._id, user.notifications, cb, true)
+		},
+	], (err, notifications) => {
 		if (err) res.status(400).send(err)
 		else res.send(notifications)
 	})

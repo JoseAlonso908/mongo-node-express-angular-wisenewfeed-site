@@ -120,6 +120,14 @@ var Model = function(mongoose) {
 			})
 		},
 
+		getAllByPostOfType: (post, type, callback, lean) => {
+			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
+
+			let query = Model.find({post, type}).populate('author')
+			if (lean) query.lean()
+			query.exec(callback)
+		},
+
 		getByPost: (user, post, callback) => {
 			// if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)

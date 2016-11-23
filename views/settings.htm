@@ -110,37 +110,39 @@
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'notifications'}">
-				<a href="javascript:void(0);" class="top-link">Turn off all notifications</a>
+				<a href="javascript:void(0);" ng-click="turnAllOff()" class="top-link">Turn off all notifications</a>
 				<h3>Notifications</h3>
 				<div class="subtitle">Manage your notifications.</div>
 
 				<div class="divider"></div>
 
-				<div class="checkbox-wrapper">
-					<input type="checkbox" ng-model="notifyexpert" id="notifyexpert" name="notifyexpert">
-					<label for="notifyexpert" class="label">Notify about Expert</label>
-				</div>
+				<form name="notifications" ng-submit="savingFuncs['notifications']($event)">
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.expert" id="notifyexpert" name="notifyexpert">
+						<label for="notifyexpert" class="label">Notify about Expert</label>
+					</div>
 
-				<div class="checkbox-wrapper">
-					<input type="checkbox" ng-model="notifyjournalist" id="notifyjournalist" name="notifyjournalist">
-					<label for="notifyjournalist" class="label">Notify about Journalist</label>
-				</div>
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.journalist" id="notifyjournalist" name="notifyjournalist">
+						<label for="notifyjournalist" class="label">Notify about Journalist</label>
+					</div>
 
-				<div class="divider"></div>				
+					<div class="divider"></div>				
 
-				<div class="checkbox-wrapper">
-					<input type="checkbox" ng-model="notifyreacted" id="notifyreacted" name="notifyreacted">
-					<label for="notifyreacted" class="label">Notify about post I reacted</label>
-				</div>
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.reacted" id="notifyreacted" name="notifyreacted">
+						<label for="notifyreacted" class="label">Notify about post I reacted</label>
+					</div>
 
-				<div class="checkbox-wrapper">
-					<input type="checkbox" ng-model="notifyliked" id="notifyliked" name="notifyliked">
-					<label for="notifyliked" class="label">Notify about post I liked</label>
-				</div>
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.liked" id="notifyliked" name="notifyliked">
+						<label for="notifyliked" class="label">Notify about post I liked</label>
+					</div>
 
-				<div class="divider"></div>
+					<div class="divider"></div>
 
-				<button class="cta-button">Save changes</button>
+					<input type="submit" class="cta-button" value="Save changes">
+				</form>
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'socialconnect'}">

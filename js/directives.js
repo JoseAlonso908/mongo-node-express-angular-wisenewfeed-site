@@ -833,7 +833,6 @@ angular.module('er.directives', [])
 
 			element.on('$destroy', function () {
 				$interval.cancel(refreshInterval)
-				console.log('bye')
 			})
 
 			updateNotifications()

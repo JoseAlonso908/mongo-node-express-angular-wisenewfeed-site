@@ -44,7 +44,13 @@ var Model = function(mongoose) {
 			time		: String,
 			place		: String,
 			description	: String,
-		}]
+		}],
+		notifications: {
+			expert 		: {type: Boolean, default: true},
+			journalist 	: {type: Boolean, default: true},
+			liked 		: {type: Boolean, default: true},
+			reacted 	: {type: Boolean, default: true},
+		},
 	})
 
 	var Model = mongoose.model('user', schema);
@@ -295,6 +301,13 @@ var Model = function(mongoose) {
 				callback(result)
 			})
 		},
+
+		updateNotificationsSettings: (_id, expert, journalist, liked, reacted, callback) => {
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user.notifications, {expert, journalist, liked, reacted})
+				user.save(callback)
+			})
+		}
 	}
 }
 

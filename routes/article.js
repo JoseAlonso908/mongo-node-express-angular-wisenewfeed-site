@@ -176,19 +176,71 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	}
 
 	models.Comment.addComment(postId, req.user._id, text, filenames, (err, post) => {
+		// We send notification of this type only once per user
+		// (because user can react to post multiple times)
+		let receivedNotificationsIds = []
+
 		async.waterfall([
 			(cb) => {
 				models.Article.findOneById(postId, (err, post) => {
 					cb(err, post.author._id)
 				})
 			},
-			(author, cb) => {
+			(postAuthor, cb) => {
 				// Add comment notification
-				models.Notification.create(author, req.user._id, post, null, 'comment', () => {
-					res.send({ok: true})
+				models.Notification.create(postAuthor, req.user._id, post, null, 'comment', () => {
+					cb(null, postAuthor)
 				})
-			}
-		])
+			},
+			(postAuthor, cb) => {
+				// Notify people who like this post about this reaction
+				models.PostReaction.getAllByPostOfType(postId, 'like', (err, reactions) => {
+					async.eachSeries(reactions, (r, cb) => {
+						let recipientId = r.author._id
+						if (receivedNotificationsIds.indexOf(recipientId.toString()) > -1) return cb()
+
+						if (!r.author.notifications.liked) {
+							return cb()
+						}
+
+						models.Notification.create(postAuthor, recipientId, post, null, 'commentilike', (err) => {
+							if (!err) {
+								receivedNotificationsIds.push(recipientId.toString())
+							}
+
+							cb()
+						})
+					}, (err) => {
+						cb(null, postAuthor)
+					})
+				})
+			},
+			(postAuthor, cb) => {
+				// Notify people who commented this post about this reaction
+				models.Comment.getPostComments(postId, (err, comments) => {
+					async.eachSeries(comments, (c, cb) => {
+						let commenterId = c.author._id
+						if (receivedNotificationsIds.indexOf(commenterId.toString()) > -1) return cb()
+
+						if (!c.author.notifications.reacted) {
+							return cb()
+						}
+
+						models.Notification.create(postAuthor, commenterId, post, null, 'commenticomment', (err) => {
+							if (!err) {
+								receivedNotificationsIds.push(commenterId.toString())
+							}
+
+							cb()
+						})
+					}, (err) => {
+						cb()
+					})
+				})
+			},
+		], (err) => {
+			res.send({ok: true})
+		})
 		
 	})
 })
@@ -213,28 +265,78 @@ router.get('/reactions/few', (req, res) => {
 router.post('/react', (req, res) => {
 	let {post, type} = req.body
 
-	models.PostReaction.react(req.user._id, post, type, (err, result) => {
-		let done = () => {
-			async.waterfall([
-				(cb) => {
-					models.Article.findOneById(post, (err, post) => {
-						cb(err, post.author._id)
-					})
-				},
-				(author, cb) => {
-					models.Notification.create(author, req.user._id, post, null, type, () => {
+	// We send notification of this type only once per user
+	// (because user can react to post multiple times)
+	let receivedNotificationsIds = []
+
+	async.waterfall([
+		(cb) => {
+			models.Article.findOneById(post, (err, post) => {
+				cb(err, post.author._id)
+			})
+		},
+		(postAuthor, cb) => {
+			models.Notification.create(postAuthor, req.user._id, post, null, type, () => {
+				cb(null, postAuthor)
+			})
+		},
+		(postAuthor, cb) => {
+			// Notify people who like this post about this reaction
+			models.PostReaction.getAllByPostOfType(post, 'like', (err, reactions) => {
+				async.eachSeries(reactions, (r, cb) => {
+					let recipientId = r.author._id
+					if (receivedNotificationsIds.indexOf(recipientId.toString()) > -1) return cb()
+
+					if (!r.author.notifications.liked) {
+						return cb()
+					}
+
+					models.Notification.create(postAuthor, recipientId, post, null, `${type}ilike`, (err) => {
+						if (!err) {
+							receivedNotificationsIds.push(recipientId.toString())
+						}
+
 						cb()
 					})
-				},
-			], (err) => {
+				}, (err) => {
+					cb(null, postAuthor)
+				})
+			})
+		},
+		(postAuthor, cb) => {
+			// Notify people who commented this post about this reaction
+			models.Comment.getPostComments(post, (err, comments) => {
+				async.eachSeries(comments, (c, cb) => {
+					let commenterId = c.author._id
+					if (receivedNotificationsIds.indexOf(commenterId.toString()) > -1) return cb()
+
+					if (!c.author.notifications.reacted) {
+						return cb()
+					}
+
+					models.Notification.create(postAuthor, commenterId, post, null, `${type}icomment`, (err) => {
+						if (!err) {
+							receivedNotificationsIds.push(commenterId.toString())
+						}
+
+						cb()
+					})
+				}, (err) => {
+					cb()
+				})
+			})
+		},
+	], (err) => {
+		models.PostReaction.react(req.user._id, post, type, (err, result) => {
+			let done = () => {
 				if (err) res.status(400).send(err)
 				else res.send({ok: true})
-			})
-		}
+			}
 
-		if (type === 'share') {
-			models.Article.share(req.user._id, post, done)
-		} else done()
+			if (type === 'share') {
+				models.Article.share(req.user._id, post, done)
+			} else done()
+		})
 	})
 })
 

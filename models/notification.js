@@ -20,7 +20,11 @@ var Model = function(mongoose) {
 		read 		: Boolean,
 		type		: {
 			type: String,
-			enum: ['like', 'dislike', 'share', 'comment', 'follow'],
+			enum: [
+				'like', 'dislike', 'share', 'comment', 'follow',
+				'likeilike', 'dislikeilike', 'shareilike', 'commentilike',
+				'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment',
+			],
 		},
 		createdAt	: {type: Date, default: Date.now},
 	})
@@ -39,10 +43,30 @@ var Model = function(mongoose) {
 			n.save(callback)
 		},
 
-		getForUserLean: (to, callback, skip = 0, limit = 10) => {
+		getForUser: (to, settings, callback, lean, skip = 0, limit = 10) => {
 			if (typeof to !== 'object') to = mongoose.Types.ObjectId(to)
 
-			Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'}).lean().exec(callback)
+			Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'}).lean().exec((err, notifications) => {
+				notifications = notifications.filter((n) => {
+					let keepIt = true
+
+					// Skip notifications from experts
+					if (!settings.expert && n.from.role === 'expert') keepIt = false
+
+					// Skip notifications from journalists
+					if (!settings.journalist && n.from.role === 'journalist') keepIt = false
+
+					// Skip notifications about posts I liked
+					if (!settings.liked && ['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1) keepIt = false
+
+					// Skip notifications about posts I reacted
+					if (!settings.liked && ['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1) keepIt = false
+
+					return keepIt
+				})
+
+				callback(err, notifications)
+			})
 		},
 	}
 }

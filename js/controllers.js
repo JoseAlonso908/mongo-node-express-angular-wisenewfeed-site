@@ -562,6 +562,12 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	$scope.turnAllOff = function () {
+		for (var nTypeKey in $scope.user.notifications) {
+			$scope.user.notifications[nTypeKey] = false
+		}
+	}
+
 	$scope.savingFuncs = {
 		general: function (e) {
 			e.preventDefault()
@@ -622,6 +628,18 @@ angular.module('er.controllers', [])
 				})
 			}
 			// identityService.isPasswordValid()
+		},
+		notifications: function (e) {
+			e.preventDefault()
+
+			var form = $scope.user.notifications
+
+			identityService.updateNotifications(form).then(function (result) {
+				return $location.url('/my')
+			}, function (error) {
+				console.error(error)
+				alert('Unable to update password. Please, try again later.')
+			})
 		},
 	}
 

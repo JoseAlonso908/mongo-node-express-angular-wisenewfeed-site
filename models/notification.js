@@ -49,6 +49,8 @@ var Model = function(mongoose) {
 			let query = Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'})
 			if (lean) query.lean()
 			query.exec((err, notifications) => {
+				if (err) res.status(400).send(err)
+
 				notifications = notifications.filter((n) => {
 					let keepIt = true
 

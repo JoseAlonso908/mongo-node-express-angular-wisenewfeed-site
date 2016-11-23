@@ -87,7 +87,7 @@
 		</div>
 		<div class="middle" ng-if="feedType != 'people'">
 			<onyourmind ng-if="user && user._id == profile._id" user="user"></onyourmind>
-			<feed id="profile._id" type="type" user="profile" ng-if="profile"></feed>
+			<feed id="profile._id" type="type" user="user" ng-if="profile"></feed>
 		</div>
 		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
 			<div class="people">

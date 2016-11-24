@@ -90,6 +90,13 @@
 				display: none;
 			}
 		}
+
+		.filters {
+			/*dropdown, */a {
+				margin: 0 5px;
+				padding: 0 15px !important;
+			}
+		}
 	}
 }
 
@@ -153,7 +160,7 @@
 			}
 
 			dropdown, a {
-				margin: 0 20px;
+				margin: 0 10px;
 			}
 		}
 
@@ -238,6 +245,16 @@
 				.stats {
 					display: none;
 				}
+			}
+		}
+
+		.filters {
+			dropdown, a {
+				margin: 0 5px;
+			}
+
+			a {
+				padding: 0 35px !important;
 			}
 		}
 

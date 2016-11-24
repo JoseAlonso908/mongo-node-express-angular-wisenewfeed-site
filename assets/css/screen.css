@@ -544,11 +544,14 @@ a.small-icon, button.small-icon {
   width: 100%;
   height: 70px;
 }
+#wrapper .filters a {
+  padding: 0 35px;
+}
 #wrapper .filters .menu-buttons {
   display: inline-block;
   position: relative;
   height: 26px;
-  padding: 0 35px;
+  padding: 0 13px;
   background-color: #cad4db;
   border-radius: 13px;
   color: #ffffff;
@@ -3084,6 +3087,13 @@ a.small-icon, button.small-icon {
   #wrapper .content .right {
     display: none;
   }
+  #wrapper .filters {
+    /*dropdown, */
+  }
+  #wrapper .filters a {
+    margin: 0 5px;
+    padding: 0 15px !important;
+  }
 }
 @media (max-width: 1024px) {
   .notifications {
@@ -3123,7 +3133,7 @@ a.small-icon, button.small-icon {
     justify-content: space-around;
   }
   #wrapper .filters dropdown, #wrapper .filters a {
-    margin: 0 20px;
+    margin: 0 10px;
   }
   #wrapper .wallpaper-wrapper .footer .stats .stat {
     padding: 0 10px;
@@ -3172,6 +3182,12 @@ a.small-icon, button.small-icon {
   }
   #wrapper .wallpaper-wrapper .footer .stats {
     display: none;
+  }
+  #wrapper .filters dropdown, #wrapper .filters a {
+    margin: 0 5px;
+  }
+  #wrapper .filters a {
+    padding: 0 35px !important;
   }
   #wrapper .content .middle .card.feed-item .body .title .add {
     margin-left: 0;

@@ -55,6 +55,15 @@ router.post('/remove', (req, res) => {
 	})
 })
 
+router.get('/one', (req, res) => {
+	let {id} = req.query
+
+	models.Article.findOneById(id, (err, article) => {
+		if (err) res.status(400).send(err)
+		else res.send(article)
+	})
+})
+
 router.get('/all', (req, res) => {
 	let {category, country, start, limit} = req.query
 

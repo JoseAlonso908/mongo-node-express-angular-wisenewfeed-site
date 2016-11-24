@@ -278,6 +278,41 @@ angular.module('er.controllers', [])
 		},
 	])
 })
+.controller('articleController', function ($routeParams, $rootScope, $scope, $timeout, $location, $anchorScroll, identityService, postService) {
+	$scope.articleId = $routeParams.articleId
+	$scope.commentId = $routeParams.commentId
+
+	var commentsReceivedEvent = $rootScope.$on('commentsloaded', function (event, postId) {
+		var referencedComment = $scope.post.comments.filter(function (c) {
+			if (c._id == $scope.commentId) return true
+			return false
+		})[0]
+
+		referencedComment.highlighted = true
+
+		$timeout(function () {
+			$anchorScroll('c' + referencedComment._id)
+		}, 100)
+
+		commentsReceivedEvent()
+	})
+
+	async.parallel([
+		function (cb) {
+			identityService.get().then(function (user) {
+				$scope.user = user
+				cb(null)
+			})
+		},
+		function (cb) {
+			postService.get($scope.articleId).then(function (post) {
+				$scope.post = post
+				$scope.profile = post.author
+				cb(null)
+			})
+		},
+	])
+})
 .controller('profilePeopleController', function ($routeParams, $scope, identityService, followService) {
 	$scope.type = $routeParams.type
 	$scope.feedType = 'people'

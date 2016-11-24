@@ -19,39 +19,43 @@ angular.module('er', [
 		$locationProvider.hashPrefix('!')
 		$routeProvider
 			.when('/start', {
-				templateUrl: 'assets/views/landing.htm'
+				templateUrl: 'assets/views/landing.htm',
 			})
 			.when('/confirmsignup', {
-				templateUrl: 'assets/views/confirm-signup.htm'
+				templateUrl: 'assets/views/confirm-signup.htm',
 			})
 			.when('/', {
-				templateUrl: 'assets/views/home.htm'
+				templateUrl: 'assets/views/home.htm',
 			})
 			.when('/my', {
 				templateUrl: 'assets/views/profile.htm',
-				controller: 'profileController'
+				controller: 'profileController',
 			})
 			.when('/profilefeed/:id/:type', {
 				templateUrl: 'assets/views/profile.htm',
-				controller: 'profileFeedController'
+				controller: 'profileFeedController',
 			})
 			.when('/profilepeople/:id/:type', {
 				templateUrl: 'assets/views/profile.htm',
-				controller: 'profilePeopleController'
+				controller: 'profilePeopleController',
+			})
+			.when('/article/:articleId/:commentId', {
+				templateUrl: 'assets/views/post.htm',
+				controller: 'articleController',
 			})
 			.when('/person/:id', {
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'personController',
 			})
 			.when('/editmy', {
-				templateUrl: 'assets/views/edit-profile.htm'
+				templateUrl: 'assets/views/edit-profile.htm',
 			})
 			.when('/resetpassword', {
-				templateUrl: 'assets/views/resetpassword.htm'
+				templateUrl: 'assets/views/resetpassword.htm',
 			})
 			.when('/settings', {
 				templateUrl: 'assets/views/settings.htm',
-				controller: 'settingsController'
+				controller: 'settingsController',
 			})
 
 

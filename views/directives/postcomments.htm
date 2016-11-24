@@ -1,9 +1,11 @@
-<div class="comments" ng-init="showmore=false" ng-class="{moreShown: showmore}" ng-show="comments.length > 0">
-	<a href="javascript:void(0);" ng-click="$parent.showmore=!$parent.showmore" class="show-more" ng-if="comments.length > 3">
+<div class="comments" ng-init="showmore=false" ng-class="{moreShown: showmore || nocollapse}" ng-show="comments.length > 0">
+	<a href="javascript:void(0);" ng-click="$parent.showmore=!$parent.showmore" class="show-more" ng-if="comments.length > 3 && !nocollapse">
 		{{($parent.showmore ? 'Collapse' : 'Show more')}}
 	</a>
 
-	<div class="comment" ng-repeat="comment in comments">
+	<div ng-class="{highlighted: comment.highlighted}" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments">
+		<a name="c{{comment._id}}"></a>
+
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
 			<a ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>

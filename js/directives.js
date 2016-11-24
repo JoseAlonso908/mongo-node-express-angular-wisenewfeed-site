@@ -275,6 +275,8 @@ angular.module('er.directives', [])
 		scope: {
 			post: '=',
 			user: '=',
+			// When "justone" is true we don't need to collapse comments or enable link to separate post
+			justone: '=',
 		},
 		link: function ($scope, element, attr) {
 			angular.element(document.body).on('click', function () {
@@ -437,12 +439,13 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('postcomments', function (postService) {
+.directive('postcomments', function ($rootScope, postService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/postcomments.htm',
 		scope: {
-			post: '='
+			post: '=',
+			nocollapse: '=',
 		},
 		link: function ($scope, element, attr) {
 			$scope.showmore = false
@@ -457,7 +460,10 @@ angular.module('er.directives', [])
 				postService.getComments($scope.post._id).then(function (comments) {
 					$scope.comments = comments
 					$scope.$parent.commentsCount = $scope.comments.length
+					$scope.post.comments = comments
 					$scope.$apply()
+					
+					$rootScope.$emit('commentsloaded', $scope.post._id)
 				})
 			}
 

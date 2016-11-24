@@ -569,6 +569,23 @@ angular.module('er.services', [])
 })
 .factory('postService', function ($http, $cookies, $timeout) {
 	return {
+		get: function (id) {
+			return $http({
+				method: 'GET',
+				url: '/article/one',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: {
+					id: id
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
 		create: function (text, files) {
 			return new Promise(function (resolve, reject) {
 				var headers = {

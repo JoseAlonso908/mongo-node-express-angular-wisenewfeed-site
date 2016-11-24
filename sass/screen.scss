@@ -990,6 +990,9 @@ a.small-icon, button.small-icon {
 
 					.comment {
 						display: none;
+						margin: -20px -17px 0 -65px;
+						padding: 20px 17px 0 65px;
+						@include transition(background-color 1.5s .3s);
 
 						&:nth-last-child(1),
 						&:nth-last-child(2),
@@ -1023,6 +1026,10 @@ a.small-icon, button.small-icon {
 									display: none;
 								}
 							}
+						}
+
+						&.highlighted {
+							background-color: rgba($activeBlue, .1);
 						}
 
 						.comment-title {
@@ -3246,6 +3253,10 @@ a.small-icon, button.small-icon {
 		position: relative;
 		height: 42px;
 		padding: 16px;
+
+		a {
+			color: $activeBlue;
+		}
 
 		.avatar-border {
 			float: left;

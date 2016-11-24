@@ -1,6 +1,6 @@
 <div class="comments" ng-init="showmore=false" ng-class="{moreShown: showmore || nocollapse}" ng-show="comments.length > 0">
 	<a href="javascript:void(0);" ng-click="$parent.showmore=!$parent.showmore" class="show-more" ng-if="comments.length > 3 && !nocollapse">
-		{{($parent.showmore ? 'Collapse' : 'Show more')}}
+		{{($parent.showmore ? 'Show less' : 'Show more')}}
 	</a>
 
 	<div ng-class="{highlighted: comment.highlighted}" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments">

@@ -23,7 +23,9 @@
 	<notificationsicon ng-if="user" user="user"></notificationsicon>
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">
-		<avatar user="user"></avatar>
+		<div class="avatar-wrapper" ng-click="$parent.openUserMenu($event)">
+			<avatar user="user"></avatar>
+		</div>
 		<a class="name dark-bold" ng-click="$parent.openUserMenu($event)" href="javascript:void(0);">{{user.name || 'Unnamed'}}</a>
 		<a class="view-profile" ng-if="user.role != 'User'" ng-href="#!/my">View profile</a>
 

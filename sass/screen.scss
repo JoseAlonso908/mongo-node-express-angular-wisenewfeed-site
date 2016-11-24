@@ -449,9 +449,13 @@ a.small-icon, button.small-icon {
 		#user-block {
 			width: 200px; height: 36px;
 
-			.avatar-border {
-				margin-right: 14px;
-				float: left;
+			.avatar-wrapper {
+				height: 42px;
+
+				.avatar-border {
+					margin-right: 14px;
+					float: left;
+				}
 			}
 
 			.name {

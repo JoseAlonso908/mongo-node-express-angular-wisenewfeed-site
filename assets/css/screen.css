@@ -512,7 +512,10 @@ a.small-icon, button.small-icon {
   width: 200px;
   height: 36px;
 }
-#wrapper #top-bar #user-block .avatar-border {
+#wrapper #top-bar #user-block .avatar-wrapper {
+  height: 42px;
+}
+#wrapper #top-bar #user-block .avatar-wrapper .avatar-border {
   margin-right: 14px;
   float: left;
 }
@@ -3076,14 +3079,18 @@ a.small-icon, button.small-icon {
   #wrapper .wallpaper-wrapper .footer .stats {
     margin-left: 140px;
   }
-  #wrapper .content .left {
-    display: none;
-  }
   #wrapper .content .middle {
     width: 75%;
   }
+  #wrapper .content .right {
+    display: none;
+  }
 }
 @media (max-width: 1024px) {
+  .notifications {
+    margin-left: -200px;
+  }
+
   #landing-wrapper #header-wrapper #header {
     width: 768px;
   }
@@ -3100,7 +3107,10 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar #user-block {
     width: 42px;
   }
-  #wrapper #top-bar #user-block .name, #wrapper #top-bar #user-block .view-profile, #wrapper #top-bar #user-block .user-menu {
+  #wrapper #top-bar #user-block .user-menu {
+    margin: 20px 0 0 -138px;
+  }
+  #wrapper #top-bar #user-block .name, #wrapper #top-bar #user-block .view-profile {
     display: none;
   }
   #wrapper .filters {
@@ -3113,11 +3123,14 @@ a.small-icon, button.small-icon {
   #wrapper .filters dropdown, #wrapper .filters a {
     margin: 0 20px;
   }
-  #wrapper .content .middle {
-    width: 100%;
+  #wrapper .wallpaper-wrapper .footer .stats .stat {
+    padding: 0 10px;
   }
-  #wrapper .content .right {
-    display: none;
+  #wrapper .content .left {
+    width: 30%;
+  }
+  #wrapper .content .middle {
+    width: calc(70% - 20px);
   }
 }
 @media (max-width: 800px) {
@@ -3149,11 +3162,34 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar .make-post {
     display: none;
   }
-  #wrapper .content .middle .card.feed-item .body .title {
-    height: auto;
+  #wrapper .wallpaper-wrapper .buttons .questions, #wrapper .wallpaper-wrapper .buttons .ask-question {
+    white-space: nowrap;
+  }
+  #wrapper .wallpaper-wrapper .buttons .edit-profile, #wrapper .wallpaper-wrapper .buttons .message, #wrapper .wallpaper-wrapper .buttons .follow {
+    display: none;
+  }
+  #wrapper .wallpaper-wrapper .footer .stats {
+    display: none;
   }
   #wrapper .content .middle .card.feed-item .body .title .add {
     margin-left: 0;
+  }
+  #wrapper .content .middle .settings-wrapper .settings-field-block label {
+    text-align: left;
+  }
+  #wrapper .content .middle .settings-wrapper .settings-field-block input, #wrapper .content .middle .settings-wrapper .settings-field-block select {
+    width: 100%;
+  }
+  #wrapper .content .middle .settings-wrapper .checkbox-wrapper {
+    margin: 0;
+  }
+  #wrapper .content .middle .tip {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  #wrapper .content .middle input[type=submit] {
+    display: block;
+    margin: 0 auto !important;
   }
 }
 @media (max-width: 600px) {
@@ -3168,17 +3204,36 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar #search {
     display: none;
   }
+  #wrapper .wallpaper-wrapper .rated-avatar-wrapper {
+    top: 142px;
+  }
+  #wrapper .wallpaper-wrapper .buttons {
+    margin-top: 115px;
+  }
+  #wrapper .wallpaper-wrapper .wallpaper {
+    height: 170px;
+  }
   #wrapper .filters {
     height: auto;
   }
   #wrapper .filters > dropdown, #wrapper .filters > a {
     margin-bottom: 15px;
   }
+  #wrapper .content .left {
+    display: none;
+  }
+  #wrapper .content .middle {
+    width: 100%;
+  }
   #wrapper .content .middle .card.feed-item .body .title .name {
     min-width: 150px;
   }
   #wrapper .content .middle .card.feed-item .body .title .time, #wrapper .content .middle .card.feed-item .body .title .separator, #wrapper .content .middle .card.feed-item .body .title .position, #wrapper .content .middle .card.feed-item .body .title .country, #wrapper .content .middle .card.feed-item .body .title .more {
     display: none;
+  }
+  #wrapper .content .middle .settings-wrapper {
+    display: block !important;
+    margin-bottom: 20px;
   }
 }
 @media (max-width: 400px) {
@@ -3225,15 +3280,17 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle .card.feed-item {
     padding-left: 17px;
   }
-  #wrapper .content .middle .card.feed-item .avatar-border {
-    position: relative;
+  #wrapper .content .middle .card.feed-item > avatar > .avatar-border {
     margin-left: 0;
   }
   #wrapper .content .middle .card.feed-item .body > .title {
-    margin: -40px 0 20px 50px;
+    margin: 0 0 20px 50px;
   }
   #wrapper .content .middle .card.feed-item .body .content .text {
     padding-right: 0;
+  }
+  #wrapper .content .middle .card.feed-item .body .content .shared {
+    margin-left: 0;
   }
   #wrapper .content .middle .card.feed-item .body .ratings {
     flex-wrap: wrap;
@@ -3246,13 +3303,19 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle .card.feed-item .body .ratings .rating:nth-child(2) {
     margin: 0 0 5px 0;
   }
+  #wrapper .content .middle .card.feed-item .comments .comment > avatar > .avatar-border {
+    margin-left: 0;
+  }
   #wrapper .content .middle .card.feed-item .comments .comment .comment-title {
-    margin: -40px 0 25px 50px;
+    margin: 0px 0 25px 50px;
+  }
+  #wrapper .content .middle .card.feed-item .comment-box > avatar > .avatar-border {
+    margin-left: 0;
   }
   #wrapper .content .middle .card.feed-item .comment-box textarea {
     display: block;
     width: calc(100% - 50px);
-    margin: -42px 0 0 50px;
+    margin: 0 0 0 50px;
   }
   #wrapper .content .middle .card.feed-item .comment-box textarea:focus + .send + .upload-image, #wrapper .content .middle .card.feed-item .comment-box textarea.not-empty + .send + .upload-image {
     left: 52px;
@@ -3262,5 +3325,12 @@ a.small-icon, button.small-icon {
   }
   #wrapper .content .middle .card.feed-item .actions button .title {
     display: none;
+  }
+  #wrapper .content .middle .settings-wrapper .top-link {
+    display: none;
+  }
+  #wrapper .content .middle .settings-wrapper .social-network .actions {
+    float: left;
+    margin-top: 20px;
   }
 }

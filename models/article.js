@@ -22,6 +22,9 @@ var Model = function(mongoose) {
 		Model,
 
 		findOneById: (_id, callback) => {
+			console.log('AA1')
+			console.log(_id)
+
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
 			Model.findOne({_id}).populate([
 				{path: 'author'},

@@ -513,11 +513,10 @@ a.small-icon, button.small-icon {
   height: 36px;
 }
 #wrapper #top-bar #user-block .avatar-wrapper {
+  width: 42px;
   height: 42px;
-}
-#wrapper #top-bar #user-block .avatar-wrapper .avatar-border {
-  margin-right: 14px;
   float: left;
+  margin-right: 14px;
 }
 #wrapper #top-bar #user-block .name {
   display: block;
@@ -3107,8 +3106,11 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar #user-block {
     width: 42px;
   }
+  #wrapper #top-bar #user-block .avatar-wrapper {
+    height: 42px;
+  }
   #wrapper #top-bar #user-block .user-menu {
-    margin: 20px 0 0 -138px;
+    margin: 60px 0 0 -138px;
   }
   #wrapper #top-bar #user-block .name, #wrapper #top-bar #user-block .view-profile {
     display: none;
@@ -3245,6 +3247,9 @@ a.small-icon, button.small-icon {
     margin: 0 auto 30px;
   }
 
+  #wrapper .filters {
+    justify-content: flex-start;
+  }
   #wrapper .filters > dropdown {
     width: 100%;
     box-sizing: border-box;
@@ -3273,9 +3278,6 @@ a.small-icon, button.small-icon {
     position: relative;
     width: 100%;
     margin-left: 0;
-  }
-  #wrapper .filters > a {
-    width: 100% !important;
   }
   #wrapper .content .middle .card.feed-item {
     padding-left: 17px;
@@ -3308,6 +3310,12 @@ a.small-icon, button.small-icon {
   }
   #wrapper .content .middle .card.feed-item .comments .comment .comment-title {
     margin: 0px 0 25px 50px;
+  }
+  #wrapper .content .middle .card.feed-item .comments .comment .text {
+    margin-left: 50px;
+  }
+  #wrapper .content .middle .card.feed-item .comments .comment .stats {
+    margin-top: 8px;
   }
   #wrapper .content .middle .card.feed-item .comment-box > avatar > .avatar-border {
     margin-left: 0;

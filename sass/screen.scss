@@ -450,11 +450,13 @@ a.small-icon, button.small-icon {
 			width: 200px; height: 36px;
 
 			.avatar-wrapper {
-				height: 42px;
+				width: 42px; height: 42px;
+				float: left;
+				margin-right: 14px;
 
 				.avatar-border {
-					margin-right: 14px;
-					float: left;
+					// margin-right: 14px;
+					// float: left;
 				}
 			}
 

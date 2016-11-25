@@ -551,13 +551,24 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('question', function () {
+.directive('question', function (followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/question.htm',
 		scope: {
 			question: '='
 		},
+		link: function ($scope, element, attr) {
+			followService.isFollowing($scope.question.author._id).then(function (result) {
+				$scope.question.author.isFollowing = result
+			})
+
+			$scope.follow = function () {
+				followService.follow($scope.question.author._id).then(function (result) {
+					$scope.question.author.isFollowing = result
+				})
+			}
+		}
 	}
 })
 .directive('familiarexpert', function () {
@@ -569,7 +580,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('newquestions', function ($rootScope) {
+.directive('newquestions', function ($rootScope, questionsService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/new-questions.htm',
@@ -577,7 +588,29 @@ angular.module('er.directives', [])
 			user: '='
 		},
 		link: function ($scope, element, attr) {
-			$scope.questions = $rootScope.user.questions
+			$scope.init = function () {
+				$scope.loading = true
+				$scope.questions = []
+
+				questionsService.get(null, 0, 3).then(function (questions) {
+					$scope.loading = false
+					$scope.questions = questions.map(function (q) {
+						q.author.role = q.author.role[0].toUpperCase() + q.author.role.substr(1)
+
+						if (q.text.length > 100) {
+							q.text = q.text.substr(0, 100) + '...'
+						}
+
+						return q
+					})
+				}).catch(function (error) {
+					$scope.loading = false
+				})
+			}
+
+			$scope.init()
+
+			$scope.refresh = $scope.init
 		}
 	}
 })
@@ -843,5 +876,17 @@ angular.module('er.directives', [])
 
 			updateNotifications()
 		}
+	}
+})
+.directive('wallpaperblock', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/wallpaperblock.htm'
+	}
+})
+.directive('profileinfo', function () {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/profileinfo.htm'
 	}
 })

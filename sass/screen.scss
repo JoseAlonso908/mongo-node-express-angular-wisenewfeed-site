@@ -1111,128 +1111,6 @@ a.small-icon, button.small-icon {
 						}
 					}
 				}
-
-				.comment-box {
-					position: relative;
-
-					textarea {
-						width: 100%; height: 38px;
-						padding: 10px;
-						border: 1px solid #f0f2f4;
-						border-radius: 3px;
-						font-family: 'Roboto';
-						font-size: 13px;
-						box-sizing: border-box;
-						resize: none;
-						line-height: 16px;
-
-						&:focus {
-							border-color: $activeBlue;
-						}
-
-						&.not-empty {
-							height: 76px;
-
-							& + .send {
-								margin-top: 6px;
-								opacity: 1;
-								pointer-events: auto;
-							}
-
-							& + .send + .upload-image {
-								top: 85px; left: 0;
-								right: auto;
-							}
-						}
-					}
-
-					.upload-image {
-						position: absolute;
-						top: 8px; right: 4px;
-						border: none;
-						background-color: transparent;
-						color: $iconGrey;
-						cursor: pointer;
-						@include transition(color .2s);
-
-						i {
-							font-size: 20px;
-						}
-
-						&:hover {
-							color: darken($iconGrey, 5%);
-						}
-					}
-
-					.send {
-						width: 75px; height: 26px;
-						margin-top: -8px;
-						padding: 0 12px;
-						background-color: $activeBlue;
-						border-radius: 18px;
-						border: none;
-						cursor: pointer;
-						float: right;
-						opacity: 0;
-						pointer-events: none;
-
-						&:hover {
-							background-color: darken($activeBlue, 10%);
-						}
-
-						div {
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
-
-							.title {
-								color: #ffffff;
-								font-weight: 900;
-								font-size: 13px;
-							}
-
-							i {
-								color: #ffffff;
-								font-size: 13px;
-							}
-						}
-					}
-
-					.upload-files {
-						margin-top: 15px;
-						
-						.file {
-							width: 90px; height: 90px;
-							margin: 0 5px;
-							float: left;
-							background-position: center;
-							background-repeat: no-repeat;
-							background-size: cover;
-							border-radius: 3px;
-							overflow: hidden;
-
-							.remove {
-								position: absolute;
-								width: inherit; height: inherit;
-								background-color: rgba(0, 0, 0, .4);
-								color: #ffffff;
-								font-size: 24px;
-								text-align: center;
-								line-height: 90px;
-								opacity: 0;
-								border-radius: inherit;
-
-								@include transition(opacity .2s);
-							}
-
-							&:hover {
-								.remove {
-									opacity: 1;
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 
@@ -1444,7 +1322,7 @@ a.small-icon, button.small-icon {
 						padding-right: 24px;
 						line-height: 36px;
 						font-size: 13px;
-						color: #82898f;
+						color: $middleGrey;
 						text-align: right;
 						float: left;
 					}
@@ -3321,6 +3199,292 @@ a.small-icon, button.small-icon {
 			&.following {
 				background-color: $activeBlue;
 				color: #ffffff;
+			}
+		}
+	}
+}
+
+.comment-box, .question-box {
+	position: relative;
+
+	textarea {
+		width: 100%; height: 38px;
+		padding: 10px;
+		border: 1px solid #f0f2f4;
+		border-radius: 3px;
+		font-family: 'Roboto';
+		font-size: 13px;
+		box-sizing: border-box;
+		resize: none;
+		line-height: 16px;
+
+		&:focus {
+			border-color: $activeBlue;
+		}
+
+		&.not-empty {
+			height: 76px;
+
+			& + .send {
+				margin-top: 6px;
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			& + .send + .upload-image {
+				top: 85px; left: 0;
+				right: auto;
+			}
+		}
+	}
+
+	.upload-image {
+		position: absolute;
+		top: 8px; right: 4px;
+		border: none;
+		background-color: transparent;
+		color: $iconGrey;
+		cursor: pointer;
+		@include transition(color .2s);
+
+		i {
+			font-size: 20px;
+		}
+
+		&:hover {
+			color: darken($iconGrey, 5%);
+		}
+	}
+
+	.send {
+		width: 75px; height: 26px;
+		margin-top: -8px;
+		padding: 0 12px;
+		background-color: $activeBlue;
+		border-radius: 18px;
+		border: none;
+		cursor: pointer;
+		float: right;
+		opacity: 0;
+		pointer-events: none;
+
+		&:hover {
+			background-color: darken($activeBlue, 10%);
+		}
+
+		div {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.title {
+				color: #ffffff;
+				font-weight: 900;
+				font-size: 13px;
+			}
+
+			i {
+				color: #ffffff;
+				font-size: 13px;
+			}
+		}
+	}
+
+	.upload-files {
+		margin-top: 15px;
+		
+		.file {
+			width: 90px; height: 90px;
+			margin: 0 5px;
+			float: left;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			border-radius: 3px;
+			overflow: hidden;
+
+			.remove {
+				position: absolute;
+				width: inherit; height: inherit;
+				background-color: rgba(0, 0, 0, .4);
+				color: #ffffff;
+				font-size: 24px;
+				text-align: center;
+				line-height: 90px;
+				opacity: 0;
+				border-radius: inherit;
+
+				@include transition(opacity .2s);
+			}
+
+			&:hover {
+				.remove {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
+
+.questions {
+	.title-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.title {
+			color: $soDark;
+			font-size: 18px;
+		}
+
+		.types {
+			.type {
+				font-size: 13px;
+				font-weight: 900;
+				margin-left: 20px;
+
+				&.replied {
+					color: #73c46c;
+				}
+
+				&.cancelled {
+					color: #da7673;
+				}
+
+				&.active {
+					color: $iconGrey;
+				}
+			}
+		}
+	}
+
+	.list {
+		margin-top: 20px;
+		padding: 17px;
+		background-color: #ffffff;
+		border-radius: 4px;
+		box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
+		box-sizing: border-box;
+
+		.question-box-wrapper {
+			padding-top: 30px;
+			padding-left: calc(65px - 17px);
+
+			.question-box {
+				.avatar-border {
+					position: absolute;
+					margin-left: -52px;
+				}
+			}
+		}
+
+		.question {
+			padding: 22px 0;
+			border-bottom: 1px solid #f0f2f4;
+
+			.title {
+				display: flex;
+				justify-content: space-between;
+
+				.name {
+					color: $soDark;
+					font-size: 14px;
+					font-weight: 500;
+				}
+
+				.date {
+					color: $iconGrey;
+					font-size: 13px;
+				}
+			}
+
+			.footer {
+				display: flex;
+				justify-content: space-between;
+
+				.likes {
+					display: flex;
+					height: 20px;
+					justify-content: space-around;
+					align-items: center;
+					color: $iconGrey;
+
+					i, span {
+						color: $iconGrey;
+					}
+
+					i {
+						margin-right: 6px;
+						font-size: 15px;
+					}
+
+					span {
+						font-size: 13px;
+						font-weight: 900;
+					}
+				}
+
+				.actions {
+					display: flex;
+					justify-content: flex-end;
+
+					.item {
+						display: flex;
+						height: 20px;
+						margin-left: 15px;
+						padding: 0 10px 0 5px;
+						justify-content: space-around;
+						align-items: center;
+						border: none;
+						background: transparent;
+						cursor: pointer;
+						border-radius: 10px;
+						@include transition(background-color .1s, color .1s);
+
+						&.replied {
+							i, span {
+								color: #73c46c;
+							}
+						}
+
+						&.cancelled {
+							i, span {
+								color: #da7673;
+							}
+						}
+
+						&:hover {
+							background-color: $iconGrey;
+
+							i, span {
+								color: #ffffff;
+							}
+						}
+
+						i, span {
+							color: $iconGrey;
+							line-height: 20px;
+							@include transition(color .1s);
+						}
+
+						i {
+							margin-right: 6px;
+							font-size: 15px;
+						}
+
+						span {
+							font-size: 13px;
+							font-weight: 900;
+						}
+					}
+				}
+			}
+
+			.text {
+				margin: 16px 0;
+				color: $middleGrey;
+				font-size: 13px;
+				line-height: 1.5em;
 			}
 		}
 	}

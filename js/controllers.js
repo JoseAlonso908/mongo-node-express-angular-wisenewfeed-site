@@ -700,3 +700,74 @@ angular.module('er.controllers', [])
 		$scope.$apply()
 	})
 })
+.controller('questionsController', function ($routeParams, $scope, identityService, questionsService) {
+	$scope.id = $routeParams.id
+	$scope.questions = []
+	$scope.types = {
+		replied: 0,
+		cancelled: 0,
+		active: 0,
+	}
+
+	$scope.question = {
+		text: ''
+	}
+
+	$scope.loading = false
+
+	$scope.askQuestion = function () {
+		$scope.loading = true
+
+		questionsService.add($scope.id, $scope.question.text).then(function () {
+			$scope.question.text = ''
+			$scope.loading = false
+			loadQuestions()
+		})
+	}
+
+	$scope.cancel = function (question) {
+		questionsService.cancel(question._id).then(function () {
+			loadQuestions()
+		})
+	}
+
+	var loadQuestions = function (callback) {
+		$scope.types = {
+			replied: 0,
+			cancelled: 0,
+			active: 0,
+		}
+
+		questionsService.get($scope.id).then(function (questions) {
+			$scope.questions = questions
+
+			for (var i in $scope.questions) {
+				var question = $scope.questions[i]
+
+				$scope.types[question.type]++
+			}
+
+			if (callback) callback()
+		})
+	}
+
+	async.parallel([
+		function (cb) {
+			identityService.get().then(function (user) {
+				$scope.user = user
+				cb()
+			})
+		},
+		function (cb) {
+			identityService.getOther($scope.id).then(function (profile) {
+				$scope.profile = profile
+				cb()
+			})
+		},
+		function (cb) {
+			loadQuestions(cb)
+		},
+	], function () {
+		// $scope.$apply()
+	})
+})

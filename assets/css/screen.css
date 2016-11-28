@@ -2892,6 +2892,10 @@ a.small-icon, button.small-icon {
   opacity: 1;
   pointer-events: auto;
 }
+.notifications .text, .followers .text {
+  padding: 16px;
+  text-align: center;
+}
 .notifications .notification, .notifications .follower, .followers .notification, .followers .follower {
   position: relative;
   height: 42px;

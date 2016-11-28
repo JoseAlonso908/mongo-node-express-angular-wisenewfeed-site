@@ -36,20 +36,19 @@ angular.module('er.controllers', [])
 		}
 	}
 
-	// $cookies.remove('user')
-
 	$scope.authenticate = function (provider) {
-		// $cookies.remove('user')
 		$auth.logout()
 
 		$auth.authenticate(provider)
 		.then(function (response) {
-			identityService.get().then(function (user) {
+			alert(JSON.stringify(response))
+			identityService.get(true).then(function (user) {
 				$scope.user = user
 				$location.url('/')
 			})
 		})
 		.catch(function (response) {
+			alert(JSON.stringify(response))
 			$location.url('/start')
 		})
 	}
@@ -79,7 +78,7 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
-	// $scope.signup = {email: 'lavavrik@yandex.ru', password: 'a12345678', name: 'Lavrik', country: 'Ukraine', phone: '+380639735449'}
+	
 	$scope.doSignup = function () {
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
@@ -130,7 +129,6 @@ angular.module('er.controllers', [])
 
 	$scope.logout = function () {
 		$auth.logout()
-		// $cookies.remove('user')
 		$scope.user = undefined
 	}
 
@@ -226,8 +224,9 @@ angular.module('er.controllers', [])
 		}
 
 		console.log(categoriesListType)
+		console.log($scope.chosenCountry)
 
-		fieldsListService[categoriesListType](($scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+		fieldsListService[categoriesListType](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
 			for (var i in result) {
 				if (result[i].count == 0) continue
 
@@ -389,16 +388,26 @@ angular.module('er.controllers', [])
 	])
 })
 .controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
-	identityService.get().then(function (user) {
-		identityService.getOther($routeParams.id).then(function (profile) {
-			$scope.user = user
-			$scope.profile = profile
+	async.parallel([
+		function () {
+			identityService.getOther($routeParams.id).then(function (profile) {
+				$scope.profile = profile
 
-			followService.isFollowing($scope.profile._id).then(function (result) {
-				$scope.profile.isFollowing = result
+				followService.isFollowing($scope.profile._id).then(function (result) {
+					$scope.profile.isFollowing = result
+					cb()
+				})
 			})
-		})
-	})
+		},
+		function (cb) {
+			identityService.get().then(function (user) {
+				$scope.user = user
+				cb()
+			}, function () {
+				cb()
+			})
+		}
+	])
 
 	$scope.follow = function (user) {
 		followService.follow($scope.profile._id).then(function (result) {
@@ -426,7 +435,6 @@ angular.module('er.controllers', [])
 		if ($scope.profileForm.$valid) {
 			$scope.saving = true
 			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name, $scope.user.position).then(function () {
-				// $cookies.remove('user')
 				identityService.get(true).then(function (user) {
 					$scope.user = user
 					$scope.saving = false
@@ -442,7 +450,6 @@ angular.module('er.controllers', [])
 		if (fileObject.type.split('/')[0] != 'image') return alert('You can upload only images')
 
 		uploadAvatarService(fileObject).then(function (result) {
-			// $cookies.remove('user')
 			identityService.get(true).then(function (user) {
 				$scope.user = user
 			})
@@ -462,7 +469,6 @@ angular.module('er.controllers', [])
 				if (file.type.split('/')[0] != 'image') return alert('You can upload only images')
 
 				uploadWallpaperService(file).then(function (result) {
-					// $cookies.remove('user')
 					identityService.get(true).then(function (user) {
 						$scope.user = user
 					})
@@ -487,7 +493,6 @@ angular.module('er.controllers', [])
 				var file = e.target.files[0]
 
 				certificatesService.add(file).then(function (result) {
-					// $cookies.remove('user')
 					identityService.get(true).then(function (user) {
 						$scope.user.certificates = user.certificates
 					})
@@ -504,7 +509,6 @@ angular.module('er.controllers', [])
 
 	$scope.removeCertificate = function (cert) {
 		certificatesService.remove(cert).then(function (result) {
-			// $cookies.remove('user')
 			identityService.get(true).then(function (user) {
 				$scope.user.certificates = user.certificates
 			})
@@ -522,7 +526,6 @@ angular.module('er.controllers', [])
 				var file = e.target.files[0]
 
 				downloadsService.add(file).then(function (result) {
-					// $cookies.remove('user')
 					identityService.get(true).then(function (user) {
 						$scope.user.downloads = user.downloads
 					})
@@ -540,7 +543,6 @@ angular.module('er.controllers', [])
 
 	$scope.removeDownload = function (file) {
 		downloadsService.remove(file).then(function (result) {
-			// $cookies.remove('user')
 			identityService.get(true).then(function (user) {
 				$scope.user.downloads = user.downloads
 			})

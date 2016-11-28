@@ -77,6 +77,8 @@ angular.module('er', [
 function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService) {
 	// $templateCache.removeAll()
 
+	$cookies.put('token', 'guest')
+
 	var url;
 	for (var i in $route.routes) {
 		if (url = $route.routes[i].templateUrl) {

@@ -3164,6 +3164,11 @@ a.small-icon, button.small-icon {
 		pointer-events: auto;
 	}
 
+	.text {
+		padding: 16px;
+		text-align: center;
+	}
+
 	.notification, .follower {
 		position: relative;
 		height: 42px;

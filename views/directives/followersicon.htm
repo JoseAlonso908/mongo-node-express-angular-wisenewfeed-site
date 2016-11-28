@@ -9,7 +9,9 @@
 	<div class="follower" ng-repeat="f in followers">
 		<button ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
 
-		<avatar user="f"></avatar>
+		<a ng-href="#!/person/{{f._id}}">
+			<avatar user="f"></avatar>
+		</a>
 
 		<div class="text">
 			<a ng-href="#!/person/{{f._id}}" class="name">{{f.name}}</a>

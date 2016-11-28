@@ -24,7 +24,7 @@ app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 	setHeaders: function (res, path, stat) {
 		res.set('Access-Control-Allow-Origin', '*')
 		res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-		res.set('Cache-Control', 'public, max-age=259200')
+		// res.set('Cache-Control', 'public, max-age=259200')
 	},
 	// maxAge: (5 * 60) * 1000,
 	dotfiles: 'ignore'
@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
-	res.set('Cache-Control', 'max-age=3')
+	// res.set('Cache-Control', 'max-age=3')
 	next()
 })
 

@@ -41,14 +41,16 @@ angular.module('er.controllers', [])
 
 		$auth.authenticate(provider)
 		.then(function (response) {
-			alert(JSON.stringify(response))
+			// alert(JSON.stringify(response))
+			console.log(response)
 			identityService.get(true).then(function (user) {
 				$scope.user = user
 				$location.url('/')
 			})
 		})
 		.catch(function (response) {
-			alert(JSON.stringify(response))
+			// alert(JSON.stringify(response))
+			console.log(response)
 			$location.url('/start')
 		})
 	}

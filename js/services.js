@@ -1250,3 +1250,61 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('questionsService', function ($http, $cookies) {
+	return {
+		add: function (recipient, text) {
+			return $http({
+				method: 'POST',
+				url: '/questions/create',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					recipient: recipient,
+					text: text,
+				},
+			})
+			.then(function (result) {
+				return result.data
+			})
+		},
+		cancel: function (id) {
+			return $http({
+				method: 'POST',
+				url: '/questions/settype',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					question: id,
+					type: 'cancelled',
+				},
+			})
+			.then(function (result) {
+				return result.data
+			})
+		},
+		list: [],
+		get: function (user, skip, limit) {
+			var self = this
+			var params = {}
+
+			if (user) params.user = user
+			if (skip) params.skip = skip
+			if (limit) params.limit = limit
+
+			return $http({
+				method: 'GET',
+				url: '/questions/all',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				params: params,
+			})
+			.then(function (result) {
+				self.list = result.data
+				return result.data
+			})
+		}
+	}
+})

@@ -54,6 +54,12 @@ router.get('/me', (req, res) => {
 					result.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
 				}
 
+				callback(null, id)
+			})
+		},
+		(id, callback) => {
+			models.Question.getByRecipientOfType(id, 'active', null, null, (err, questions) => {
+				result.active_questions = questions.length
 				callback()
 			})
 		}

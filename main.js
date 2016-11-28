@@ -122,6 +122,7 @@ app.use(require('./routes/user'))
 app.use('/article', require('./routes/article'))
 app.use('/follow', require('./routes/follow'))
 app.use('/n', require('./routes/notification'))
+app.use('/questions', require('./routes/question'))
 
 app.listen(8006, () => {
 	console.log('kek')

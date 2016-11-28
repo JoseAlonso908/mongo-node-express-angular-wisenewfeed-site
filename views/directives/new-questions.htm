@@ -1,10 +1,16 @@
 <div class="new-questions">
 	<div class="header">
-		<div class="title">{{questions.length}} New questions</div>
-		<a href="javascript:void(0);" class="cta-button view-all">View all</a>
+		<div class="title"><span ng-show="questions.length > 0">{{questions.length}} </span>New questions</div>
+		<a href="javascript:void(0);" ng-show="questions.length > 0" class="cta-button view-all">View all</a>
 	</div>
 
-	<!-- <div class="loader" ng-if="familiarExpertsLoading"></div> -->
+	<div class="loader" ng-show="loading"></div>
 
 	<question question="question" ng-repeat="question in questions"></question>
+
+	<div class="text" ng-show="questions.length == 0 && loading == false">You have no questions</div>
+
+	<div class="footer" ng-show="!familiarExpertsLoading">
+		<a href="javascript:void(0);" ng-click="refresh()"><i class="material-icons">refresh</i> Refresh</a>
+	</div>
 </div>

@@ -1069,119 +1069,6 @@ a.small-icon, button.small-icon {
 #wrapper > .content .card.feed-item .comments .comment .images .image:hover {
   opacity: 1;
 }
-#wrapper > .content .card.feed-item .comment-box {
-  position: relative;
-}
-#wrapper > .content .card.feed-item .comment-box textarea {
-  width: 100%;
-  height: 38px;
-  padding: 10px;
-  border: 1px solid #f0f2f4;
-  border-radius: 3px;
-  font-family: 'Roboto';
-  font-size: 13px;
-  box-sizing: border-box;
-  resize: none;
-  line-height: 16px;
-}
-#wrapper > .content .card.feed-item .comment-box textarea:focus {
-  border-color: #43abe7;
-}
-#wrapper > .content .card.feed-item .comment-box textarea.not-empty {
-  height: 76px;
-}
-#wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send {
-  margin-top: 6px;
-  opacity: 1;
-  pointer-events: auto;
-}
-#wrapper > .content .card.feed-item .comment-box textarea.not-empty + .send + .upload-image {
-  top: 85px;
-  left: 0;
-  right: auto;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-image {
-  position: absolute;
-  top: 8px;
-  right: 4px;
-  border: none;
-  background-color: transparent;
-  color: #b0bec8;
-  cursor: pointer;
-  -moz-transition: color 0.2s;
-  -o-transition: color 0.2s;
-  -webkit-transition: color 0.2s;
-  transition: color 0.2s;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-image i {
-  font-size: 20px;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-image:hover {
-  color: #a1b2be;
-}
-#wrapper > .content .card.feed-item .comment-box .send {
-  width: 75px;
-  height: 26px;
-  margin-top: -8px;
-  padding: 0 12px;
-  background-color: #43abe7;
-  border-radius: 18px;
-  border: none;
-  cursor: pointer;
-  float: right;
-  opacity: 0;
-  pointer-events: none;
-}
-#wrapper > .content .card.feed-item .comment-box .send:hover {
-  background-color: #1c95db;
-}
-#wrapper > .content .card.feed-item .comment-box .send div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#wrapper > .content .card.feed-item .comment-box .send div .title {
-  color: #ffffff;
-  font-weight: 900;
-  font-size: 13px;
-}
-#wrapper > .content .card.feed-item .comment-box .send div i {
-  color: #ffffff;
-  font-size: 13px;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-files {
-  margin-top: 15px;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-files .file {
-  width: 90px;
-  height: 90px;
-  margin: 0 5px;
-  float: left;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 3px;
-  overflow: hidden;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-files .file .remove {
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  font-size: 24px;
-  text-align: center;
-  line-height: 90px;
-  opacity: 0;
-  border-radius: inherit;
-  -moz-transition: opacity 0.2s;
-  -o-transition: opacity 0.2s;
-  -webkit-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-}
-#wrapper > .content .card.feed-item .comment-box .upload-files .file:hover .remove {
-  opacity: 1;
-}
 #wrapper > .content .left, #wrapper > .content .right {
   width: calc(25% - 34px);
 }
@@ -3033,6 +2920,253 @@ a.small-icon, button.small-icon {
 .notifications .notification button.following, .notifications .follower button.following, .followers .notification button.following, .followers .follower button.following {
   background-color: #43abe7;
   color: #ffffff;
+}
+
+.comment-box, .question-box {
+  position: relative;
+}
+.comment-box textarea, .question-box textarea {
+  width: 100%;
+  height: 38px;
+  padding: 10px;
+  border: 1px solid #f0f2f4;
+  border-radius: 3px;
+  font-family: 'Roboto';
+  font-size: 13px;
+  box-sizing: border-box;
+  resize: none;
+  line-height: 16px;
+}
+.comment-box textarea:focus, .question-box textarea:focus {
+  border-color: #43abe7;
+}
+.comment-box textarea.not-empty, .question-box textarea.not-empty {
+  height: 76px;
+}
+.comment-box textarea.not-empty + .send, .question-box textarea.not-empty + .send {
+  margin-top: 6px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.comment-box textarea.not-empty + .send + .upload-image, .question-box textarea.not-empty + .send + .upload-image {
+  top: 85px;
+  left: 0;
+  right: auto;
+}
+.comment-box .upload-image, .question-box .upload-image {
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  border: none;
+  background-color: transparent;
+  color: #b0bec8;
+  cursor: pointer;
+  -moz-transition: color 0.2s;
+  -o-transition: color 0.2s;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+}
+.comment-box .upload-image i, .question-box .upload-image i {
+  font-size: 20px;
+}
+.comment-box .upload-image:hover, .question-box .upload-image:hover {
+  color: #a1b2be;
+}
+.comment-box .send, .question-box .send {
+  width: 75px;
+  height: 26px;
+  margin-top: -8px;
+  padding: 0 12px;
+  background-color: #43abe7;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  float: right;
+  opacity: 0;
+  pointer-events: none;
+}
+.comment-box .send:hover, .question-box .send:hover {
+  background-color: #1c95db;
+}
+.comment-box .send div, .question-box .send div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-box .send div .title, .question-box .send div .title {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 13px;
+}
+.comment-box .send div i, .question-box .send div i {
+  color: #ffffff;
+  font-size: 13px;
+}
+.comment-box .upload-files, .question-box .upload-files {
+  margin-top: 15px;
+}
+.comment-box .upload-files .file, .question-box .upload-files .file {
+  width: 90px;
+  height: 90px;
+  margin: 0 5px;
+  float: left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.comment-box .upload-files .file .remove, .question-box .upload-files .file .remove {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  line-height: 90px;
+  opacity: 0;
+  border-radius: inherit;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+.comment-box .upload-files .file:hover .remove, .question-box .upload-files .file:hover .remove {
+  opacity: 1;
+}
+
+.questions .title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.questions .title-wrapper .title {
+  color: #535659;
+  font-size: 18px;
+}
+.questions .title-wrapper .types .type {
+  font-size: 13px;
+  font-weight: 900;
+  margin-left: 20px;
+}
+.questions .title-wrapper .types .type.replied {
+  color: #73c46c;
+}
+.questions .title-wrapper .types .type.cancelled {
+  color: #da7673;
+}
+.questions .title-wrapper .types .type.active {
+  color: #b0bec8;
+}
+.questions .list {
+  margin-top: 20px;
+  padding: 17px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px 0 rgba(130, 137, 143, 0.3);
+  box-sizing: border-box;
+}
+.questions .list .question-box-wrapper {
+  padding-top: 30px;
+  padding-left: calc(65px - 17px);
+}
+.questions .list .question-box-wrapper .question-box .avatar-border {
+  position: absolute;
+  margin-left: -52px;
+}
+.questions .list .question {
+  padding: 22px 0;
+  border-bottom: 1px solid #f0f2f4;
+}
+.questions .list .question .title {
+  display: flex;
+  justify-content: space-between;
+}
+.questions .list .question .title .name {
+  color: #535659;
+  font-size: 14px;
+  font-weight: 500;
+}
+.questions .list .question .title .date {
+  color: #b0bec8;
+  font-size: 13px;
+}
+.questions .list .question .footer {
+  display: flex;
+  justify-content: space-between;
+}
+.questions .list .question .footer .likes {
+  display: flex;
+  height: 20px;
+  justify-content: space-around;
+  align-items: center;
+  color: #b0bec8;
+}
+.questions .list .question .footer .likes i, .questions .list .question .footer .likes span {
+  color: #b0bec8;
+}
+.questions .list .question .footer .likes i {
+  margin-right: 6px;
+  font-size: 15px;
+}
+.questions .list .question .footer .likes span {
+  font-size: 13px;
+  font-weight: 900;
+}
+.questions .list .question .footer .actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.questions .list .question .footer .actions .item {
+  display: flex;
+  height: 20px;
+  margin-left: 15px;
+  padding: 0 10px 0 5px;
+  justify-content: space-around;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  -moz-transition: background-color 0.1s, color 0.1s;
+  -o-transition: background-color 0.1s, color 0.1s;
+  -webkit-transition: background-color 0.1s, color 0.1s;
+  transition: background-color 0.1s, color 0.1s;
+}
+.questions .list .question .footer .actions .item.replied i, .questions .list .question .footer .actions .item.replied span {
+  color: #73c46c;
+}
+.questions .list .question .footer .actions .item.cancelled i, .questions .list .question .footer .actions .item.cancelled span {
+  color: #da7673;
+}
+.questions .list .question .footer .actions .item:hover {
+  background-color: #b0bec8;
+}
+.questions .list .question .footer .actions .item:hover i, .questions .list .question .footer .actions .item:hover span {
+  color: #ffffff;
+}
+.questions .list .question .footer .actions .item i, .questions .list .question .footer .actions .item span {
+  color: #b0bec8;
+  line-height: 20px;
+  -moz-transition: color 0.1s;
+  -o-transition: color 0.1s;
+  -webkit-transition: color 0.1s;
+  transition: color 0.1s;
+}
+.questions .list .question .footer .actions .item i {
+  margin-right: 6px;
+  font-size: 15px;
+}
+.questions .list .question .footer .actions .item span {
+  font-size: 13px;
+  font-weight: 900;
+}
+.questions .list .question .text {
+  margin: 16px 0;
+  color: #82898f;
+  font-size: 13px;
+  line-height: 1.5em;
 }
 
 @media (max-width: 1235px) {

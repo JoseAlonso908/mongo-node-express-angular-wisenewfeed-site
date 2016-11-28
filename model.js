@@ -11,12 +11,19 @@ module.exports = (dsn, __root) => {
 	let modelsNames =
 		['User', 'Token', 'Article', 'Comment', 'PostReaction',
 		'CommentReaction', 'PhoneVerification', 'ResetPassword',
-		'FindAccount', 'Piece', 'Follow', 'Notification'],
+		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question'],
 
 		models = {}
 
 	for (let model of modelsNames) {
 		models[model] = require(path.join(__root, 'models', model.toLowerCase()))(connection)
+	}
+
+
+	// Turn ID string to mongoose object
+	global.MOI = (id) => {
+		if (typeof id !== 'object') id = mongoose.Types.ObjectId(id)
+		return id
 	}
 
 	return models

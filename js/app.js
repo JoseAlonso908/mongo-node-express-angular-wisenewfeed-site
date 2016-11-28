@@ -57,6 +57,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/settings.htm',
 				controller: 'settingsController',
 			})
+			.when('/questions/:id?', {
+				templateUrl: 'assets/views/questions.htm',
+				controller: 'questionsController',
+			})
 
 
 		$authProvider.facebook({

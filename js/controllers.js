@@ -1,4 +1,4 @@
-var sequence = ''
+var sequence = '' 
 angular.element(document).on('keydown', function (e) {
 	e.stopImmediatePropagation()
 	sequence += e.key

@@ -200,7 +200,7 @@ angular.module('er.controllers', [])
 	}
 })
 .controller('homeController', function ($scope, $rootScope, $timeout, fieldsListService, groupedCountriesService, identityService) {
-	fieldsListService.get().then(function (result) {
+	fieldsListService.getForUser().then(function (result) {
 		for (var i in result) {
 			if (result[i].count == 0) continue
 

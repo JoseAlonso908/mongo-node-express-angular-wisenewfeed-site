@@ -754,4 +754,49 @@ router.post('/profile/settings/notifications', (req, res) => {
 	})
 })
 
+router.get('/user/categories', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+
+	let categories = getCategories()
+
+	let authors = []
+
+	async.waterfall([
+		(cb) => {
+			models.Token.getUserByToken(token, (err, user) => {
+				let userId = user._id
+
+				authors.push(userId)
+				cb(null, userId)
+			})
+		},
+		(userId, cb) => {
+			models.Follow.followingByFollower(userId, (err, following) => {
+				for (let user of following) {
+					authors.push(user.following._id)
+				}
+
+				cb()
+			})
+		},
+	], () => {
+		models.Article.getByUsers(authors, [], null, null, null, null, (err, articles) => {
+			if (err) res.status(400).send(err)
+			else {
+				for (let article of articles) {
+					for (let category of categories) {
+						if (article.category == category.title) {
+							category.count++
+							break
+						}
+					}
+				}
+
+				res.send(categories)
+			}
+		})
+	})
+})
+
 module.exports = router

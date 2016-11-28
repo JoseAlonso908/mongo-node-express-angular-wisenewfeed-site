@@ -127,12 +127,25 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
-.factory('fieldsListService', function ($http) {
+.factory('fieldsListService', function ($http, $auth) {
 	return {
 		get: function () {
 			return $http({
 				method: 'GET',
 				url: '/static/categories',
+			}).then(function (result) {
+				return result.data
+			}, function (error) {
+				return error
+			})
+		},
+		getForUser: function () {
+			return $http({
+				method: 'GET',
+				url: '/user/categories',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
 			}).then(function (result) {
 				return result.data
 			}, function (error) {
@@ -529,6 +542,14 @@ angular.module('er.services', [])
 			var params = {}
 			if (userId) {
 				params.userId = userId
+			}
+
+			if (category) {
+				params.category = category
+			}
+
+			if (country) {
+				params.country = country
 			}
 
 			return $http({

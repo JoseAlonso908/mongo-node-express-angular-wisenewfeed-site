@@ -91,8 +91,8 @@ app.get('/static/countries', (req, res) => {
 	res.send(countryPhoneCodeList)
 })
 
-app.get('/static/categories', (req, res) => {
-	let categories = [
+global.getCategories = () => {
+	return [
 		{id: 1, title: 'World News', count: 0},
 		{id: 2, title: 'Canada News', count: 0},
 		{id: 3, title: 'Buzz News', count: 0},
@@ -103,6 +103,10 @@ app.get('/static/categories', (req, res) => {
 		{id: 8, title: 'Sport', count: 0},
 		{id: 9, title: 'Entertainment', count: 0},
 	]
+}
+
+app.get('/static/categories', (req, res) => {
+	let categories = getCategories()
 
 	models.Article.getAllLean((err, articles) => {
 		for (let article of articles) {

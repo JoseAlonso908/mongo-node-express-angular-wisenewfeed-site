@@ -39,7 +39,7 @@ angular.module('er', [
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'profilePeopleController',
 			})
-			.when('/article/:articleId/:commentId', {
+			.when('/article/:articleId/:commentId?', {
 				templateUrl: 'assets/views/post.htm',
 				controller: 'articleController',
 			})

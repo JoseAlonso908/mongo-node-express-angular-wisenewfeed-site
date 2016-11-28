@@ -20,6 +20,11 @@ var Model = function(mongoose) {
 			if (typeof follower !== 'object') follower = mongoose.Types.ObjectId(follower)
 			if (typeof following !== 'object') following = mongoose.Types.ObjectId(following)
 
+			// You can't follow yourself
+			if (follower.toString() == following.toString()) {
+				return callback()
+			}
+
 			Model.findOne({follower, following}).lean().exec((err, follow) => {
 				if (follow || err) callback(err)
 				else {

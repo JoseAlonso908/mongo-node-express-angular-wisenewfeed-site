@@ -22,8 +22,8 @@
 					<span ng-switch-when="follow">is following you</span>
 				</span>
 
-				<a ng-href="#!/article/{{n.comment.post}}" ng-show="n.post != undefined">your post</a>
-				<a ng-href="#!/article/{{n.comment.post}}/{{n.comment._id}}" ng-show="n.comment != undefined">your comment</a>
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">your post</a>
+				<a ng-href="#!/article/{{n.comment.post._id}}/{{n.comment._id}}" ng-show="n.comment != undefined">your comment</a>
 			</div>
 
 			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
@@ -39,7 +39,7 @@
 					<!-- <span ng-switch-default>-{{n.type}}-</span> -->
 				</span>
 
-				<a ng-href="#!/article/{{n.comment.post}}" ng-show="n.post != undefined">post</a>
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">post</a>
 
 				<span ng-show="['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1"> you like</span>
 				<span ng-show="['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1"> you commented</span>

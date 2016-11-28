@@ -1,4 +1,4 @@
-var angular = require('angular')
+ var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
 

@@ -693,7 +693,7 @@ angular.module('er.controllers', [])
 		},
 		function () {
 			fieldsListService.get().then(function (list) {
-				$scope.fields = list
+				$scope.fields = list 
 			})
 		},
 	], function () {

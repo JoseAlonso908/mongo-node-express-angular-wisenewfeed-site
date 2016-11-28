@@ -1,5 +1,5 @@
 angular.module('er.directives', [])
-.directive('dropdown', function () {
+.directive('dropdown', function ($timeout) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/dropdown.htm',
@@ -27,11 +27,14 @@ angular.module('er.directives', [])
 			})
 
 			dropdownButton.on('click', function (e) {
-				dropdownLists.removeClass('active')
-
 				e.stopImmediatePropagation()
-				dropdownList.toggleClass('active')
-				angular.element(document.body).triggerHandler('shadow-click')
+
+				$timeout(function () {
+					document.body.click()
+
+					// dropdownLists.removeClass('active')
+					dropdownList.toggleClass('active')
+				}, 10)
 			})
 
 			$scope.isActiveParentItem = function (parentItem) {
@@ -51,7 +54,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('usermenu', function ($auth, $rootScope, $cookies, $location, identityService) {
+.directive('usermenu', function ($auth, $rootScope, $cookies, $location, $timeout, identityService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/usermenu.htm',
@@ -66,7 +69,10 @@ angular.module('er.directives', [])
 			}
 
 			$scope.$on('open-user-menu', function (e, data) {
-				$scope.active = true
+				$timeout(function () {
+					document.body.click()
+					$scope.active = true
+				}, 10)
 			})
 
 			angular.element(document.body).on('click shadow-click', function () {
@@ -184,13 +190,16 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('profilereactions', function () {
+.directive('profilereactions', function ($rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/profilereactions.htm',
 		scope: {
 			active: '=',
 			profile: '='
+		},
+		link: function ($scope, element, attr) {
+
 		},
 	}
 })
@@ -238,8 +247,8 @@ angular.module('er.directives', [])
 			})
 
 			var init = function () {
-				var feedType = 'all'
-				if (!$rootScope.user) {
+				var feedType = 'feed'
+				if (!$scope.user) {
 					feedType = 'all'
 				}
 
@@ -257,7 +266,7 @@ angular.module('er.directives', [])
 					var feedAttributes = [$scope.lastCategory, $scope.lastCountry]
 					if ($scope.user) feedAttributes.push($scope.user._id)
 
-					feedService.feed.apply(feedService, feedAttributes).then(function (feed) {
+					feedService[feedType].apply(feedService, feedAttributes).then(function (feed) {
 						$scope.feedLoading = false
 						$scope.feed = feed
 					})
@@ -516,7 +525,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('person', function (followService) {
+.directive('person', function ($rootScope, followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/person.htm',
@@ -524,6 +533,10 @@ angular.module('er.directives', [])
 			person: '=',
 		},
 		link: function ($scope, element, attr) {
+			if ($scope.person.intro.length > 120) {
+				$scope.person.intro = $scope.person.intro.substr(0, 120) + '...'
+			}
+
 			angular.element(document.body).on('click', function () {
 				$scope.person.menu = false
 				$scope.$apply()
@@ -541,10 +554,14 @@ angular.module('er.directives', [])
 				if (person.isFollowing) {
 					followService.unfollow(person._id).then(function (result) {
 						$scope.person.isFollowing = result
+						console.log('qwe')
+						$rootScope.$emit('update-follow')
 					})
 				} else {
 					followService.follow(person._id).then(function (result) {
 						$scope.person.isFollowing = result
+						console.log('qwe')
+						$rootScope.$emit('update-follow')
 					})
 				}
 			}
@@ -800,7 +817,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('followersicon', function ($interval, $timeout, followService) {
+.directive('followersicon', function ($rootScope, $interval, $timeout, followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/followersicon.htm',
@@ -808,7 +825,7 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.count = 0
+			$scope.count = $rootScope.badgeFollowers || 0
 
 			$scope.toggleFollow = function (person, $event) {
 				$event.stopImmediatePropagation()
@@ -836,9 +853,18 @@ angular.module('er.directives', [])
 						return person
 					})
 
-					$scope.count = followers.length
+					$scope.count = $rootScope.badgeFollowers = followers.length
 					$scope.followers = followers
 				})
+			}
+
+			$scope.showDropdown = function (e) {
+				e.stopImmediatePropagation();
+
+				$timeout(function () {
+					document.body.click()
+					$scope.showdropdown = !$scope.showdropdown
+				}, 10)
 			}
 
 			// $interval(updateFollowers, 3000)
@@ -846,7 +872,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('notificationsicon', function ($interval, notificationService) {
+.directive('notificationsicon', function ($rootScope, $interval, $timeout, notificationService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/notificationsicon.htm',
@@ -854,7 +880,7 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.count = 0
+			$scope.count = $rootScope.badgeNotifications || 0
 
 			angular.element(document.body).on('click', function () {
 				$scope.showdropdown = false
@@ -863,7 +889,7 @@ angular.module('er.directives', [])
 
 			var updateNotifications = function () {
 				notificationService.get().then(function (notifications) {
-					$scope.count = notifications.length
+					$scope.count = $rootScope.badgeNotifications = notifications.length
 					$scope.notifications = notifications
 				})
 			}
@@ -873,6 +899,15 @@ angular.module('er.directives', [])
 			element.on('$destroy', function () {
 				$interval.cancel(refreshInterval)
 			})
+
+			$scope.showDropdown = function (e) {
+				e.stopImmediatePropagation();
+				
+				$timeout(function () {
+					document.body.click()
+					$scope.showdropdown = !$scope.showdropdown
+				}, 10)
+			}
 
 			updateNotifications()
 		}

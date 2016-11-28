@@ -127,7 +127,7 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
-.factory('fieldsListService', function ($http, $auth) {
+.factory('fieldsListService', function ($http, $auth, $cookies) {
 	return {
 		get: function () {
 			return $http({
@@ -139,13 +139,19 @@ angular.module('er.services', [])
 				return error
 			})
 		},
-		getForUser: function () {
+		getForUser: function (country) {
+			var params = {}
+			if (country) {
+				params.country = country
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/user/categories',
 				headers: {
 					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
 				},
+				params: params
 			}).then(function (result) {
 				return result.data
 			}, function (error) {
@@ -178,7 +184,7 @@ angular.module('er.services', [])
 		})
 	}
 })
-.factory('identityService', function ($http, $cookies, $auth, $q, $rootScope) {
+.factory('identityService', function ($http, $timeout, $cookies, $auth, $q, $rootScope) {
 	var _user = undefined
 	// console.log('Remembered user')
 	// console.log(_user)
@@ -219,8 +225,24 @@ angular.module('er.services', [])
 				user.reactions = user.reactions || 0
 				user.followers = user.followers || 0
 				user.following = user.following || 0
-				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-				user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+				// user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+
+				var avatarImg = new Image()
+				avatarImg.onload = function () {
+					angular.element(avatarImg).data('loaded', true)
+				}
+				avatarImg.src = user.avatar
+
+				$timeout(function () {
+					if (!angular.element(avatarImg).data('loaded')) {
+						user.avatar = '/assets/images/avatar_placeholder.png'
+					}
+				}, 1000)
+
+				if (user.role) {
+					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+				}
+
 				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
 				// self.otherCache[id] = user
@@ -243,7 +265,7 @@ angular.module('er.services', [])
 			} else {
 				$http({
 					method: 'GET',
-					url: '/me',
+					url: '/me' + ((clean) ? ('?x=' + Math.random()) : ''),
 					headers: {
 						Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
 					}
@@ -255,8 +277,23 @@ angular.module('er.services', [])
 					user.xp = user.xp || 0
 					user.followers = user.followers || 0
 					user.following = user.following || 0
-					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+					// user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+
+					var avatarImg = new Image()
+					avatarImg.onload = function () {
+						angular.element(avatarImg).data('loaded', true)
+					}
+					avatarImg.src = user.avatar
+					$timeout(function () {
+						if (!angular.element(avatarImg).data('loaded')) {
+							user.avatar = '/assets/images/avatar_placeholder.png'
+						}
+					}, 500)
+
+					if (user.role) {
+						user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+					}
+
 					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
 					_user = user
@@ -1268,7 +1305,16 @@ angular.module('er.services', [])
 			}, function (data, status) {
 				return data
 			})
-		}
+		},
+		setRead: function (ids) {
+			return $http({
+				method: 'POST',
+				url: '/n/setreadm',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+			})
+		},
 	}
 })
 .factory('questionsService', function ($http, $cookies) {

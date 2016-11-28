@@ -110,7 +110,7 @@
 			</div>
 
 			<div class="settings-wrapper" ng-class="{active: activePage == 'notifications'}">
-				<a href="javascript:void(0);" ng-click="turnAllOff()" class="top-link">Turn off all notifications</a>
+				<a href="javascript:void(0);" ng-class="{disabled: !user.notifications.expert && !user.notifications.journalist && !user.notifications.reacted && !user.notifications.liked}" ng-click="turnAllOff()" class="top-link">Turn off all notifications</a>
 				<h3>Notifications</h3>
 				<div class="subtitle">Manage your notifications.</div>
 

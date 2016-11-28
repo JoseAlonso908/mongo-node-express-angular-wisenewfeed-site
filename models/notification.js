@@ -39,9 +39,9 @@ var Model = function(mongoose) {
 			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
 
 			// Don't let notification to be sent to same user who made it
-			// if (to.toString() === from.toString()) {
-			// 	return callback()
-			// }
+			if (to.toString() === from.toString()) {
+				return callback()
+			}
 
 			let n = new Model()
 			Object.assign(n, {to, from, post, comment, type})
@@ -49,7 +49,7 @@ var Model = function(mongoose) {
 		},
 
 		getForUser: (to, settings, callback, lean, skip = 0, limit = 10) => {
-			if (typeof to !== 'object') to = mongoose.Types.ObjectId(to)
+			if (typeof to !== 'object') to = MOI(to)
 
 			let query = Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'})
 			if (lean) query.lean()
@@ -59,17 +59,17 @@ var Model = function(mongoose) {
 				notifications = notifications.filter((n) => {
 					let keepIt = true
 
-					// Skip notifications from experts
-					if (!settings.expert && n.from.role === 'expert') keepIt = false
+					// // Skip notifications from experts
+					// if (!settings.expert && n.from.role === 'expert') keepIt = false
 
-					// Skip notifications from journalists
-					if (!settings.journalist && n.from.role === 'journalist') keepIt = false
+					// // Skip notifications from journalists
+					// if (!settings.journalist && n.from.role === 'journalist') keepIt = false
 
-					// Skip notifications about posts I liked
-					if (!settings.liked && ['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1) keepIt = false
+					// // Skip notifications about posts I liked
+					// if (!settings.liked && ['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1) keepIt = false
 
-					// Skip notifications about posts I reacted
-					if (!settings.liked && ['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1) keepIt = false
+					// // Skip notifications about posts I reacted
+					// if (!settings.liked && ['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1) keepIt = false
 
 					return keepIt
 				})
@@ -77,6 +77,15 @@ var Model = function(mongoose) {
 				callback(err, notifications)
 			})
 		},
+
+		setReadForUser: (ids, to, callback) => {
+			if (typeof to !== 'object') to = MOI(to)
+			ids = ids.map((id) => {
+				return (typeof id !== 'object') ? MOI(id) : id
+			})
+
+			Model.update({_id: {$in: ids}, to}, {$set: {read: true}}, {multi: true}, callback)
+		}
 	}
 }
 

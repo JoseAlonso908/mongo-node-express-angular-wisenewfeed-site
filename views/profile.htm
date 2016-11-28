@@ -13,7 +13,7 @@
 		</div>
 		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
 			<div class="people">
-				<person person="person" ng-repeat="person in people"></person>
+				<person ng-show="person" person="person" ng-repeat="person in people"></person>
 				<div class="flex-people-placeholder"></div>
 				<div class="flex-people-placeholder"></div>
 			</div>

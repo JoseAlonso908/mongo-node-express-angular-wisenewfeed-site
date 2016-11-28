@@ -81,7 +81,12 @@ var Model = function(mongoose) {
 			if (category) Object.assign(query, {category})
 			if (country) Object.assign(query, {country})
 
-			Model.find(query).select('-__v').populate('author').sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
+			Model.find(query).select('-__v').populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
 		},
 
 		getAllLean: (callback) => {

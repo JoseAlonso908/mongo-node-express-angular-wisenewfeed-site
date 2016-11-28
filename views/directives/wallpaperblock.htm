@@ -10,8 +10,8 @@
 			<a ng-show="profile.isFollowing" class="follow" ng-click="unfollow(profile)"><i class="material-icons">person_outline</i> <div class="title">Unfollow</div></a>
 		</div>
 
-		<div class="buttons" ng-show="user._id == profile._id">
-			<a ng-href="#!/questions/{{profile._id}}" class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.active_questions || 0}})</div></a>
+		<div ng-class="{single: (user.active_questions == 0 || !user.active_questions)}" class="buttons" ng-show="user._id == profile._id">
+			<a ng-href="#!/questions/{{profile._id}}" ng-show="user.active_questions > 0" class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.active_questions || 0}})</div></a>
 			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
 	</div>

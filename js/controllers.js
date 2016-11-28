@@ -21,8 +21,6 @@ angular.module('er.controllers', [])
 											validateEmailService, validatePhoneService,
 											forgotPasswordModal, findMyAccountModal, identityService) {
 
-	// $auth.logout()
-
 	$scope.identityLoading = true
 	identityService.get().then(function (user) {
 		$scope.identityLoading = false
@@ -200,22 +198,6 @@ angular.module('er.controllers', [])
 	}
 })
 .controller('homeController', function ($scope, $rootScope, $timeout, fieldsListService, groupedCountriesService, identityService) {
-	fieldsListService.getForUser().then(function (result) {
-		for (var i in result) {
-			if (result[i].count == 0) continue
-
-			result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
-		}
-
-		result.unshift({
-			id: 0,
-			title: 'All'
-		})
-
-		$scope.categories = result
-		$scope.chosenCategory = result[0]
-	})
-
 	$scope.setActiveCategory = function (item) {
 		$scope.chosenCategory = item
 		$rootScope.$emit('feedCategory', item)
@@ -233,7 +215,33 @@ angular.module('er.controllers', [])
 
 	$scope.setActiveCountry = function (item) {
 		$scope.chosenCountry = item
+		getCategoriesList()
 		$rootScope.$emit('feedCountry', item)
+	}
+
+	var getCategoriesList = function () {
+		var categoriesListType = 'get'
+		if ($scope.user) {
+			categoriesListType = 'getForUser'
+		}
+
+		console.log(categoriesListType)
+
+		fieldsListService[categoriesListType](($scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+			for (var i in result) {
+				if (result[i].count == 0) continue
+
+				result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+			}
+
+			result.unshift({
+				id: 0,
+				title: 'All'
+			})
+
+			$scope.categories = result
+			$scope.chosenCategory = result[0]
+		})
 	}
 
 	identityService.get().then(function (user) {
@@ -241,8 +249,13 @@ angular.module('er.controllers', [])
 		$timeout(function() {
 			// $scope.$apply()
 			$scope.user = user
+
+			getCategoriesList()
+
 			$timeout.cancel(this)
 		}, 0)
+	}, function () {
+		getCategoriesList()
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {
@@ -260,21 +273,34 @@ angular.module('er.controllers', [])
 		// })
 	})	
 })
-.controller('profileFeedController', function ($routeParams, $scope, identityService) {
+.controller('profileFeedController', function ($rootScope, $routeParams, $scope, identityService) {
 	$scope.type = $routeParams.type
 	$scope.feedType = 'feed'
 	$scope.id = $routeParams.id
 
+	var loadProfile = function (callback) {
+		identityService.getOther($scope.id).then(function (profile) {
+			$scope.profile = profile
+
+			if (callback) callback()
+		})
+	}
+
+	console.log('qwe')
+	$rootScope.$on('update-follow', function (event) {
+		console.log('update follow')
+		loadProfile()
+	})
+
 	async.parallel([
-		function () {
+		function (cb) {
 			identityService.get().then(function (user) {
 				$scope.user = user
+				cb()
 			})
 		},
-		function () {
-			identityService.getOther($scope.id).then(function (profile) {
-				$scope.profile = profile
-			})
+		function (cb) {
+			loadProfile(cb)
 		},
 	])
 })
@@ -283,6 +309,8 @@ angular.module('er.controllers', [])
 	$scope.commentId = $routeParams.commentId
 
 	var commentsReceivedEvent = $rootScope.$on('commentsloaded', function (event, postId) {
+		if (!$scope.post.comments || $scope.post.comments.length == 0) return false
+
 		var referencedComment = $scope.post.comments.filter(function (c) {
 			if (c._id == $scope.commentId) return true
 			return false
@@ -313,23 +341,38 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('profilePeopleController', function ($routeParams, $scope, identityService, followService) {
+.controller('profilePeopleController', function ($rootScope, $routeParams, $scope, identityService, followService) {
 	$scope.type = $routeParams.type
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
 
+	var loadProfile = function (callback) {
+		identityService.getOther($scope.id).then(function (profile) {
+			if (!$scope.profile) {
+				$scope.profile = profile
+			} else {
+				$scope.profile.reactions = profile.reactions
+			}
+
+			if (callback) callback()
+		})
+	}
+
+	$rootScope.$on('update-follow', function (event) {
+		loadProfile()
+	})
+
 	async.parallel([
-		function () {
+		function (cb) {
 			identityService.get().then(function (user) {
 				$scope.user = user
+				cb()
 			})
 		},
-		function () {
-			identityService.getOther($scope.id).then(function (profile) {
-				$scope.profile = profile
-			})
+		function (cb) {
+			loadProfile(cb)
 		},
-		function () {
+		function (cb) {
 			followService[$scope.type]($scope.id).then(function (people) {
 				$scope.people = people
 
@@ -339,6 +382,8 @@ angular.module('er.controllers', [])
 						return person
 					})
 				}
+
+				cb()
 			})
 		},
 	])
@@ -623,7 +668,10 @@ angular.module('er.controllers', [])
 					}
 
 					identityService.updateSettings(form).then(function (result) {
-						return $location.url('/my')
+						identityService.get(true).then(function (user) {
+							$scope.user = user
+							return $location.url('/my')
+						})
 					}, function (error) {
 						alert('Failed to update settings. Please, try again later.')
 					})

@@ -1,11 +1,11 @@
-<button class="small-icon" title="Notifications" ng-click="$event.stopImmediatePropagation();showdropdown = !showdropdown">
-	<div class="badge">
+<button class="small-icon" title="Notifications" ng-click="showDropdown($event)">
+	<div class="badge" ng-show="count > 0">
 		<div class="value">{{count}}</div>
 	</div>
 	<i class="material-icons">notifications</i>
 </button>
 
-<div class="notifications" ng-class="{active: showdropdown}">
+<div class="notifications floating" ng-class="{active: showdropdown}">
 	<div class="notification" ng-repeat="n in notifications">
 		<div class="time" am-time-ago="n.createdAt" am-without-suffix="true"></div>
 

@@ -11,8 +11,11 @@ router.use((req, res, next) => {
 		req.access_token = req.headers.authorization.split(' ')[1]
 
 		models.Token.getUserByToken(req.access_token, (err, user) => {
-			req.user = user
-			next()
+			if (err || !user) res.status(400).send({message: 'User not found'})
+			else {
+				req.user = user
+				next()
+			}
 		})
 	}
 })
@@ -28,6 +31,22 @@ router.get('/get', (req, res) => {
 	], (err, notifications) => {
 		if (err) res.status(400).send(err)
 		else res.send(notifications)
+	})
+})
+
+router.post('/setreadm', (req, res) => {
+	let nIds = req.body.nIds.split(',')
+
+	async.waterfall([
+		(cb) => {
+			models.User.findById(req.user._id, cb)
+		},
+		(user, cb) => {
+			models.Notification.setReadForUser(nIds, req.user._id, cb)
+		},
+	], (err) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
 	})
 })
 

@@ -1,11 +1,11 @@
-<button class="small-icon" title="Followers" ng-click="$event.stopImmediatePropagation();showdropdown = !showdropdown">
-	<div class="badge">
+<button class="small-icon" title="Followers" ng-click="showDropdown($event)">
+	<div class="badge" ng-show="count > 0">
 		<div class="value">{{count}}</div>
 	</div>
 	<i class="material-icons">person</i>
 </button>
 
-<div class="followers" ng-class="{active: showdropdown}"> 
+<div class="followers floating" ng-class="{active: showdropdown}"> 
 	<div class="follower" ng-repeat="f in followers">
 		<button ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
 

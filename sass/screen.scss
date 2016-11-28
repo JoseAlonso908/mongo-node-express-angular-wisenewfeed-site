@@ -408,6 +408,8 @@ a.small-icon, button.small-icon {
 			width: 135px; height: 47px;
 			margin-right: 100px;
 			background-image: url('../images/logo.png');
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 
 		#search {
@@ -532,6 +534,12 @@ a.small-icon, button.small-icon {
 				// .option {
 				// 	font-weight: 900;
 				// }
+
+				.option {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 
 				&:after {
 					display: inline-block; position: absolute;
@@ -673,6 +681,10 @@ a.small-icon, button.small-icon {
 					background-position: center;
 					background-repeat: no-repeat;
 					background-size: cover;
+
+					&.empty {
+						@include background-image(linear-gradient(top, $activeBlue 1%, #3da1da 100%) !important);
+					}
 				}
 
 				.avatar {
@@ -1442,6 +1454,16 @@ a.small-icon, button.small-icon {
 					color: $activeBlue;
 					right: 24px;
 					margin-top: 20px;
+
+					&.disabled {
+						color: $iconGrey;
+						pointer-events: none;
+						cursor: normal;
+
+						&:hover {
+							opacity: 1;
+						}
+					}
 				}
 
 				.tip {
@@ -1585,7 +1607,7 @@ a.small-icon, button.small-icon {
 
 				.person {
 					position: relative;
-					width: 285px;
+					width: 285px; height: 265px;
 					margin-bottom: 28px;
 					background-color: #ffffff;
 					border-radius: 4px;
@@ -2408,6 +2430,10 @@ a.small-icon, button.small-icon {
 			width: calc(100% - 285px - 15px);
 			margin: 285px 0 0 285px;
 
+			&.single {
+				justify-content: flex-end;
+			}
+
 			&.narrow {
 				justify-content: flex-start;
 			}
@@ -3143,6 +3169,22 @@ a.small-icon, button.small-icon {
 		height: 42px;
 		padding: 16px;
 
+		&.follower {
+			.text {
+				.name {
+					width: 135px;
+				}
+			}
+		}
+
+		&.notification {
+			.text {
+				.name {
+					width: 210px;
+				}
+			}
+		}
+
 		a {
 			color: $activeBlue;
 		}
@@ -3160,9 +3202,13 @@ a.small-icon, button.small-icon {
 			// justify-content: center;
 
 			.name {
+				display: block;
 				font-size: 14px;
 				font-weight: 900;
 				color: #545759;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 
 			.action, .role {
@@ -3172,7 +3218,18 @@ a.small-icon, button.small-icon {
 			}
 		}
 
-		.time, button {
+		.time {
+			display: block;
+			position: absolute;
+			// height: 42px;
+			// line-height: 42px;
+			right: 16px;
+			bottom: 8px;
+			color: $iconGrey;
+			font-size: 13px;
+		}
+
+		button {
 			display: block;
 			position: absolute;
 			height: 42px;

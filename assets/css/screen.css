@@ -96,6 +96,11 @@ h3 {
   line-height: 2em;
 }
 
+.material-icons-pseudo-class, #wrapper #top-bar #user-block .name:after, #wrapper #top-bar #user-block .name::after, #wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after, #wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after, #wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before, #wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before, #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download::before, #wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before, #wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before, #wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before, #wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
+  text-transform: none;
+  font-feature-settings: 'liga' 1;
+}
+
 * {
   outline: none;
 }
@@ -127,12 +132,20 @@ h3 {
   opacity: 0;
 }
 
+input, textarea, button {
+  -webkit-appearance: none;
+}
+
 input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
   border-color: red !important;
 }
 
 form[name=profileForm] .ng-invalid {
   border-color: red !important;
+}
+
+.floating {
+  z-index: 9;
 }
 
 input.edit-profile-input,
@@ -473,6 +486,7 @@ a.small-icon, button.small-icon {
   background-image: url("../images/logo.png");
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
 }
 #wrapper #top-bar #search {
   position: relative;
@@ -529,7 +543,7 @@ a.small-icon, button.small-icon {
   white-space: nowrap;
   overflow: hidden;
 }
-#wrapper #top-bar #user-block .name:after {
+#wrapper #top-bar #user-block .name:after, #wrapper #top-bar #user-block .name::after {
   display: inline-block;
   position: absolute;
   margin-top: 1px;
@@ -590,7 +604,7 @@ a.small-icon, button.small-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#wrapper .filters .menu-buttons.dropdown:after {
+#wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after {
   display: inline-block;
   position: absolute;
   right: 7px;
@@ -640,7 +654,7 @@ a.small-icon, button.small-icon {
 #wrapper .filters .dropdown-list li.nested, #wrapper .filters .sublist-wrapper li.nested {
   position: relative;
 }
-#wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .sublist-wrapper li.nested:after {
+#wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after {
   position: absolute;
   right: 6px;
   font-family: 'Material Icons';
@@ -672,7 +686,7 @@ a.small-icon, button.small-icon {
 #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active {
   background-color: #ffffff;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after {
+#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after {
   position: absolute;
   right: 23px;
   content: 'check';
@@ -769,24 +783,36 @@ a.small-icon, button.small-icon {
   height: 36px;
   line-height: 36px;
 }
-#wrapper > .content .card.feed-item .body .title .separator, #wrapper > .content .card.feed-item .body .title .name, #wrapper > .content .card.feed-item .body .title .time, #wrapper > .content .card.feed-item .body .title .position, #wrapper > .content .card.feed-item .body .title .country {
+#wrapper > .content .card.feed-item .body .title .title-text {
+  width: calc(100% - 64px - 10px);
+  height: inherit;
   float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #b0bec8;
 }
-#wrapper > .content .card.feed-item .body .title .add, #wrapper > .content .card.feed-item .body .title .more {
-  float: right;
+#wrapper > .content .card.feed-item .body .title .title-text .position {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-#wrapper > .content .card.feed-item .body .title .separator {
+#wrapper > .content .card.feed-item .body .title .title-text .separator, #wrapper > .content .card.feed-item .body .title .title-text .name, #wrapper > .content .card.feed-item .body .title .title-text .time, #wrapper > .content .card.feed-item .body .title .title-text .position, #wrapper > .content .card.feed-item .body .title .title-text .country {
+  display: inline;
+}
+#wrapper > .content .card.feed-item .body .title .title-text .separator {
   margin: 0 7px;
   font-size: 8px;
   color: #b0bec8;
 }
-#wrapper > .content .card.feed-item .body .title .name {
+#wrapper > .content .card.feed-item .body .title .title-text .name {
   height: 36px;
   margin-right: 8px;
   line-height: 36px;
 }
-#wrapper > .content .card.feed-item .body .title .add {
-  margin-left: 50px;
+#wrapper > .content .card.feed-item .body .title .add, #wrapper > .content .card.feed-item .body .title .more {
+  float: right;
 }
 #wrapper > .content .card.feed-item .body .title .small-icon i {
   font-size: 20px;
@@ -876,6 +902,9 @@ a.small-icon, button.small-icon {
 #wrapper > .content .card.feed-item .body .content .shared > .title {
   margin-left: 52px;
 }
+#wrapper > .content .card.feed-item .body .content .shared > .title .title-text {
+  width: calc(100% - 32px - 10px);
+}
 #wrapper > .content .card.feed-item .body .content .shared > .content .text {
   margin-top: 25px;
   margin-left: 7px;
@@ -909,19 +938,19 @@ a.small-icon, button.small-icon {
   font-size: 13px;
   font-weight: 900;
 }
-#wrapper > .content .card.feed-item .ratings .rating .value:before {
+#wrapper > .content .card.feed-item .ratings .rating .value:before, #wrapper > .content .card.feed-item .ratings .rating .value::before {
   display: inline-block;
   position: absolute;
   margin: 0 0 0 -15px;
   font-family: 'Material Icons';
 }
-#wrapper > .content .card.feed-item .ratings .rating .value.likes:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before {
   content: 'thumb_up';
 }
-#wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before {
   content: 'thumb_down';
 }
-#wrapper > .content .card.feed-item .ratings .rating .value.shares:before {
+#wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before {
   content: 'share';
 }
 #wrapper > .content .card.feed-item .ratings .rating:nth-child(2) {
@@ -1316,6 +1345,11 @@ a.small-icon, button.small-icon {
   font-size: 16px;
   line-height: 36px;
 }
+#wrapper > .content .middle .settings-wrapper .settings-field-block .error {
+  margin: 10px 0 0 136px;
+  font-size: 13px;
+  color: red;
+}
 #wrapper > .content .middle .settings-wrapper .cta-button {
   margin-left: calc(112px + 24px);
   padding: 0 20px;
@@ -1336,7 +1370,7 @@ a.small-icon, button.small-icon {
   margin: 0;
   visibility: hidden;
 }
-#wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before {
+#wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before {
   content: 'check' !important;
   background-color: #43abe7;
   border-color: #43abe7;
@@ -1355,7 +1389,7 @@ a.small-icon, button.small-icon {
   -webkit-user-select: none;
   user-select: none;
 }
-#wrapper > .content .middle .settings-wrapper .checkbox-wrapper .label:before {
+#wrapper > .content .middle .settings-wrapper .checkbox-wrapper .label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper .label::before {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -1662,7 +1696,13 @@ a.small-icon, button.small-icon {
 #wrapper > .content .left .user-profile-info .rating-wrapper {
   display: flex;
   justify-content: space-between;
+  position: relative;
   margin-top: 14px;
+}
+#wrapper > .content .left .user-profile-info .rating-wrapper i {
+  display: block;
+  position: relative;
+  width: 15px;
 }
 #wrapper > .content .left .user-profile-info .rating-wrapper i, #wrapper > .content .left .user-profile-info .rating-wrapper .rating-value {
   display: inline-block;
@@ -1670,7 +1710,8 @@ a.small-icon, button.small-icon {
   color: #b0bec8;
 }
 #wrapper > .content .left .user-profile-info .rating-wrapper .rating-value {
-  margin-right: 160px;
+  width: calc(100% - 30px);
+  text-align: left;
 }
 #wrapper > .content .left .user-profile-info .rating-bar-wrapper {
   width: 100%;
@@ -1698,13 +1739,13 @@ a.small-icon, button.small-icon {
   font-size: 13px;
   line-height: 20px;
 }
-#wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file-download:before {
+#wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before {
   content: 'delete_forever' !important;
 }
-#wrapper > .content .left .user-description-block:not(.editing) a.file.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before {
+#wrapper > .content .left .user-description-block:not(.editing) a.file.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before {
   content: 'picture_as_pdf';
 }
-#wrapper > .content .left .user-description-block:not(.editing) a.file.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file-download:before {
+#wrapper > .content .left .user-description-block:not(.editing) a.file.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file-download::before {
   content: 'file_download';
 }
 #wrapper > .content .left .user-description-block a.file, #wrapper > .content .left .user-description-block a.file-download {
@@ -1717,14 +1758,14 @@ a.small-icon, button.small-icon {
   white-space: nowrap;
   overflow: hidden;
 }
-#wrapper > .content .left .user-description-block a.file:before, #wrapper > .content .left .user-description-block a.file-download:before {
+#wrapper > .content .left .user-description-block a.file:before, #wrapper > .content .left .user-description-block a.file::before, #wrapper > .content .left .user-description-block a.file-download:before, #wrapper > .content .left .user-description-block a.file-download::before {
   position: absolute;
   margin-left: -20px;
   font-family: 'Material Icons';
   font-size: 16px;
   color: #b0bec8;
 }
-#wrapper > .content .left .user-description-block.editing .address-element:before {
+#wrapper > .content .left .user-description-block.editing .address-element:before, #wrapper > .content .left .user-description-block.editing .address-element::before {
   height: 36px !important;
   line-height: 36px;
 }
@@ -1743,20 +1784,20 @@ a.small-icon, button.small-icon {
   white-space: nowrap;
   overflow: hidden;
 }
-#wrapper > .content .left .user-description-block .address-element:before {
+#wrapper > .content .left .user-description-block .address-element:before, #wrapper > .content .left .user-description-block .address-element::before {
   position: absolute;
   font-family: 'Material Icons';
   margin-left: -20px;
   font-size: 16px;
   color: #b0bec8;
 }
-#wrapper > .content .left .user-description-block .address-element.email:before {
+#wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before {
   content: 'email';
 }
-#wrapper > .content .left .user-description-block .address-element.phone:before {
+#wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before {
   content: 'phone';
 }
-#wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before {
+#wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before {
   width: 20px;
   height: 20px;
   margin-top: 1px;
@@ -1765,13 +1806,13 @@ a.small-icon, button.small-icon {
   background-size: 14px;
   content: ' ';
 }
-#wrapper > .content .left .user-description-block .address-element.skype:before {
+#wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.skype::before {
   background-image: url("../images/skype-logo.png");
 }
-#wrapper > .content .left .user-description-block .address-element.linkedin:before {
+#wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.linkedin::before {
   background-image: url("../images/linkedin-logo.png");
 }
-#wrapper > .content .left .user-description-block .address-element.fb:before {
+#wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.fb::before {
   background-image: url("../images/facebook-logo.png");
 }
 #wrapper > .content .left .user-description-block .experience-block {
@@ -1874,7 +1915,7 @@ a.small-icon, button.small-icon {
   -webkit-transition: font-weight 0.1s, background-color 0.1s;
   transition: font-weight 0.1s, background-color 0.1s;
 }
-#wrapper > .content .left .settings-list a:after {
+#wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after {
   position: absolute;
   right: 6px;
   font-family: 'Material Icons';
@@ -2520,7 +2561,7 @@ a.small-icon, button.small-icon {
 #landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li {
   padding-bottom: 2px;
 }
-#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li:before {
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .field-tip ul li::before {
   position: absolute;
   margin-left: -10px;
   content: '•';
@@ -2587,7 +2628,7 @@ a.small-icon, button.small-icon {
   margin: 0;
   visibility: hidden;
 }
-#landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before {
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
   content: 'check' !important;
   background-color: #43abe7;
 }
@@ -2605,7 +2646,7 @@ a.small-icon, button.small-icon {
   -webkit-user-select: none;
   user-select: none;
 }
-#landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper #remember-label:before {
+#landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper #remember-label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper #remember-label::before {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -2719,18 +2760,6 @@ a.small-icon, button.small-icon {
   color: red !important;
 }
 
-.backdrop {
-  display: flex;
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
 .backdrop .popup {
   position: relative;
   width: 400px;
@@ -2853,7 +2882,7 @@ a.small-icon, button.small-icon {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
+  z-index: 10;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 50px;
   box-sizing: border-box;
@@ -2904,8 +2933,21 @@ a.small-icon, button.small-icon {
 .notifications .notification.follower .text .name, .notifications .follower.follower .text .name, .followers .notification.follower .text .name, .followers .follower.follower .text .name {
   width: 135px;
 }
+.notifications .notification.notification, .notifications .follower.notification, .followers .notification.notification, .followers .follower.notification {
+  display: none;
+  -moz-transition: background-color 1s;
+  -o-transition: background-color 1s;
+  -webkit-transition: background-color 1s;
+  transition: background-color 1s;
+}
+.notifications .notification.notification:nth-child(-n+11), .notifications .follower.notification:nth-child(-n+11), .followers .notification.notification:nth-child(-n+11), .followers .follower.notification:nth-child(-n+11) {
+  display: block !important;
+}
+.notifications .notification.notification.unread, .notifications .follower.notification.unread, .followers .notification.notification.unread, .followers .follower.notification.unread {
+  background-color: rgba(67, 171, 231, 0.1);
+}
 .notifications .notification.notification .text .name, .notifications .follower.notification .text .name, .followers .notification.notification .text .name, .followers .follower.notification .text .name {
-  width: 210px;
+  width: 190px;
 }
 .notifications .notification a, .notifications .follower a, .followers .notification a, .followers .follower a {
   color: #43abe7;
@@ -2917,6 +2959,7 @@ a.small-icon, button.small-icon {
 .notifications .notification .text, .notifications .follower .text, .followers .notification .text, .followers .follower .text {
   height: 42px;
   padding-top: 5px;
+  text-align: left;
 }
 .notifications .notification .text .name, .notifications .follower .text .name, .followers .notification .text .name, .followers .follower .text .name {
   display: block;
@@ -3260,6 +3303,7 @@ a.small-icon, button.small-icon {
     left: 51px;
   }
   #wrapper .wallpaper-wrapper .buttons {
+    width: calc(100% - 140px - 15px);
     margin: 165px 0 0 140px;
   }
   #wrapper .wallpaper-wrapper .footer .stats {
@@ -3267,6 +3311,13 @@ a.small-icon, button.small-icon {
   }
   #wrapper .content .middle {
     width: 75%;
+  }
+  #wrapper .content .middle .people person {
+    width: calc(50% - 10px);
+  }
+  #wrapper .content .middle .people person .person {
+    width: 100%;
+    height: 280px;
   }
   #wrapper .content .right {
     display: none;
@@ -3326,7 +3377,7 @@ a.small-icon, button.small-icon {
     width: 30%;
   }
   #wrapper .content .middle {
-    width: calc(70% - 20px);
+    width: calc(70% - 20px) !important;
   }
 }
 @media (max-width: 800px) {
@@ -3349,6 +3400,16 @@ a.small-icon, button.small-icon {
   #landing-wrapper #content-wrapper .content .welcome, #landing-wrapper #content-wrapper .content .auth-blocks {
     width: calc(100% - 60px);
     margin: 0 auto 60px;
+  }
+  #landing-wrapper #content-wrapper .content .auth-blocks .register .field-tip {
+    position: relative;
+    width: 100%;
+    height: 0;
+    margin: 0 0 10px 0;
+    box-shadow: none;
+  }
+  #landing-wrapper #content-wrapper .content .auth-blocks .register .field-tip.visible {
+    height: auto;
   }
 
   #wrapper {
@@ -3393,10 +3454,27 @@ a.small-icon, button.small-icon {
     display: block;
     margin: 0 auto !important;
   }
+  #wrapper .content .middle .people person {
+    width: 100%;
+  }
+  #wrapper .content .middle .people person .person {
+    width: 100%;
+    height: auto;
+  }
 }
 @media (max-width: 600px) {
+  #landing-wrapper #header-wrapper {
+    height: 130px;
+  }
   #landing-wrapper #header-wrapper #header {
+    flex-wrap: wrap;
     padding: 0 25px;
+  }
+  #landing-wrapper #header-wrapper #header #header-buttons {
+    width: calc(100% - 150px);
+  }
+  #landing-wrapper #header-wrapper #header #search {
+    width: 100%;
   }
   #landing-wrapper #content-wrapper .content .welcome, #landing-wrapper #content-wrapper .content .auth-blocks {
     width: calc(100% - 50px);
@@ -3410,7 +3488,11 @@ a.small-icon, button.small-icon {
     top: 142px;
   }
   #wrapper .wallpaper-wrapper .buttons {
+    justify-content: flex-end !important;
     margin-top: 115px;
+  }
+  #wrapper .wallpaper-wrapper .buttons button .title, #wrapper .wallpaper-wrapper .buttons a .title {
+    display: none;
   }
   #wrapper .wallpaper-wrapper .wallpaper {
     height: 170px;
@@ -3425,7 +3507,7 @@ a.small-icon, button.small-icon {
     display: none;
   }
   #wrapper .content .middle {
-    width: 100%;
+    width: 100% !important;
   }
   #wrapper .content .middle .card.feed-item .body .title .name {
     min-width: 150px;
@@ -3437,8 +3519,17 @@ a.small-icon, button.small-icon {
     display: block !important;
     margin-bottom: 20px;
   }
+
+  .popup .footer a {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 @media (max-width: 400px) {
+  #wrapper #top-bar .small-icon, #wrapper #top-bar .floating:not(.user-menu) {
+    display: none;
+  }
+
   #landing-wrapper #header-wrapper #header {
     padding: 0 10px;
   }
@@ -3474,7 +3565,13 @@ a.small-icon, button.small-icon {
   #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:hover {
     padding-bottom: 12px;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist {
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper {
+    width: 100%;
+    margin-top: 49px;
+    margin-left: -23px;
+    box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.17);
+  }
+  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper .sublist {
     position: relative;
     width: 100%;
     margin-left: 0;
@@ -3504,6 +3601,13 @@ a.small-icon, button.small-icon {
   }
   #wrapper .content .middle .card.feed-item .body .ratings .rating:nth-child(2) {
     margin: 0 0 5px 0;
+  }
+  #wrapper .content .middle .card.feed-item .ratings {
+    flex-wrap: wrap;
+  }
+  #wrapper .content .middle .card.feed-item .ratings .rating {
+    width: 100%;
+    margin: 0 0 10px;
   }
   #wrapper .content .middle .card.feed-item .comments .comment > avatar > .avatar-border {
     margin-left: 0;
@@ -3537,8 +3641,37 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle .settings-wrapper .top-link {
     display: none;
   }
-  #wrapper .content .middle .settings-wrapper .social-network .actions {
+  #wrapper .content .middle .settings-wrapper .social-network.connected .info {
+    width: calc(100% - 32px - 15px);
+  }
+  #wrapper .content .middle .settings-wrapper .social-network.connected .actions {
     float: left;
     margin-top: 20px;
+  }
+  #wrapper .content .middle .settings-wrapper .social-network:not(.connected) .actions {
+    float: right;
+  }
+
+  .backdrop {
+    padding: 20px;
+  }
+}
+@media (max-width: 350px) {
+  #landing-wrapper #header-wrapper {
+    height: 180px;
+  }
+  #landing-wrapper #header-wrapper #header #header-buttons {
+    width: 100%;
+  }
+  #landing-wrapper #content-wrapper .content .auth-blocks .form-footer {
+    flex-wrap: wrap;
+  }
+  #landing-wrapper #content-wrapper .content .auth-blocks .form-footer input[type=submit], #landing-wrapper #content-wrapper .content .auth-blocks .form-footer .checkbox-wrapper {
+    width: 50%;
+  }
+  #landing-wrapper #content-wrapper .content .auth-blocks .form-footer .forgot-password-link {
+    width: 100%;
+    margin-top: 10px;
+    text-align: center !important;
   }
 }

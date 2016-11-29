@@ -78,6 +78,18 @@ var Model = function(mongoose) {
 			})
 		},
 
+		getUnreadCountForUser: (to, callback) => {
+			if (typeof to !== 'object') to = MOI(to)
+
+			Model.count({to, read: false}).exec(callback)
+		},
+
+		setReadAllForUser: (to, callback) => {
+			if (typeof to !== 'object') to = MOI(to)
+
+			Model.update({to}, {$set: {read: true}}, {multi: true}, callback)
+		},
+
 		setReadForUser: (ids, to, callback) => {
 			if (typeof to !== 'object') to = MOI(to)
 			ids = ids.map((id) => {

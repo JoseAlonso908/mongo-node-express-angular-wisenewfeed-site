@@ -54,6 +54,7 @@
 			}
 
 			.buttons {
+				width: calc(100% - 140px - 15px);
 				margin: 165px 0 0 140px;
 			}
 
@@ -84,6 +85,16 @@
 
 			.middle {
 				width: 75%;
+
+				.people {
+					person {
+						width: calc(50% - 10px);
+
+						.person {
+							width: 100%; height: 280px;
+						}
+					}
+				}
 			}
 
 			.right {
@@ -180,7 +191,7 @@
 			}
 
 			.middle {
-				width: calc(70% - 20px);
+				width: calc(70% - 20px) !important;
 			}
 		}
 	}
@@ -215,6 +226,21 @@
 				.welcome, .auth-blocks {
 					width: calc(100% - 60px);
 					margin: 0 auto 60px;
+				}
+
+				.auth-blocks {
+					.register {
+						.field-tip {
+							position: relative;
+							width: 100%; height: 0;
+							margin: 0 0 10px 0;
+							box-shadow: none;
+
+							&.visible {
+								height: auto;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -304,6 +330,16 @@
 					display: block;
 					margin: 0 auto !important;
 				}
+
+				.people {
+					person {
+						width: 100%;
+
+						.person {
+							width: 100%; height: auto;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -312,8 +348,19 @@
 @media (max-width: 600px) {
 	#landing-wrapper {
 		#header-wrapper {
+			height: 130px;
+
 			#header {
+				flex-wrap: wrap;
 				padding: 0 25px;
+
+				#header-buttons {
+					width: calc(100% - 150px);
+				}
+
+				#search {
+					width: 100%;
+				}
 			}
 		}
 
@@ -340,7 +387,14 @@
 			}
 
 			.buttons {
+				justify-content: flex-end !important;
 				margin-top: 115px;
+
+				button, a {
+					.title {
+						display: none;
+					}
+				}
 			}
 
 			.wallpaper {
@@ -362,7 +416,7 @@
 			}
 
 			.middle {
-				width: 100%;
+				width: 100% !important;
 
 				.card.feed-item {
 					.body {
@@ -391,9 +445,26 @@
 			}
 		}
 	}
+
+	.popup {
+		.footer {
+			a {
+				width: 100%;
+				margin-bottom: 10px;
+			}
+		}
+	}
 }
 
 @media (max-width: 400px) {
+	#wrapper {
+		#top-bar {
+			.small-icon, .floating:not(.user-menu) {
+				display: none;
+			}
+		}
+	}
+
 	#landing-wrapper {
 		#header-wrapper {
 			#header {
@@ -441,10 +512,17 @@
 								padding-bottom: 12px;
 							}
 
-							.sublist {
-								position: relative;
+							.sublist-wrapper {
 								width: 100%;
-								margin-left: 0;
+								margin-top: 49px;
+								margin-left: -23px;
+								box-shadow: 0 0px 12px 0 rgba(#000000, 0.17);
+
+								.sublist {
+									position: relative;
+									width: 100%;
+									margin-left: 0;
+								}
 							}
 						}
 					}
@@ -500,6 +578,15 @@
 									margin: 0 0 5px 0;
 								}
 							}
+						}
+					}
+
+					.ratings {
+						flex-wrap: wrap;
+
+						.rating {
+							width: 100%;
+							margin: 0 0 10px;
 						}
 					}
 
@@ -569,9 +656,59 @@
 					}
 
 					.social-network {
-						.actions {
-							float: left;
-							margin-top: 20px;
+						&.connected {
+							.info {
+								width: calc(100% - 32px - 15px);
+							}
+
+							.actions {
+								float: left;
+								margin-top: 20px;
+							}
+						}
+
+						&:not(.connected) {
+							.actions {
+								float: right;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.backdrop {
+		padding: 20px;
+	}
+}
+
+@media (max-width: 350px) {
+	#landing-wrapper {
+		#header-wrapper {
+			height: 180px;
+
+			#header {
+				#header-buttons {
+					width: 100%;
+				}
+			}
+		}
+
+		#content-wrapper {
+			.content {
+				.auth-blocks {
+					.form-footer {
+						flex-wrap: wrap;
+
+						input[type=submit], .checkbox-wrapper {
+							width: 50%;
+						}
+
+						.forgot-password-link {
+							width: 100%;
+							margin-top: 10px;
+							text-align: center !important;
 						}
 					}
 				}

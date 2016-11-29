@@ -997,7 +997,11 @@ angular.module('er.services', [])
 				return data
 			})
 		},
-		following: function (follower) {
+		following: function (follower, skip, limit, sort) {
+			if (sort) {
+				sort = sort.join('|')
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/follow/following',
@@ -1005,7 +1009,10 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				},
 				params: {
-					follower: follower
+					follower: follower,
+					skip: skip,
+					limit: limit,
+					sort: sort,
 				},
 			})
 			.then(function (result) {
@@ -1016,7 +1023,11 @@ angular.module('er.services', [])
 				return data
 			})
 		},
-		followers: function (following) {
+		followers: function (following, skip, limit, sort) {
+			if (sort) {
+				sort = sort.join('|')
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/follow/followers',
@@ -1024,7 +1035,10 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				},
 				params: {
-					following: following
+					following: following,
+					skip: skip,
+					limit: limit,
+					sort: sort,
 				},
 			})
 			.then(function (result) {
@@ -1034,6 +1048,34 @@ angular.module('er.services', [])
 
 					return follower
 				})
+			}, function (data, status) {
+				return data
+			})
+		},
+		unread: function () {
+			return $http({
+				method: 'GET',
+				url: '/follow/unread',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+			})
+			.then(function (result) {
+				return result.data.count
+			}, function (data, status) {
+				return data
+			})
+		},
+		setReadForUser: function () {
+			return $http({
+				method: 'POST',
+				url: '/follow/setreadall',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+			})
+			.then(function (result) {
+				return result.data
 			}, function (data, status) {
 				return data
 			})
@@ -1301,20 +1343,35 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				self.list = result.data
+				console.log(result.data)
 				return result.data
 			}, function (data, status) {
 				return data
 			})
 		},
-		setRead: function (ids) {
+		setReadForUser: function () {
 			return $http({
 				method: 'POST',
-				url: '/n/setreadm',
+				url: '/n/setreadall',
 				headers: {
 					'Authorization': $cookies.get('token'),
 				},
 			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
 		},
+		// setRead: function (ids) {
+		// 	return $http({
+		// 		method: 'POST',
+		// 		url: '/n/setreadm',
+		// 		headers: {
+		// 			'Authorization': $cookies.get('token'),
+		// 		},
+		// 	})
+		// },
 	}
 })
 .factory('questionsService', function ($http, $cookies) {

@@ -26,25 +26,41 @@ router.get('/get', (req, res) => {
 			models.User.findById(req.user._id, cb)
 		},
 		(user, cb) => {
-			models.Notification.getForUser(req.user._id, user.notifications, cb, true)
+			async.parallel({
+				notifications: (cb) => {
+					models.Notification.getForUser(req.user._id, user.notifications, cb, true)
+				},
+				count: (cb) => {
+					models.Notification.getUnreadCountForUser(req.user._id, cb)
+				},
+			}, (err, result) => {
+				cb(null, result)
+			})
 		},
-	], (err, notifications) => {
+	], (err, result) => {
 		if (err) res.status(400).send(err)
-		else res.send(notifications)
+		else res.send(result)
 	})
 })
 
-router.post('/setreadm', (req, res) => {
-	let nIds = req.body.nIds.split(',')
+// router.post('/setreadm', (req, res) => {
+// 	let nIds = req.body.nIds.split(',')
 
-	async.waterfall([
-		(cb) => {
-			models.User.findById(req.user._id, cb)
-		},
-		(user, cb) => {
-			models.Notification.setReadForUser(nIds, req.user._id, cb)
-		},
-	], (err) => {
+// 	async.waterfall([
+// 		(cb) => {
+// 			models.User.findById(req.user._id, cb)
+// 		},
+// 		(user, cb) => {
+// 			models.Notification.setReadForUser(nIds, req.user._id, cb)
+// 		},
+// 	], (err) => {
+// 		if (err) res.status(400).send(err)
+// 		else res.send({ok: true})
+// 	})
+// })
+
+router.post('/setreadall', (req, res) => {
+	models.Notification.setReadAllForUser(req.user._id, (err, result) => {
 		if (err) res.status(400).send(err)
 		else res.send({ok: true})
 	})

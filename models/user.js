@@ -286,13 +286,13 @@ var Model = function(mongoose) {
 					})
 				},
 				(cb) => {
-					models.Follow.followingByFollower(_id, (err, following) => {
+					models.Follow.followingByFollower(_id, null, null, null, (err, following) => {
 						result.following = following.length
 						cb()
 					})
 				},
 				(cb) => {
-					models.Follow.followersByFollowing(_id, (err, followers) => {
+					models.Follow.followersByFollowing(_id, null, null, null, (err, followers) => {
 						result.followers = followers.length
 						cb()
 					})

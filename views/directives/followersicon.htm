@@ -5,7 +5,7 @@
 	<i class="material-icons">person</i>
 </button>
 
-<div class="followers floating" ng-class="{active: showdropdown}"> 
+<div class="followers floating" ng-class="{active: dropdownVisible}"> 
 	<div class="follower" ng-repeat="f in followers">
 		<button ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
 

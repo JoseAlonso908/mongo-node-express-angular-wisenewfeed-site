@@ -9,8 +9,8 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'user',
 		},
-		createdAt	: Date,
-
+		createdAt	: {type: Date, default: Date.now},
+		read 		: {type: Boolean, default: false},
 	})
 
 	var Model = mongoose.model('follow', schema);
@@ -53,21 +53,67 @@ var Model = function(mongoose) {
 			})
 		},
 
-		followingByFollower: (follower, callback, lean) => {
+		followingByFollower: (follower, skip, limit, sort, callback, lean) => {
 			if (typeof follower !== 'object') follower = mongoose.Types.ObjectId(follower)
 
 			let query = Model.find({follower}).populate('follower following')
+
 			if (lean === true) query.lean()
-			query.exec(callback)
+			if (skip) query.skip(Number(skip))
+			if (limit) query.limit(Number(limit))
+			if (sort) query.sort(sort)
+
+			query.exec((err, following) => {
+				if (following && !sort) {
+					following = following.sort((a, b) => {
+						if (a.following.name > b.following.name) {
+							return 1
+						} else if (a.following.name < b.following.name) {
+							return -1
+						}
+
+						return 0
+					})
+				}
+
+				callback(err, following)
+			})
 		},
 
-		followersByFollowing: (following, callback, lean) => {
+		followersByFollowing: (following, skip, limit, sort, callback, lean) => {
 			if (typeof following !== 'object') following = mongoose.Types.ObjectId(following)
 
 			let query = Model.find({following}).populate('follower following')
+
 			if (lean === true) query.lean()
-			query.exec(callback)
+			if (skip) query.skip(Number(skip))
+			if (limit) query.limit(Number(limit))
+			if (sort) query.sort(sort)
+
+			query.exec((err, followers) => {
+				if (followers && !sort) {
+					followers = followers.sort((a, b) => {
+						if (a.follower.name > b.follower.name) {
+							return 1
+						} else if (a.follower.name < b.follower.name) {
+							return -1
+						}
+
+						return 0
+					})
+				}
+
+				callback(err, followers)
+			})
 		},
+
+		getUnreadForUser: (following, callback) => {
+			Model.count({following, read: false}).exec(callback)
+		},
+
+		setReadAllForUser: (following, callback) => {
+			Model.update({following}, {$set: {read: true}}, {multi: true}, callback)
+		}
 	}
 }
 

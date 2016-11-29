@@ -246,8 +246,9 @@ angular.module('er.directives', [])
 				init()
 			})
 
+			var feedType = 'feed'
+
 			var init = function () {
-				var feedType = 'feed'
 				if (!$scope.user) {
 					feedType = 'all'
 				}
@@ -269,6 +270,11 @@ angular.module('er.directives', [])
 					feedService[feedType].apply(feedService, feedAttributes).then(function (feed) {
 						$scope.feedLoading = false
 						$scope.feed = feed
+
+						if (feed.length == 0) {
+							feedType = 'all'
+							init()
+						}
 					})
 				}
 			}
@@ -533,8 +539,8 @@ angular.module('er.directives', [])
 			person: '=',
 		},
 		link: function ($scope, element, attr) {
-			if ($scope.person.intro.length > 120) {
-				$scope.person.intro = $scope.person.intro.substr(0, 120) + '...'
+			if ($scope.person.intro && $scope.person.intro.length > 110) {
+				$scope.person.intro = $scope.person.intro.substr(0, 110) + '...'
 			}
 
 			angular.element(document.body).on('click', function () {
@@ -842,19 +848,33 @@ angular.module('er.directives', [])
 			}
 
 			angular.element(document.body).on('click', function () {
-				$scope.showdropdown = false
+				$scope.dropdownVisible = false
 				$scope.$apply()
 			})
 
 			var updateFollowers = function () {
-				followService.followers($scope.user._id).then(function (followers) {
-					followers = followers.map(function (person) {
-						person.role = person.role[0].toUpperCase() + person.role.substr(1)
-						return person
-					})
+				async.parallel([
+					function (cb) {
+						followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
+							followers = followers.map(function (person) {
+								person.role = person.role[0].toUpperCase() + person.role.substr(1)
+								return person
+							})
 
-					$scope.count = $rootScope.badgeFollowers = followers.length
-					$scope.followers = followers
+							$scope.followers = followers
+
+							cb()
+						})
+					},
+					function (cb) {
+						followService.unread().then(function (count) {
+							$scope.count = $rootScope.badgeFollowers = count
+
+							cb()
+						})
+					}
+				], function () {
+					// $scope.$apply()
 				})
 			}
 
@@ -863,7 +883,11 @@ angular.module('er.directives', [])
 
 				$timeout(function () {
 					document.body.click()
-					$scope.showdropdown = !$scope.showdropdown
+					$scope.dropdownVisible = !$scope.dropdownVisible
+
+					followService.setReadForUser().then(function () {
+						$scope.count = $rootScope.badgeFollowers = 0
+					})
 				}, 10)
 			}
 
@@ -879,22 +903,30 @@ angular.module('er.directives', [])
 		scope: {
 			user: '=',
 		},
+		replace: false,
 		link: function ($scope, element, attr) {
+			$scope.notifications = []
 			$scope.count = $rootScope.badgeNotifications || 0
 
 			angular.element(document.body).on('click', function () {
-				$scope.showdropdown = false
+				$scope.dropdownVisible = false
 				$scope.$apply()
 			})
 
-			var updateNotifications = function () {
-				notificationService.get().then(function (notifications) {
-					$scope.count = $rootScope.badgeNotifications = notifications.length
-					$scope.notifications = notifications
+			var updateNotifications = function (callback) {
+				notificationService.get().then(function (result) {
+					$scope.count = $rootScope.badgeNotifications = result.count
+					$scope.notifications = result.notifications
+
+					if (typeof callback === 'function') callback()
 				})
 			}
 
-			var refreshInterval = $interval(updateNotifications, 3000)
+			var refreshInterval = $interval(function () {
+				// if ($scope.dropdownVisible) return
+
+				updateNotifications()
+			}, 3000)
 
 			element.on('$destroy', function () {
 				$interval.cancel(refreshInterval)
@@ -905,7 +937,15 @@ angular.module('er.directives', [])
 				
 				$timeout(function () {
 					document.body.click()
-					$scope.showdropdown = !$scope.showdropdown
+					$scope.dropdownVisible = !$scope.dropdownVisible
+
+					notificationService.setReadForUser().then(function () {
+						for (var i in $scope.notifications) {
+							$scope.notifications[i].read = true
+						}
+
+						$scope.count = 0
+					})
 				}, 10)
 			}
 

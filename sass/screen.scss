@@ -23,6 +23,11 @@ h3 {
 	line-height: 2em;
 }
 
+.material-icons-pseudo-class {
+	text-transform: none;
+	font-feature-settings: 'liga' 1;
+}
+
 * {
 	outline: none;
 }
@@ -57,6 +62,10 @@ h3 {
 	}
 }
 
+input, textarea, button {
+	-webkit-appearance: none;
+}
+
 input, textarea {
 	&.ng-invalid.ng-touched {
 		border-color: red !important;
@@ -67,6 +76,10 @@ form[name=profileForm] {
 	.ng-invalid {
 		border-color: red !important;
 	}
+}
+
+.floating {
+	z-index: 9;
 }
 
 input.edit-profile-input,
@@ -410,6 +423,7 @@ a.small-icon, button.small-icon {
 			background-image: url('../images/logo.png');
 			background-repeat: no-repeat;
 			background-position: center;
+			background-size: contain;
 		}
 
 		#search {
@@ -471,7 +485,9 @@ a.small-icon, button.small-icon {
 				white-space: nowrap;
 				overflow: hidden;
 
-				&:after {
+				&:after, &::after {
+					@extend .material-icons-pseudo-class;
+
 					display: inline-block;
 					position: absolute;
 					margin-top: 1px;
@@ -541,7 +557,8 @@ a.small-icon, button.small-icon {
 					white-space: nowrap;
 				}
 
-				&:after {
+				&:after, &::after {
+					@extend .material-icons-pseudo-class;
 					display: inline-block; position: absolute;
 					right: 7px;
 					margin-top: 1px;
@@ -589,7 +606,8 @@ a.small-icon, button.small-icon {
 				&.nested {
 					position: relative;
 
-					&:after {
+					&:after, &::after {
+						@extend .material-icons-pseudo-class;
 						position: absolute;
 						right: 6px;
 						font-family: 'Material Icons';
@@ -629,7 +647,8 @@ a.small-icon, button.small-icon {
 							&.active {
 								background-color: #ffffff;
 								
-								&:after {
+								&:after, &::after {
+									@extend .material-icons-pseudo-class;
 									position: absolute;
 									right: 23px;
 									content: 'check';
@@ -744,28 +763,45 @@ a.small-icon, button.small-icon {
 						height: 36px;
 						line-height: 36px;
 
-						.separator, .name, .time, .position, .country {
+						.title-text {
+							width: calc(100% - 64px - 10px); height: inherit;
 							float: left;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							color: $iconGrey;
+
+							.position {
+								max-width: 260px;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+							}
+
+							.separator, .name, .time, .position, .country {
+								display: inline;
+								// float: left;
+							}
+
+							.separator {
+								margin: 0 7px;
+								font-size: 8px;
+								color: $iconGrey;
+							}
+
+							.name {
+								height: 36px;
+								margin-right: 8px;
+								line-height: 36px;
+							}
 						}
 
 						.add, .more {
 							float: right;
 						}
 
-						.separator {
-							margin: 0 7px;
-							font-size: 8px;
-							color: $iconGrey;
-						}
-
-						.name {
-							height: 36px;
-							margin-right: 8px;
-							line-height: 36px;
-						}
-
 						.add {
-							margin-left: 50px;
+							// margin-left: 50px;
 						}
 
 						.small-icon {
@@ -868,6 +904,10 @@ a.small-icon, button.small-icon {
 
 							> .title {
 								margin-left: 52px;
+
+								.title-text {
+									width: calc(100% - 32px - 10px);
+								}
 							}
 
 							> .content {
@@ -911,21 +951,24 @@ a.small-icon, button.small-icon {
 							font-size: 13px;
 							font-weight: 900;
 
-							&:before {
+							&:before, &::before {
 								display: inline-block; position: absolute;
 								margin: 0 0 0 -15px;
 								font-family: 'Material Icons';
 							}
 
-							&.likes:before {
+							&.likes:before, &.likes::before {
+								@extend .material-icons-pseudo-class;
 								content: 'thumb_up';
 							}
 
-							&.dislikes:before {
+							&.dislikes:before, &.dislikes::before {
+								@extend .material-icons-pseudo-class;
 								content: 'thumb_down';
 							}
 
-							&.shares:before {
+							&.shares:before, &.shares::before {
+								@extend .material-icons-pseudo-class;
 								content: 'share';
 							}
 						}
@@ -1385,6 +1428,12 @@ a.small-icon, button.small-icon {
 							line-height: 36px;
 						}
 					}
+
+					.error {
+						margin: 10px 0 0 136px;
+						font-size: 13px;
+						color: red;
+					}
 				}
 
 				.cta-button {
@@ -1408,7 +1457,8 @@ a.small-icon, button.small-icon {
 						visibility: hidden;
 
 						&:checked + label {
-							&:before {
+							&:before, &::before {
+								@extend .material-icons-pseudo-class;
 								content: 'check' !important;
 								background-color: $activeBlue;
 								border-color: $activeBlue;
@@ -1427,7 +1477,7 @@ a.small-icon, button.small-icon {
 						cursor: pointer;
 						@include user-select(none);
 
-						&:before {
+						&:before, &::before {
 							$size: 12px;
 
 							position: absolute;
@@ -1795,7 +1845,13 @@ a.small-icon, button.small-icon {
 				.rating-wrapper {
 					display: flex;
 					justify-content: space-between;
+					position: relative;
 					margin-top: 14px;
+
+					i {
+						display: block; position: relative;
+						width: 15px;
+					}
 
 					i, .rating-value {
 						display: inline-block;
@@ -1804,7 +1860,9 @@ a.small-icon, button.small-icon {
 					}
 
 					.rating-value {
-						margin-right: 160px;
+						width: calc(100% - 30px);
+						text-align: left;
+						// margin-right: 160px;
 					}
 				}
 
@@ -1840,7 +1898,8 @@ a.small-icon, button.small-icon {
 
 				&.editing {
 					a.file, a.file-download {
-						&:before {
+						&:before, &::before {
+							@extend .material-icons-pseudo-class;
 							content: 'delete_forever' !important;
 						}
 					}
@@ -1848,11 +1907,13 @@ a.small-icon, button.small-icon {
 
 				&:not(.editing) {
 					a.file, a.file-download {
-						&.file:before {
+						&.file:before, &.file::before {
+							@extend .material-icons-pseudo-class;
 							content: 'picture_as_pdf';
 						}
 
-						&.file-download:before {
+						&.file-download:before, &.file-download::before {
+							@extend .material-icons-pseudo-class;
 							content: 'file_download';
 						}
 					}
@@ -1868,7 +1929,7 @@ a.small-icon, button.small-icon {
 					white-space: nowrap;
 					overflow: hidden;
 
-					&:before {
+					&:before, &::before {
 						position: absolute;
 						margin-left: -20px;
 						font-family: 'Material Icons';
@@ -1879,7 +1940,7 @@ a.small-icon, button.small-icon {
 
 				&.editing {
 					.address-element {
-						&:before {
+						&:before, &::before {
 							height: 36px !important;
 							line-height: 36px;
 						}
@@ -1902,7 +1963,7 @@ a.small-icon, button.small-icon {
 					white-space: nowrap;
 					overflow: hidden;
 
-					&:before {
+					&:before, &::before {
 						position: absolute;
 						font-family: 'Material Icons';
 						margin-left: -20px;
@@ -1910,15 +1971,18 @@ a.small-icon, button.small-icon {
 						color: $iconGrey;
 					}
 
-					&.email:before {
+					&.email:before, &.email::before {
+						@extend .material-icons-pseudo-class;
 						content: 'email';
 					}
 
-					&.phone:before {
+					&.phone:before, &.phone::before {
+						@extend .material-icons-pseudo-class;
 						content: 'phone';
 					}
 
-					&.skype:before, &.linkedin:before, &.fb:before {
+					&.skype:before, &.linkedin:before, &.fb:before, &.skype::before, &.linkedin::before, &.fb::before {
+						@extend .material-icons-pseudo-class;
 						width: 20px; height: 20px;
 						margin-top: 1px;
 						background-repeat: no-repeat;
@@ -1927,15 +1991,15 @@ a.small-icon, button.small-icon {
 						content: ' ';
 					}
 
-					&.skype:before {
+					&.skype:before, &.skype::before {
 						background-image: url('../images/skype-logo.png');
 					}
 
-					&.linkedin:before {
+					&.linkedin:before, &.linkedin::before {
 						background-image: url('../images/linkedin-logo.png');
 					}
 
-					&.fb:before {
+					&.fb:before, &.fb::before {
 						background-image: url('../images/facebook-logo.png');
 					}
 				}
@@ -2045,7 +2109,8 @@ a.small-icon, button.small-icon {
 					cursor: pointer;
 					@include transition(font-weight .1s, background-color .1s);
 
-					&:after {
+					&:after, &::after {
+						@extend .material-icons-pseudo-class;
 						position: absolute;
 						right: 6px;
 						font-family: 'Material Icons';
@@ -2765,7 +2830,7 @@ a.small-icon, button.small-icon {
 								li {
 									padding-bottom: 2px;
 
-									&:before {
+									&:before, &::before {
 										position: absolute;
 										margin-left: -10px;
 										content: '•';
@@ -2834,7 +2899,8 @@ a.small-icon, button.small-icon {
 									visibility: hidden;
 
 									&:checked + label {
-										&:before {
+										&:before, &::before {
+											@extend .material-icons-pseudo-class;
 											content: 'check' !important;
 											background-color: $activeBlue;
 										}
@@ -2852,7 +2918,7 @@ a.small-icon, button.small-icon {
 									cursor: pointer;
 									@include user-select(none);
 
-									&:before {
+									&:before, &::before {
 										$size: 12px;
 
 										position: absolute;
@@ -2986,13 +3052,13 @@ a.small-icon, button.small-icon {
 }
 
 .backdrop {
-	display: flex; position: fixed;
-	justify-content: center;
-	align-items: center;
-	top: 0; left: 0;
-	width: 100%; height: 100%;
-	background-color: rgba(#000000, .5);
-	z-index: 10;
+	// display: flex; position: fixed;
+	// justify-content: center;
+	// align-items: center;
+	// top: 0; left: 0;
+	// width: 100%; height: 100%;
+	// background-color: rgba(#000000, .5);
+	// z-index: 10;
 
 	.popup {
 		position: relative;
@@ -3125,7 +3191,7 @@ a.small-icon, button.small-icon {
 	position: fixed;
 	top: 0; left: 0;
 	width: 100%; height: 100%;
-	z-index: 5;
+	z-index: 10;
 	background-color: rgba(0, 0, 0, .8);
 	padding: 50px;
 	box-sizing: border-box;
@@ -3183,9 +3249,21 @@ a.small-icon, button.small-icon {
 		}
 
 		&.notification {
+			display: none;
+
+			&:nth-child(-n+11) {
+				display: block !important;
+			}
+
+			@include transition(background-color 1s);
+
+			&.unread {
+				background-color: rgba($activeBlue, .1);
+			}
+
 			.text {
 				.name {
-					width: 210px;
+					width: 190px;
 				}
 			}
 		}
@@ -3205,6 +3283,7 @@ a.small-icon, button.small-icon {
 			padding-top: 5px;
 			// flex-direction: column;
 			// justify-content: center;
+			text-align: left;
 
 			.name {
 				display: block;

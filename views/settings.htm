@@ -34,6 +34,7 @@
 					<div class="settings-field-block">
 						<label>Phone</label><input type="text" name="phone" minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" value="{{user.phone}}" required>
 						<div class="clear"></div>
+						<div class="error">{{phoneerror}}</div>
 					</div>
 
 					<div class="divider"></div>
@@ -151,7 +152,7 @@
 
 				<div class="divider"></div>
 
-				<div class="social-network facebook">
+				<div class="social-network facebook" ng-class="{connected: user.facebook}">
 					<div class="icon"></div>
 
 					<div class="info">
@@ -169,7 +170,7 @@
 
 				<div class="divider narrow"></div>
 
-				<div class="social-network linkedin">
+				<div class="social-network linkedin" ng-class="{connected: user.linkedin}">
 					<div class="icon"></div>
 
 					<div class="info">
@@ -187,7 +188,7 @@
 
 				<div class="divider narrow"></div>
 
-				<div class="social-network twitter">
+				<div class="social-network twitter" ng-class="{connected: user.twitter}">
 					<div class="icon"></div>
 
 					<div class="info">

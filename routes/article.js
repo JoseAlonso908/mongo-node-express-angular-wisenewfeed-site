@@ -91,7 +91,7 @@ router.get('/feed', (req, res) => {
 
 	async.waterfall([
 		(cb) => {
-			models.Follow.followingByFollower(userId, (err, following) => {
+			models.Follow.followingByFollower(userId, null, null, null, (err, following) => {
 				for (let user of following) {
 					authors.push(user.following._id)
 				}

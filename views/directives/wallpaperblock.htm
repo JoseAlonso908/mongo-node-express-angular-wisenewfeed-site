@@ -11,7 +11,7 @@
 		</div>
 
 		<div ng-class="{single: (user.active_questions == 0 || !user.active_questions)}" class="buttons" ng-show="user._id == profile._id">
-			<a ng-href="#!/questions/{{profile._id}}" ng-show="user.active_questions > 0" class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.active_questions || 0}})</div></a>
+			<a ng-href="#!/questions/{{profile._id}}" ng-hide="user.active_questions > 0" class="questions"><i class="material-icons">help</i> <div class="title">Question box ({{user.active_questions || 0}})</div></a>
 			<a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i> <div class="title">Edit profile</div></a>
 		</div>
 	</div>

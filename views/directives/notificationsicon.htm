@@ -1,3 +1,4 @@
+
 <button class="small-icon" title="Notifications" ng-click="showDropdown($event)">
 	<div class="badge" ng-show="count > 0">
 		<div class="value">{{count}}</div>
@@ -5,10 +6,10 @@
 	<i class="material-icons">notifications</i>
 </button>
 
-<div class="notifications floating" ng-class="{active: showdropdown}">
+<div class="notifications floating" ng-class="{active: dropdownVisible}">
 	<div class="text" ng-show="notifications.length === 0">You have no notifications.</div>
 
-	<div class="notification" ng-repeat="n in notifications">
+	<div class="notification" ng-class="{unread: !n.read}" ng-repeat="n in notifications">
 		<div class="time" am-time-ago="n.createdAt" am-without-suffix="true"></div>
 
 		<avatar user="n.from"></avatar>

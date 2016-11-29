@@ -287,9 +287,7 @@ angular.module('er.controllers', [])
 		})
 	}
 
-	console.log('qwe')
 	$rootScope.$on('update-follow', function (event) {
-		console.log('update follow')
 		loadProfile()
 	})
 
@@ -619,7 +617,7 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, fieldsListService, confirmPhoneModal) {
+.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
 
@@ -656,6 +654,8 @@ angular.module('er.controllers', [])
 		general: function (e) {
 			e.preventDefault()
 
+			$scope.phoneerror = ''
+
 			var form = {
 				name: e.target.name.value,
 				email: e.target.email.value,
@@ -684,7 +684,13 @@ angular.module('er.controllers', [])
 				if (/*$scope.profileSettings.phone.$untouched || */form.phone == $scope.user.phone) {
 					saveSettings(true)
 				} else {
-					confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+					validatePhoneService(form.phone).then(function (result) {
+						console.log(result)
+
+						// confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+					}, function (error) {
+						if (error) $scope.phoneerror = error
+					})
 				}
 			}
 		},

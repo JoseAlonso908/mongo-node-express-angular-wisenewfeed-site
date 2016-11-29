@@ -60,12 +60,18 @@ router.post('/unfollow', (req, res) => {
 })
 
 router.get('/followers', (req, res) => {
-	let {following} = req.query
+	let {following, skip, limit, sort} = req.query
 
-	models.Follow.followersByFollowing(following, (err, followers) => {
+	if (sort) {
+		let sortParts = sort.split('|')
+		sort = {}
+		sort[sortParts[0]] = sortParts[1]
+	}
+
+	models.Follow.followersByFollowing(following, skip, limit, sort, (err, followers) => {
 		if (err) res.status(400).send(err)
 		else {
-			models.Follow.followingByFollower(following, (err, following) => {
+			models.Follow.followingByFollower(following, null, null, null, (err, following) => {
 				followers = followers.map((follower) => {
 					for (let followee of following) {
 						if (follower.follower._id.toString() === followee.following._id.toString()) {
@@ -84,11 +90,31 @@ router.get('/followers', (req, res) => {
 })
 
 router.get('/following', (req, res) => {
-	let {follower} = req.query
+	let {follower, skip, limit, sort} = req.query
 
-	models.Follow.followingByFollower(follower, (err, following) => {
+	if (sort) {
+		let sortParts = sort.split('|')
+		sort = {}
+		sort[sortParts[0]] = sortParts[1]
+	}
+
+	models.Follow.followingByFollower(follower, skip, limit, sort, (err, following) => {
 		if (err) res.status(400).send(err)
 		else res.send(following)
+	})
+})
+
+router.get('/unread', (req, res) => {
+	models.Follow.getUnreadForUser(req.user._id, (err, count) => {
+		if (err) res.status(400).send(err)
+		else res.send({count})
+	})
+})
+
+router.post('/setreadall', (req, res) => {
+	models.Follow.setReadAllForUser(req.user._id, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
 	})
 })
 

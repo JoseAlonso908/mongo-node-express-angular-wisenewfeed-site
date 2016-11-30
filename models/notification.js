@@ -59,6 +59,8 @@ var Model = function(mongoose) {
 				notifications = notifications.filter((n) => {
 					let keepIt = true
 
+					if (!n.from) keepIt = false
+
 					// // Skip notifications from experts
 					// if (!settings.expert && n.from.role === 'expert') keepIt = false
 

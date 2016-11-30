@@ -334,8 +334,11 @@ angular.module('er.controllers', [])
 		function (cb) {
 			postService.get($scope.articleId).then(function (post) {
 				$scope.post = post
-				$scope.profile = post.author
-				cb(null)
+
+				identityService.getOther(post.author._id).then(function (profile) {
+					$scope.profile = profile
+					cb(null)
+				})
 			})
 		},
 	])

@@ -11,7 +11,7 @@ var Model = function(mongoose) {
 		facebookName	: String,
 		linkedinName	: String,
 		twitterName		: String,
-		avatar			: String,
+		avatar			: {type: String, default: '/assets/images/avatar_placeholder.png'},
 		wallpaper		: String,
 		name			: String,
 		intro			: String,

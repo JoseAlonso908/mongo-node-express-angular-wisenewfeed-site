@@ -3,7 +3,7 @@
 		<i class="material-icons">photo_camera</i>
 		<form><input name="avatar" accept="image/*" type="file"></form>
 	</div>
-	<div class="avatar" ng-style="{'background-image': 'url(' + user.avatar + ')'}"></div>
+	<div class="avatar" ng-style="{'background-image': 'url(' + (user.avatar || '/assets/images/avatar_placeholder.png') + ')'}"></div>
 	<canvas></canvas>
 
 	<div class="badge {{user.color}}">

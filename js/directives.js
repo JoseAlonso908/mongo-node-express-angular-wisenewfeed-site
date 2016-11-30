@@ -923,8 +923,7 @@ angular.module('er.directives', [])
 			}
 
 			var refreshInterval = $interval(function () {
-				// if ($scope.dropdownVisible) return
-
+				if ($scope.dropdownVisible) return
 				updateNotifications()
 			}, 3000)
 

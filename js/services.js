@@ -225,19 +225,19 @@ angular.module('er.services', [])
 				user.reactions = user.reactions || 0
 				user.followers = user.followers || 0
 				user.following = user.following || 0
-				// user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 
-				var avatarImg = new Image()
-				avatarImg.onload = function () {
-					angular.element(avatarImg).data('loaded', true)
-				}
-				avatarImg.src = user.avatar
+				// var avatarImg = new Image()
+				// avatarImg.onload = function () {
+				// 	angular.element(avatarImg).data('loaded', true)
+				// }
+				// avatarImg.src = user.avatar
 
-				$timeout(function () {
-					if (!angular.element(avatarImg).data('loaded')) {
-						user.avatar = '/assets/images/avatar_placeholder.png'
-					}
-				}, 1000)
+				// $timeout(function () {
+				// 	if (!angular.element(avatarImg).data('loaded')) {
+				// 		user.avatar = '/assets/images/avatar_placeholder.png'
+				// 	}
+				// }, 500)
 
 				if (user.role) {
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
@@ -277,18 +277,18 @@ angular.module('er.services', [])
 					user.xp = user.xp || 0
 					user.followers = user.followers || 0
 					user.following = user.following || 0
-					// user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
 
-					var avatarImg = new Image()
-					avatarImg.onload = function () {
-						angular.element(avatarImg).data('loaded', true)
-					}
-					avatarImg.src = user.avatar
-					$timeout(function () {
-						if (!angular.element(avatarImg).data('loaded')) {
-							user.avatar = '/assets/images/avatar_placeholder.png'
-						}
-					}, 500)
+					// var avatarImg = new Image()
+					// avatarImg.onload = function () {
+					// 	angular.element(avatarImg).data('loaded', true)
+					// }
+					// avatarImg.src = user.avatar
+					// $timeout(function () {
+					// 	if (!angular.element(avatarImg).data('loaded')) {
+					// 		user.avatar = '/assets/images/avatar_placeholder.png'
+					// 	}
+					// }, 500)
 
 					if (user.role) {
 						user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)

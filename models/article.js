@@ -105,17 +105,47 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).lean().exec(callback)
+			]).lean().exec((err, articles) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				callback(err, articles)
+			})
 		},
 
 		getByUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
-			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				callback(err, articles)
+			})
 		},
 
 		getByUserLean: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
-			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).lean().exec(callback)
+			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).lean().exec((err, articles) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				callback(err, articles)
+			})
 		},
 
 		getByUsers: (authors, shares, category, country, start = 0, limit = 10, callback) => {
@@ -138,7 +168,17 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				callback(err, articles)
+			})
 		},
 
 		getLikedOfUser: (author, callback) => {

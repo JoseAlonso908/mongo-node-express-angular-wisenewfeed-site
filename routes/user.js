@@ -91,6 +91,12 @@ router.get('/user', (req, res) => {
 				
 				callback()
 			})
+		},
+		(callback) => {
+			models.Question.getByRecipientOfType(id, 'active', null, null, (err, questions) => {
+				result.active_questions = questions.length
+				callback()
+			})
 		}
 	], (err) => {
 		res.send(result)

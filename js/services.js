@@ -298,11 +298,11 @@ angular.module('er.services', [])
 
 					_user = user
 
-					if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
-						// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
-					} else {
-						// $cookies.putObject('user', user)
-					}
+					// if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
+					// 	// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
+					// } else {
+					// 	// $cookies.putObject('user', user)
+					// }
 
 					$cookies.put('token', $auth.getToken())
 

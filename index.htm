@@ -9,7 +9,13 @@
 		<script>
 			WebFont.load({
 				google: {families: ['Roboto:400,400i,500,700,900', 'Material Icons']},
-				active: function() {sessionStorage.fonts = true}
+				active: function() {
+					try {
+						sessionStorage.fonts = true
+					} catch (e) {
+						console.error('Error updating sessionStorage.', e)
+					}
+				}
 			})
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">

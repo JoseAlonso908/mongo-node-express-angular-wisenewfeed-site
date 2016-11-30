@@ -64,7 +64,11 @@ angular.module('er.controllers', [])
 			email: $scope.login.email,
 			password: $scope.login.password
 		}).then(function (response) {
-			localStorage.rememberLogin = $scope.remember
+			try {
+				localStorage.rememberLogin = $scope.remember
+			} catch (e) {
+				console.error('localStorage is not supported', e)
+			}
 
 			$location.url('/')
 		}).catch(function (response) {
@@ -190,7 +194,11 @@ angular.module('er.controllers', [])
 		$scope.signup.role = role
 
 		$auth.signup($scope.signup).then(function (response) {
-			localStorage.satellizer_token = response.data.token
+			try {
+				localStorage.satellizer_token = response.data.token
+			} catch (e) {
+				console.error('localStorage is not supported', e)
+			}
 			$location.url('/')
 		}).catch(function (response) {
 			alert("Signup failed due to: " + response.data.message)

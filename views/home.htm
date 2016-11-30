@@ -9,7 +9,7 @@
 			<pieces></pieces>
 		</div>
 		<div class="middle">
-			<onyourmind ng-if="user"></onyourmind>
+			<onyourmind ng-if="user && user.role != 'User'"></onyourmind>
 			<feed user="user"></feed>
 		</div>
 		<div class="right">

@@ -181,7 +181,13 @@ angular.module('er.modals', [])
 		findAccountSigninService($scope.code).then(function (response) {
 			$scope.codeLoading = false
 			$location.url('/')
-			window.localStorage.satellizer_token = response.token
+
+			try {
+				window.localStorage.satellizer_token = response.token
+			} catch (e) {
+				console.error('localStorage is not supported', e)
+			}
+			
 			findMyAccountModal.deactivate()
 		}, function (error) {
 			$scope.codeLoading = false

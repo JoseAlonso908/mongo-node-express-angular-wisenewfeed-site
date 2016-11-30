@@ -192,10 +192,14 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 		async.waterfall([
 			(cb) => {
 				models.Article.findOneById(postId, (err, post) => {
-					cb(err, post.author._id)
+					cb(err, post.author)
 				})
 			},
 			(postAuthor, cb) => {
+				if (postAuthor.notifications[req.user.role] == false) {
+					return cb(null, postAuthor)
+				}
+
 				// Add comment notification
 				models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
 					cb(null, postAuthor)
@@ -212,7 +216,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 							return cb()
 						}
 
-						models.Notification.create(postAuthor, recipientId, postId, null, 'commentilike', (err) => {
+						models.Notification.create(recipientId, req.user._id, postId, null, 'commentilike', (err) => {
 							if (!err) {
 								receivedNotificationsIds.push(recipientId.toString())
 							}
@@ -235,7 +239,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 							return cb()
 						}
 
-						models.Notification.create(postAuthor, commenterId, post, null, 'commenticomment', (err) => {
+						models.Notification.create(recipientId, req.user._id, post, null, 'commenticomment', (err) => {
 							if (!err) {
 								receivedNotificationsIds.push(commenterId.toString())
 							}
@@ -281,11 +285,15 @@ router.post('/react', (req, res) => {
 	async.waterfall([
 		(cb) => {
 			models.Article.findOneById(post, (err, post) => {
-				cb(err, post.author._id)
+				cb(err, post.author)
 			})
 		},
 		(postAuthor, cb) => {
-			models.Notification.create(postAuthor, req.user._id, post, null, type, () => {
+			if (postAuthor.notifications[req.user.role] == false) {
+				return cb(null, postAuthor)
+			}
+
+			models.Notification.create(postAuthor._id, req.user._id, post, null, type, () => {
 				cb(null, postAuthor)
 			})
 		},
@@ -300,7 +308,7 @@ router.post('/react', (req, res) => {
 						return cb()
 					}
 
-					models.Notification.create(postAuthor, recipientId, post, null, `${type}ilike`, (err) => {
+					models.Notification.create(recipientId, req.user._id, post, null, `${type}ilike`, (err) => {
 						if (!err) {
 							receivedNotificationsIds.push(recipientId.toString())
 						}
@@ -323,7 +331,7 @@ router.post('/react', (req, res) => {
 						return cb()
 					}
 
-					models.Notification.create(postAuthor, commenterId, post, null, `${type}icomment`, (err) => {
+					models.Notification.create(commenterId, req.user._id, post, null, `${type}icomment`, (err) => {
 						if (!err) {
 							receivedNotificationsIds.push(commenterId.toString())
 						}

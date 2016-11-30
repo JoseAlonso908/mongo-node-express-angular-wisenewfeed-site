@@ -686,8 +686,7 @@ angular.module('er.controllers', [])
 				} else {
 					validatePhoneService(form.phone).then(function (result) {
 						console.log(result)
-
-						// confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+						confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
 					}, function (error) {
 						if (error) $scope.phoneerror = error
 					})

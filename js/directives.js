@@ -121,7 +121,7 @@ angular.module('er.directives', [])
 					$scope.$parent.$apply(function () {
 						$scope.text = ''
 						$scope.files = []
-						$scope.$parent.$emit('reloadfeed')
+						$rootScope.$emit('reloadfeed')
 
 						$scope.loading = false
 					})
@@ -224,7 +224,7 @@ angular.module('er.directives', [])
 			$scope.lastCategory = undefined,
 			$scope.lastCountry = undefined
 
-			$scope.$parent.$on('reloadfeed', function () {
+			$rootScope.$on('reloadfeed', function () {
 				init()
 			})
 
@@ -285,7 +285,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($timeout, postService, commentService, reactionsService, followService) {
+.directive('post', function ($rootScope, $timeout, postService, commentService, reactionsService, followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -390,7 +390,7 @@ angular.module('er.directives', [])
 
 			$scope.removePost = function (post) {
 				postService.remove(post._id).then(function () {
-					$scope.$parent.$emit('reloadfeed')
+					$rootScope.$emit('reloadfeed')
 				}, function () {
 					alert('Unable to remove post. Please, try again later.')
 				})

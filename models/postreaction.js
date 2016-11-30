@@ -103,7 +103,7 @@ var Model = function(mongoose) {
 			}
 
 			postIds = postIds.map((id) => {
-				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
+				if (typeof id !== 'object') MOI(id)
 				else return id
 			})
 

@@ -263,6 +263,7 @@ angular.module('er.controllers', [])
 			$timeout.cancel(this)
 		}, 0)
 	}, function () {
+		$scope.guest = true
 		getCategoriesList()
 	})
 })

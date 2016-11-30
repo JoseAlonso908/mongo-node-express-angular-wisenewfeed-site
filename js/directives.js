@@ -66,6 +66,7 @@ angular.module('er.directives', [])
 				$auth.logout()
 				identityService.clean()
 				$location.url('/start')
+				window.location.reload()
 			}
 
 			$scope.$on('open-user-menu', function (e, data) {

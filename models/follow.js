@@ -91,6 +91,11 @@ var Model = function(mongoose) {
 			if (sort) query.sort(sort)
 
 			query.exec((err, followers) => {
+				followers = followers.filter((f) => {
+					if (!f.follower || !f.following) return false
+					return true
+				})
+
 				if (followers && !sort) {
 					followers = followers.sort((a, b) => {
 						if (a.follower.name > b.follower.name) {

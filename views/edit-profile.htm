@@ -13,33 +13,7 @@
 
 			<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
 			<div class="footer">
-				<div class="stats">
-					<a href="javascript:void(0);" class="stat">
-						<i class="material-icons">thumb_up</i>
-						<div class="value">{{user.reactions.likes || 0}}</div>
-						<div class="title">Like</div>
-					</a>
-					<a href="javascript:void(0);" class="stat">
-						<i class="material-icons">thumb_down</i>
-						<div class="value">{{user.reactions.dislikes || 0}}</div>
-						<div class="title">Dislike</div>
-					</a>
-					<a href="javascript:void(0);" class="stat">
-						<i class="material-icons">chat_bubble</i>
-						<div class="value">{{user.reactions.reacts || 0}}</div>
-						<div class="title">React</div>
-					</a>
-					<a href="javascript:void(0);" class="stat">
-						<i class="material-icons">person</i>
-						<div class="value">{{user.following}}</div>
-						<div class="title">Following</div>
-					</a>
-					<a href="javascript:void(0);" class="stat">
-						<i class="material-icons">people</i>
-						<div class="value">{{user.followers}}</div>
-						<div class="title">Followers</div>
-					</a>
-				</div>
+				<profilereactions profile="user"></profilereactions>
 			</div>
 		</div>
 
@@ -48,7 +22,8 @@
 				<div class="user-profile-info" ng-if="user">
 					<!-- <input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name"> -->
 					<div class="name">{{user.name}}</div>
-					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" ng-required="true" name="position" ng-model="user.position">
+					<div class="position">{{user.role}}</div>
+					<!-- <input class="edit-profile-input" placeholder="{{user.role}} title" type="text" ng-required="true" name="position" ng-model="user.position"> -->
 
 					<div class="rating-wrapper" ng-if="user.likes_percentage">
 						<i class="material-icons like">thumb_up</i>

@@ -10,7 +10,7 @@
 		</div>
 		<div class="middle">
 			<onyourmind ng-if="user && user.role != 'User'"></onyourmind>
-			<feed user="user"></feed>
+			<feed ng-if="user" user="user"></feed>
 		</div>
 		<div class="right">
 			<familiarexperts></familiarexperts>

@@ -1343,7 +1343,6 @@ angular.module('er.services', [])
 			})
 			.then(function (result) {
 				self.list = result.data
-				console.log(result.data)
 				return result.data
 			}, function (data, status) {
 				return data

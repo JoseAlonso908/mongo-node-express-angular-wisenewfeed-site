@@ -71,7 +71,7 @@ router.get('/followers', (req, res) => {
 	models.Follow.followersByFollowing(following, skip, limit, sort, (err, followers) => {
 		if (err) res.status(400).send(err)
 		else {
-			models.Follow.followingByFollower(following, null, null, null, (err, following) => {
+			models.Follow.followingByFollower(req.user._id, null, null, null, (err, following) => {
 				followers = followers.map((follower) => {
 					for (let followee of following) {
 						if (follower.follower._id.toString() === followee.following._id.toString()) {

@@ -262,7 +262,7 @@
 					white-space: nowrap;
 				}
 
-				.edit-profile, .message, .follow {
+				/*.edit-profile, */.message, .follow {
 					display: none;
 				}
 			}
@@ -288,6 +288,16 @@
 			// .left {
 			// 	display: none;
 			// }
+
+			.left {
+				.user-profile-info {
+					.info {
+						.name, .position {
+							text-align: left;
+						}
+					}
+				}
+			}
 
 			.middle {
 				// width: 100%;
@@ -531,6 +541,14 @@
 
 			> a {
 				// width: 100% !important;
+			}
+		}
+
+		.wallpaper-wrapper {
+			.buttons {
+				.edit-profile/*, .message, .follow*/ {
+					display: none;
+				}
 			}
 		}
 

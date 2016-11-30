@@ -96,7 +96,7 @@ h3 {
   line-height: 2em;
 }
 
-.material-icons-pseudo-class, #wrapper #top-bar #user-block .name:after, #wrapper #top-bar #user-block .name::after, #wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after, #wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after, #wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before, #wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before, #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download::before, #wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before, #wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before, #wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before, #wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
+.material-icons-pseudo-class, #wrapper #top-bar #user-block .name::after, #wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after, #wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after, #wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before, #wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before, #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download::before, #wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before, #wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before, #wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before, #wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
   text-transform: none;
   font-feature-settings: 'liga' 1;
 }
@@ -332,6 +332,7 @@ a[disabled] {
   background-color: #e79a4f;
 }
 .avatar-border .avatar {
+  display: block;
   width: 36px;
   height: 36px;
   margin: 1px;
@@ -537,15 +538,19 @@ a.small-icon, button.small-icon {
 }
 #wrapper #top-bar #user-block .name {
   display: block;
+  position: relative;
   width: 135px;
   margin-top: 6px;
+  padding-right: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  box-sizing: border-box;
 }
-#wrapper #top-bar #user-block .name:after, #wrapper #top-bar #user-block .name::after {
+#wrapper #top-bar #user-block .name::after {
   display: inline-block;
   position: absolute;
+  right: 0;
   margin-top: 1px;
   content: 'keyboard_arrow_down';
   font-family: 'Material Icons';
@@ -3431,10 +3436,13 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar .make-post {
     display: none;
   }
+  #wrapper .wallpaper-wrapper .buttons {
+    /*.edit-profile, */
+  }
   #wrapper .wallpaper-wrapper .buttons .questions, #wrapper .wallpaper-wrapper .buttons .ask-question {
     white-space: nowrap;
   }
-  #wrapper .wallpaper-wrapper .buttons .edit-profile, #wrapper .wallpaper-wrapper .buttons .message, #wrapper .wallpaper-wrapper .buttons .follow {
+  #wrapper .wallpaper-wrapper .buttons .message, #wrapper .wallpaper-wrapper .buttons .follow {
     display: none;
   }
   #wrapper .wallpaper-wrapper .footer .stats {
@@ -3445,6 +3453,9 @@ a.small-icon, button.small-icon {
   }
   #wrapper .filters a {
     padding: 0 35px !important;
+  }
+  #wrapper .content .left .user-profile-info .info .name, #wrapper .content .left .user-profile-info .info .position {
+    text-align: left;
   }
   #wrapper .content .middle .card.feed-item .body .title .add {
     margin-left: 0;
@@ -3587,6 +3598,9 @@ a.small-icon, button.small-icon {
     position: relative;
     width: 100%;
     margin-left: 0;
+  }
+  #wrapper .wallpaper-wrapper .buttons .edit-profile {
+    display: none;
   }
   #wrapper .content .middle .card.feed-item {
     padding-left: 17px;

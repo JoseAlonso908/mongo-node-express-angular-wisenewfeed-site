@@ -87,7 +87,8 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/avatar.htm',
 		scope: {
-			user: '='
+			user: '=',
+			nolink: '=',
 		},
 		link: function ($scope, element, attr) {
 			$scope.number = $scope.user.rating || 1
@@ -550,11 +551,11 @@ angular.module('er.directives', [])
 
 			$scope.person.role = $scope.person.role[0].toUpperCase() + $scope.person.role.substr(1)
 
-			if (typeof $scope.person.isFollowing === 'undefined') {
+			// if (typeof $scope.person.isFollowing === 'undefined') {
 				followService.isFollowing($scope.person._id).then(function (result) {
 					$scope.person.isFollowing = result
 				})
-			}
+			// }
 
 			$scope.toggleFollow = function (person) {
 				if (person.isFollowing) {

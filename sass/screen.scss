@@ -276,6 +276,7 @@ a {
 	}
 
 	.avatar {
+		display: block;
 		width: 36px; height: 36px;
 		margin: 1px;
 		border-radius: 18px;
@@ -478,18 +479,21 @@ a.small-icon, button.small-icon {
 			}
 
 			.name {
-				display: block;
+				display: block; position: relative;
 				width: 135px;
 				margin-top: 6px;
+				padding-right: 16px;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				overflow: hidden;
+				box-sizing: border-box;
 
-				&:after, &::after {
+				&::after {
 					@extend .material-icons-pseudo-class;
 
 					display: inline-block;
 					position: absolute;
+					right: 0;
 					margin-top: 1px;
 					content: 'keyboard_arrow_down';
 					font-family: 'Material Icons';

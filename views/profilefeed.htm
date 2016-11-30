@@ -12,7 +12,7 @@
 			<feed user="user" id="profile._id" type="type" ng-if="profile"></feed>
 		</div>
 		<div class="right">
-			<newquestions user="profile" ng-if="profile"></newquestions>
+			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
 			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>
 		</div>

@@ -19,7 +19,7 @@
 
 			<button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
 			
-			<button ng-if="post.author.isFollowing === false && post.author._id != user._id && user" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
+			<button ng-if="post.author.isFollowing === false && post.author._id != user._id && user && user.role != 'User'" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 
 			<div class="post-menu" ng-class="{active: post.menu}">
 				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>

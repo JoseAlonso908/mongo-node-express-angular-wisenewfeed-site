@@ -17,7 +17,7 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'comment',
 		},
-		read 		: Boolean,
+		read 		: {type: Boolean, default: false},
 		type		: {
 			type: String,
 			enum: [

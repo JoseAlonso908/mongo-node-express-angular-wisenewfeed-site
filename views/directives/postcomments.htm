@@ -3,7 +3,7 @@
 		{{($parent.showmore ? 'Show less' : 'Show more')}}
 	</a>
 
-	<div ng-class="{highlighted: comment.highlighted}" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments">
+	<div ng-class="{highlighted: comment.highlighted}" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments track by $index">
 		<a name="c{{comment._id}}"></a>
 
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>

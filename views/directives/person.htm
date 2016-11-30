@@ -2,8 +2,8 @@
 	<div class="wallpaper" ng-class="{empty: !person.wallpaper}" style="background-image: url('{{person.wallpaper}}')"></div>
 	<avatar user="person"></avatar>
 
-	<div class="buttons">
-		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="follow" ng-class="{active: person.isFollowing}" ng-click="toggleFollow(person)">{{(person.isFollowing) ? 'Following' : 'Follow'}}</button>
+	<div class="buttons" ng-hide="!$parent.user || $parent.user.role == 'User'">
+		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="follow" ng-class="{active: person.isFollowing}" ng-click="toggleFollow(person)">{{(person.isFollowing === true) ? 'Following' : 'Follow'}}</button>
 		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();person.menu = true"><i class="material-icons">more_vert</i></button>
 
 		<div class="person-menu" ng-class="{active: person.menu}">

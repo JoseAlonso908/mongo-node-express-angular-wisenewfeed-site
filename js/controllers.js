@@ -161,8 +161,8 @@ angular.module('er.controllers', [])
 	$scope.signup.phone = '+' + $scope.signup.country.code + $scope.signup.phone
 	$scope.signup.country = $scope.signup.country.country
 
-	$scope.extra = {title: '', company: '', field: ''}
-	$scope.extraError = {title: '', company: '', field: ''}
+	$scope.extra = {company: '', field: ''}
+	$scope.extraError = {company: '', field: ''}
 
 	$scope.doSignup = function (role) {
 		var roles = ['expert', 'journalist', 'user']
@@ -184,7 +184,6 @@ angular.module('er.controllers', [])
 			if (hasErrors) return false
 			else {
 				Object.assign($scope.signup, {
-					position: $scope.extra.title,
 					company: $scope.extra.company,
 					field: $scope.extra.field
 				})
@@ -229,7 +228,7 @@ angular.module('er.controllers', [])
 
 	var getCategoriesList = function () {
 		var categoriesListType = 'get'
-		if ($scope.user) {
+		if ($scope.user && $scope.user.role != 'User') {
 			categoriesListType = 'getForUser'
 		}
 
@@ -316,7 +315,7 @@ angular.module('er.controllers', [])
 	$scope.commentId = $routeParams.commentId
 
 	var commentsReceivedEvent = $rootScope.$on('commentsloaded', function (event, postId) {
-		if (!$scope.post.comments || $scope.post.comments.length == 0) return false
+		if (!$scope.post.comments || $scope.post.comments.length == 0 || !$scope.commentId) return false
 
 		var referencedComment = $scope.post.comments.filter(function (c) {
 			if (c._id == $scope.commentId) return true
@@ -364,13 +363,46 @@ angular.module('er.controllers', [])
 				$scope.profile.reactions = profile.reactions
 			}
 
-			if (callback) callback()
+			followService.isFollowing($scope.profile._id).then(function (result) {
+				$scope.profile.isFollowing = result
+
+				if (callback) callback()
+			})
 		})
 	}
 
 	$rootScope.$on('update-follow', function (event) {
 		loadProfile()
 	})
+
+	$scope.follow = function (user) {
+		followService.follow($scope.profile._id).then(function (result) {
+			$scope.profile.isFollowing = result
+			$rootScope.$emit('update-follow')
+		})
+	}
+
+	$scope.unfollow = function (user) {
+		followService.unfollow($scope.profile._id).then(function (result) {
+			$scope.profile.isFollowing = result
+			$rootScope.$emit('update-follow')
+		})
+	}
+
+	var loadFollowsPeople = function (cb) {
+		followService[$scope.type]($scope.id).then(function (people) {
+			$scope.people = people
+
+			if ($scope.type == 'following') {
+				$scope.people = $scope.people.map(function (person) {
+					person.isFollowing = true
+					return person
+				})
+			}
+
+			cb()
+		})
+	}
 
 	async.parallel([
 		function (cb) {
@@ -383,24 +415,17 @@ angular.module('er.controllers', [])
 			loadProfile(cb)
 		},
 		function (cb) {
-			followService[$scope.type]($scope.id).then(function (people) {
-				$scope.people = people
-
-				if ($scope.type == 'following') {
-					$scope.people = $scope.people.map(function (person) {
-						person.isFollowing = true
-						return person
-					})
-				}
-
-				cb()
+			$rootScope.$on('update-follow', function () {
+				loadFollowsPeople(function () {})
 			})
+
+			loadFollowsPeople(cb)
 		},
 	])
 })
 .controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
 	async.parallel([
-		function () {
+		function (cb) {
 			identityService.getOther($routeParams.id).then(function (profile) {
 				$scope.profile = profile
 

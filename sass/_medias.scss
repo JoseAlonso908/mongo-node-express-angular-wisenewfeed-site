@@ -112,6 +112,10 @@
 }
 
 @media (max-width: 1024px) {
+	.only-mobile {
+		display: block !important;
+	}
+
 	.notifications {
 		margin-left: -200px;
 	}
@@ -400,7 +404,7 @@
 				justify-content: flex-end !important;
 				margin-top: 115px;
 
-				button, a {
+				button, a, div {
 					.title {
 						display: none;
 					}
@@ -421,6 +425,17 @@
 		}
 
 		.content {
+			&.editing-profile {
+				.left {
+					display: block;
+					width: 100%;
+				}
+
+				.middle {
+					display: none;
+				}
+			}
+
 			.left {
 				display: none;
 			}
@@ -546,9 +561,9 @@
 
 		.wallpaper-wrapper {
 			.buttons {
-				.edit-profile/*, .message, .follow*/ {
-					display: none;
-				}
+				// .edit-profile, .message, .follow {
+				// 	display: none;
+				// }
 			}
 		}
 

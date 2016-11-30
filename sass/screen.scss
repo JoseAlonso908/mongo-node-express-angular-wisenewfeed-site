@@ -16,6 +16,10 @@ $soLight: #f1f5f7;
 
 @import "loader";
 
+.only-mobile {
+	display: none !important;
+}
+
 h3 {
 	font-size: 18px;
 	font-weight: 700;

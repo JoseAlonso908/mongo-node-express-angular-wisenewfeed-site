@@ -89,6 +89,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     transform: rotate(360deg);
   }
 }
+.only-mobile {
+  display: none !important;
+}
+
 h3 {
   font-size: 18px;
   font-weight: 700;
@@ -3348,6 +3352,10 @@ a.small-icon, button.small-icon {
   }
 }
 @media (max-width: 1024px) {
+  .only-mobile {
+    display: block !important;
+  }
+
   .notifications {
     margin-left: -200px;
   }
@@ -3514,7 +3522,7 @@ a.small-icon, button.small-icon {
     justify-content: flex-end !important;
     margin-top: 115px;
   }
-  #wrapper .wallpaper-wrapper .buttons button .title, #wrapper .wallpaper-wrapper .buttons a .title {
+  #wrapper .wallpaper-wrapper .buttons button .title, #wrapper .wallpaper-wrapper .buttons a .title, #wrapper .wallpaper-wrapper .buttons div .title {
     display: none;
   }
   #wrapper .wallpaper-wrapper .wallpaper {
@@ -3525,6 +3533,13 @@ a.small-icon, button.small-icon {
   }
   #wrapper .filters > dropdown, #wrapper .filters > a {
     margin-bottom: 15px;
+  }
+  #wrapper .content.editing-profile .left {
+    display: block;
+    width: 100%;
+  }
+  #wrapper .content.editing-profile .middle {
+    display: none;
   }
   #wrapper .content .left {
     display: none;
@@ -3598,9 +3613,6 @@ a.small-icon, button.small-icon {
     position: relative;
     width: 100%;
     margin-left: 0;
-  }
-  #wrapper .wallpaper-wrapper .buttons .edit-profile {
-    display: none;
   }
   #wrapper .content .middle .card.feed-item {
     padding-left: 17px;

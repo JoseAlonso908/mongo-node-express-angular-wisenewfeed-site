@@ -3,8 +3,8 @@
 	<avatar user="person"></avatar>
 
 	<div class="buttons">
-		<button ng-hide="person._id == $parent.user._id" class="follow" ng-class="{active: person.isFollowing}" ng-click="toggleFollow(person)">{{(person.isFollowing) ? 'Following' : 'Follow'}}</button>
-		<button ng-hide="person._id == $parent.user._id" class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();person.menu = true"><i class="material-icons">more_vert</i></button>
+		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="follow" ng-class="{active: person.isFollowing}" ng-click="toggleFollow(person)">{{(person.isFollowing) ? 'Following' : 'Follow'}}</button>
+		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();person.menu = true"><i class="material-icons">more_vert</i></button>
 
 		<div class="person-menu" ng-class="{active: person.menu}">
 			<a href="javascript:void(0);">Direct message</a>

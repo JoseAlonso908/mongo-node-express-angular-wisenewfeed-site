@@ -86,11 +86,26 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec(callback)
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				callback(err, articles)
+			})
 		},
 
 		getAllLean: (callback) => {
-			Model.find().lean().exec(callback)
+			Model.find().populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).lean().exec(callback)
 		},
 
 		getByUser: (author, callback) => {

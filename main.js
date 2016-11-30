@@ -110,6 +110,8 @@ app.get('/static/categories', (req, res) => {
 
 	models.Article.getAllLean((err, articles) => {
 		for (let article of articles) {
+			if (!article.author) continue
+
 			for (let category of categories) {
 				if (article.category == category.title) {
 					category.count++

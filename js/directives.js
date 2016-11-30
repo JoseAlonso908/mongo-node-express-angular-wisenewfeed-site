@@ -271,7 +271,7 @@ angular.module('er.directives', [])
 						$scope.feedLoading = false
 						$scope.feed = feed
 
-						if (feed.length == 0) {
+						if (feed.length == 0 && feedType != 'all') {
 							feedType = 'all'
 							init()
 						}

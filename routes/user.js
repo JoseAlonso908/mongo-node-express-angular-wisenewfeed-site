@@ -787,7 +787,7 @@ router.get('/user/categories', (req, res) => {
 			if (err) res.status(400).send(err)
 			else {
 				for (let article of articles) {
-					if (country && article.country != country) continue
+					if ((country && article.country != country) || !article.author) continue
 
 					for (let category of categories) {
 						if (article.category == category.title) {

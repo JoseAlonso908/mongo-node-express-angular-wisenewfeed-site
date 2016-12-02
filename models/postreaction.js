@@ -30,8 +30,8 @@ var Model = function(mongoose) {
 		},
 
 		react: (author, post, type, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
-			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
+			if (typeof author !== 'object') author = MOI(author)
+			if (typeof post !== 'object') post = MOI(post)
 
 			Model.find({author, post}).lean().exec((err, existingReactions) => {
 				// Check for reaction with same type
@@ -103,7 +103,7 @@ var Model = function(mongoose) {
 			}
 
 			postIds = postIds.map((id) => {
-				if (typeof id !== 'object') MOI(id)
+				if (typeof id !== 'object') return MOI(id)
 				else return id
 			})
 

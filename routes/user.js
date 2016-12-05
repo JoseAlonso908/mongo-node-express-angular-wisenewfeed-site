@@ -781,7 +781,7 @@ router.get('/user/categories', (req, res) => {
 			models.Token.getUserByToken(token, (err, user) => {
 				let userId = user._id
 
-				authors.push(userId)
+				// authors.push(userId)
 				cb(null, userId)
 			})
 		},
@@ -789,6 +789,10 @@ router.get('/user/categories', (req, res) => {
 			models.Follow.followingByFollower(userId, null, null, null, (err, following) => {
 				for (let user of following) {
 					authors.push(user.following._id)
+				}
+
+				if (authors.length > 0) {
+					authors.push(userId)
 				}
 
 				cb()

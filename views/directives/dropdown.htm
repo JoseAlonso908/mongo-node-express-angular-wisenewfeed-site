@@ -1,7 +1,7 @@
 <div class="dropdown-wrapper">
 	<div class="menu-buttons dropdown">
 		<div class="title">{{title}}:</div>
-		<div class="option">{{chosen.title}}</div>
+		<div class="option">{{selected.title}}</div>
 	</div>
 	<ul class="dropdown-list floating">
 		<li ng-repeat="item in list" ng-click="(!!(item.sub)) ? void() : choose(item)" ng-class="{nested: !!(item.sub), active: (!!(item.sub)) ? isActiveParentItem(item) : isActiveItem(item)}">

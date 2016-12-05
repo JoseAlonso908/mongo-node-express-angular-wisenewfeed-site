@@ -178,13 +178,26 @@ var Model = function(mongoose) {
 		},
 
 		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 10, callback) => {
-			authors = (authors) ? authors.map(MOI) : []
-			shares = (shares) ? shares.map(MOI) : []
+			authors = (authors) ? authors.map(MOI) : authors
+			shares = (shares) ? shares.map(MOI) : shares
 
-			let query = {$or: [{author: {$in: authors}}, {_id: {$in: shares}}]}
+			// let query = {$or: [{author: {$in: authors}}, {_id: {$in: shares}}]}
+			let query = {$or: []}
+
+			if (authors.length > 0) {
+				query['$or'].push({author: {$in: authors}})
+			}
+
+			if (shares.length > 0) {
+				query['$or'].push({_id: {$in: shares}})
+			}
+
+			if (query['$or'].length == 0) {
+				query = {}
+			}
+
 			if (category) Object.assign(query, {category})
 			if (country) Object.assign(query, {country})
-
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {

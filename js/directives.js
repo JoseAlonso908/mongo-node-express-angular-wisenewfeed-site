@@ -7,7 +7,7 @@ angular.module('er.directives', [])
 			title: '@',
 			defaultItem: '=',
 			list: '=',
-			chosen: '=',
+			selected: '=',
 			change: '=',
 		},
 		link: function ($scope, element, attr) {
@@ -39,12 +39,12 @@ angular.module('er.directives', [])
 
 			$scope.isActiveParentItem = function (parentItem) {
 				for (var i in parentItem.sub) {
-					if (parentItem.sub[i].id === $scope.chosen.id) return true
+					if (parentItem.sub[i].id === $scope.selected.id) return true
 				}
 			}
 
 			$scope.isActiveItem = function (item) {
-				return $scope.chosen.id == item.id
+				return $scope.selected.id == item.id
 			}
 
 			$scope.choose = function (item) {

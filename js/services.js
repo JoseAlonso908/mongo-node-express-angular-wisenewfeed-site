@@ -403,6 +403,19 @@ angular.module('er.services', [])
 				return error
 			})
 		},
+		mutedAuthors: function () {
+			return $http({
+				method: 'GET',
+				url: '/user/mutedauthors',
+				headers: {
+					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
+				},
+			}).then(function (response) {
+				return response.data
+			}, function (error) {
+				return error
+			})
+		}
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -784,7 +797,75 @@ angular.module('er.services', [])
 			}, function (data, status) {
 				return data
 			})
-		}
+		},
+		hide: function (article) {
+			return $http({
+				method: 'POST',
+				url: '/article/hide',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					article: article
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		unhide: function (article) {
+			return $http({
+				method: 'POST',
+				url: '/article/unhide',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					article: article
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		mute: function (author) {
+			return $http({
+				method: 'POST',
+				url: '/article/mute',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					author: author
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
+		unmute: function (author) {
+			return $http({
+				method: 'POST',
+				url: '/article/unmute',
+				headers: {
+					'Authorization': $cookies.get('token'),
+				},
+				data: {
+					author: author
+				}
+			})
+			.then(function (result) {
+				return result.data
+			}, function (data, status) {
+				return data
+			})
+		},
 	}
 })
 .factory('commentService', function ($http, $cookies) {

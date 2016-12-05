@@ -9,7 +9,7 @@ window.async = require('async')
 // .config(['$locationProvider', '$routeProvider', '$authProvider',
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
-	'btford.modal',
+	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider',
 	function config($locationProvider, $routeProvider, $authProvider, $compileProvider) {
@@ -92,9 +92,13 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 		var requireAuth = ['/my', '/settings']
 
 		identityService.get().then(function (user) {
+			if (!user.phone || !user.email) {
+				return $location.url('/settings')
+			}
+
 			$rootScope.user = user
 
-			if (requireAuth.indexOf(nextURI) > -1 && (!user || user.role == 'User')) {
+			if (requireAuth.indexOf(nextURI) > -1 && (!user/* || user.role == 'User'*/)) {
 				console.log('Prevented to go to', nextURI)
 				event.preventDefault()
 				$location.url('/start')

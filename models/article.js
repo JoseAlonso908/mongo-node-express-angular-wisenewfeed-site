@@ -1,3 +1,5 @@
+const async = require('async')
+
 var Model = function(mongoose) {
 	var schema = new mongoose.Schema({
 		ObjectId	: mongoose.Schema.ObjectId,
@@ -17,6 +19,68 @@ var Model = function(mongoose) {
 	})
 
 	var Model = mongoose.model('article', schema);
+
+	this.postProcessList = (articles, user, callback) => {
+		articles = articles.map((a) => {
+			if (typeof a.toObject === 'function') return a.toObject()
+			return a
+		})
+
+		async.waterfall([
+			// Check article to be hidden for specific user
+			(next) => {
+				if (!user) return next(null, articles)
+
+				let articleIds = articles.map((a) => a._id)
+
+				models.HiddenArticle.isHiddenForUserMulti(articleIds, user, (err, hidden) => {
+					articles = articles.map((a) => {
+						a.hidden = false
+
+						if (hidden[a._id.toString()]) {
+							a.hidden = true
+						}
+
+						return a
+					})
+
+					next(null, articles)
+				})
+			},
+			// Check author to be muted for specific user
+			(articles, next) => {
+				if (!user) return next(null, articles)
+
+				let articleAuthorIds = articles.map((a) => a.author._id)
+
+				models.MutedAuthor.isMutedForUserMulti(articleAuthorIds, user, (err, muted) => {
+					articles = articles.map((a) => {
+						a.muted = false
+
+						if (muted[a.author._id.toString()]) {
+							a.muted = true
+						}
+
+						return a
+					})
+
+					next(null, articles)
+				})
+			},
+			// Remove articles whose author is not available
+			(articles, next) => {
+				articles = articles.filter((article) => {
+					if (!article.author) {
+						return false
+					}
+
+					return true
+				})
+
+				next(null, articles)
+			},
+		], callback)
+	}
 
 	return {
 		Model,
@@ -73,7 +137,7 @@ var Model = function(mongoose) {
 			Model.remove({_id, author}, callback)
 		},
 
-		getAll: (category, country, start = 0, limit = 10, callback) => {
+		getAll: (viewer, category, country, start = 0, limit = 10, callback) => {
 			let query = {}
 			if (category) Object.assign(query, {category})
 			if (country) Object.assign(query, {country})
@@ -84,15 +148,7 @@ var Model = function(mongoose) {
 					path: 'author',
 				}}
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
-				articles = articles.filter((article) => {
-					if (!article.author) {
-						return false
-					}
-
-					return true
-				})
-
-				callback(err, articles)
+				this.postProcessList(articles, viewer, callback)
 			})
 		},
 
@@ -103,58 +159,27 @@ var Model = function(mongoose) {
 					path: 'author',
 				}}
 			]).lean().exec((err, articles) => {
-				articles = articles.filter((article) => {
-					if (!article.author) {
-						return false
-					}
-
-					return true
-				})
-
-				callback(err, articles)
+				this.postProcessList(articles, null, callback)
 			})
 		},
 
 		getByUser: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			author = MOI(author)
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
-				articles = articles.filter((article) => {
-					if (!article.author) {
-						return false
-					}
-
-					return true
-				})
-
-				callback(err, articles)
+				this.postProcessList(articles, null, callback)
 			})
 		},
 
 		getByUserLean: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			author = MOI(author)
 			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).lean().exec((err, articles) => {
-				articles = articles.filter((article) => {
-					if (!article.author) {
-						return false
-					}
-
-					return true
-				})
-
-				callback(err, articles)
+				this.postProcessList(articles, null, callback)
 			})
 		},
 
-		getByUsers: (authors, shares, category, country, start = 0, limit = 10, callback) => {
-			authors = authors.map((id) => {
-				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
-				else return id
-			})
-
-			shares = shares.map((id) => {
-				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
-				else return id
-			})
+		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 10, callback) => {
+			authors = (authors) ? authors.map(MOI) : []
+			shares = (shares) ? shares.map(MOI) : []
 
 			let query = {$or: [{author: {$in: authors}}, {_id: {$in: shares}}]}
 			if (category) Object.assign(query, {category})
@@ -166,20 +191,12 @@ var Model = function(mongoose) {
 					path: 'author',
 				}}
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
-				articles = articles.filter((article) => {
-					if (!article.author) {
-						return false
-					}
-
-					return true
-				})
-
-				callback(err, articles)
+				this.postProcessList(articles, viewer, callback)
 			})
 		},
 
-		getLikedOfUser: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+		getLikedOfUser: (author, viewer, callback) => {
+			author = MOI(author)
 
 			Model.find({author}).populate([
 				{path: 'author'},
@@ -202,13 +219,13 @@ var Model = function(mongoose) {
 						return false
 					})
 
-					callback(err, articles)
+					this.postProcessList(articles, viewer, callback)
 				})
 			})
 		},
 
-		getDislikedOfUser: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+		getDislikedOfUser: (author, viewer, callback) => {
+			author = MOI(author)
 
 			Model.find({author}).populate([
 				{path: 'author'},
@@ -229,13 +246,13 @@ var Model = function(mongoose) {
 						return false
 					})
 
-					callback(err, articles)
+					this.postProcessList(articles, viewer, callback)
 				})
 			})
 		},
 
-		getCommentedOfUser: (author, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+		getCommentedOfUser: (author, viewer, callback) => {
+			author = MOI(author)
 
 			Model.find({author}).populate([
 				{path: 'author'},
@@ -243,7 +260,7 @@ var Model = function(mongoose) {
 					path: 'author',
 				}}
 			]).sort({createdAt: 'desc'}).exec((err, articles) => {
-				let postIds = articles.map((article) => {return article._id})
+				let postIds = articles.map((article) => article._id)
 
 				let commentedArticles = []
 
@@ -268,7 +285,7 @@ var Model = function(mongoose) {
 						}
 					}
 
-					callback(err, commentedArticles)
+					this.postProcessList(commentedArticles, viewer, callback)
 				})
 			})
 		},

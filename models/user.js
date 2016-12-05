@@ -206,9 +206,15 @@ var Model = function(mongoose) {
 		updateOldPassword: (_id, password, newPassword, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
 
-			password = sha1(password)
+			let query = {_id}
 
-			Model.findOne({_id, password}, (err, user) => {
+			if (password) {
+				query.password = sha1(password)
+			} else {
+				query.password = {$in: [null, false]}
+			}
+
+			Model.findOne(query, (err, user) => {
 				if (!user) {
 					return callback({message: 'User not found'})
 				}
@@ -307,7 +313,13 @@ var Model = function(mongoose) {
 				Object.assign(user.notifications, {expert, journalist, liked, reacted})
 				user.save(callback)
 			})
-		}
+		},
+
+		doesHavePassword: (_id, callback) => {
+			Model.findOne({_id}, {password: 1}, (err, user) => {
+				callback(err, !!user.password)
+			})
+		},
 	}
 }
 

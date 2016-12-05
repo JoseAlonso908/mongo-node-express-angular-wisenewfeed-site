@@ -67,7 +67,7 @@ router.get('/one', (req, res) => {
 router.get('/all', (req, res) => {
 	let {category, country, start, limit} = req.query
 
-	models.Article.getAll(category, country, start, limit, (err, articles) => {
+	models.Article.getAll((req.user) ? req.user._id : null, category, country, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -109,7 +109,7 @@ router.get('/feed', (req, res) => {
 			})
 		},
 	], () => {
-		models.Article.getByUsers(authors, [], category, country, start, limit, (err, articles) => {
+		models.Article.getByUsers(authors, req.user._id, [], category, country, start, limit, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else {
 				res.send(articles)
@@ -122,7 +122,7 @@ router.get('/feed/liked', (req, res) => {
 	let userId = req.query.user || req.user._id
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getLikedOfUser(userId, (err, articles) => {
+	models.Article.getLikedOfUser(userId, req.user._id, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -131,7 +131,7 @@ router.get('/feed/disliked', (req, res) => {
 	let userId = req.query.user || req.user._id
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getDislikedOfUser(userId, (err, articles) => {
+	models.Article.getDislikedOfUser(userId, req.user._id, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -140,7 +140,7 @@ router.get('/feed/commented', (req, res) => {
 	let userId = req.query.user || req.user._id
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getCommentedOfUser(userId, (err, articles) => {
+	models.Article.getCommentedOfUser(userId, req.user._id, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -413,6 +413,42 @@ router.delete('/comment/react', (req, res) => {
 router.get('/pieces', (req, res) => {
 	models.Piece.getTopGrouped((result) => {
 		res.send(result)
+	})
+})
+
+router.post('/hide', (req, res) => {
+	let {article} = req.body
+
+	models.HiddenArticle.hide(article, req.user._id, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
+	})
+})
+
+router.post('/unhide', (req, res) => {
+	let {article} = req.body
+
+	models.HiddenArticle.unhide(article, req.user._id, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
+	})
+})
+
+router.post('/mute', (req, res) => {
+	let {author} = req.body
+
+	models.MutedAuthor.mute(author, req.user._id, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
+	})
+})
+
+router.post('/unmute', (req, res) => {
+	let {author} = req.body
+
+	models.MutedAuthor.unmute(author, req.user._id, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
 	})
 })
 

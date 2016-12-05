@@ -316,6 +316,24 @@ angular.module('er.directives', [])
 				})
 			}
 
+			$scope.hide = function (post) {
+				postService.hide(post._id).then(function (result) {
+					$scope.post.hidden = true
+				})
+			}
+
+			$scope.unhide = function (post) {
+				postService.unhide(post._id).then(function (result) {
+					$scope.post.hidden = false
+				})
+			}
+
+			$scope.mute = function (author) {
+				postService.mute(author._id).then(function (result) {
+					$scope.post.muted = true
+				})
+			}
+
 			$scope.files = []
 
 			$scope.addComment = function (post) {

@@ -46,6 +46,12 @@ router.get('/me', (req, res) => {
 			})
 		},
 		(id, callback) => {
+			models.User.doesHavePassword(id, (err, flag) => {
+				result.havePassword = flag
+				callback(null, id)
+			})
+		},
+		(id, callback) => {
 			models.User.getReactionsOnUser(id, (reactions) => {
 				result.reactions = reactions
 
@@ -789,7 +795,7 @@ router.get('/user/categories', (req, res) => {
 			})
 		},
 	], () => {
-		models.Article.getByUsers(authors, [], null, null, null, null, (err, articles) => {
+		models.Article.getByUsers(authors, null, [], null, null, null, null, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else {
 				for (let article of articles) {
@@ -806,6 +812,28 @@ router.get('/user/categories', (req, res) => {
 				res.send(categories)
 			}
 		})
+	})
+})
+
+router.get('/user/mutedauthors', (req, res) => {
+	if (!req.headers.authorization) return res.status(500).send({message: 'Token is not available'})
+	let token = req.headers.authorization.split(' ')[1]
+
+	async.waterfall([
+		(cb) => {
+			models.Token.getUserByToken(token, (err, user) => {
+				let userId = user._id
+
+				authors.push(userId)
+				cb(null, userId)
+			})
+		},
+		(userId, cb) => {
+			models.MutedAuthors.getMutedByUser(userId, cb)
+		},
+	], (err, authors) => {
+		if (err) return res.status(400).send(err)
+		else return res.send(authors)
 	})
 })
 

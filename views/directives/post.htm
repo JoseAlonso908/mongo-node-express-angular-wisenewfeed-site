@@ -1,4 +1,16 @@
-<div class="card feed-item">
+<div class="card feed-item hidden" ng-if="post.hidden">
+	<div class="text">
+		This post is hidden. Click to <a href="javascript:void(0);" ng-click="unhide(post)">show</a> it.
+	</div>
+</div>
+
+<div class="card feed-item hidden" ng-if="post.muted">
+	<div class="text">
+		This post is belongs to author who was muted by you.
+	</div>
+</div>
+
+<div class="card feed-item" ng-if="!post.hidden && !post.muted">
 	<avatar user="post.author"></avatar>
 
 	<!-- <div ng-if="post.shared">{{post | json}}</div> -->
@@ -16,15 +28,15 @@
 				<div class="country small-light">{{post.author.country}}</div>
 			</div>
 
-			<button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
+			<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
 			
 			<button ng-if="post.author.isFollowing === false && post.author._id != user._id && user && user.role != 'User'" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 
-			<div class="post-menu" ng-class="{active: post.menu}">
+			<div class="post-menu" ng-if="user" ng-class="{active: post.menu}">
 				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>
-				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Hide this post</a>
+				<a href="javascript:void(0);" ng-click="hide(post)" ng-if="post.author._id != user._id">Hide this post</a>
 				<a href="javascript:void(0);" ng-click="unfollow(post)" ng-if="post.author._id != user._id && post.author.isFollowing">Unfollow this expert</a>
-				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Mute</a>
+				<a href="javascript:void(0);" ng-click="mute(post.author)" ng-if="post.author._id != user._id">Mute</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Report</a>
 				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Block</a>
 			</div>

@@ -86,6 +86,8 @@ angular.module('er.controllers', [])
 	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
 	
 	$scope.doSignup = function () {
+		console.log($scope.signup)
+
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
 
@@ -750,23 +752,34 @@ angular.module('er.controllers', [])
 				newPassword: $scope.newPassword,
 			}
 
-			if ($scope.changePassword.$valid && !$scope.changePassword.$pristine) {
-				identityService.isPasswordValid(form.oldPassword).then(function (valid) {
-					if (!valid) {
-						return $scope.changePassword.oldPassword.$setValidity('required', false)
-					}
+			var updatePasswordAndLeave = function () {
+				if ($scope.newPassword != $scope.newPasswordRepeat) {
+					return $scope.changePassword.newPasswordRepeat.$setValidity('required', false)
+				}
 
-					if ($scope.newPassword != $scope.newPasswordRepeat) {
-						return $scope.changePassword.newPasswordRepeat.$setValidity('required', false)
-					}
-
-					identityService.updatePassword($scope.oldPassword, $scope.newPassword).then(function (result) {
+				identityService.updatePassword($scope.oldPassword, $scope.newPassword).then(function (result) {
+					identityService.get(true).then(function (user) {
+						$scope.user = user
 						return $location.url('/my')
-					}, function (error) {
-						console.error(error)
-						alert('Unable to update password. Please, try again later.')
 					})
+				}, function (error) {
+					console.error(error)
+					alert('Unable to update password. Please, try again later.')
 				})
+			}
+
+			if ($scope.changePassword.$valid && !$scope.changePassword.$pristine) {
+				if ($scope.user.havePassword) {
+					identityService.isPasswordValid(form.oldPassword).then(function (valid) {
+						if (!valid) {
+							return $scope.changePassword.oldPassword.$setValidity('required', false)
+						}
+
+						updatePasswordAndLeave()
+					})
+				} else {
+					updatePasswordAndLeave()
+				}
 			}
 			// identityService.isPasswordValid()
 		},
@@ -788,6 +801,14 @@ angular.module('er.controllers', [])
 		function () {
 			identityService.get().then(function (user) {
 				$scope.user = user
+
+				if (!$scope.user.email) {
+					$scope.emailerror = 'You email address is required to use Expert Reaction.'
+				}
+
+				if (!$scope.user.phone) {
+					$scope.phoneerror = 'You phone number is required to use Expert Reaction.'
+				}
 			})
 		},
 		function () {

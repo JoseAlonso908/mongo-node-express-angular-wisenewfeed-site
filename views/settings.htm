@@ -2,10 +2,10 @@
 	<topbar user="user"></topbar>
 	<div class="content">
 		<div class="left">
-			<div class="settings-list">
+			<div class="settings-list" ng-show="user">
 				<a ng-click="activePage = 'general'" ng-class="{active: activePage == 'general'}" href="javascript:void(0);">General</a>
 				<a ng-click="activePage = 'password'" ng-class="{active: activePage == 'password'}" href="javascript:void(0);">Change password</a>
-				<a ng-click="activePage = 'notifications'" ng-class="{active: activePage == 'notifications'}" href="javascript:void(0);">Notifications</a>
+				<a ng-hide="user.role == 'User'" ng-click="activePage = 'notifications'" ng-class="{active: activePage == 'notifications'}" href="javascript:void(0);">Notifications</a>
 				<div class="divider"></div>
 				<a ng-click="activePage = 'socialconnect'" ng-class="{active: activePage == 'socialconnect'}" href="javascript:void(0);">Social connect</a>
 				<a ng-click="activePage = 'importcontacts'" ng-class="{active: activePage == 'importcontacts'}" href="javascript:void(0);">Import contacts</a>
@@ -29,6 +29,7 @@
 					<div class="settings-field-block">
 						<label>Email</label><input type="text" name="email" minlength="1" value="{{user.email}}" required>
 						<div class="clear"></div>
+						<div class="error">{{emailerror}}</div>
 					</div>
 
 					<div class="settings-field-block">
@@ -78,7 +79,7 @@
 
 					<div class="divider"></div>
 
-					<div class="settings-field-block">
+					<div class="settings-field-block" ng-if="user.havePassword">
 						<label>Current</label><input name="oldPassword" type="{{(oldPasswordShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="oldPassword" required>
 						<a href="javascript:void(0);" class="input-control" ng-click="oldPasswordShow = !oldPasswordShow">
 							<i class="material-icons">{{(oldPasswordShow) ? 'visibility_off' : 'visibility'}}</i>

@@ -83,8 +83,20 @@
 								<li ng-if="signupForm.name.$error.minlength">Name should be at least 6 symbols long</li>
 							</ul>
 						</div> -->
-						<input type="text" class="half" name="country" autocomplete="off" ng-model="signup.country.title" ng-model-options="{debounce: 300}" placeholder="Country"  ng-minlength="1" required>
-						<autosuggest ng-if="countries" suggestions="countries" view-title="title" ng-model="signup.country"></autosuggest>
+
+						<select class="half"
+							name="country"
+							chosen
+							data-placeholder-text-single="'Country'"
+							allow-single-deselect="false"
+							ng-model="signup.country"
+							ng-options="country as country.title for country in countries"
+						>
+							<option value=""></option>
+						</select>
+
+						<!-- <input type="text" class="half" name="country" autocomplete="off" ng-model="signup.country.title" ng-model-options="{debounce: 300}" placeholder="Country"  ng-minlength="1" required> -->
+						<!-- <autosuggest ng-if="countries" suggestions="countries" view-title="title" ng-model="signup.country"></autosuggest> -->
 						<input type="text" class="half" name="phone" ng-model="signup.phone" placeholder="Phone number" ng-minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" required>
 						<!-- <div class="field-tip" ng-class="{visible: ((!signupForm.phone.$valid && signupForm.phone.$touched) || !signupForm.country.$valid && signupForm.country.$touch)}">
 							<ul>

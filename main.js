@@ -106,11 +106,14 @@ global.getCategories = () => {
 }
 
 app.get('/static/categories', (req, res) => {
+	let {country} = req.query
+
 	let categories = getCategories()
 
 	models.Article.getAllLean((err, articles) => {
 		for (let article of articles) {
 			if (!article.author) continue
+			if (country && article.country != country) continue
 
 			for (let category of categories) {
 				if (article.category == category.title) {

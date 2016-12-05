@@ -232,23 +232,35 @@ angular.module('er.controllers', [])
 			categoriesListType = 'getForUser'
 		}
 
-		console.log(categoriesListType)
-		console.log($scope.chosenCountry)
-
 		fieldsListService[categoriesListType](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
-			for (var i in result) {
-				if (result[i].count == 0) continue
+			if (!$scope.categories || $scope.categories.length === 0) {
+				for (var i in result) {
+					if (result[i].count == 0) continue
 
-				result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+					result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+				}
+
+				result.unshift({
+					id: 0,
+					title: 'All'
+				})
+
+				$scope.categories = result
+				$scope.chosenCategory = result[0]
+			} else {
+				for (var i in result) {
+					var newCategory = result[i]
+
+					for (var j in $scope.categories) {
+						var oldCategory = $scope.categories[j]
+
+						if (oldCategory.id == newCategory.id) {
+							if (newCategory.count == 0) delete oldCategory.additional
+							else oldCategory.additional = numeral(newCategory.count).format('0a').toUpperCase()
+						}
+					}
+				}
 			}
-
-			result.unshift({
-				id: 0,
-				title: 'All'
-			})
-
-			$scope.categories = result
-			$scope.chosenCategory = result[0]
 		})
 	}
 

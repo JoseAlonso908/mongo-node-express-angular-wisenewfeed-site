@@ -129,10 +129,16 @@ angular.module('er.services', [])
 })
 .factory('fieldsListService', function ($http, $auth, $cookies) {
 	return {
-		get: function () {
+		get: function (country) {
+			var params = {}
+			if (country) {
+				params.country = country
+			}
+
 			return $http({
 				method: 'GET',
 				url: '/static/categories',
+				params: params,
 			}).then(function (result) {
 				return result.data
 			}, function (error) {

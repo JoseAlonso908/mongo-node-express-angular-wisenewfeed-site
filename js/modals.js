@@ -195,3 +195,13 @@ angular.module('er.modals', [])
 		})
 	}
 })
+.factory('reportModal', function (btfModal) {
+	return btfModal({
+		controller: 'reportModalController',
+		controllerAs: 'modal',
+		templateUrl: 'assets/views/modals/reported.htm',
+	})
+})
+.controller('reportModalController', function ($scope, $parent, reportModal) {
+	$scope.close = reportModal.deactivate
+})

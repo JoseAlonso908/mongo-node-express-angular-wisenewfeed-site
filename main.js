@@ -127,6 +127,7 @@ app.get('/static/categories', (req, res) => {
 	})
 })
 
+app.use(require('./routes/general'))
 app.use(require('./routes/user'))
 app.use('/article', require('./routes/article'))
 app.use('/follow', require('./routes/follow'))

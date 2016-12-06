@@ -1,16 +1,16 @@
-<div class="card feed-item hidden" ng-if="post.hidden">
+<div class="card feed-item hidden" ng-if="post.hidden && !post.muted && !post.blocked">
 	<div class="text">
-		This post is hidden. Click to <a href="javascript:void(0);" ng-click="unhide(post)">show</a> it.
+		This post is hidden. Click to <a href="javascript:void(0);" ng-click="unhide(post)">show it</a>.
 	</div>
 </div>
 
-<div class="card feed-item hidden" ng-if="post.muted">
+<!-- <div class="card feed-item hidden" ng-if="post.muted">
 	<div class="text">
 		This post is belongs to author who was muted by you.
 	</div>
-</div>
+</div> -->
 
-<div class="card feed-item" ng-if="!post.hidden && !post.muted">
+<div class="card feed-item" ng-if="!post.hidden && !post.muted && !post.blocked">
 	<avatar user="post.author"></avatar>
 
 	<!-- <div ng-if="post.shared">{{post | json}}</div> -->
@@ -37,8 +37,8 @@
 				<a href="javascript:void(0);" ng-click="hide(post)" ng-if="post.author._id != user._id">Hide this post</a>
 				<a href="javascript:void(0);" ng-click="unfollow(post)" ng-if="post.author._id != user._id && post.author.isFollowing">Unfollow this expert</a>
 				<a href="javascript:void(0);" ng-click="mute(post.author)" ng-if="post.author._id != user._id">Mute</a>
-				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Report</a>
-				<a href="javascript:void(0);" ng-if="post.author._id != user._id">Block</a>
+				<a href="javascript:void(0);" ng-click="report(post)" ng-if="post.author._id != user._id">Report</a>
+				<a href="javascript:void(0);" ng-click="block(post.author)" ng-if="post.author._id != user._id">Block</a>
 			</div>
 		</div>
 

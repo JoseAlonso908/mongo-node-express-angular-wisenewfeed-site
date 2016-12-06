@@ -67,6 +67,26 @@ var Model = function(mongoose) {
 					next(null, articles)
 				})
 			},
+			// Check author to be blocked for specific user
+			(articles, next) => {
+				if (!user) return next(null, articles)
+
+				let articleAuthorIds = articles.map((a) => a.author._id)
+
+				models.BlockedUser.isBlockedForUserMulti(articleAuthorIds, user, (err, blocked) => {
+					articles = articles.map((a) => {
+						a.blocked = false
+
+						if (blocked[a.author._id.toString()]) {
+							a.blocked = true
+						}
+
+						return a
+					})
+
+					next(null, articles)
+				})
+			},
 			// Remove articles whose author is not available
 			(articles, next) => {
 				articles = articles.filter((article) => {

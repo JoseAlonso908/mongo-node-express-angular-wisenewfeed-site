@@ -51,6 +51,7 @@ var Model = function(mongoose) {
 			liked 		: {type: Boolean, default: true},
 			reacted 	: {type: Boolean, default: true},
 		},
+		xp				: {type: Number, default: 0},
 	})
 
 	var Model = mongoose.model('user', schema);

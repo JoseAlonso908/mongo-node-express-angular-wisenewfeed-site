@@ -211,7 +211,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/aboutbox.htm',
 	}
 })
-.directive('feed', function ($rootScope, feedService, commentService) {
+.directive('feed', function ($rootScope, identityService, feedService, commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
@@ -248,7 +248,29 @@ angular.module('er.directives', [])
 				init()
 			})
 
+			identityService.mutedAuthors().then(function (authors) {
+				$scope.mutedAuthors = authors
+			})
+
 			var feedType = 'feed'
+
+			$rootScope.$on('updateFeedVisibleCount', function (event) {
+				updateVisibleCount($scope.feed)
+			})
+
+			var updateVisibleCount = function (feed) {
+				var count = 0
+
+				for (var i in feed) {
+					var article = feed[i]
+
+					if (/*!article.hidden && */!article.muted && !article.blocked) {
+						count++
+					}
+				}
+
+				$scope.visibleCount = count
+			}
 
 			var init = function () {
 				if (!$scope.user) {
@@ -261,6 +283,8 @@ angular.module('er.directives', [])
 					feedService.reacted($scope.id, $scope.type).then(function (feed) {
 						$scope.feedLoading = false
 						$scope.feed = feed
+
+						updateVisibleCount(feed)
 					})
 				} else {
 					$scope.feedLoading = true
@@ -275,8 +299,10 @@ angular.module('er.directives', [])
 
 						if (feed.length == 0 && feedType != 'all') {
 							feedType = 'all'
-							init()
+							return init()
 						}
+
+						updateVisibleCount(feed)
 					})
 				}
 			}
@@ -285,7 +311,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($rootScope, $timeout, postService, commentService, reactionsService, followService) {
+.directive('post', function ($rootScope, $timeout, identityService, postService, commentService, reactionsService, followService, reportModal) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -319,18 +345,40 @@ angular.module('er.directives', [])
 			$scope.hide = function (post) {
 				postService.hide(post._id).then(function (result) {
 					$scope.post.hidden = true
+					$rootScope.$emit('updateFeedVisibleCount')
 				})
 			}
 
 			$scope.unhide = function (post) {
 				postService.unhide(post._id).then(function (result) {
 					$scope.post.hidden = false
+					$rootScope.$emit('updateFeedVisibleCount')
 				})
 			}
 
+			$rootScope.$on('muteauthor', function (event, authorId) {
+				if ($scope.post.author._id == authorId) {
+					$scope.post.muted = true
+					$rootScope.$emit('updateFeedVisibleCount')
+				}
+			})
+
 			$scope.mute = function (author) {
 				postService.mute(author._id).then(function (result) {
-					$scope.post.muted = true
+					$rootScope.$emit('muteauthor', author._id)
+				})
+			}
+
+			$scope.block = function (author) {
+				identityService.block(author._id).then(function (result) {
+					$scope.post.blocked = true
+					$rootScope.$emit('updateFeedVisibleCount')
+				})
+			}
+
+			$scope.report = function (post) {
+				identityService.report(post._id).then(function (result) {
+					reportModal.activate({$parent: $scope})
 				})
 			}
 
@@ -580,13 +628,11 @@ angular.module('er.directives', [])
 				if (person.isFollowing) {
 					followService.unfollow(person._id).then(function (result) {
 						$scope.person.isFollowing = result
-						console.log('qwe')
 						$rootScope.$emit('update-follow')
 					})
 				} else {
 					followService.follow(person._id).then(function (result) {
 						$scope.person.isFollowing = result
-						console.log('qwe')
 						$rootScope.$emit('update-follow')
 					})
 				}
@@ -972,10 +1018,29 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('wallpaperblock', function () {
+.directive('wallpaperblock', function ($rootScope, followService) {
 	return {
 		restrict: 'E',
-		templateUrl: 'assets/views/directives/wallpaperblock.htm'
+		templateUrl: 'assets/views/directives/wallpaperblock.htm',
+		scope: {
+			user: '=',
+			profile: '=',
+		},
+		link: function ($scope, element, attr) {
+			$scope.follow = function (profile) {
+				followService.follow(profile._id).then(function (result) {
+					$scope.profile.isFollowing = result
+					$rootScope.$emit('update-follow')
+				})
+			}
+
+			$scope.unfollow = function (profile) {
+				followService.unfollow(profile._id).then(function (result) {
+					$scope.profile.isFollowing = result
+					$rootScope.$emit('update-follow')
+				})
+			}
+		},
 	}
 })
 .directive('profileinfo', function () {

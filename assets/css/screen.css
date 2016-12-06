@@ -3910,7 +3910,7 @@ a.small-icon, button.small-icon {
 }
 .chosen-container .chosen-results li em {
   font-style: normal;
-  text-decoration: underline;
+  font-weight: 900;
 }
 
 /* @end */

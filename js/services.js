@@ -1,3 +1,30 @@
+var __s = function ($http, $cookies, method, url, data) {
+	method = method.toUpperCase()
+
+	var query = {
+		method: method,
+		url: url,
+		headers: {
+			Authorization: 'Bearer ' + $cookies.get('token')
+		},
+	}
+
+	if (['GET', 'DELETE'].indexOf(method) === -1) {
+		query.data = data
+	} else {
+		query.params = data
+	}
+
+	// console.log(query)
+
+	return $http(query).then(function (result) {
+		return result.data
+	}, function (error) {
+		return error
+	})
+}
+
+
 angular.module('er.services', [])
 .factory('findAccountRequestService', function ($http, $q) {
 	return function (value) {
@@ -127,7 +154,7 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
-.factory('fieldsListService', function ($http, $auth, $cookies) {
+.factory('fieldsListService', function ($http, $cookies) {
 	return {
 		get: function (country) {
 			var params = {}
@@ -135,15 +162,7 @@ angular.module('er.services', [])
 				params.country = country
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/static/categories',
-				params: params,
-			}).then(function (result) {
-				return result.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'get', '/static/categories', params)
 		},
 		getForUser: function (country) {
 			var params = {}
@@ -151,18 +170,7 @@ angular.module('er.services', [])
 				params.country = country
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/user/categories',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				params: params
-			}).then(function (result) {
-				return result.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'get', '/user/categories', params)
 		},
 	}
 })
@@ -210,18 +218,9 @@ angular.module('er.services', [])
 			// 	return d.promise
 			// }
 
-			return $http({
-				method: 'GET',
-				url: '/user',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				params: {
-					id: id,
-				}
-			})
+			return __s($http, $cookies, 'get', '/user', {id: id})
 			.then(function (result) {
-				var user = result.data
+				var user = result
 
 				user.rating = user.rating || 1
 				user.color = user.color || 'bronze'
@@ -232,18 +231,6 @@ angular.module('er.services', [])
 				user.followers = user.followers || 0
 				user.following = user.following || 0
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-
-				// var avatarImg = new Image()
-				// avatarImg.onload = function () {
-				// 	angular.element(avatarImg).data('loaded', true)
-				// }
-				// avatarImg.src = user.avatar
-
-				// $timeout(function () {
-				// 	if (!angular.element(avatarImg).data('loaded')) {
-				// 		user.avatar = '/assets/images/avatar_placeholder.png'
-				// 	}
-				// }, 500)
 
 				if (user.role) {
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
@@ -269,14 +256,9 @@ angular.module('er.services', [])
 				// console.log(_user)
 				d.resolve(_user)
 			} else {
-				$http({
-					method: 'GET',
-					url: '/me' + ((clean) ? ('?x=' + Math.random()) : ''),
-					headers: {
-						Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-					}
-				}).then(function (response) {
-					var user = response.data
+				return __s($http, $cookies, 'get', '/me' + ((clean) ? ('?x=' + Math.random()) : ''))
+				.then(function (response) {
+					var user = response
 
 					user.rating = user.rating || 1
 					user.color = user.color || 'bronze'
@@ -284,17 +266,6 @@ angular.module('er.services', [])
 					user.followers = user.followers || 0
 					user.following = user.following || 0
 					user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-
-					// var avatarImg = new Image()
-					// avatarImg.onload = function () {
-					// 	angular.element(avatarImg).data('loaded', true)
-					// }
-					// avatarImg.src = user.avatar
-					// $timeout(function () {
-					// 	if (!angular.element(avatarImg).data('loaded')) {
-					// 		user.avatar = '/assets/images/avatar_placeholder.png'
-					// 	}
-					// }, 500)
 
 					if (user.role) {
 						user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
@@ -327,95 +298,36 @@ angular.module('er.services', [])
 			this.otherCache = {}
 		},
 		updateSettings: function (data) {
-			return $http({
-				method: 'POST',
-				url: '/profile/edit/settings',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				data: data
-			}).then(function (response) {
-				return response.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'post', '/profile/edit/settings', data)
 		},
 		isPasswordValid: function (password) {
-			return $http({
-				method: 'POST',
-				url: '/profile/settings/isPasswordValid',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				data: {
-					password: password
-				},
-			}).then(function (response) {
-				return response.data.valid
+			return __s($http, $cookies, 'post', '/profile/settings/isPasswordValid', {password: password}).then(function (response) {
+				return response.valid
 			}, function (error) {
 				return error
 			})
 		},
 		updatePassword: function (oldPassword, newPassword) {
-			return $http({
-				method: 'POST',
-				url: '/profile/settings/setPassword',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				data: {
-					oldPassword: oldPassword,
-					newPassword: newPassword,
-				},
-			}).then(function (response) {
-				return response.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'post', '/profile/settings/setPassword', {oldPassword: oldPassword, newPassword: newPassword})
 		},
 		disconnectSocial: function (provider) {
-			return $http({
-				method: 'POST',
-				url: '/profile/settings/disconnectsocial',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				data: {
-					provider: provider,
-				},
-			}).then(function (response) {
-				return response.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'post', '/profile/settings/disconnectsocial', {provider: provider})
 		},
 		updateNotifications: function (data) {
-			return $http({
-				method: 'POST',
-				url: '/profile/settings/notifications',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-				data: data,
-			}).then(function (response) {
-				return response.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'post', '/profile/settings/notifications', data)
 		},
 		mutedAuthors: function () {
-			return $http({
-				method: 'GET',
-				url: '/user/mutedauthors',
-				headers: {
-					Authorization: 'Bearer ' + ($auth.getToken() || $cookies.get('token'))
-				},
-			}).then(function (response) {
-				return response.data
-			}, function (error) {
-				return error
-			})
-		}
+			return __s($http, $cookies, 'get', '/user/mutedauthors')
+		},
+		block: function (user) {
+			return __s($http, $cookies, 'post', '/user/block', {user: user})
+		},
+		unblock: function (user) {
+			return __s($http, $cookies, 'post', '/user/unblock', {user: user})
+		},
+		report: function (article) {
+			return __s($http, $cookies, 'post', '/user/report', {article: article})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -562,37 +474,10 @@ angular.module('er.services', [])
 				params['country'] = country
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/article/all',
-				cache: false,
-				headers: {
-					'Authorization': $cookies.get('token') || 'guest',
-				},
-				params: params,
-			})
-			.then(function (result) {
-				var articles = result.data
-
-				return articles
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/all', params)
 		},
 		my: function () {
-			return $http({
-				method: 'GET',
-				url: '/article/my',
-				cache: false,
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/my', params)
 		},
 		feed: function (category, country, userId) {
 			var params = {}
@@ -608,60 +493,17 @@ angular.module('er.services', [])
 				params.country = country
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/article/feed?r=' + Math.random(),
-				cache: false,
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: params
-			})
-			.then(function (result) {
-				var articles = result.data
-				return articles
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/feed?r=' + Math.random(), params)
 		},
 		reacted: function (user, type) {
-			return $http({
-				method: 'GET',
-				url: '/article/feed/' + type,
-				cache: false,
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					user: user
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/feed/' + type, {user: user})
 		},
 	}
 })
 .factory('postService', function ($http, $cookies, $timeout) {
 	return {
 		get: function (id) {
-			return $http({
-				method: 'GET',
-				url: '/article/one',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					id: id
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/one', {id: id})
 		},
 		create: function (text, files) {
 			return new Promise(function (resolve, reject) {
@@ -704,20 +546,7 @@ angular.module('er.services', [])
 			})
 		},
 		remove: function (postId) {
-			return $http({
-				method: 'POST',
-				url: '/article/remove',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					article: postId
-				}
-			}).then(function (result) {
-				return result.data
-			}, function (error) {
-				return error
-			})
+			return __s($http, $cookies, 'post', '/article/remove', {article: postId})
 		},
 		queue: [],
 		delay: 1000,
@@ -750,18 +579,9 @@ angular.module('er.services', [])
 					postIds.push(item.postId)
 				}
 
-				return $http({
-					method: 'GET',
-					url: '/article/comment/get/few',
-					headers: {
-						'Authorization': $cookies.get('token'),
-					},
-					params: {
-						postIds: postIds.join(',')
-					}
-				})
+				return __s($http, $cookies, 'get', '/article/comment/get/few', {postIds: postIds.join(',')})
 				.then(function (result) {
-					var reactions = result.data
+					var reactions = result
 
 					for (var postId in reactions) {
 						var rs = reactions[postId]
@@ -782,89 +602,19 @@ angular.module('er.services', [])
 			return promise
 		},
 		getCommentsImmediate: function (postId) {
-			return $http({
-				method: 'GET',
-				url: '/article/comment/get',
-				cache: false,
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					postId: postId
-				}
-			}).then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/comment/get', {postId: postId})
 		},
 		hide: function (article) {
-			return $http({
-				method: 'POST',
-				url: '/article/hide',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					article: article
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/hide', {article: article})
 		},
 		unhide: function (article) {
-			return $http({
-				method: 'POST',
-				url: '/article/unhide',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					article: article
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/unhide', {article: article})
 		},
 		mute: function (author) {
-			return $http({
-				method: 'POST',
-				url: '/article/mute',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					author: author
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/mute', {author: author})
 		},
 		unmute: function (author) {
-			return $http({
-				method: 'POST',
-				url: '/article/unmute',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					author: author
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/unmute', {author: author})
 		},
 	}
 })
@@ -939,19 +689,8 @@ angular.module('er.services', [])
 					postIds.push(item.postId)
 				}
 
-				return $http({
-					method: 'GET',
-					url: '/article/reactions/few',
-					headers: {
-						'Authorization': $cookies.get('token'),
-					},
-					params: {
-						postIds: postIds.join(',')
-					}
-				})
-				.then(function (result) {
-					var reactions = result.data
-
+				return __s($http, $cookies, 'get', '/article/reactions/few', {postIds: postIds.join(',')})
+				.then(function (reactions) {
 					for (var postId in reactions) {
 						var rs = reactions[postId]
 
@@ -971,115 +710,44 @@ angular.module('er.services', [])
 			return promise
 		},
 		getImmediate: function (postId) {
-			return $http({
-				method: 'GET',
-				url: '/article/reactions',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					post: postId
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/reactions', {post: postId})
 		},
 		react: function (postId, type) {
-			return $http({
-				method: 'POST',
-				url: '/article/react',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					post: postId,
-					type: type
-				},
-			})
-			.then(function (result) {
-				return result
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/react', {post: postId, type: type})
 		},
 		unreact: function (postId, type) {
-			return $http({
-				method: 'DELETE',
-				url: '/article/react',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					post: postId,
-					type: type
-				},
-			})
-			.then(function (result) {
-				return result
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'delete', '/article/react', {post: postId, type: type})
 		},
 	}
 })
 .factory('followService', function ($http, $cookies, identityService) {
 	return {
 		isFollowing: function (following) {
-			return $http({
-				method: 'GET',
-				url: '/follow/isFollowing',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					following: following
-				},
-			})
+			return __s($http, $cookies, 'get', '/follow/isFollowing', {following: following})
 			.then(function (result) {
-				return result.data.isFollowing
+				return result.isFollowing
 			}, function (data, status) {
 				return data
 			})
 		},
 		follow: function (following) {
-			return $http({
-				method: 'POST',
-				url: '/follow/follow',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					following: following
-				},
-			})
+			return __s($http, $cookies, 'post', '/follow/follow', {following: following})
 			.then(function (result) {
 				// identityService._user.reactions.following++
 				// if (identityService.otherCache[following]) identityService.otherCache[following].reactions.followers++
 
-				return result.data.isFollowing
+				return result.isFollowing
 			}, function (data, status) {
 				return data
 			})
 		},
 		unfollow: function (following) {
-			return $http({
-				method: 'POST',
-				url: '/follow/unfollow',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					following: following
-				},
-			})
+			return __s($http, $cookies, 'post', '/follow/unfollow', {following: following})
 			.then(function (result) {
 				// identityService._user.reactions.following--
 				// if (identityService.otherCache[following]) identityService.otherCache[following].reactions.followers++
 
-				return result.data.isFollowing
+				return result.isFollowing
 			}, function (data, status) {
 				return data
 			})
@@ -1089,21 +757,9 @@ angular.module('er.services', [])
 				sort = sort.join('|')
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/follow/following',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					follower: follower,
-					skip: skip,
-					limit: limit,
-					sort: sort,
-				},
-			})
+			return __s($http, $cookies, 'get', '/follow/following', {follower: follower, skip: skip, limit: limit, sort: sort})
 			.then(function (result) {
-				return result.data.map(function (person) {
+				return result.map(function (person) {
 					return person.following
 				})
 			}, function (data, status) {
@@ -1115,21 +771,9 @@ angular.module('er.services', [])
 				sort = sort.join('|')
 			}
 
-			return $http({
-				method: 'GET',
-				url: '/follow/followers',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					following: following,
-					skip: skip,
-					limit: limit,
-					sort: sort,
-				},
-			})
+			return __s($http, $cookies, 'get', '/follow/followers', {following: following, skip: skip, limit: limit, sort: sort})
 			.then(function (result) {
-				return result.data.map(function (person) {
+				return result.map(function (person) {
 					var follower = person.follower
 					Object.assign(follower, {isFollowing: person.isFollowing})
 
@@ -1140,50 +784,22 @@ angular.module('er.services', [])
 			})
 		},
 		unread: function () {
-			return $http({
-				method: 'GET',
-				url: '/follow/unread',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
+			return __s($http, $cookies, 'get', '/follow/unread')
 			.then(function (result) {
-				return result.data.count
+				return result.count
 			}, function (data, status) {
 				return data
 			})
 		},
 		setReadForUser: function () {
-			return $http({
-				method: 'POST',
-				url: '/follow/setreadall',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/follow/setreadall')
 		},
 	}
 })
 .factory('piecesService', function ($http, $cookies) {
 	return {
 		get: function () {
-			return $http({
-				method: 'GET',
-				url: '/article/pieces',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/pieces')
 		},
 	}
 })
@@ -1220,19 +836,8 @@ angular.module('er.services', [])
 					commentIds.push(item.commentId)
 				}
 
-				return $http({
-					method: 'GET',
-					url: '/article/comment/reactions/few',
-					headers: {
-						'Authorization': $cookies.get('token'),
-					},
-					params: {
-						commentIds: commentIds.join(',')
-					}
-				})
-				.then(function (result) {
-					var reactions = result.data
-
+				return __s($http, $cookies, 'get', '/article/comment/reactions/few', {commentIds: commentIds.join(',')})
+				.then(function (reactions) {
 					for (var commentId in reactions) {
 						var rs = reactions[commentId]
 
@@ -1252,57 +857,13 @@ angular.module('er.services', [])
 			return promise
 		},
 		getImmediate: function (postId) {
-			return $http({
-				method: 'GET',
-				url: '/article/comment/reactions',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					comment: commentId
-				}
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/article/comment/reactions', {comment: commentId})
 		},
 		react: function (commentId, type) {
-			return $http({
-				method: 'POST',
-				url: '/article/comment/react',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					comment: commentId,
-					type: type
-				},
-			})
-			.then(function (result) {
-				return result
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/article/comment/react', {comment: commentId, type: type})
 		},
 		unreact: function (commentId, type) {
-			return $http({
-				method: 'DELETE',
-				url: '/article/comment/react',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: {
-					comment: commentId,
-					type: type
-				},
-			})
-			.then(function (result) {
-				return result
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'delete', '/article/comment/react', {comment: commentId, type: type})
 		},
 	}
 })
@@ -1349,12 +910,6 @@ angular.module('er.services', [])
 	return function (code) {
 		var d = $q.defer()
 
-		// $http.post('/auth/findaccount/signin', {code: code}).then(function (response) {
-		// 	d.resolve(response.data)
-		// }, function (error) {
-		// 	d.reject(error.data.message)
-		// })
-
 		var response = [
 			{id: 1, title: 'World News', count: 353478392},
 			{id: 2, title: 'Canada News', count: 12478392},
@@ -1372,48 +927,12 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
-.factory('groupedCountriesService', function ($http, $q) {
+.factory('groupedCountriesService', function ($http, $cookies, $q) {
 	return {
 		get: function () {
-			return $http({
-				method: 'GET',
-				url: '/static/countries/grouped',
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'get', '/static/countries/grouped')
 		}
 	}
-
-
-	// return function (code) {
-	// 	var d = $q.defer()
-
-	// 	// $http.post('/auth/findaccount/signin', {code: code}).then(function (response) {
-	// 	// 	d.resolve(response.data)
-	// 	// }, function (error) {
-	// 	// 	d.reject(error.data.message)
-	// 	// })
-
-	// 	var response = [
-	// 		{id: 1, title: 'North America', sub: [
-	// 			{id: 2, title: 'United States'},
-	// 			{id: 3, title: 'Canada'},
-	// 			{id: 4, title: 'Mexico'},
-	// 		]},
-	// 		{id: 5, title: 'Central & South America', sub: [
-	// 			{id: 6, title: 'Brazil'},
-	// 			{id: 7, title: 'Chile'},
-	// 			{id: 8, title: 'Argentina'},
-	// 		]}
-	// 	]
-
-	// 	d.resolve(response)
-
-	// 	return d.promise
-	// }
 })
 .factory('notificationService', function ($http, $cookies) {
 	return {
@@ -1421,99 +940,40 @@ angular.module('er.services', [])
 		get: function () {
 			var self = this
 
-			return $http({
-				method: 'GET',
-				url: '/n/get?r=' + Math.random(),
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
+			return __s($http, $cookies, 'get', '/n/get?r=' + Math.random())
 			.then(function (result) {
-				self.list = result.data
-				return result.data
+				self.list = result
+				return result
 			}, function (data, status) {
 				return data
 			})
 		},
 		setReadForUser: function () {
-			return $http({
-				method: 'POST',
-				url: '/n/setreadall',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-			})
-			.then(function (result) {
-				return result.data
-			}, function (data, status) {
-				return data
-			})
+			return __s($http, $cookies, 'post', '/n/setreadall')
 		},
-		// setRead: function (ids) {
-		// 	return $http({
-		// 		method: 'POST',
-		// 		url: '/n/setreadm',
-		// 		headers: {
-		// 			'Authorization': $cookies.get('token'),
-		// 		},
-		// 	})
-		// },
 	}
 })
 .factory('questionsService', function ($http, $cookies) {
 	return {
 		add: function (recipient, text) {
-			return $http({
-				method: 'POST',
-				url: '/questions/create',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					recipient: recipient,
-					text: text,
-				},
-			})
-			.then(function (result) {
-				return result.data
-			})
+			return __s($http, $cookies, 'post', '/questions/create', {recipient: recipient, text: text})
 		},
 		cancel: function (id) {
-			return $http({
-				method: 'POST',
-				url: '/questions/settype',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				data: {
-					question: id,
-					type: 'cancelled',
-				},
-			})
-			.then(function (result) {
-				return result.data
-			})
+			return __s($http, $cookies, 'post', '/questions/settype', {question: id, type: 'cancelled'})
 		},
 		list: [],
 		get: function (user, skip, limit) {
 			var self = this
-			var params = {}
 
+			var params = {}
 			if (user) params.user = user
 			if (skip) params.skip = skip
 			if (limit) params.limit = limit
 
-			return $http({
-				method: 'GET',
-				url: '/questions/all',
-				headers: {
-					'Authorization': $cookies.get('token'),
-				},
-				params: params,
-			})
+			return __s($http, $cookies, 'get', '/questions/all', params)
 			.then(function (result) {
-				self.list = result.data
-				return result.data
+				self.list = result
+				return result
 			})
 		}
 	}

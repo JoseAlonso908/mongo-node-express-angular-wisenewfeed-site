@@ -239,7 +239,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 							return cb()
 						}
 
-						models.Notification.create(recipientId, req.user._id, post, null, 'commenticomment', (err) => {
+						models.Notification.create(commenterId, req.user._id, post, null, 'commenticomment', (err) => {
 							if (!err) {
 								receivedNotificationsIds.push(commenterId.toString())
 							}

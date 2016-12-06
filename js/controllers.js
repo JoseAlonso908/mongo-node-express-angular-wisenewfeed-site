@@ -439,6 +439,8 @@ angular.module('er.controllers', [])
 	])
 })
 .controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
+	$scope.type = 'own'
+
 	async.parallel([
 		function (cb) {
 			identityService.getOther($routeParams.id).then(function (profile) {
@@ -454,11 +456,10 @@ angular.module('er.controllers', [])
 			identityService.get().then(function (user) {
 				$scope.user = user
 				cb()
-			}, function () {
-				cb()
-			})
+			}, cb)
 		}
-	])
+	], function () {
+	})
 
 	$scope.follow = function (user) {
 		followService.follow($scope.profile._id).then(function (result) {

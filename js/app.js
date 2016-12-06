@@ -92,9 +92,6 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 		var requireAuth = ['/my', '/settings']
 
 		identityService.get().then(function (user) {
-			console.log('-- user')
-			console.log(user)
-
 			if (!user) return
 
 			if (!user.phone || !user.email) {
@@ -109,8 +106,6 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 				$location.url('/start')
 			}
 		}, function (error) {
-			console.log('-- no user')
-			console.log(error)
 			if (requireAuth.indexOf(nextURI) > -1) {
 				console.log('Prevented to go to', nextURI)
 				event.preventDefault()

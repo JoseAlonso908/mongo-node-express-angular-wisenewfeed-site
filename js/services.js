@@ -254,11 +254,8 @@ angular.module('er.services', [])
 				// console.log(_user)
 				d.resolve(_user)
 			} else {
-				console.info('gettings from server')
 				return __s($http, $cookies, 'get', '/me' + ((clean) ? ('?x=' + Math.random()) : ''))
 				.then(function (response) {
-					console.log('SUCCESS')
-					console.log(response)
 					var user = response
 
 					user.rating = user.rating || 1
@@ -474,8 +471,11 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/article/all', params)
 		},
+		byUser: function (user) {
+			return __s($http, $cookies, 'get', '/article/byuser', {user: user})
+		},
 		my: function () {
-			return __s($http, $cookies, 'get', '/article/my', params)
+			return __s($http, $cookies, 'get', '/article/my')
 		},
 		feed: function (category, country, userId) {
 			var params = {}

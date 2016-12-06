@@ -397,7 +397,13 @@
 
 		.wallpaper-wrapper {
 			.rated-avatar-wrapper {
-				top: 142px;
+				width: 100px; height: 100px;
+				top: 92px;
+
+				.badge {
+					top: 75px;
+					left: 31px;
+				}
 			}
 
 			.buttons {
@@ -414,6 +420,10 @@
 			.wallpaper {
 				height: 170px;
 			}
+
+			.footer {
+				display: none;
+			}
 		}
 
 		.filters {
@@ -425,6 +435,8 @@
 		}
 
 		.content {
+			flex-wrap: wrap;
+
 			&.editing-profile {
 				.left {
 					display: block;
@@ -437,7 +449,25 @@
 			}
 
 			.left {
-				display: none;
+				width: 100% !important;
+				// display: none;
+
+				.show-collapsed-info {
+					display: block;
+				}
+
+				.collapsed-on-mobile {
+					display: none;
+					padding-bottom: 20px;
+
+					&.visible {
+						display: block;
+					}
+				}
+
+				.stats.mobile {
+					display: flex;
+				}
 			}
 
 			.middle {

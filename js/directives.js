@@ -277,7 +277,17 @@ angular.module('er.directives', [])
 					feedType = 'all'
 				}
 
-				if ($scope.type) {
+				if ($scope.type == 'own') {
+					$scope.feedLoading = true
+					$scope.feed = []
+
+					feedService.byUser($scope.id).then(function (feed) {
+						$scope.feedLoading = false
+						$scope.feed = feed
+
+						updateVisibleCount(feed)
+					})
+				} else if ($scope.type && $scope.type != 'own') {
 					$scope.feedLoading = true
 					$scope.feed = []
 					feedService.reacted($scope.id, $scope.type).then(function (feed) {
@@ -1023,6 +1033,7 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/wallpaperblock.htm',
 		scope: {
+			type: '=',
 			user: '=',
 			profile: '=',
 		},

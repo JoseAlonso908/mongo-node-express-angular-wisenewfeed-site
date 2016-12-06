@@ -80,6 +80,14 @@ router.get('/my', (req, res) => {
 	})
 })
 
+router.get('/byuser', (req, res) => {
+	let {user} = req.query
+
+	models.Article.getByUser(user, (err, articles) => {
+		res.send(articles)
+	})
+})
+
 router.get('/feed', (req, res) => {
 	let {category, country, start, limit} = req.query
 	let userId = req.query.userId || req.user._id

@@ -1845,6 +1845,68 @@ a.small-icon, button.small-icon {
 				}
 			}
 
+			.show-collapsed-info {
+				display: none; position: relative;
+				margin: 15px 0;
+				padding: 0 13px;
+				height: 36px;
+				background-color: $activeBlue;
+				border-radius: 4px;
+				border: none;
+				cursor: pointer;
+				text-align: center;
+				color: #ffffff;
+				font-weight: 900;
+				line-height: 36px;
+				font-size: 13px;
+
+				@include transition(background-color .2s);
+
+				&:hover {
+					background-color: darken($activeBlue, 10%);
+				}
+			}
+
+			.stats.mobile {
+				display: none;
+				justify-content: space-between;
+				margin-bottom: 15px;
+
+				a {
+					display: flex;
+					width: 20%;
+					padding: 5px 0;
+					justify-content: center;
+					align-items: center;
+					flex-wrap: wrap;
+
+					@include transition(background-color .2s);
+
+					&:hover, &:active {
+						background-color: #ffffff;
+					}
+
+					i {
+						font-size: 16px;
+						margin-bottom: 4px;
+					}
+
+					.value {
+						font-size: 13px;
+					}
+
+					i, .value {
+						width: 100%;
+						text-align: center;
+						color: $middleGrey;
+					}
+
+					.title {
+						display: none;
+					}
+				}
+			}
+
 			.user-profile-info {
 				.name {
 					margin-bottom: 10px;

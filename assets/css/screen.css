@@ -1756,6 +1756,9 @@ a.small-icon, button.small-icon {
   font-size: 13px;
   line-height: 20px;
 }
+#wrapper > .content .left .user-description-block .value.tinted {
+  color: rgba(130, 137, 143, 0.6);
+}
 #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before {
   content: 'delete_forever' !important;
 }

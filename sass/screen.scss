@@ -1912,6 +1912,10 @@ a.small-icon, button.small-icon {
 					color: $middleGrey;
 					font-size: 13px;
 					line-height: 20px;
+
+					&.tinted {
+						color: rgba($middleGrey, .6);
+					}
 				}
 
 				&.editing {

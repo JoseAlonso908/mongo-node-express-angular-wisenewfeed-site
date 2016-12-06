@@ -15,13 +15,16 @@
 	</div>
 </div>
 
-<div class="user-description-block" ng-if="profile && profile.intro">
+<div class="user-description-block" ng-if="profile">
 	<div class="title">Intro</div>
-	<div class="value">{{profile.intro}}</div>
+	<div class="value" ng-show="profile.intro.length > 0">{{profile.intro}}</div>
+	<div class="value tinted" ng-show="!profile.intro || profile.intro.length == 0">Not specified</div>
 </div>
 
-<div class="user-description-block" ng-if="profile && profile.experience.length > 0">
+<div class="user-description-block" ng-if="profile">
 	<div class="title">Experience</div>
+	<div class="value tinted" ng-show="!profile.experience || profile.experience.length == 0">Not specified</div>
+
 	<div class="experience-block" ng-repeat="experience in profile.experience">
 		<div class="value">{{experience.place}}</div>
 		<div class="value">{{experience.time}}</div>
@@ -29,13 +32,18 @@
 	</div>
 </div>
 
-<div class="user-description-block" ng-if="profile && profile.certificates.length > 0">
+<div class="user-description-block" ng-if="profile">
 	<div class="title">Certificates</div>
+	<div class="value tinted" ng-show="!profile.certificates || profile.certificates.length == 0">Not specified</div>
+
 	<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificates">{{cert.filename}}</a>
 </div>
 
-<div class="user-description-block" ng-if="profile && profile.contact && (profile.contact.email || profile.contact.phone || profile.contact.skype || profile.contact.linkedin || profile.contact.fb)">
+<div class="user-description-block" ng-if="profile">
 	<div class="title">Contacts</div>
+
+	<div class="value tinted" ng-show="!profile.contact.email && !profile.contact.phone && !profile.contact.skype && !profile.contact.linkedin && !profile.contact.fb">Not specified</div>
+
 	<div class="address-element email" ng-if="profile.contact.email">{{profile.contact.email}}</div>
 	<div class="address-element phone" ng-if="profile.contact.phone">{{profile.contact.phone}}</div>
 	<div class="address-element skype" ng-if="profile.contact.skype">{{profile.contact.skype}}</div>
@@ -43,8 +51,10 @@
 	<a ng-href="{{profile.contact.fb}}" target="_blank" class="address-element fb" ng-if="profile.contact.fb">{{profile.contact.fb}}</a>
 </div>
 
-<div class="user-description-block" ng-if="profile && profile.downloads.length > 0">
+<div class="user-description-block" ng-if="profile">
 	<div class="title">Downloads</div>
+	<div class="value tinted" ng-show="!profile.downloads || profile.downloads.length == 0">Not specified</div>
+
 	<a href="{{file.filepath}}" target="_blank" class="file-download" ng-repeat="file in profile.downloads">{{file.filename}}</a>
 </div>
 

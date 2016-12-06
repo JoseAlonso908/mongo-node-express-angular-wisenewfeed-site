@@ -19,8 +19,6 @@ var __s = function ($http, $cookies, method, url, data) {
 
 	return $http(query).then(function (result) {
 		return result.data
-	}, function (error) {
-		return error
 	})
 }
 
@@ -256,8 +254,11 @@ angular.module('er.services', [])
 				// console.log(_user)
 				d.resolve(_user)
 			} else {
+				console.info('gettings from server')
 				return __s($http, $cookies, 'get', '/me' + ((clean) ? ('?x=' + Math.random()) : ''))
 				.then(function (response) {
+					console.log('SUCCESS')
+					console.log(response)
 					var user = response
 
 					user.rating = user.rating || 1
@@ -285,9 +286,6 @@ angular.module('er.services', [])
 
 					d.resolve(user)
 					return user
-				}, function (error) {
-					d.reject(error.message)
-					return error
 				})
 			}
 

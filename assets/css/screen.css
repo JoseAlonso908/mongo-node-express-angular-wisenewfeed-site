@@ -2394,6 +2394,7 @@ a.small-icon, button.small-icon {
 #landing-wrapper {
   width: 100%;
   height: 100%;
+  z-index: 101;
 }
 #landing-wrapper #header-wrapper {
   position: relative;

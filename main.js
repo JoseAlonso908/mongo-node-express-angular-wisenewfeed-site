@@ -78,8 +78,11 @@ app.get('/static/countries/grouped', (req, res) => {
 app.get('/static/countries', (req, res) => {
 	let countryPhoneCodeList = []
 
+	console.log(countriesList.countries)
+
 	for (let code in countriesList.countries) {
 		let item = countriesList.countries[code]
+		if (!item.phone) continue
 
 		countryPhoneCodeList.push({
 			title: `${item.name} +${item.phone}`,

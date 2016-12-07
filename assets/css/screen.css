@@ -1779,6 +1779,7 @@ a.small-icon, button.small-icon {
   text-align: center;
 }
 #wrapper > .content .left .user-profile-info .position {
+  margin-bottom: 15px;
   font-size: 13px;
   color: #82898f;
   text-align: center;

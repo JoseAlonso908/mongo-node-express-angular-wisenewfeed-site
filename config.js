@@ -20,5 +20,21 @@ module.exports = {
 		'development': {
 			DSN: 'mongodb://lp:w2eVt1puhb@wlab.tech/expertreaction'
 		}
-	}
+	},
+	EXP_REWARDS: {
+		POST: {
+			create: 10,
+			like: 25,
+			share: 40,
+			react: 30,
+		},
+		COMMENT: {
+			create: 5,
+			like: 15,
+		},
+		FOLLOW: {
+			following: 5,
+			follower: 50,
+		},
+	},
 }

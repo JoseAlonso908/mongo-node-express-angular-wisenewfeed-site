@@ -1,7 +1,8 @@
 const 	express = require('express'),
 		multer = require('multer'),
 		path = require('path'),
-		async = require('async')
+		async = require('async'),
+		config = require('./../config'),
 
 let tempUploads = multer({dest: 'temp/'})
 let router = express.Router()
@@ -347,9 +348,16 @@ router.post('/react', (req, res) => {
 						cb()
 					})
 				}, (err) => {
-					cb()
+					cb(null, postAuthor)
 				})
 			})
+		},
+		(postAuthor, cb) => {
+			if (type != 'dislike') {
+				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST[type], post, null, type, cb)
+			} else {
+				cb()
+			}
 		},
 	], (err) => {
 		models.PostReaction.react(req.user._id, post, type, (err, result) => {
@@ -399,9 +407,12 @@ router.post('/comment/react', (req, res) => {
 				})
 			},
 			(author, cb) => {
-				models.Notification.create(author, req.user._id, null, comment, type, () => {
-					cb()
+				models.Notification.create(author, req.user._id, null, comment, type, (err, result) => {
+					cb(err, author)
 				})
+			},
+			(author, cb) => {
+				models.ExperienceLog.award(author, config.EXP_REWARDS.POST[type], post, null, type, cb)
 			},
 		], (err) => {
 			if (err) res.status(400).send(err)

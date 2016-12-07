@@ -24,7 +24,7 @@
 					<!-- <input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name"> -->
 					<div class="name">{{user.name}}</div>
 					<div class="position">{{user.role}}</div>
-					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" ng-required="true" name="title" ng-model="user.title">
+					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" name="title" ng-model="user.title">
 
 					<div class="rating-wrapper" ng-if="user.likes_percentage">
 						<i class="material-icons like">thumb_up</i>
@@ -39,7 +39,7 @@
 
 				<div class="user-description-block">
 					<div class="title">Intro</div>
-					<textarea class="edit-profile-input" ng-required="true" name="intro" ng-model="user.intro"></textarea>
+					<textarea class="edit-profile-input" name="intro" ng-model="user.intro"></textarea>
 				</div>
 
 				<div class="user-description-block">

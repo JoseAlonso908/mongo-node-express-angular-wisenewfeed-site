@@ -26,24 +26,14 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('experiencelog', schema);
 
 	return {
-		award: (user, reward, post, comment, type) => {
-			
-		},
+		award: (user, reward, post, comment, type, callback) => {
+			user = MOI(user)
+			post = MOI(post)
+			comment = MOI(comment)
 
-		create: (to, from, post, comment, type, callback) => {
-			if (typeof to !== 'object') to = mongoose.Types.ObjectId(to)
-			if (typeof from !== 'object') from = mongoose.Types.ObjectId(from)
-			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
-			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
-
-			// Don't let notification to be sent to same user who made it
-			if (to.toString() === from.toString()) {
-				return callback()
-			}
-
-			let n = new Model()
-			Object.assign(n, {to, from, post, comment, type})
-			n.save(callback)
+			let log = new Model()
+			Object.assign(log, {user, reward, post, comment, type})
+			log.save(callback)
 		},
 	}
 }

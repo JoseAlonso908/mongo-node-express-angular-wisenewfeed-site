@@ -40,8 +40,10 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		}
 	}
 
-	models.Article.create(req.user._id, req.user.country, req.user.field, text, filenames, () => {
-		res.send({ok: true})
+	models.Article.create(req.user._id, req.user.country, req.user.field, text, filenames, (err, article) => {
+		models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
+			res.send({ok: true})
+		})
 	})
 })
 
@@ -256,9 +258,15 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 							cb()
 						})
 					}, (err) => {
-						cb()
+						cb(err, postAuthor)
 					})
 				})
+			},
+			(postAuthor, cb) => {
+				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, post, null, 'comment', cb)
+			},
+			(postAuthor, cb) => {
+				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, post, null, 'comment', cb)
 			},
 		], (err) => {
 			res.send({ok: true})
@@ -412,10 +420,11 @@ router.post('/comment/react', (req, res) => {
 				})
 			},
 			(author, cb) => {
-				models.ExperienceLog.award(author, config.EXP_REWARDS.POST.react, null, comment, 'comment', cb)
-			},
-			(cb) => {
-				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, null, comment, 'comment', cb)
+				if (type != 'dislike') {
+					models.ExperienceLog.award(author, config.EXP_REWARDS.COMMENT[type], null, comment, type, cb)
+				} else {
+					cb()
+				}
 			},
 		], (err) => {
 			if (err) res.status(400).send(err)

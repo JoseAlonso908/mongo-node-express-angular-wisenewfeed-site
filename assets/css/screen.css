@@ -199,7 +199,7 @@ html, body {
   height: 100%;
   font-family: 'Roboto', sans-serif;
 }
-html input, html textarea, body input, body textarea {
+html button, html input, html textarea, body button, body input, body textarea {
   font-family: 'Roboto', sans-serif;
 }
 html div[ng-view], body div[ng-view] {

@@ -17,7 +17,7 @@ var Model = function(mongoose) {
 		type		: {
 			type: String,
 			enum: [
-				'like', 'dislike', 'share', 'comment', 'follow',
+				'create', 'like', 'dislike', 'share', 'comment', 'follow',
 			],
 		},
 		createdAt	: {type: Date, default: Date.now},
@@ -33,7 +33,12 @@ var Model = function(mongoose) {
 
 			let log = new Model()
 			Object.assign(log, {user, reward, post, comment, type})
-			log.save(callback)
+			log.save((err, result) => {
+				models.User.findById(user, (err, user) => {
+					user.xp += reward
+					user.save(callback)
+				})
+			})
 		},
 	}
 }

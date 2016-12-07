@@ -1,3 +1,5 @@
+const async = require('async')
+
 var Model = function(mongoose) {
 	var schema = new mongoose.Schema({
 		ObjectId	: mongoose.Schema.ObjectId,
@@ -27,12 +29,36 @@ var Model = function(mongoose) {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
 
-			Model.findOne({author, comment, type}).lean().exec((err, existingReaction) => {
-				if (!existingReaction) {
-					let reaction = new Model()
-					Object.assign(reaction, {author, comment, type})
-					reaction.save(callback)
-				} else callback()
+			Model.find({author, comment}).lean().exec((err, existingReactions) => {
+				let sameTypeExist = false,
+					oppositeReaction
+
+				for (let reaction of existingReactions) {
+					if ((type == 'like' && reaction.type == 'dislike') || (type == 'dislike' && reaction.type == 'like')) {
+						oppositeReaction = reaction
+					}
+
+					if (reaction.type == type) {
+						sameTypeExist = true
+					}
+				}
+
+				async.series([
+					(callback) => {
+						if (oppositeReaction) {
+							Model.remove({_id: MOI(oppositeReaction._id)}, callback)
+						} else callback()
+					},
+					(callback) => {
+						if (!sameTypeExist) {
+							let reaction = new Model()
+							Object.assign(reaction, {author, comment, type})
+							reaction.save(callback)
+						} else return callback()
+					}
+				], (err) => {
+					callback()
+				})
 			})
 		},
 

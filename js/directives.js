@@ -456,11 +456,18 @@ angular.module('er.directives', [])
 				var action = 'react'
 				if (unreact) action = 'unreact'
 
+				$scope.post.youdid[type] = (action == 'react')
+				if (type == 'like' && $scope.post.youdid.dislike) {
+					$scope.post.youdid.dislike = false
+				} else if (type == 'dislike' && $scope.post.youdid.like) {
+					$scope.post.youdid.like = false
+				}
+
 				reactionsService[action](post._id, type).then(function (result) {
-					$scope.$emit('reloadreactions', post._id)
+					$rootScope.$emit('reloadreactions', post._id)
 				}, function (error) {
-					console.log('Reaction failed')
-					console.log(error)
+					console.error('Reaction failed')
+					console.error(error)
 				})
 			}
 
@@ -525,7 +532,7 @@ angular.module('er.directives', [])
 
 			init()
 
-			$scope.$parent.$on('reloadreactions', function (event, postId) {
+			$rootScope.$on('reloadreactions', function (event, postId) {
 				if (postId != $scope.post._id) return
 				init()
 			})
@@ -578,8 +585,8 @@ angular.module('er.directives', [])
 
 					var reactions = reactionInfo.reactions
 
-					reactions.likes = numeral(reactions.likes).format('0a').toUpperCase()
-					reactions.dislikes = numeral(reactions.dislikes).format('0a').toUpperCase()
+					// reactions.likes = numeral(reactions.likes).format('0a').toUpperCase()
+					// reactions.dislikes = numeral(reactions.dislikes).format('0a').toUpperCase()
 
 					$scope.reactions = reactions
 					$scope.$apply()
@@ -590,17 +597,32 @@ angular.module('er.directives', [])
 
 			init()
 
-			$scope.$parent.$on('reloadcommentreactions', function (event, commentId) {
+			$rootScope.$on('reloadcommentreactions', function (event, commentId) {
 				if (commentId != $scope.comment._id) return
 				init()
 			})
+
+			console.log($scope.comment)
 
 			$scope.react = function (comment, type, unreact) {
 				var action = 'react'
 				if (unreact) action = 'unreact'
 
+				$scope.comment.youdid[type] = (action == 'react')
+				console.log($scope.reactions[type + 's'])
+				$scope.reactions[type + 's'] += (action == 'react') ? 1 : -1
+				console.log($scope.reactions[type + 's'])
+
+				if (type == 'like' && $scope.comment.youdid.dislike) {
+					$scope.comment.youdid.dislike = false
+					$scope.reactions.dislikes--
+				} else if (type == 'dislike' && $scope.comment.youdid.like) {
+					$scope.comment.youdid.like = false
+					$scope.reactions.likes--
+				}
+
 				commentReactionsService[action](comment._id, type).then(function (result) {
-					$scope.$emit('reloadcommentreactions', comment._id)
+					$rootScope.$emit('reloadcommentreactions', comment._id)
 				}, function (error) {
 					console.log('Reaction failed')
 					console.log(error)

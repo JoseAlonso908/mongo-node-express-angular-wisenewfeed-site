@@ -24,6 +24,30 @@ var __s = function ($http, $cookies, method, url, data) {
 
 
 angular.module('er.services', [])
+.factory('experienceLevelService', function () {
+	// Experience needed to complete 1 level
+	var baseXP = 50
+
+	var getLevelByXP = function (xp) {
+		var level = 0,
+			xpPassed = 0
+
+		while (xpPassed < xp) {
+			if (xpPassed == 0) {
+				xpPassed = baseXP
+			} else {
+				xpPassed *= 1.5
+			}
+
+			level++
+		}
+
+		console.log(xpPassed)
+		return level
+	}
+
+	return getLevelByXP
+})
 .factory('findAccountRequestService', function ($http, $q) {
 	return function (value) {
 		var d = $q.defer()

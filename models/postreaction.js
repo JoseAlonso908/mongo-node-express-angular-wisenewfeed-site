@@ -50,7 +50,7 @@ var Model = function(mongoose) {
 				async.series([
 					(callback) => {
 						if (oppositeReaction) {
-							Model.remove({_id: mongoose.Types.ObjectId(oppositeReaction._id)}, callback)
+							Model.remove({_id: MOI(oppositeReaction._id)}, callback)
 						} else callback()
 					},
 					(callback) => {

@@ -409,7 +409,7 @@ angular.module('er.directives', [])
 				commentService.add(post._id, post.commentText, fileObjects).then(function () {
 					post.commentText = ''
 					$scope.files = []
-					$scope.$emit('reloadcomments', post._id)
+					$rootScope.$emit('reloadcomments', post._id)
 					$scope.loading = false
 				}, function () {
 					$scope.loading = false
@@ -552,7 +552,7 @@ angular.module('er.directives', [])
 
 			$scope.comments = []
 
-			$scope.$parent.$on('reloadcomments', function (e, args) {
+			$rootScope.$on('reloadcomments', function (e, args) {
 				init()
 			})
 

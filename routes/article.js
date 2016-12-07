@@ -263,10 +263,14 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 				})
 			},
 			(postAuthor, cb) => {
-				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, post, null, 'comment', cb)
+				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, post, null, 'comment', () => {
+					cb()
+				})
 			},
-			(postAuthor, cb) => {
-				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, post, null, 'comment', cb)
+			(cb) => {
+				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, post, null, 'comment', () => {
+					cb()
+				})
 			},
 		], (err) => {
 			res.send({ok: true})

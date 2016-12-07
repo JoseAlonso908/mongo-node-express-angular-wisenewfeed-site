@@ -2,7 +2,7 @@ const 	express = require('express'),
 		multer = require('multer'),
 		path = require('path'),
 		async = require('async'),
-		config = require('./../config'),
+		config = require('./../config')
 
 let tempUploads = multer({dest: 'temp/'})
 let router = express.Router()
@@ -412,7 +412,10 @@ router.post('/comment/react', (req, res) => {
 				})
 			},
 			(author, cb) => {
-				models.ExperienceLog.award(author, config.EXP_REWARDS.POST[type], post, null, type, cb)
+				models.ExperienceLog.award(author, config.EXP_REWARDS.POST.react, null, comment, 'comment', cb)
+			},
+			(cb) => {
+				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, null, comment, 'comment', cb)
 			},
 		], (err) => {
 			if (err) res.status(400).send(err)

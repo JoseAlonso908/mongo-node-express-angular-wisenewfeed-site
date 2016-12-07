@@ -181,10 +181,10 @@ router.post('/profile/edit/settings', (req, res) => {
 
 router.post('/profile/edit/profile', tempUploads.single('file'), (req, res) => {
 	let user = req.user
-	let {token, contact, experience, intro, name, position} = req.body
+	let {token, contact, experience, intro, name, title} = req.body
 
 	if (user) {
-		models.User.updateProfile(user._id, contact, experience, intro, name, position, () => {
+		models.User.updateProfile(user._id, contact, experience, intro, name, title, () => {
 			res.send({ok: true})
 		})
 	} else res.status(400).send({message: 'Invalid token'})
@@ -307,6 +307,15 @@ router.post('/user/report', (req, res) => {
 	models.Report.report(article, user._id, (err, result) => {
 		if (err) res.status(400).send(err)
 		else res.send({ok: true})
+	})
+})
+
+router.get('/user/images', (req, res) => {
+	let {user} = req.query
+
+	models.Article.getImagesByUser(user, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send(result)
 	})
 })
 

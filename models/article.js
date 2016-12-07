@@ -185,8 +185,25 @@ var Model = function(mongoose) {
 
 		getByUser: (author, callback) => {
 			author = MOI(author)
-			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec((err, articles) => {
+			Model.find({author}).select('-__v').populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
+			})
+		},
+
+		getImagesByUser: (author, callback) => {
+			author = MOI(author)
+			Model.find({author}).select('images').lean().exec((err, articles) => {
+				let images = []
+				articles.forEach((a) => {
+					images = images.concat(a.images)
+				})
+
+				callback(err, images)
 			})
 		},
 

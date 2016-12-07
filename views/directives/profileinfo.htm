@@ -1,7 +1,7 @@
 <div class="user-profile-info" ng-if="profile">
 	<div class="info">
 		<div class="name">{{profile.name}}</div>
-		<div class="position">{{profile.role}}</div>
+		<div class="position">{{profile.title}}</div>
 	</div>
 
 	<div class="rating-wrapper" ng-if="profile.likes_percentage">
@@ -61,11 +61,11 @@
 		<a href="{{file.filepath}}" target="_blank" class="file-download" ng-repeat="file in profile.downloads">{{file.filename}}</a>
 	</div>
 
-	<div class="user-description-block" ng-if="profile && profile.photos">
+	<div class="user-description-block" ng-if="profile && images && images.length > 0">
 		<div class="title">Photos</div>
 		<div class="photos">
-			<div class="photo" ng-class="{empty: photo.url === ''}" style="background-image: url('{{photo.url}}');" ng-repeat="photo in profile.randomPhotos"></div>
-			<div class="other-photos" ng-if="profile.photos.length > 8">+{{profile.photos.length - 8}}</div>
+			<div class="photo" ng-class="{empty: image === ''}" style="background-image: url('{{image}}');" ng-repeat="image in images | limitTo: 8"></div>
+			<div class="other-photos" ng-if="images.length > 8">+{{images.length - 8}}</div>
 		</div>
 	</div>
 </div>

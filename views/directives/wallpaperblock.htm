@@ -1,5 +1,5 @@
 <div class="wallpaper-wrapper">
-	<bigratedavatar user="profile" ng-show="profile"></bigratedavatar>
+	<bigratedavatar user="profile" ng-if="profile"></bigratedavatar>
 
 	<div ng-show="user && profile && user.role != 'User'">
 		<div class="buttons narrow" ng-hide="user._id == profile._id">

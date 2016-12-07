@@ -811,7 +811,8 @@ angular.module('er.directives', [])
 			var borderWidth = 4
 
 			// Get user XP in radians
-			var radsXP = ($rootScope.user.xp / 100 * 2) + 1.5
+			if (!$scope.user.xp) return
+			var radsXP = ($scope.user.xp / 100 * 2) + 1.5
 
 			ctx.lineWidth = borderWidth
 			ctx.strokeStyle = '#43abe7'
@@ -885,7 +886,7 @@ angular.module('er.directives', [])
 				body.append(backdrop)
 
 				var closeLightbox = function (e) {
-					backdrop.remove({})
+					backdrop.remove()
 				}
 
 				backdrop.on('click', closeLightbox)
@@ -1076,9 +1077,17 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('profileinfo', function () {
+.directive('profileinfo', function (identityService) {
 	return {
 		restrict: 'E',
-		templateUrl: 'assets/views/directives/profileinfo.htm'
+		templateUrl: 'assets/views/directives/profileinfo.htm',
+		scope: {
+			profile: '=',
+		},
+		link: function ($scope, element, attr) {
+			identityService.images($scope.profile._id).then(function (images) {
+				$scope.images = images
+			})
+		},
 	}
 })

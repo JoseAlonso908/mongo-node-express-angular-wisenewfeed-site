@@ -163,8 +163,8 @@ angular.module('er.controllers', [])
 	$scope.signup.phone = '+' + $scope.signup.country.code + $scope.signup.phone
 	$scope.signup.country = $scope.signup.country.country
 
-	$scope.extra = {company: '', field: ''}
-	$scope.extraError = {company: '', field: ''}
+	$scope.extra = {title: '', company: '', field: ''}
+	$scope.extraError = {title: '', company: '', field: ''}
 
 	$scope.doSignup = function (role) {
 		var roles = ['expert', 'journalist', 'user']
@@ -186,6 +186,7 @@ angular.module('er.controllers', [])
 			if (hasErrors) return false
 			else {
 				Object.assign($scope.signup, {
+					title: $scope.extra.title,
 					company: $scope.extra.company,
 					field: $scope.extra.field
 				})
@@ -486,7 +487,8 @@ angular.module('er.controllers', [])
 
 		if ($scope.profileForm.$valid) {
 			$scope.saving = true
-			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name, $scope.user.position).then(function () {
+			console.log($scope.user)
+			updateProfileService($scope.user.contact, $scope.user.experience, $scope.user.intro, $scope.user.name, $scope.user.title).then(function () {
 				identityService.get(true).then(function (user) {
 					$scope.user = user
 					$scope.saving = false

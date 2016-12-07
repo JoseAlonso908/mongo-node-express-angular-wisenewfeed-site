@@ -28,25 +28,33 @@ angular.module('er.services', [])
 	// Experience needed to complete 1 level
 	var baseXP = 50
 
-	var getLevelByXP = function (xp) {
-		var level = 0,
-			xpPassed = 0
+	return {
+		getLevelInfoByXP: function (xp) {
+			var level = 0,
+				xpPassed = 0,
+				prevXpPassed = 0
 
-		while (xpPassed < xp) {
-			if (xpPassed == 0) {
-				xpPassed = baseXP
-			} else {
-				xpPassed *= 1.5
+			while (xpPassed < xp) {
+				if (xpPassed == 0) {
+					xpPassed = baseXP
+				} else {
+					xpPassed *= 1.5
+				}
+
+				level++
+
+				if (xpPassed > xp) break
+
+				prevXpPassed = xpPassed
 			}
 
-			level++
-		}
-
-		console.log(xpPassed)
-		return level
+			return {
+				level: level,
+				prevLevelXp: prevXpPassed,
+				nextLevelXp: xpPassed,
+			}
+		},
 	}
-
-	return getLevelByXP
 })
 .factory('findAccountRequestService', function ($http, $q) {
 	return function (value) {
@@ -197,7 +205,7 @@ angular.module('er.services', [])
 	}
 })
 .factory('updateProfileService', function ($http, $cookies) {
-	return function (contact, experience, intro, name, position) {
+	return function (contact, experience, intro, name, title) {
 		return new Promise(function (resolve, reject) {
 			$http({
 				method: 'POST',
@@ -208,7 +216,7 @@ angular.module('er.services', [])
 					experience: experience,
 					intro: intro,
 					name: name,
-					position: position,
+					title: title,
 				},
 			})
 			.success(function (data) {
@@ -346,6 +354,9 @@ angular.module('er.services', [])
 		},
 		report: function (article) {
 			return __s($http, $cookies, 'post', '/user/report', {article: article})
+		},
+		images: function (user) {
+			return __s($http, $cookies, 'get', '/user/images', {user: user})
 		},
 	}
 })

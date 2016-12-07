@@ -5,6 +5,7 @@
 	<div class="info">
 		<div class="name dark-bold">{{user.name}}</div>
 		<div class="status">{{user.role}}</div>
+		<a href="#!/person/{{user._id}}">View profile</a>
 	</div>
 
 	<div ng-if="user.role == 'User'" class="divider"></div>

@@ -461,10 +461,20 @@ a.small-icon, button.small-icon {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+#top-bar-background {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #E2E8ED;
+  z-index: 1;
+}
+
 #wrapper {
   width: 1180px;
   height: 100%;
   margin: 0 auto 0;
+  z-index: 100;
 }
 #wrapper .left.inactive, #wrapper .right.inactive, #wrapper .middle.inactive {
   opacity: .5;
@@ -476,12 +486,17 @@ a.small-icon, button.small-icon {
   -webkit-filter: blur(10px);
   filter: blur(10px);
 }
+#wrapper topbar, #wrapper #top-bar {
+  z-index: 101;
+}
 #wrapper #top-bar {
   display: flex;
+  position: relative;
   justify-content: space-between;
   width: 100%;
-  height: 90px;
-  padding-top: 27px;
+  height: 70px;
+  padding-top: 17px;
+  margin-bottom: 20px;
 }
 #wrapper #top-bar #logo {
   display: block;
@@ -1946,9 +1961,6 @@ a.small-icon, button.small-icon {
   background-size: cover;
   border-radius: 2px;
 }
-#wrapper > .content .left .photos .photo:not(.empty) {
-  animation: pulsephoto .4s linear infinite;
-}
 @keyframes pulsephoto {
   0% {
     background-color: #b0bec8;
@@ -2865,7 +2877,7 @@ a.small-icon, button.small-icon {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 200;
 }
 .backdrop .popup {
   position: relative;
@@ -2874,7 +2886,7 @@ a.small-icon, button.small-icon {
   box-shadow: 0 3px 6px rgba(130, 137, 143, 0.5);
   border-radius: 4px;
   background-color: #ffffff;
-  z-index: 11;
+  z-index: 201;
   box-sizing: border-box;
 }
 .backdrop .popup .title {
@@ -2989,7 +3001,7 @@ a.small-icon, button.small-icon {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 200;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 50px;
   box-sizing: border-box;

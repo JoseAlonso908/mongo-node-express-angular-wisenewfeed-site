@@ -94,6 +94,7 @@ app.get('/static/countries', (req, res) => {
 
 global.getCategories = () => {
 	return [
+		{id: 0, title: 'All', tag: '', count: 0},
 		{id: 1, title: 'World News', tag: 'worldnews', count: 0},
 		{id: 2, title: 'Canada News', tag: 'canadanews', count: 0},
 		{id: 3, title: 'Buzz News', tag: 'buzznews', count: 0},
@@ -113,12 +114,14 @@ app.get('/static/categories', (req, res) => {
 	let categories = getCategories()
 
 	models.Article.getAllLean((err, articles) => {
+		articles[0].count = articles.length
+
 		for (let article of articles) {
 			if (!article.author) continue
 			if (country && article.country != country) continue
 
 			for (let category of categories) {
-				if ((new RegExp(`\\$${category.tag}`)).text(article.text)) {
+				if (category.tag && (new RegExp(`\\$${category.tag}`)).text(article.text)) {
 					category.count++
 				}
 

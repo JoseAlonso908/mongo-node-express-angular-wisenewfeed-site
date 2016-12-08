@@ -247,10 +247,10 @@ angular.module('er.controllers', [])
 					result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
 				}
 
-				result.unshift({
-					id: 0,
-					title: 'All'
-				})
+				// result.unshift({
+				// 	id: 0,
+				// 	title: 'All'
+				// })
 
 				$scope.categories = result
 				$scope.chosenCategory = result[0]

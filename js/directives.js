@@ -809,40 +809,44 @@ angular.module('er.directives', [])
 				}
 			}
 
+			var init = function () {
+				var canvas = angular.element(element).find('canvas')[0],
+					ctx = canvas.getContext('2d')
 
-			var canvas = angular.element(element).find('canvas')[0],
-				ctx = canvas.getContext('2d')
+				var width = angular.element(element)[0].children[0].offsetWidth,
+					height = angular.element(element)[0].children[0].offsetHeight
 
-			var width = angular.element(element)[0].children[0].offsetWidth,
-				height = angular.element(element)[0].children[0].offsetHeight
+				angular.element(element).find('canvas').attr('width', width)
+				angular.element(element).find('canvas').attr('height', height)
 
-			angular.element(element).find('canvas').attr('width', width)
-			angular.element(element).find('canvas').attr('height', height)
+				var borderWidth = 4
 
-			var borderWidth = 4
+				$scope.user.xp = 10000000
 
-			$scope.user.xp = 10000000
+				var __start = Date.now()
+				var levelInfo = experienceLevelService.getLevelInfoByXP($scope.user.xp)
+				var __end = Date.now()
+				console.info('Exp calculation took, ms', __end - __start)
 
-			var __start = Date.now()
-			var levelInfo = experienceLevelService.getLevelInfoByXP($scope.user.xp)
-			var __end = Date.now()
-			console.info('Exp calculation took, ms', __end - __start)
+				console.log($scope.user.xp)
+				console.log(levelInfo)
 
-			console.log($scope.user.xp)
-			console.log(levelInfo)
+				$scope.level = levelInfo.level
+				var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100
 
-			$scope.level = levelInfo.level
-			var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100
+				// Get user XP in radians
+				if (!$scope.user.xp) return
+				var radsXP = (levelPercentage / 100 * 2) + 1.5
 
-			// Get user XP in radians
-			if (!$scope.user.xp) return
-			var radsXP = (levelPercentage / 100 * 2) + 1.5
+				ctx.lineWidth = borderWidth
+				ctx.strokeStyle = '#43abe7'
+				ctx.beginPath()
+				ctx.arc(width / 2, height / 2, (width / 2) - (borderWidth / 2), 1.5 * Math.PI, radsXP * Math.PI, false)
+				ctx.stroke()
+			}
+			init()
 
-			ctx.lineWidth = borderWidth
-			ctx.strokeStyle = '#43abe7'
-			ctx.beginPath()
-			ctx.arc(width / 2, height / 2, (width / 2) - (borderWidth / 2), 1.5 * Math.PI, radsXP * Math.PI, false)
-			ctx.stroke()
+			window.onresize = init
 		}
 	}
 })

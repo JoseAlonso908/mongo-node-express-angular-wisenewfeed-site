@@ -51,7 +51,7 @@ angular.module('er.services', [])
 
 				level++
 
-				console.info('Level: ' + level + ', MIN: ' + prevXpPassed + ', MAX: ' + xpPassed)
+				// console.info('Level: ' + level + ', MIN: ' + prevXpPassed + ', MAX: ' + xpPassed)
 
 				if (xpPassed > xp) break
 

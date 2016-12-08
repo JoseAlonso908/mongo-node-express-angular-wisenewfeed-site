@@ -333,6 +333,18 @@ angular.module('er.directives', [])
 			justone: '=',
 		},
 		link: function ($scope, element, attr) {
+			$scope.expandVisible = false
+
+			$timeout(function () {
+				if ($scope.justone) return
+
+				var $content = element.find('.content')[0]
+				if ($content.scrollHeight - 10 > $content.clientHeight) {
+					$scope.expandVisible = true
+					$scope.$apply()
+				}
+			})
+
 			angular.element(document.body).on('click', function () {
 				$scope.post.menu = false
 			})

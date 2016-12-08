@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-		<div class="content">
+		<div class="content" ng-class="{collapsed: !justone}">
 			<div class="text" ng-bind-html="post.text | textLinks"></div>
 
 			<div class="images">
@@ -73,7 +73,10 @@
 					</div>
 				</div>
 			</div>
+
+			<a ng-href="#!/article/{{post._id}}" class="collapsed-shade" ng-class="{visible: expandVisible}"></a>
 		</div>
+		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article">View full article</a>
 	</div>
 
 	<postreactions post="post"></postreactions>

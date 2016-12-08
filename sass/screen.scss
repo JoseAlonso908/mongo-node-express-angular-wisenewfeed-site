@@ -887,6 +887,13 @@ a.small-icon, button.small-icon {
 					}
 
 					.content {
+						position: relative;
+
+						&.collapsed {
+							max-height: 400px;
+							overflow: hidden;
+						}
+
 						.text {
 							margin-bottom: 12px;
 							padding-right: 40px;
@@ -948,6 +955,33 @@ a.small-icon, button.small-icon {
 									margin-left: 7px;
 								}
 							}
+						}
+
+						.collapsed-shade {
+							display: none; position: absolute;
+							bottom: 0;
+							width: 100%; height: 60px;
+							// background-color: red;
+							@include background-image(linear-gradient(top, rgba(0, 0, 0, 0) 1%, #ffffff 100%) !important);
+
+							&:hover {
+								opacity: 1;
+							}
+
+							&.visible {
+								display: block;
+							}
+						}
+					}
+
+					.expand-article {
+						display: none;
+						padding-top: 6px;
+						font-size: 13px;
+						font-weight: 900;
+
+						&.visible {
+							display: block;
 						}
 					}
 				}

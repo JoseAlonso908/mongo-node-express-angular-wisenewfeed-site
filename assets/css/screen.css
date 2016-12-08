@@ -893,6 +893,13 @@ a.small-icon, button.small-icon {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.05);
 }
+#wrapper > .content .card.feed-item .body .content {
+  position: relative;
+}
+#wrapper > .content .card.feed-item .body .content.collapsed {
+  max-height: 400px;
+  overflow: hidden;
+}
 #wrapper > .content .card.feed-item .body .content .text {
   margin-bottom: 12px;
   padding-right: 40px;
@@ -940,6 +947,34 @@ a.small-icon, button.small-icon {
 #wrapper > .content .card.feed-item .body .content .shared > .content .text {
   margin-top: 25px;
   margin-left: 7px;
+}
+#wrapper > .content .card.feed-item .body .content .collapsed-shade {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIxJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=') !important;
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, #ffffff)) !important;
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 1%, #ffffff 100%) !important;
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 1%, #ffffff 100%) !important;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 1%, #ffffff 100%) !important;
+}
+#wrapper > .content .card.feed-item .body .content .collapsed-shade:hover {
+  opacity: 1;
+}
+#wrapper > .content .card.feed-item .body .content .collapsed-shade.visible {
+  display: block;
+}
+#wrapper > .content .card.feed-item .body .expand-article {
+  display: none;
+  padding-top: 6px;
+  font-size: 13px;
+  font-weight: 900;
+}
+#wrapper > .content .card.feed-item .body .expand-article.visible {
+  display: block;
 }
 #wrapper > .content .card.feed-item .ratings {
   display: flex;
@@ -3477,6 +3512,7 @@ a.small-icon, button.small-icon {
     width: 42px;
   }
   #wrapper #top-bar #user-block .avatar-wrapper {
+    cursor: pointer;
     height: 42px;
   }
   #wrapper #top-bar #user-block .user-menu {

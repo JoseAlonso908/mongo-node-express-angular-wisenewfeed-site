@@ -159,7 +159,7 @@ var Model = function(mongoose) {
 
 		getAll: (viewer, category, country, start = 0, limit = 10, callback) => {
 			let query = {}
-			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gim')})
+			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
 
 			Model.find(query).select('-__v').populate([
@@ -233,7 +233,7 @@ var Model = function(mongoose) {
 				query = {}
 			}
 
-			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gim')})
+			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
 			Model.find(query).populate([
 				{path: 'author'},

@@ -64,7 +64,7 @@
 	<div class="user-description-block" ng-if="profile && images && images.length > 0">
 		<div class="title">Photos</div>
 		<div class="photos">
-			<div class="photo" ng-class="{empty: image === ''}" style="background-image: url('{{image}}');" ng-repeat="image in images | limitTo: 8"></div>
+			<a ng-href="image" class="photo" lightbox ng-class="{empty: image === ''}" style="background-image: url('{{image}}');" ng-repeat="image in images | limitTo: 8"></a>
 			<div class="other-photos" ng-if="images.length > 8">+{{images.length - 8}}</div>
 		</div>
 	</div>

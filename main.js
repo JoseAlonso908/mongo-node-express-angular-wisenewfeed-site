@@ -143,19 +143,16 @@ app.get('/static/categories', (req, res) => {
 	// models.Article.getAllLean((err, articles) => {
 		categories[0].count = articles.length
 
-		for (let article of articles) {
-			if (!article.author) continue
-			if (country && article.country != country) continue
+		for (let category of categories) {
+			category.count = 0
 
-			for (let category of categories) {
-				if (category.tag && (new RegExp(`\\$${category.tag}`)).test(article.text)) {
+			for (let article of articles) {
+				if (!article.author) continue
+				if (country && article.country != country) continue
+
+				if (category.tag && (new RegExp(`\\$${category.tag}`, 'gi')).test(article.text)) {
 					category.count++
 				}
-
-				// if (article.category == category.title) {
-				// 	category.count++
-				// 	break
-				// }
 			}
 		}
 

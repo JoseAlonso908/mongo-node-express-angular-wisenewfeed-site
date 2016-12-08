@@ -46,8 +46,16 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))
 })
 
+let getCountries = () => {
+	return JSON.parse(JSON.stringify(countriesList))
+}
+
 app.get('/static/countries/grouped', (req, res) => {
+	let {category} = req.query
+
 	let result = []
+
+	let countriesList = getCountries()
 
 	for (let continentCode in countriesList.continents) {
 		let continent = countriesList.continents[continentCode]
@@ -59,20 +67,38 @@ app.get('/static/countries/grouped', (req, res) => {
 		})
 	}
 
-	for (let countryCode in countriesList.countries) {
-		let country = countriesList.countries[countryCode]
+	models.Article.getByUsers([], null, [], category, null, null, null, (err, articles) => {
+		for (let countryCode in countriesList.countries) {
+			let country = countriesList.countries[countryCode]
+			if (!country.count) country.count = 0
 
-		for (let continent of result) {
-			if (continent.id == country.continent) {
-				continent.sub.push({
-					id: countryCode,
-					title: country.name
-				})
+			for (let article of articles) {
+				if (country.name == article.country) {
+					country.count++
+				}
+			}
+
+			for (let continent of result) {
+				continent.count = 0
+
+				if (continent.id == country.continent) {
+					continent.sub.push({
+						id: countryCode,
+						title: country.name,
+						count: country.count,
+					})
+				}
 			}
 		}
-	}
 
-	res.send(result)
+		result.unshift({
+			id: 0,
+			title: 'All',
+			count: articles.length,
+		})
+
+		res.send(result)
+	})
 })
 
 app.get('/static/countries', (req, res) => {
@@ -113,15 +139,16 @@ app.get('/static/categories', (req, res) => {
 
 	let categories = getCategories()
 
-	models.Article.getAllLean((err, articles) => {
-		articles[0].count = articles.length
+	models.Article.getByUsers([], null, [], null, country, null, null, (err, articles) => {
+	// models.Article.getAllLean((err, articles) => {
+		categories[0].count = articles.length
 
 		for (let article of articles) {
 			if (!article.author) continue
 			if (country && article.country != country) continue
 
 			for (let category of categories) {
-				if (category.tag && (new RegExp(`\\$${category.tag}`)).text(article.text)) {
+				if (category.tag && (new RegExp(`\\$${category.tag}`)).test(article.text)) {
 					category.count++
 				}
 

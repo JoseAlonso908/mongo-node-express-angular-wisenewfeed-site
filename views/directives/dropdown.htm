@@ -8,7 +8,9 @@
 			{{item.title}} {{(item.additional) ? '(' + item.additional + ')' : ''}}
 			<div class="sublist-wrapper" ng-show="item.sub">
 				<ul class="sublist">
-					<li ng-repeat="subItem in item.sub" ng-click="choose(subItem)" ng-class="{active: isActiveItem(subItem)}">{{subItem.title}}</li>
+					<li ng-repeat="subItem in item.sub" ng-click="choose(subItem)" ng-class="{active: isActiveItem(subItem)}">
+						{{subItem.title}} {{(subItem.additional) ? '(' + subItem.additional + ')' : ''}}
+					</li>
 				</ul>
 			</div>
 		</li>

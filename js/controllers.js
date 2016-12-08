@@ -210,28 +210,59 @@ angular.module('er.controllers', [])
 .controller('homeController', function ($scope, $rootScope, $timeout, fieldsListService, groupedCountriesService, identityService) {
 	$scope.setActiveCategory = function (item) {
 		$scope.chosenCategory = item
+		$rootScope.$emit('updateCountriesFilter')
 		$rootScope.$emit('feedCategory', item)
 	}
 
-	groupedCountriesService.get().then(function (result) {
-		result.unshift({
-			id: 0,
-			title: 'All'
-		})
-
-		$scope.countries = result
-		$scope.chosenCountry = result[0]
-	})
-
 	$scope.setActiveCountry = function (item) {
 		$scope.chosenCountry = item
-		getCategoriesList()
+		
+		$rootScope.$emit('updateCategoriesFilter')
 		$rootScope.$emit('feedCountry', item)
 	}
 
-	$rootScope.$on('updateCategoriesFilter', function (event) {
-		getCategoriesList()
-	})
+	var getCountriesList = function () {
+		groupedCountriesService.get(($scope.chosenCategory && $scope.chosenCategory.id !== 0) ? $scope.chosenCategory.tag : undefined).then(function (result) {
+			if (!$scope.countries || $scope.countries.length == 0) {
+				for (var i in result) {
+					var continent = result[i]
+
+					if (continent.count) {
+						continent.additional = numeral(continent.count).format('0a').toUpperCase()
+					}
+
+					for (var j in continent.sub) {
+						var country = continent.sub[j]
+						if (country.count == 0) continue
+
+						country.additional = numeral(country.count).format('0a').toUpperCase()
+					}
+				}
+
+				$scope.countries = result
+
+				$scope.chosenCountry = result[0]
+			} else {
+				for (var i in result) {
+					var newContinent = result[i]
+					var oldContinent = $scope.countries[i]
+
+					if (newContinent.count == 0) delete oldContinent.additional
+					else oldContinent.additional = numeral(newContinent.count).format('0a').toUpperCase()
+
+					for (var j in newContinent.sub) {
+						var newCountry = newContinent.sub[j]
+						var oldCountry = oldContinent.sub[j]
+
+						if (newCountry.count == 0) delete oldCountry.additional
+						else oldCountry.additional = numeral(newCountry.count).format('0a').toUpperCase()
+					}
+				}
+			}
+		})
+	}
+	$rootScope.$on('updateCountriesFilter', getCountriesList)
+	$rootScope.$emit('updateCountriesFilter')
 
 	var getCategoriesList = function () {
 		var categoriesListType = 'get'
@@ -239,18 +270,13 @@ angular.module('er.controllers', [])
 			categoriesListType = 'getForUser'
 		}
 
-		fieldsListService[categoriesListType](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+		fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
 			if (!$scope.categories || $scope.categories.length === 0) {
 				for (var i in result) {
 					if (result[i].count == 0) continue
 
 					result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
 				}
-
-				// result.unshift({
-				// 	id: 0,
-				// 	title: 'All'
-				// })
 
 				$scope.categories = result
 				$scope.chosenCategory = result[0]
@@ -270,20 +296,13 @@ angular.module('er.controllers', [])
 			}
 		})
 	}
+	$rootScope.$on('updateCategoriesFilter', getCategoriesList)
+	$rootScope.$emit('updateCategoriesFilter')
 
 	identityService.get().then(function (user) {
-		// Doesn't work without timeout
-		$timeout(function() {
-			// $scope.$apply()
-			$scope.user = user
-
-			getCategoriesList()
-
-			$timeout.cancel(this)
-		}, 0)
+		$scope.user = user
 	}, function () {
 		$scope.guest = true
-		getCategoriesList()
 	})
 })
 .controller('profileController', function ($scope, $location, identityService) {

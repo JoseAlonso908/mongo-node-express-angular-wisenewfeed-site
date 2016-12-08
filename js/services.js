@@ -972,8 +972,8 @@ angular.module('er.services', [])
 })
 .factory('groupedCountriesService', function ($http, $cookies, $q) {
 	return {
-		get: function () {
-			return __s($http, $cookies, 'get', '/static/countries/grouped')
+		get: function (category) {
+			return __s($http, $cookies, 'get', '/static/countries/grouped', {category: category})
 		}
 	}
 })

@@ -38,10 +38,20 @@ angular.module('er.services', [])
 				if (xpPassed == 0) {
 					xpPassed = baseXP
 				} else {
-					xpPassed *= 1.5
+					// var factor = 3 - Math.sqrt(Math.log(level))
+
+					// if (factor < 1.1) {
+					// 	factor = 1.1
+					// }
+
+					// xpPassed *= factor
+
+					xpPassed *= 2
 				}
 
 				level++
+
+				console.info('Level: ' + level + ', MIN: ' + prevXpPassed + ', MAX: ' + xpPassed)
 
 				if (xpPassed > xp) break
 

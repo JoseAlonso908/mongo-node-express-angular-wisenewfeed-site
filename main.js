@@ -94,18 +94,19 @@ app.get('/static/countries', (req, res) => {
 
 global.getCategories = () => {
 	return [
-		{id: 1, title: 'World News', count: 0},
-		{id: 2, title: 'Canada News', count: 0},
-		{id: 3, title: 'Buzz News', count: 0},
-		{id: 4, title: 'Science', count: 0},
-		{id: 5, title: 'Business', count: 0},
-		{id: 6, title: 'Health', count: 0},
-		{id: 7, title: 'Technology', count: 0},
-		{id: 8, title: 'Sport', count: 0},
-		{id: 9, title: 'Entertainment', count: 0},
+		{id: 1, title: 'World News', tag: 'worldnews', count: 0},
+		{id: 2, title: 'Canada News', tag: 'canadanews', count: 0},
+		{id: 3, title: 'Buzz News', tag: 'buzznews', count: 0},
+		{id: 4, title: 'Science', tag: 'science', count: 0},
+		{id: 5, title: 'Business', tag: 'business', count: 0},
+		{id: 6, title: 'Health', tag: 'health', count: 0},
+		{id: 7, title: 'Technology', tag: 'technology', count: 0},
+		{id: 8, title: 'Sport', tag: 'sport', count: 0},
+		{id: 9, title: 'Entertainment', tag: 'entertainment', count: 0},
 	]
 }
 
+// TODO: move this to cron
 app.get('/static/categories', (req, res) => {
 	let {country} = req.query
 
@@ -117,10 +118,14 @@ app.get('/static/categories', (req, res) => {
 			if (country && article.country != country) continue
 
 			for (let category of categories) {
-				if (article.category == category.title) {
+				if ((new RegExp(`\\$${category.tag}`)).text(article.text)) {
 					category.count++
-					break
 				}
+
+				// if (article.category == category.title) {
+				// 	category.count++
+				// 	break
+				// }
 			}
 		}
 

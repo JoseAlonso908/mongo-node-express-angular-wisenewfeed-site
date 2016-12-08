@@ -258,10 +258,14 @@ router.get('/user/categories', (req, res) => {
 					if ((country && article.country != country) || !article.author) continue
 
 					for (let category of categories) {
-						if (article.category == category.title) {
+						if ((new RegExp(`\\$${category.tag}`)).test(article.text)) {
 							category.count++
-							break
 						}
+
+						// if (article.category == category.title) {
+						// 	category.count++
+						// 	break
+						// }
 					}
 				}
 

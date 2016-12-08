@@ -232,7 +232,7 @@ angular.module('er.directives', [])
 				if (category.id === 0) {
 					$scope.lastCategory = undefined
 				} else {
-					$scope.lastCategory = category.title
+					$scope.lastCategory = category.tag
 				}
 
 				init()
@@ -602,8 +602,6 @@ angular.module('er.directives', [])
 				init()
 			})
 
-			console.log($scope.comment)
-
 			$scope.react = function (comment, type, unreact) {
 				var action = 'react'
 				if (unreact) action = 'unreact'
@@ -769,7 +767,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/filters.htm',
 	}
 })
-.directive('bigratedavatar', function ($timeout, $rootScope) {
+.directive('bigratedavatar', function ($timeout, $rootScope, experienceLevelService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/big-rated-avatar.htm',
@@ -810,9 +808,22 @@ angular.module('er.directives', [])
 
 			var borderWidth = 4
 
+			$scope.user.xp = 10000000
+
+			var __start = Date.now()
+			var levelInfo = experienceLevelService.getLevelInfoByXP($scope.user.xp)
+			var __end = Date.now()
+			console.info('Exp calculation took, ms', __end - __start)
+
+			console.log($scope.user.xp)
+			console.log(levelInfo)
+
+			$scope.level = levelInfo.level
+			var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100
+
 			// Get user XP in radians
 			if (!$scope.user.xp) return
-			var radsXP = ($scope.user.xp / 100 * 2) + 1.5
+			var radsXP = (levelPercentage / 100 * 2) + 1.5
 
 			ctx.lineWidth = borderWidth
 			ctx.strokeStyle = '#43abe7'

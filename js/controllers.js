@@ -229,6 +229,10 @@ angular.module('er.controllers', [])
 		$rootScope.$emit('feedCountry', item)
 	}
 
+	$rootScope.$on('updateCategoriesFilter', function (event) {
+		getCategoriesList()
+	})
+
 	var getCategoriesList = function () {
 		var categoriesListType = 'get'
 		if ($scope.user && $scope.user.role != 'User') {

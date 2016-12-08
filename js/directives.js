@@ -122,6 +122,7 @@ angular.module('er.directives', [])
 						$scope.text = ''
 						$scope.files = []
 						$rootScope.$emit('reloadfeed')
+						$rootScope.$emit('updateCategoriesFilter')
 
 						$scope.loading = false
 					})

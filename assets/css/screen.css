@@ -570,6 +570,7 @@ a.small-icon, button.small-icon {
 }
 #wrapper .results-banner {
   height: 70px;
+  margin-top: -20px;
   margin-bottom: 30px;
   line-height: 70px;
   font-size: 28px;

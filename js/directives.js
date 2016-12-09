@@ -913,9 +913,15 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/topbar.htm',
 		scope: {
 			user: '=',
-			q: '=',
+			q: '=?',
 		},
 		link: function ($scope, element, attr) {
+			console.log($scope.q)
+
+			if (!$scope.q) {
+				$scope.q = ''
+			}
+
 			$scope.openUserMenu = function (e) {
 				e.stopPropagation()
 				$rootScope.$broadcast('open-user-menu')

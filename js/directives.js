@@ -734,13 +734,39 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('familiarexpert', function () {
+.directive('familiarexpert', function ($rootScope, followService, postService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/familiar-expert.htm',
 		scope: {
 			user: '='
 		},
+		link: function ($scope, element, attr) {
+			$scope.user.role = $scope.user.role[0].toUpperCase() + $scope.user.role.substr(1)
+
+			followService.isFollowing($scope.user._id).then(function (result) {
+				$scope.user.isFollowing = result
+			})
+
+			$scope.mute = function (user) {
+				postService.mute(user._id)
+				delete $scope.user
+			}
+
+			$scope.follow = function (user) {
+				followService.follow(user._id).then(function (result) {
+					$scope.user.isFollowing = result
+					$rootScope.$emit('update-follow')
+				})
+			}
+
+			$scope.unfollow = function (user) {
+				followService.unfollow(user._id).then(function (result) {
+					$scope.user.isFollowing = result
+					$rootScope.$emit('update-follow')
+				})
+			}
+		}
 	}
 })
 .directive('newquestions', function ($rootScope, questionsService) {
@@ -782,13 +808,16 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/familiar-experts.htm',
 		link: function ($scope, element, attr) {
-			$scope.users = []
-			$scope.familiarExpertsLoading = true
-			familiarExpertsService.get().then(function (users) {
-				$scope.users = users
-				$scope.familiarExpertsLoading = false
-				$scope.$apply()
-			})
+			$scope.init = function () {
+				$scope.users = []
+				$scope.familiarExpertsLoading = true
+				familiarExpertsService.get().then(function (users) {
+					$scope.users = users
+					$scope.familiarExpertsLoading = false
+				})
+			}
+			
+			$scope.init()
 		}
 	}
 })

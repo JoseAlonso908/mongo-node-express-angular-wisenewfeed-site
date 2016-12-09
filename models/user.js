@@ -321,6 +321,15 @@ var Model = function(mongoose) {
 				callback(err, !!user.password)
 			})
 		},
+
+		getRandomUsers: (user, filter, count, callback) => {
+			user = MOI(user)
+
+			Model.aggregate([
+				{$match: filter},
+				{$sample: {size: count}}
+			]).exec(callback)
+		},
 	}
 }
 

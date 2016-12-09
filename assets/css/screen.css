@@ -2115,9 +2115,13 @@ a.small-icon, button.small-icon {
 }
 #wrapper > .content .right .familiar-experts .card > .header .name, #wrapper > .content .right .new-questions .card > .header .name {
   padding-top: 8px;
+  padding-right: 10px;
   color: #545759;
   font-size: 14px;
   font-weight: 900;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #wrapper > .content .right .familiar-experts .card > .header .role, #wrapper > .content .right .new-questions .card > .header .role {
   color: #b0bec8;

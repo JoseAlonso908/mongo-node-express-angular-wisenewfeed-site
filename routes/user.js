@@ -36,6 +36,42 @@ router.use((req, res, next) => {
 	}
 })
 
+router.get('/familiarexperts', (req, res) => {
+	async.waterfall([
+		(next) => {
+			models.MutedAuthor.getMutedByUser(req.user._id, next)
+		},
+		(mutedUsers, next) => {
+			let mutedUsersIds = mutedUsers.map((user) => {
+				return MOI(user._id)
+			})
+
+			models.User.getRandomUsers(req.user._id, {
+				$and: [{_id: {$nin: mutedUsersIds}}, {_id: {$ne: req.user._id}}],
+				role: 'expert'
+			}, 3, next)
+		},
+	], (err, experts) => {
+		if (err) res.status(400).send(err)
+		else {
+			async.mapSeries(experts, (user, next) => {
+				models.User.getReactionsOnUser(user._id, (reactions) => {
+					user.reactions = reactions
+					
+					user.likes_percentage = 0
+					if (reactions.likes > 0 || reactions.dislikes > 0) {
+						user.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
+					}
+					
+					next(null, user)
+				})
+			}, (err, experts) => {
+				res.send(experts)
+			})
+		}
+	})
+})
+
 router.post('/profile/edit/avatar', tempUploads.single('file'), (req, res) => {
 	let user = req.user
 

@@ -1,5 +1,5 @@
-<div class="familiar-expert card">
-	<button class="hide"><i class="material-icons">close</i></button>
+<div class="familiar-expert card" ng-show="user">
+	<button ng-click="mute(user)" class="hide"><i class="material-icons">close</i></button>
 	<div class="header">
 		<avatar user="user"></avatar>
 		<div class="name">{{user.name}}</div>
@@ -11,6 +11,7 @@
 			<div class="likes-value">{{user.likes_percentage}}% Likes</div>
 			<div class="likes-row" style="width: {{user.likes_percentage}}%"></div>
 		</div>
-		<div class="follow" title="Follow"><i class="material-icons">person_add</i> <div class="title">Follow</div></div>
+		<div ng-show="!user.isFollowing" ng-click="follow(user)" class="follow" title="Follow"><i class="material-icons">person_add</i> <div class="title">Follow</div></div>
+		<div ng-show="user.isFollowing" ng-click="unfollow(user)" class="follow" title="Follow"><div class="title">Unfollow</div></div>
 	</div>
 </div>

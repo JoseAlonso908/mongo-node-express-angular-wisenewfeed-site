@@ -2333,9 +2333,13 @@ a.small-icon, button.small-icon {
 
 						.name {
 							padding-top: 8px;
+							padding-right: 10px;
 							color: #545759;
 							font-size: 14px;
 							font-weight: 900;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
 						}
 
 						.role {

@@ -917,42 +917,44 @@ angular.module('er.services', [])
 		},
 	}
 })
-.factory('familiarExpertsService', function () {
+.factory('familiarExpertsService', function ($http, $cookies) {
 	return {
 		get: function () {
-			return new Promise(function (resolve, reject) {
-				var familiarExperts = [
-					{
-						id: 1,
-						name: 'Keanu Reeves',
-						role: 'Expert',
-						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-						color: 'bronze',
-						rating: 2,
-						likes_percentage: 70,
-					},
-					{
-						id: 2,
-						name: 'Keanu Reeves',
-						role: 'Expert',
-						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-						color: 'bronze',
-						rating: 2,
-						likes_percentage: 70,
-					},
-					{
-						id: 3,
-						name: 'Keanu Reeves',
-						role: 'Expert',
-						image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-						color: 'bronze',
-						rating: 2,
-						likes_percentage: 70,
-					},
-				]
+			return __s($http, $cookies, 'get', '/familiarexperts')
 
-				resolve(familiarExperts)
-			})
+			// return new Promise(function (resolve, reject) {
+			// 	var familiarExperts = [
+			// 		{
+			// 			id: 1,
+			// 			name: 'Keanu Reeves',
+			// 			role: 'Expert',
+			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+			// 			color: 'bronze',
+			// 			rating: 2,
+			// 			likes_percentage: 70,
+			// 		},
+			// 		{
+			// 			id: 2,
+			// 			name: 'Keanu Reeves',
+			// 			role: 'Expert',
+			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+			// 			color: 'bronze',
+			// 			rating: 2,
+			// 			likes_percentage: 70,
+			// 		},
+			// 		{
+			// 			id: 3,
+			// 			name: 'Keanu Reeves',
+			// 			role: 'Expert',
+			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
+			// 			color: 'bronze',
+			// 			rating: 2,
+			// 			likes_percentage: 70,
+			// 		},
+			// 	]
+
+			// 	resolve(familiarExperts)
+			// })
 		}
 	}
 })

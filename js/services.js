@@ -519,8 +519,12 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/article/all', params)
 		},
-		byUser: function (user) {
-			return __s($http, $cookies, 'get', '/article/byuser', {user: user})
+		byUser: function (user, start, limit) {
+			return __s($http, $cookies, 'get', '/article/byuser', {
+				user: user,
+				start: start,
+				limit: limit,
+			})
 		},
 		my: function () {
 			return __s($http, $cookies, 'get', '/article/my')

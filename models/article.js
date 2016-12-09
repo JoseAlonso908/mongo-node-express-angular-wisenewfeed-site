@@ -186,14 +186,18 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getByUser: (author, callback) => {
+		getByUser: (author, start = 0, limit = 100, callback) => {
 			author = MOI(author)
+
+			start = Number(start)
+			limit = Number(limit)
+
 			Model.find({author}).select('-__v').populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).exec((err, articles) => {
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
 			})
 		},

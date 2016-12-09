@@ -84,9 +84,9 @@ router.get('/my', (req, res) => {
 })
 
 router.get('/byuser', (req, res) => {
-	let {user} = req.query
+	let {user, start, limit} = req.query
 
-	models.Article.getByUser(user, (err, articles) => {
+	models.Article.getByUser(user, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })

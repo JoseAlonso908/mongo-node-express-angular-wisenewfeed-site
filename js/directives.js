@@ -236,7 +236,7 @@ angular.module('er.directives', [])
 				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
 					// start += originalLimit
 					// limit += originalLimit
-					init()
+					init({addmore: true})
 				}
 			})
 
@@ -284,15 +284,22 @@ angular.module('er.directives', [])
 				$scope.visibleCount = count
 			}
 
-			var init = function () {
+			var init = function (options) {
+				if (!options) {
+					options = {
+						addmore: false,
+					}
+				}
+
 				if (!$scope.user) {
 					feedType = 'all'
 				}
 
 				$scope.feedLoading = true
 
-				if (start == 0) {
+				if (start == 0 || !options.addmore) {
 					$scope.feed = []
+					start = 0
 				}
 
 				var setFeed = function (feed) {
@@ -300,7 +307,7 @@ angular.module('er.directives', [])
 
 					console.log(feed)
 
-					if (start > 0) {
+					if (start > 0 || options.addmore) {
 						for (var i in feed) {
 							$scope.feed.push(feed[i])
 						}
@@ -312,14 +319,14 @@ angular.module('er.directives', [])
 				}
 
 				if ($scope.type == 'own') {
-					feedService.byUser($scope.id).then(function (feed) {
+					feedService.byUser($scope.id, start, limit).then(function (feed) {
 						setFeed(feed)
-						updateVisibleCount(feed)
+						updateVisibleCount($scope.feed)
 					})
 				} else if ($scope.type && $scope.type != 'own') {
 					feedService.reacted($scope.id, $scope.type).then(function (feed) {
 						setFeed(feed)
-						updateVisibleCount(feed)
+						updateVisibleCount($scope.feed)
 					})
 				} else {
 					var feedAttributes = {category: $scope.lastCategory, country: $scope.lastCountry}

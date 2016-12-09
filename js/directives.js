@@ -222,11 +222,22 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
+			var start = 0,
+				originalLimit = limit = 2
+
 			$scope.lastCategory = undefined,
 			$scope.lastCountry = undefined
 
 			$rootScope.$on('reloadfeed', function () {
 				init()
+			})
+
+			angular.element(window).on('scroll', function (e) {
+				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
+					// start += originalLimit
+					// limit += originalLimit
+					init()
+				}
 			})
 
 			$rootScope.$on('feedCategory', function (event, category) {
@@ -253,7 +264,7 @@ angular.module('er.directives', [])
 				$scope.mutedAuthors = authors
 			})
 
-			var feedType = 'feed'
+			var feedType = 'all'
 
 			$rootScope.$on('updateFeedVisibleCount', function (event) {
 				updateVisibleCount($scope.feed)
@@ -278,42 +289,55 @@ angular.module('er.directives', [])
 					feedType = 'all'
 				}
 
-				if ($scope.type == 'own') {
-					$scope.feedLoading = true
+				$scope.feedLoading = true
+
+				if (start == 0) {
 					$scope.feed = []
+				}
 
-					feedService.byUser($scope.id).then(function (feed) {
-						$scope.feedLoading = false
+				var setFeed = function (feed) {
+					$scope.feedLoading = false
+
+					console.log(feed)
+
+					if (start > 0) {
+						for (var i in feed) {
+							$scope.feed.push(feed[i])
+						}
+					} else {
 						$scope.feed = feed
+					}
 
+					start += feed.length
+				}
+
+				if ($scope.type == 'own') {
+					feedService.byUser($scope.id).then(function (feed) {
+						setFeed(feed)
 						updateVisibleCount(feed)
 					})
 				} else if ($scope.type && $scope.type != 'own') {
-					$scope.feedLoading = true
-					$scope.feed = []
 					feedService.reacted($scope.id, $scope.type).then(function (feed) {
-						$scope.feedLoading = false
-						$scope.feed = feed
-
+						setFeed(feed)
 						updateVisibleCount(feed)
 					})
 				} else {
-					$scope.feedLoading = true
-					$scope.feed = []
+					var feedAttributes = {category: $scope.lastCategory, country: $scope.lastCountry}
+					if ($scope.user) feedAttributes['user'] = $scope.user._id
+					feedAttributes['start'] = start
+					feedAttributes['limit'] = limit
 
-					var feedAttributes = [$scope.lastCategory, $scope.lastCountry]
-					if ($scope.user) feedAttributes.push($scope.user._id)
+					feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
+						// $scope.feedLoading = false
+						// $scope.feed = feed
 
-					feedService[feedType].apply(feedService, feedAttributes).then(function (feed) {
-						$scope.feedLoading = false
-						$scope.feed = feed
-
-						if (feed.length == 0 && feedType != 'all') {
+						if (feed.length == 0 && feedType != 'all' && start == 0) {
 							feedType = 'all'
 							return init()
 						}
 
-						updateVisibleCount(feed)
+						setFeed(feed)
+						updateVisibleCount($scope.feed)
 					})
 				}
 			}

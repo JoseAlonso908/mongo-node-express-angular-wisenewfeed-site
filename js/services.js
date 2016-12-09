@@ -504,15 +504,18 @@ angular.module('er.services', [])
 })
 .factory('feedService', function ($sce, $http, $cookies) {
 	return {
-		all: function (category, country) {
-			var params = {}
-			if (category != undefined) {
-				params['category'] = category
-			}
+		all: function (params, category, country, start, limit) {
+			// var params = {}
+			// if (category != undefined) {
+			// 	params['category'] = category
+			// }
 
-			if (country != undefined) {
-				params['country'] = country
-			}
+			// if (country != undefined) {
+			// 	params['country'] = country
+			// }
+
+			// if (start) params['start'] = start
+			// if (limit) params['limit'] = limit
 
 			return __s($http, $cookies, 'get', '/article/all', params)
 		},

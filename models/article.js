@@ -157,10 +157,13 @@ var Model = function(mongoose) {
 			Model.remove({_id, author}, callback)
 		},
 
-		getAll: (viewer, category, country, start = 0, limit = 10, callback) => {
+		getAll: (viewer, category, country, start = 0, limit = 4, callback) => {
 			let query = {}
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
+
+			start = Number(start)
+			limit = Number(limit)
 
 			Model.find(query).select('-__v').populate([
 				{path: 'author'},
@@ -214,7 +217,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 10, callback) => {
+		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
 			authors = (authors) ? authors.map(MOI) : authors
 			shares = (shares) ? shares.map(MOI) : shares
 

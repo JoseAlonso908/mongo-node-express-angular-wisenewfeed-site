@@ -4,6 +4,7 @@ var Model = function(mongoose) {
 		to			: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'user',
+			index: true,
 		},
 		from		: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +18,7 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'comment',
 		},
-		read 		: {type: Boolean, default: false},
+		read 		: {type: Boolean, default: false, index: true},
 		type		: {
 			type: String,
 			enum: [
@@ -28,6 +29,7 @@ var Model = function(mongoose) {
 		},
 		createdAt	: {type: Date, default: Date.now},
 	})
+	schema.index({to: 1})
 
 	var Model = mongoose.model('notification', schema);
 

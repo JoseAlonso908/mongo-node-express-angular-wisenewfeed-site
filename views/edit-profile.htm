@@ -1,20 +1,22 @@
-<div id="top-bar-background"></div>
 <form name="profileForm">
 	<div id="wrapper" ng-controller="editProfileController">
 	
 		<topbar user="user"></topbar>
-		<div class="wallpaper-wrapper">
-			<bigratedavatar on-edit="$parent.changeAvatar" user="user" ng-if="user"></bigratedavatar>
 
-			<div class="buttons">
-				<div ng-click="changeWallpaper()" class="change-background"><i class="material-icons">image</i> <div class="title">Change background</div></div>
-				<input type="file" name="wallpaper" accept="image/*" class="hidden-file-input">
-				<div ng-click="saveChanges()" class="save-changes"><i class="material-icons">save</i> <div class="title">Save changes</div></div>
-			</div>
+		<div id="wallpaper-block-wrapper">
+			<div class="wallpaper-wrapper">
+				<bigratedavatar on-edit="$parent.changeAvatar" user="user" ng-if="user"></bigratedavatar>
 
-			<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
-			<div class="footer">
-				<profilereactions profile="user"></profilereactions>
+				<div class="buttons">
+					<div ng-click="changeWallpaper()" class="change-background"><i class="material-icons">image</i> <div class="title">Change background</div></div>
+					<input type="file" name="wallpaper" accept="image/*" class="hidden-file-input">
+					<div ng-click="saveChanges()" class="save-changes"><i class="material-icons">save</i> <div class="title">Save changes</div></div>
+				</div>
+
+				<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
+				<div class="footer">
+					<profilereactions profile="user"></profilereactions>
+				</div>
 			</div>
 		</div>
 

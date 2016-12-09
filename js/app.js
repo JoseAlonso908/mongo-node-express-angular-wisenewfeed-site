@@ -61,6 +61,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/questions.htm',
 				controller: 'questionsController',
 			})
+			.when('/tagsearch/:query', {
+				templateUrl: 'assets/views/search.htm',
+				controller: 'searchController',
+			})
 
 
 		$authProvider.facebook({

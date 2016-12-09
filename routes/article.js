@@ -75,6 +75,14 @@ router.get('/all', (req, res) => {
 	})
 })
 
+router.get('/search', (req, res) => {
+	let {q, category, country, start, limit} = req.query
+
+	models.Article.search((req.user) ? req.user._id : null, q, category, country, start, limit, (err, articles) => {
+		res.send(articles)
+	})
+})
+
 router.get('/my', (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 

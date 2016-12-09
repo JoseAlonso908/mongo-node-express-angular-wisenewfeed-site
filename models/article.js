@@ -175,6 +175,30 @@ var Model = function(mongoose) {
 			})
 		},
 
+		search: (viewer, q, category, country, start = 0, limit = 4, callback) => {
+			let query = {}
+
+			Object.assign(query, {text: new RegExp(q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi')})
+
+			// if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			if (country) Object.assign(query, {country})
+
+			start = Number(start)
+			limit = Number(limit)
+
+			Model.find(query).select('-__v').populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
+				console.log(query)
+				console.log(err)
+				console.log(articles)
+				this.postProcessList(articles, viewer, callback)
+			})
+		},
+
 		getAllLean: (callback) => {
 			Model.find().populate([
 				{path: 'author'},

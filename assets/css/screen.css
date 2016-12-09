@@ -100,7 +100,7 @@ h3 {
   line-height: 2em;
 }
 
-.material-icons-pseudo-class, #wrapper #top-bar #user-block .name::after, #wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after, #wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after, #wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before, #wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before, #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download::before, #wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before, #wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before, #wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before, #wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
+.material-icons-pseudo-class, #wrapper #top-bar-background #top-bar #user-block .name::after, #wrapper #filters-wrapper .filters .menu-buttons.dropdown:after, #wrapper #filters-wrapper .filters .menu-buttons.dropdown::after, #wrapper #filters-wrapper .filters .dropdown-list li.nested:after, #wrapper #filters-wrapper .filters .dropdown-list li.nested::after, #wrapper #filters-wrapper .filters .sublist-wrapper li.nested:after, #wrapper #filters-wrapper .filters .sublist-wrapper li.nested::after, #wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after, #wrapper > .content .card.feed-item .ratings .rating .value.likes:before, #wrapper > .content .card.feed-item .ratings .rating .value.likes::before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes:before, #wrapper > .content .card.feed-item .ratings .rating .value.dislikes::before, #wrapper > .content .card.feed-item .ratings .rating .value.shares:before, #wrapper > .content .card.feed-item .ratings .rating .value.shares::before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label:before, #wrapper > .content .middle .settings-wrapper .checkbox-wrapper input[type=checkbox]:checked + label::before, #wrapper > .content .left .user-description-block.editing a.file:before, #wrapper > .content .left .user-description-block.editing a.file::before, #wrapper > .content .left .user-description-block.editing a.file-download:before, #wrapper > .content .left .user-description-block.editing a.file-download::before, #wrapper > .content .left .user-description-block:not(.editing) a.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download.file::before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download:before, #wrapper > .content .left .user-description-block:not(.editing) a.file-download::before, #wrapper > .content .left .user-description-block .address-element.email:before, #wrapper > .content .left .user-description-block .address-element.email::before, #wrapper > .content .left .user-description-block .address-element.phone:before, #wrapper > .content .left .user-description-block .address-element.phone::before, #wrapper > .content .left .user-description-block .address-element.skype:before, #wrapper > .content .left .user-description-block .address-element.linkedin:before, #wrapper > .content .left .user-description-block .address-element.fb:before, #wrapper > .content .left .user-description-block .address-element.skype::before, #wrapper > .content .left .user-description-block .address-element.linkedin::before, #wrapper > .content .left .user-description-block .address-element.fb::before, #wrapper > .content .left .settings-list a:after, #wrapper > .content .left .settings-list a::after, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label:before, #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer .checkbox-wrapper input[type=checkbox]:checked + label::before {
   text-transform: none;
   font-feature-settings: 'liga' 1;
 }
@@ -461,44 +461,34 @@ a.small-icon, button.small-icon {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-#top-bar-background {
-  position: absolute;
-  width: 100%;
-  height: 80px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #E2E8ED;
-  z-index: 1;
-}
-
 #wrapper {
-  width: 1180px;
+  width: 100%;
   height: 100%;
   margin: 0 auto 0;
   z-index: 100;
 }
-#wrapper .left.inactive, #wrapper .right.inactive, #wrapper .middle.inactive {
-  opacity: .5;
-  pointer-events: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-filter: blur(10px);
-  filter: blur(10px);
+#wrapper #top-bar-background {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #E2E8ED;
+  z-index: 1;
 }
-#wrapper topbar, #wrapper #top-bar {
+#wrapper #top-bar-background topbar, #wrapper #top-bar-background #top-bar {
   z-index: 101;
 }
-#wrapper #top-bar {
+#wrapper #top-bar-background #top-bar {
   display: flex;
   position: relative;
   justify-content: space-between;
+  align-items: center;
+  max-width: 1180px;
+  height: 81px;
   width: 100%;
-  height: 70px;
-  padding-top: 17px;
-  margin-bottom: 20px;
+  margin: 0 auto 0;
 }
-#wrapper #top-bar #logo {
+#wrapper #top-bar-background #top-bar #logo {
   display: block;
   width: 135px;
   height: 47px;
@@ -508,12 +498,12 @@ a.small-icon, button.small-icon {
   background-position: center;
   background-size: contain;
 }
-#wrapper #top-bar #search {
+#wrapper #top-bar-background #top-bar #search {
   position: relative;
   width: 341px;
   height: 36px;
 }
-#wrapper #top-bar #search input[type="text"] {
+#wrapper #top-bar-background #top-bar #search input[type="text"] {
   width: 100%;
   height: 100%;
   padding: 0 17px;
@@ -528,34 +518,34 @@ a.small-icon, button.small-icon {
   -webkit-transition: border 0.2s;
   transition: border 0.2s;
 }
-#wrapper #top-bar #search input[type="text"]:focus, #wrapper #top-bar #search input[type="text"].active {
+#wrapper #top-bar-background #top-bar #search input[type="text"]:focus, #wrapper #top-bar-background #top-bar #search input[type="text"].active {
   border-color: #43abe7;
 }
-#wrapper #top-bar #search i {
+#wrapper #top-bar-background #top-bar #search i {
   position: absolute;
   top: 8px;
   right: 10px;
   color: #8899a6;
   font-size: 20px;
 }
-#wrapper #top-bar .make-post {
+#wrapper #top-bar-background #top-bar .make-post {
   width: 100px;
 }
-#wrapper #top-bar .small-icon {
+#wrapper #top-bar-background #top-bar .small-icon {
   width: 36px;
   margin-top: 9px;
 }
-#wrapper #top-bar #user-block {
+#wrapper #top-bar-background #top-bar #user-block {
   width: 200px;
   height: 36px;
 }
-#wrapper #top-bar #user-block .avatar-wrapper {
+#wrapper #top-bar-background #top-bar #user-block .avatar-wrapper {
   width: 42px;
   height: 42px;
   float: left;
   margin-right: 14px;
 }
-#wrapper #top-bar #user-block .name {
+#wrapper #top-bar-background #top-bar #user-block .name {
   display: block;
   position: relative;
   width: 135px;
@@ -566,7 +556,7 @@ a.small-icon, button.small-icon {
   overflow: hidden;
   box-sizing: border-box;
 }
-#wrapper #top-bar #user-block .name::after {
+#wrapper #top-bar-background #top-bar #user-block .name::after {
   display: inline-block;
   position: absolute;
   right: 0;
@@ -574,21 +564,47 @@ a.small-icon, button.small-icon {
   content: 'keyboard_arrow_down';
   font-family: 'Material Icons';
 }
-#wrapper #top-bar #user-block .view-profile {
+#wrapper #top-bar-background #top-bar #user-block .view-profile {
   font-size: 11px;
   color: #b0bec8;
 }
-#wrapper .filters {
+#wrapper .results-banner {
+  height: 70px;
+  margin-bottom: 30px;
+  line-height: 70px;
+  font-size: 28px;
+  font-weight: 700;
+  background-color: #43abe7;
+  color: #ffffff;
+  line-height: 70px;
+  text-align: center;
+}
+#wrapper .left.inactive, #wrapper .right.inactive, #wrapper .middle.inactive {
+  opacity: .5;
+  pointer-events: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+}
+#wrapper #filters-wrapper {
+  width: 100%;
+}
+#wrapper #filters-wrapper .filters {
   display: flex;
   position: relative;
   justify-content: space-between;
-  width: 100%;
+  max-width: 1180px;
   height: 70px;
+  width: 100%;
+  margin: 0 auto 0;
 }
-#wrapper .filters a {
+#wrapper #filters-wrapper .filters a {
   padding: 0 35px;
 }
-#wrapper .filters .menu-buttons {
+#wrapper #filters-wrapper .filters .menu-buttons {
   display: inline-block;
   position: relative;
   height: 26px;
@@ -608,27 +624,27 @@ a.small-icon, button.small-icon {
   transition: background-color 0.1s;
   cursor: pointer;
 }
-#wrapper .filters .menu-buttons:hover {
+#wrapper #filters-wrapper .filters .menu-buttons:hover {
   opacity: 1;
   background-color: #b5c3cd;
 }
-#wrapper .filters .menu-buttons.dropdown {
+#wrapper #filters-wrapper .filters .menu-buttons.dropdown {
   display: flex;
   width: 155px;
   padding-right: 25px;
   flex-wrap: nowrap;
   text-transform: none;
 }
-#wrapper .filters .menu-buttons.dropdown .title {
+#wrapper #filters-wrapper .filters .menu-buttons.dropdown .title {
   margin-right: 4px;
   font-weight: 400;
 }
-#wrapper .filters .menu-buttons.dropdown .option {
+#wrapper #filters-wrapper .filters .menu-buttons.dropdown .option {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#wrapper .filters .menu-buttons.dropdown:after, #wrapper .filters .menu-buttons.dropdown::after {
+#wrapper #filters-wrapper .filters .menu-buttons.dropdown:after, #wrapper #filters-wrapper .filters .menu-buttons.dropdown::after {
   display: inline-block;
   position: absolute;
   right: 7px;
@@ -636,10 +652,10 @@ a.small-icon, button.small-icon {
   content: 'keyboard_arrow_down';
   font-family: 'Material Icons';
 }
-#wrapper .filters .dropdown-wrapper {
+#wrapper #filters-wrapper .filters .dropdown-wrapper {
   position: relative;
 }
-#wrapper .filters .dropdown-list, #wrapper .filters .sublist-wrapper {
+#wrapper #filters-wrapper .filters .dropdown-list, #wrapper #filters-wrapper .filters .sublist-wrapper {
   display: block;
   position: absolute;
   min-width: 240px;
@@ -656,12 +672,12 @@ a.small-icon, button.small-icon {
   -webkit-transition: margin-top 0.3s, opacity 0.3s;
   transition: margin-top 0.3s, opacity 0.3s;
 }
-#wrapper .filters .dropdown-list.active, #wrapper .filters .sublist-wrapper.active {
+#wrapper #filters-wrapper .filters .dropdown-list.active, #wrapper #filters-wrapper .filters .sublist-wrapper.active {
   margin-top: 8px;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper .filters .dropdown-list li, #wrapper .filters .sublist-wrapper li {
+#wrapper #filters-wrapper .filters .dropdown-list li, #wrapper #filters-wrapper .filters .sublist-wrapper li {
   height: 36px;
   padding: 0 23px;
   box-sizing: border-box;
@@ -675,28 +691,28 @@ a.small-icon, button.small-icon {
   -webkit-transition: font-weight 0.1s, background-color 0.1s;
   transition: font-weight 0.1s, background-color 0.1s;
 }
-#wrapper .filters .dropdown-list li.nested, #wrapper .filters .sublist-wrapper li.nested {
+#wrapper #filters-wrapper .filters .dropdown-list li.nested, #wrapper #filters-wrapper .filters .sublist-wrapper li.nested {
   position: relative;
 }
-#wrapper .filters .dropdown-list li.nested:after, #wrapper .filters .dropdown-list li.nested::after, #wrapper .filters .sublist-wrapper li.nested:after, #wrapper .filters .sublist-wrapper li.nested::after {
+#wrapper #filters-wrapper .filters .dropdown-list li.nested:after, #wrapper #filters-wrapper .filters .dropdown-list li.nested::after, #wrapper #filters-wrapper .filters .sublist-wrapper li.nested:after, #wrapper #filters-wrapper .filters .sublist-wrapper li.nested::after {
   position: absolute;
   right: 6px;
   font-family: 'Material Icons';
   font-size: 20px;
   content: 'keyboard_arrow_right';
 }
-#wrapper .filters .dropdown-list li:hover, #wrapper .filters .dropdown-list li.active, #wrapper .filters .sublist-wrapper li:hover, #wrapper .filters .sublist-wrapper li.active {
+#wrapper #filters-wrapper .filters .dropdown-list li:hover, #wrapper #filters-wrapper .filters .dropdown-list li.active, #wrapper #filters-wrapper .filters .sublist-wrapper li:hover, #wrapper #filters-wrapper .filters .sublist-wrapper li.active {
   background-color: #f2f3f4;
 }
-#wrapper .filters .dropdown-list li:hover .sublist-wrapper, #wrapper .filters .sublist-wrapper li:hover .sublist-wrapper {
+#wrapper #filters-wrapper .filters .dropdown-list li:hover .sublist-wrapper, #wrapper #filters-wrapper .filters .sublist-wrapper li:hover .sublist-wrapper {
   display: block;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper .filters .dropdown-list li.active, #wrapper .filters .sublist-wrapper li.active {
+#wrapper #filters-wrapper .filters .dropdown-list li.active, #wrapper #filters-wrapper .filters .sublist-wrapper li.active {
   font-weight: 900;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper, #wrapper .filters .sublist-wrapper li .sublist-wrapper {
+#wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper {
   display: none;
   top: 0;
   margin-left: 217px;
@@ -704,13 +720,13 @@ a.small-icon, button.small-icon {
   overflow-x: hidden;
   overflow-y: auto;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li {
+#wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li {
   font-weight: 400;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active {
+#wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active {
   background-color: #ffffff;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after {
+#wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active:after, #wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li.active::after, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active:after, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li.active::after {
   position: absolute;
   right: 23px;
   content: 'check';
@@ -718,13 +734,16 @@ a.small-icon, button.small-icon {
   font-size: 16px;
   color: #535659;
 }
-#wrapper .filters .dropdown-list li .sublist-wrapper .sublist li:hover, #wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li:hover {
+#wrapper #filters-wrapper .filters .dropdown-list li .sublist-wrapper .sublist li:hover, #wrapper #filters-wrapper .filters .sublist-wrapper li .sublist-wrapper .sublist li:hover {
   background-color: #f2f3f4;
 }
 #wrapper > .content {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto 0;
   padding-bottom: 20px;
 }
 #wrapper > .content a {
@@ -2216,15 +2235,21 @@ a.small-icon, button.small-icon {
   padding-right: 50px;
   border-top: 1px solid #f0f2f4;
 }
-#wrapper .wallpaper-wrapper {
+#wrapper #wallpaper-block-wrapper {
+  width: 100%;
+}
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper {
   position: relative;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto 0;
   margin-bottom: 55px;
   box-shadow: 0 3px 6px 0 rgba(130, 137, 143, 0.3);
   box-sizing: border-box;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-#wrapper .wallpaper-wrapper .wallpaper {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .wallpaper {
   width: 100%;
   height: 340px;
   border-top-left-radius: 5px;
@@ -2233,7 +2258,7 @@ a.small-icon, button.small-icon {
   background-repeat: no-repeat;
   background-size: cover;
 }
-#wrapper .wallpaper-wrapper .wallpaper.empty {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .wallpaper.empty {
   background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIxJSIgc3RvcC1jb2xvcj0iI2ViZjBmMyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2IwYmVjOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==') !important;
   background-size: 100%;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #ebf0f3), color-stop(100%, #b0bec8)) !important;
@@ -2241,20 +2266,20 @@ a.small-icon, button.small-icon {
   background-image: -webkit-linear-gradient(top, #ebf0f3 1%, #b0bec8 100%) !important;
   background-image: linear-gradient(to bottom, #ebf0f3 1%, #b0bec8 100%) !important;
 }
-#wrapper .wallpaper-wrapper .footer {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer {
   width: 100%;
   height: 80px;
   background-color: #ffffff;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-#wrapper .wallpaper-wrapper .footer .stats {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats {
   display: flex;
   justify-content: space-between;
   height: 100%;
   margin-left: 230px;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat {
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
@@ -2269,35 +2294,35 @@ a.small-icon, button.small-icon {
   -webkit-transition: border-bottom-color 0.2s;
   transition: border-bottom-color 0.2s;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat i {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat i {
   margin-right: 5px;
   font-size: 16px;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat i, #wrapper .wallpaper-wrapper .footer .stats .stat .value {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat i, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat .value {
   color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat .value {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat .value {
   font-size: 18px;
   font-weight: 500;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat .title {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat .title {
   width: 100%;
   margin-top: 6px;
   color: #b0bec8;
   font-size: 11px;
   text-align: center;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat.active {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat.active {
   background-color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat.active i, #wrapper .wallpaper-wrapper .footer .stats .stat.active .value, #wrapper .wallpaper-wrapper .footer .stats .stat.active .title {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat.active i, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat.active .value, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat.active .title {
   color: #ffffff;
 }
-#wrapper .wallpaper-wrapper .footer .stats .stat:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat:hover {
   opacity: 1;
   border-bottom-color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper {
   position: absolute;
   top: 238px;
   left: 32px;
@@ -2305,7 +2330,7 @@ a.small-icon, button.small-icon {
   height: 204px;
   border-radius: 50%;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar {
   display: flex;
   position: absolute;
   justify-content: center;
@@ -2321,18 +2346,18 @@ a.small-icon, button.small-icon {
   transition: background 0.2s;
   cursor: pointer;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar:hover {
   background: rgba(0, 0, 0, 0.1);
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar i {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar i {
   color: #ffffff;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form, #wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form input[type=file] {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form input[type=file] {
   width: 0;
   height: 0;
   visibility: hidden;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .avatar {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .avatar {
   position: absolute;
   width: calc(100% - 3px);
   height: calc(100% - 3px);
@@ -2344,12 +2369,12 @@ a.small-icon, button.small-icon {
   box-sizing: border-box;
   border: 2px solid #ffffff;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper canvas {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper canvas {
   position: absolute;
   pointer-events: none;
   z-index: 3;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
   position: absolute;
   width: 35px;
   height: 45px;
@@ -2360,16 +2385,16 @@ a.small-icon, button.small-icon {
   background-size: contain;
   z-index: 4;
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.bronze {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.bronze {
   background-image: url("../images/bronze.png");
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.silver {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.silver {
   background-image: url("../images/silver.png");
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.gold {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge.gold {
   background-image: url("../images/gold.png");
 }
-#wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge .rating-value {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge .rating-value {
   color: #ffffff;
   font-size: 20px;
   font-weight: 900;
@@ -2377,20 +2402,20 @@ a.small-icon, button.small-icon {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   line-height: 35px;
 }
-#wrapper .wallpaper-wrapper .buttons {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons {
   display: flex;
   justify-content: space-between;
   position: absolute;
   width: calc(100% - 285px - 15px);
   margin: 285px 0 0 285px;
 }
-#wrapper .wallpaper-wrapper .buttons.single {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons.single {
   justify-content: flex-end;
 }
-#wrapper .wallpaper-wrapper .buttons.narrow {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons.narrow {
   justify-content: flex-start;
 }
-#wrapper .wallpaper-wrapper .buttons > div, #wrapper .wallpaper-wrapper .buttons > a {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a {
   display: flex;
   justify-content: space-between;
   height: 32px;
@@ -2407,26 +2432,26 @@ a.small-icon, button.small-icon {
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper .wallpaper-wrapper .buttons > div.ask-question, #wrapper .wallpaper-wrapper .buttons > div.message, #wrapper .wallpaper-wrapper .buttons > div.follow, #wrapper .wallpaper-wrapper .buttons > a.questions, #wrapper .wallpaper-wrapper .buttons > a.ask-question, #wrapper .wallpaper-wrapper .buttons > a.message, #wrapper .wallpaper-wrapper .buttons > a.follow {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow {
   background-color: #43abe7;
 }
-#wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper .wallpaper-wrapper .buttons > div.ask-question:hover, #wrapper .wallpaper-wrapper .buttons > div.message:hover, #wrapper .wallpaper-wrapper .buttons > div.follow:hover, #wrapper .wallpaper-wrapper .buttons > a.questions:hover, #wrapper .wallpaper-wrapper .buttons > a.ask-question:hover, #wrapper .wallpaper-wrapper .buttons > a.message:hover, #wrapper .wallpaper-wrapper .buttons > a.follow:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow:hover {
   background-color: #2ca1e4;
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper .wallpaper-wrapper .buttons > a.change-background {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background {
   background-color: rgba(255, 255, 255, 0.15);
 }
-#wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper .wallpaper-wrapper .buttons > a.change-background:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
-#wrapper .wallpaper-wrapper .buttons > div.save-changes, #wrapper .wallpaper-wrapper .buttons > a.save-changes {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes {
   color: #424242;
   background-color: #ffffff;
 }
-#wrapper .wallpaper-wrapper .buttons > div.save-changes:hover, #wrapper .wallpaper-wrapper .buttons > a.save-changes:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes:hover {
   background-color: rgba(255, 255, 255, 0.8);
 }
-#wrapper .wallpaper-wrapper .buttons > div i, #wrapper .wallpaper-wrapper .buttons > a i {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div i, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a i {
   margin: 6px 4px 0 0;
   font-size: 18px;
 }
@@ -2449,8 +2474,9 @@ a.small-icon, button.small-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 1180px;
+  max-width: 1180px;
   height: 100%;
+  width: 100%;
   margin: 0 auto 0;
 }
 #landing-wrapper #header-wrapper #header #logo {
@@ -2528,8 +2554,9 @@ a.small-icon, button.small-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 1180px;
+  max-width: 1180px;
   height: 100%;
+  width: 100%;
   min-height: 800px;
   margin: 0 auto 0;
 }
@@ -3438,35 +3465,38 @@ a.small-icon, button.small-icon {
     width: calc(100% - 400px - 50px);
   }
 
-  #wrapper {
-    width: 900px;
+  #wrapper #top-bar-background #top-bar,
+  #wrapper #filters-wrapper .filters,
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper,
+  #wrapper .content {
+    max-width: 900px;
   }
-  #wrapper #top-bar #logo {
+  #wrapper #top-bar-background #top-bar #logo {
     margin-right: 20px;
   }
-  #wrapper #top-bar #search {
+  #wrapper #top-bar-background #top-bar #search {
     position: relative;
     width: 220px;
     height: 36px;
   }
-  #wrapper .wallpaper-wrapper .wallpaper {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .wallpaper {
     height: 220px;
   }
-  #wrapper .wallpaper-wrapper .rated-avatar-wrapper {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper {
     width: 140px;
     height: 140px;
     top: 192px;
     left: 24px;
   }
-  #wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
     top: 114px;
     left: 51px;
   }
-  #wrapper .wallpaper-wrapper .buttons {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons {
     width: calc(100% - 140px - 15px);
     margin: 165px 0 0 140px;
   }
-  #wrapper .wallpaper-wrapper .footer .stats {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats {
     margin-left: 140px;
   }
   #wrapper .content .middle {
@@ -3482,10 +3512,10 @@ a.small-icon, button.small-icon {
   #wrapper .content .right {
     display: none;
   }
-  #wrapper .filters {
+  #wrapper #filters-wrapper .filters {
     /*dropdown, */
   }
-  #wrapper .filters a {
+  #wrapper #filters-wrapper .filters a {
     margin: 0 5px;
     padding: 0 15px !important;
   }
@@ -3509,33 +3539,36 @@ a.small-icon, button.small-icon {
     width: 768px;
   }
 
-  #wrapper {
-    width: 768px;
+  #wrapper #top-bar-background #top-bar,
+  #wrapper #filters-wrapper .filters,
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper,
+  #wrapper .content {
+    max-width: 768px;
   }
-  #wrapper #top-bar #user-block {
+  #wrapper #top-bar-background #top-bar #user-block {
     width: 42px;
   }
-  #wrapper #top-bar #user-block .avatar-wrapper {
+  #wrapper #top-bar-background #top-bar #user-block .avatar-wrapper {
     cursor: pointer;
     height: 42px;
   }
-  #wrapper #top-bar #user-block .user-menu {
+  #wrapper #top-bar-background #top-bar #user-block .user-menu {
     margin: 60px 0 0 -138px;
   }
-  #wrapper #top-bar #user-block .name, #wrapper #top-bar #user-block .view-profile {
+  #wrapper #top-bar-background #top-bar #user-block .name, #wrapper #top-bar-background #top-bar #user-block .view-profile {
     display: none;
   }
-  #wrapper .filters {
+  #wrapper #filters-wrapper .filters {
     height: 100px;
     flex-wrap: wrap;
   }
-  #wrapper .filters dropdown {
+  #wrapper #filters-wrapper .filters dropdown {
     justify-content: space-around;
   }
-  #wrapper .filters dropdown, #wrapper .filters a {
+  #wrapper #filters-wrapper .filters dropdown, #wrapper #filters-wrapper .filters a {
     margin: 0 10px;
   }
-  #wrapper .wallpaper-wrapper .footer .stats .stat {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat {
     padding: 0 10px;
   }
   #wrapper .content .left {
@@ -3578,28 +3611,33 @@ a.small-icon, button.small-icon {
   }
 
   #wrapper {
-    width: calc(100% - 30px);
     margin: 0 15px;
   }
-  #wrapper #top-bar .make-post {
+  #wrapper #top-bar-background #top-bar,
+  #wrapper #filters-wrapper .filters,
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper,
+  #wrapper .content {
+    max-width: calc(100% - 30px);
+  }
+  #wrapper #top-bar-background #top-bar .make-post {
     display: none;
   }
-  #wrapper .wallpaper-wrapper .buttons {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons {
     /*.edit-profile, */
   }
-  #wrapper .wallpaper-wrapper .buttons .questions, #wrapper .wallpaper-wrapper .buttons .ask-question {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons .questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons .ask-question {
     white-space: nowrap;
   }
-  #wrapper .wallpaper-wrapper .buttons .message, #wrapper .wallpaper-wrapper .buttons .follow {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons .message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons .follow {
     display: none;
   }
-  #wrapper .wallpaper-wrapper .footer .stats {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats {
     display: none;
   }
-  #wrapper .filters dropdown, #wrapper .filters a {
+  #wrapper #filters-wrapper .filters dropdown, #wrapper #filters-wrapper .filters a {
     margin: 0 5px;
   }
-  #wrapper .filters a {
+  #wrapper #filters-wrapper .filters a {
     padding: 0 35px !important;
   }
   #wrapper .content .left .user-profile-info .info .name, #wrapper .content .left .user-profile-info .info .position {
@@ -3652,35 +3690,35 @@ a.small-icon, button.small-icon {
     margin: 0 auto 40px;
   }
 
-  #wrapper #top-bar #search {
+  #wrapper #top-bar-background #top-bar #search {
     display: none;
   }
-  #wrapper .wallpaper-wrapper .rated-avatar-wrapper {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper {
     width: 100px;
     height: 100px;
     top: 92px;
   }
-  #wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
     top: 75px;
     left: 31px;
   }
-  #wrapper .wallpaper-wrapper .buttons {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons {
     justify-content: flex-end !important;
     margin-top: 115px;
   }
-  #wrapper .wallpaper-wrapper .buttons button .title, #wrapper .wallpaper-wrapper .buttons a .title, #wrapper .wallpaper-wrapper .buttons div .title {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons button .title, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons a .title, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons div .title {
     display: none;
   }
-  #wrapper .wallpaper-wrapper .wallpaper {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .wallpaper {
     height: 170px;
   }
-  #wrapper .wallpaper-wrapper .footer {
+  #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer {
     display: none;
   }
-  #wrapper .filters {
+  #wrapper #filters-wrapper .filters {
     height: auto;
   }
-  #wrapper .filters > dropdown, #wrapper .filters > a {
+  #wrapper #filters-wrapper .filters > dropdown, #wrapper #filters-wrapper .filters > a {
     margin-bottom: 15px;
   }
   #wrapper .content {
@@ -3729,10 +3767,6 @@ a.small-icon, button.small-icon {
   }
 }
 @media (max-width: 400px) {
-  #wrapper #top-bar .small-icon, #wrapper #top-bar .floating:not(.user-menu) {
-    display: none;
-  }
-
   #landing-wrapper #header-wrapper #header {
     padding: 0 10px;
   }
@@ -3741,40 +3775,43 @@ a.small-icon, button.small-icon {
     margin: 0 auto 30px;
   }
 
-  #wrapper .filters {
+  #wrapper #top-bar-background #top-bar .small-icon, #wrapper #top-bar-background #top-bar .floating:not(.user-menu) {
+    display: none;
+  }
+  #wrapper #filters-wrapper .filters {
     justify-content: flex-start;
   }
-  #wrapper .filters > dropdown {
+  #wrapper #filters-wrapper .filters > dropdown {
     width: 100%;
     box-sizing: border-box;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper {
     width: 100%;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown {
     width: 100% !important;
     box-sizing: border-box;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list {
     width: 100%;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested {
     height: auto;
     min-height: 36px;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:after {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:after {
     display: none;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:hover {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested:hover {
     padding-bottom: 12px;
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper {
     width: 100%;
     margin-top: 49px;
     margin-left: -23px;
     box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.17);
   }
-  #wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper .sublist {
+  #wrapper #filters-wrapper .filters > dropdown .dropdown-wrapper .dropdown-list > li.nested .sublist-wrapper .sublist {
     position: relative;
     width: 100%;
     margin-left: 0;

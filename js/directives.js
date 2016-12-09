@@ -212,7 +212,93 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/aboutbox.htm',
 	}
 })
-.directive('feed', function ($rootScope, identityService, feedService, commentService) {
+.directive('searchfeed', function ($rootScope, identityService, feedService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/feed.htm',
+		scope: {
+			type: '=',
+			id: '=',
+			user: '=',
+			q: '=',
+		},
+		link: function ($scope, element, attr) {
+			var start = 0,
+				originalLimit = limit = 3
+
+			angular.element(window).on('scroll', function (e) {
+				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
+					// start += originalLimit
+					// limit += originalLimit
+					init({addmore: true})
+				}
+			})
+
+			$rootScope.$on('updateFeedVisibleCount', function (event) {
+				updateVisibleCount($scope.feed)
+			})
+
+			var updateVisibleCount = function (feed) {
+				var count = 0
+
+				for (var i in feed) {
+					var article = feed[i]
+
+					if (/*!article.hidden && */!article.muted && !article.blocked) {
+						count++
+					}
+				}
+
+				$scope.visibleCount = count
+			}
+
+			var init = function (options) {
+				if (!options) {
+					options = {
+						addmore: false,
+					}
+				}
+
+				if (!$scope.user) {
+					feedType = 'all'
+				}
+
+				$scope.feedLoading = true
+
+				if (start == 0 || !options.addmore) {
+					$scope.feed = []
+					start = 0
+				}
+
+				var setFeed = function (feed) {
+					$scope.feedLoading = false
+
+					if (start > 0 || options.addmore) {
+						for (var i in feed) {
+							$scope.feed.push(feed[i])
+						}
+					} else {
+						$scope.feed = feed
+					}
+
+					start += feed.length
+				}
+
+				feedService.search({
+					q: $scope.q,
+					start: start,
+					limit: limit,
+				}).then(function (feed) {
+					setFeed(feed)
+					updateVisibleCount($scope.feed)
+				})
+			}
+
+			init()			
+		},
+	}
+})
+.directive('feed', function ($rootScope, identityService, feedService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
@@ -825,7 +911,10 @@ angular.module('er.directives', [])
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/topbar.htm',
-		scope: {user: '='},
+		scope: {
+			user: '=',
+			q: '=',
+		},
 		link: function ($scope, element, attr) {
 			$scope.openUserMenu = function (e) {
 				e.stopPropagation()
@@ -1175,6 +1264,23 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			identityService.images($scope.profile._id).then(function (images) {
 				$scope.images = images
+			})
+		},
+	}
+})
+.directive('search', function (identityService, $location) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/search.htm',
+		scope: {
+			q: '=',
+		},
+		link: function ($scope, element, attr) {
+			element.find('form').on('submit', function (e) {
+				e.preventDefault()
+				console.log('wow!')
+				$location.path('/tagsearch/' + $scope.q)
+				$scope.$apply()
 			})
 		},
 	}

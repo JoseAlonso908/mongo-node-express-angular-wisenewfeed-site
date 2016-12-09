@@ -3,11 +3,13 @@
 		<topbar user="user"></topbar>
 	</div>
 
-	<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	<div id="wallpaper-block-wrapper">
+		<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	</div>
 
 	<div class="content">
 		<div class="left">
-			<profileinfo profile="profile"></profileinfo>
+			<profileinfo ng-if="profile" profile="profile"></profileinfo>
 		</div>
 		<div class="middle">
 			<post post="post" user="user" ng-if="user && post" justone="true"></post>

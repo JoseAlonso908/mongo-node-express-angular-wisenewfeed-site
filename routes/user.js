@@ -381,4 +381,22 @@ router.get('/multisearch', (req, res) => {
 	})
 })
 
+router.post('/invite/twitter', (req, res) => {
+	const Twitter = require('twitter')
+
+	let client = new Twitter({
+		consumer_key: 'vWvoIDn4bHVp4TbBg4PX5X8Ir',
+		consumer_secret: 'FVKbagnUXxEtmuFqys7ofkWkZh0WjYKeMzA5nf9bAlRKFrSm75',
+		access_token_key: '141251008-ZNMPm7k7xvU7h42yPdBWm25BC79VspgtZr0EEpHG',
+		access_token_secret: 'HeC1LH0fpxleKjPcLMjqyHfnVp6MvihLBOnIhpkvhe5zB',
+	})
+
+	client.get('friends/list', (error, list, response) => {
+		// console.log(error)
+		// console.log(list)
+		// console.log(response)
+		res.send(list)
+	})
+})
+
 module.exports = router

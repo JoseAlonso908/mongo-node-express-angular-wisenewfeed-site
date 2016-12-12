@@ -1798,6 +1798,85 @@ a.small-icon, button.small-icon {
   color: #82898f;
   line-height: 16px;
 }
+#wrapper > .content .middle .messages-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px 0 rgba(130, 137, 143, 0.3);
+  box-sizing: border-box;
+}
+#wrapper > .content .middle .messages-wrapper .chats {
+  width: 300px;
+  height: 100%;
+  border-right: 1px solid #f0f2f4;
+}
+#wrapper > .content .middle .messages-wrapper .chats .search {
+  width: 100%;
+  height: 42px;
+  border-bottom: 1px solid #f0f2f4;
+}
+#wrapper > .content .middle .messages-wrapper .chats .search .action, #wrapper > .content .middle .messages-wrapper .chats .search input {
+  display: block;
+  position: relative;
+  float: left;
+}
+#wrapper > .content .middle .messages-wrapper .chats .search .action, #wrapper > .content .middle .messages-wrapper .chats .search .action i {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  color: #8899a6;
+  font-size: 18px;
+}
+#wrapper > .content .middle .messages-wrapper .chats .search input {
+  width: calc(100% - 84px);
+  height: 42px;
+  padding: 0;
+  line-height: 42px;
+  border: none;
+  background: transparent;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user {
+  width: 100%;
+  height: 72px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f2f4;
+  box-sizing: border-box;
+  cursor: pointer;
+  -moz-transition: background-color 0.1s;
+  -o-transition: background-color 0.1s;
+  -webkit-transition: background-color 0.1s;
+  transition: background-color 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user .text > a {
+  display: inline-block;
+  color: #545759;
+  -moz-transition: color 0.1s;
+  -o-transition: color 0.1s;
+  -webkit-transition: color 0.1s;
+  transition: color 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user .text .role {
+  -moz-transition: color 0.1s, opacity 0.1s;
+  -o-transition: color 0.1s, opacity 0.1s;
+  -webkit-transition: color 0.1s, opacity 0.1s;
+  transition: color 0.1s, opacity 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user.active {
+  background-color: #43abe7;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user.active .text > a {
+  color: #ffffff;
+}
+#wrapper > .content .middle .messages-wrapper .chats .user.active .text .role {
+  color: #ffffff;
+  opacity: .6;
+}
+#wrapper > .content .middle .messages-wrapper .chat {
+  width: calc(100% - 300px);
+  height: 100%;
+}
 #wrapper > .content .left {
   order: 1;
 }
@@ -3159,43 +3238,43 @@ a.small-icon, button.small-icon {
   text-align: center;
 }
 
-.notifications .notification, .followers .follower, .people.results .user {
+.notifications .notification, .followers .follower, .people.results .user, .chats .user {
   position: relative;
   height: 42px;
   padding: 16px;
 }
-.notifications .notification.follower .text .name, .followers .follower.follower .text .name, .people.results .user.follower .text .name {
+.notifications .notification.follower .text .name, .followers .follower.follower .text .name, .people.results .user.follower .text .name, .chats .user.follower .text .name {
   width: 135px;
 }
-.notifications .notification.notification, .followers .follower.notification, .people.results .user.notification {
+.notifications .notification.notification, .followers .follower.notification, .people.results .user.notification, .chats .user.notification {
   display: none;
   -moz-transition: background-color 1s;
   -o-transition: background-color 1s;
   -webkit-transition: background-color 1s;
   transition: background-color 1s;
 }
-.notifications .notification.notification:nth-child(-n+11), .followers .follower.notification:nth-child(-n+11), .people.results .user.notification:nth-child(-n+11) {
+.notifications .notification.notification:nth-child(-n+11), .followers .follower.notification:nth-child(-n+11), .people.results .user.notification:nth-child(-n+11), .chats .user.notification:nth-child(-n+11) {
   display: block !important;
 }
-.notifications .notification.notification.unread, .followers .follower.notification.unread, .people.results .user.notification.unread {
+.notifications .notification.notification.unread, .followers .follower.notification.unread, .people.results .user.notification.unread, .chats .user.notification.unread {
   background-color: rgba(67, 171, 231, 0.1);
 }
-.notifications .notification.notification .text .name, .followers .follower.notification .text .name, .people.results .user.notification .text .name {
+.notifications .notification.notification .text .name, .followers .follower.notification .text .name, .people.results .user.notification .text .name, .chats .user.notification .text .name {
   width: 190px;
 }
-.notifications .notification a, .followers .follower a, .people.results .user a {
+.notifications .notification a, .followers .follower a, .people.results .user a, .chats .user a {
   color: #43abe7;
 }
-.notifications .notification .avatar-border, .followers .follower .avatar-border, .people.results .user .avatar-border {
+.notifications .notification .avatar-border, .followers .follower .avatar-border, .people.results .user .avatar-border, .chats .user .avatar-border {
   float: left;
   margin-right: 8px;
 }
-.notifications .notification .text, .followers .follower .text, .people.results .user .text {
+.notifications .notification .text, .followers .follower .text, .people.results .user .text, .chats .user .text {
   height: 42px;
   padding-top: 5px;
   text-align: left;
 }
-.notifications .notification .text .name, .followers .follower .text .name, .people.results .user .text .name {
+.notifications .notification .text .name, .followers .follower .text .name, .people.results .user .text .name, .chats .user .text .name {
   display: block;
   font-size: 14px;
   font-weight: 900;
@@ -3204,12 +3283,12 @@ a.small-icon, button.small-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.notifications .notification .text .action, .notifications .notification .text .role, .followers .follower .text .action, .followers .follower .text .role, .people.results .user .text .action, .people.results .user .text .role {
+.notifications .notification .text .action, .notifications .notification .text .role, .followers .follower .text .action, .followers .follower .text .role, .people.results .user .text .action, .people.results .user .text .role, .chats .user .text .action, .chats .user .text .role {
   margin-top: 5px;
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification .time, .followers .follower .time, .people.results .user .time {
+.notifications .notification .time, .followers .follower .time, .people.results .user .time, .chats .user .time {
   display: block;
   position: absolute;
   right: 16px;
@@ -3217,7 +3296,7 @@ a.small-icon, button.small-icon {
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification button, .followers .follower button, .people.results .user button {
+.notifications .notification button, .followers .follower button, .people.results .user button, .chats .user button {
   display: block;
   position: absolute;
   height: 42px;
@@ -3226,7 +3305,7 @@ a.small-icon, button.small-icon {
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification button, .followers .follower button, .people.results .user button {
+.notifications .notification button, .followers .follower button, .people.results .user button, .chats .user button {
   height: 24px;
   margin-top: 9px;
   padding: 0 9px;
@@ -3243,7 +3322,7 @@ a.small-icon, button.small-icon {
   -webkit-transition: background-color 0.2s, color 0.2s;
   transition: background-color 0.2s, color 0.2s;
 }
-.notifications .notification button.following, .followers .follower button.following, .people.results .user button.following {
+.notifications .notification button.following, .followers .follower button.following, .people.results .user button.following, .chats .user button.following {
   background-color: #43abe7;
   color: #ffffff;
 }

@@ -1026,3 +1026,50 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
+.controller('chatController', function ($scope, identityService, followService) {
+	$scope.chatssearch = ''
+
+	$scope.setActive = function (user) {
+		for (var i in $scope.chats) {
+			$scope.chats[i].active = false
+		}
+
+		console.log(user)
+
+		user.active = true
+	}
+
+	$scope.chats = []
+
+	async.series({
+		user: function (next) {
+			identityService.get().then(function (user) {
+				$scope.user = user
+				next()
+			})
+		},
+		followers: function (next) {
+			followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
+				followers.map(function (person) {
+					person.role = person.role[0].toUpperCase() + person.role.substr(1)
+					$scope.chats.push(person)
+				})
+
+				next()
+			})
+		},
+		following: function (next) {
+			followService.following($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (following) {
+				following = following.map(function (person) {
+					person.role = person.role[0].toUpperCase() + person.role.substr(1)
+					$scope.chats.push(person)
+				})
+
+				next()
+			})
+		},
+	}, function (err) {
+		// whoop
+		console.log($scope.chats)
+	})
+})

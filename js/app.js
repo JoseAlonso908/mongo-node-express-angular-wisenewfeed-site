@@ -65,6 +65,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/search.htm',
 				controller: 'searchController',
 			})
+			.when('/chat', {
+				templateUrl: 'assets/views/chat.htm',
+				controller: 'chatController',
+			})
 
 
 		$authProvider.facebook({

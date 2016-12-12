@@ -309,7 +309,7 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			var start = 0,
-				originalLimit = limit = 2
+				originalLimit = limit = 5
 
 			$scope.lastCategory = undefined,
 			$scope.lastCountry = undefined

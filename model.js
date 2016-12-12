@@ -12,7 +12,8 @@ module.exports = (dsn, __root) => {
 		['User', 'Token', 'Article', 'Comment', 'PostReaction',
 		'CommentReaction', 'PhoneVerification', 'ResetPassword',
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
-		'HiddenArticle', 'MutedAuthor', 'BlockedUser', 'Report', 'ExperienceLog'],
+		'HiddenArticle', 'MutedAuthor', 'BlockedUser', 'Report',
+		'ExperienceLog', 'Message'],
 
 		models = {}
 

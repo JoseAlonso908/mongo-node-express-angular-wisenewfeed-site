@@ -1024,3 +1024,10 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('messagesService', function ($http, $cookies) {
+	return {
+		getConversation: function (user) {
+			return __s($http, $cookies, 'get', '/chat/conversation', {user: user})
+		},
+	}
+})

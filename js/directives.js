@@ -391,8 +391,6 @@ angular.module('er.directives', [])
 				var setFeed = function (feed) {
 					$scope.feedLoading = false
 
-					console.log(feed)
-
 					if (start > 0 || options.addmore) {
 						for (var i in feed) {
 							$scope.feed.push(feed[i])
@@ -916,8 +914,6 @@ angular.module('er.directives', [])
 			q: '=?',
 		},
 		link: function ($scope, element, attr) {
-			console.log($scope.q)
-
 			if (!$scope.q) {
 				$scope.q = ''
 			}

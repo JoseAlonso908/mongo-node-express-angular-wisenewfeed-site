@@ -27,3 +27,8 @@ angular.module('er.filters', [])
 		return input
 	}
 })
+.filter('encodeuri', function () {
+	return function (input) {
+		return encodeURIComponent(input)
+	}
+})

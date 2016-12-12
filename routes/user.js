@@ -359,4 +359,26 @@ router.get('/user/images', (req, res) => {
 	})
 })
 
+router.get('/multisearch', (req, res) => {
+	let user = req.user
+	let {q} = req.query
+
+	async.parallel({
+		categories: (next) => {
+			models.Article.searchForTags(user, '$', q, 5, next)
+		},
+		tags: (next) => {
+			models.Article.searchForTags(user, '#', q, 5, next)
+		},
+		users: (next) => {
+			models.User.search(user, q, 5, next)
+		},
+	}, (err, results) => {
+		if (err) res.status(400).send(err)
+		else {
+			res.send(results)
+		}
+	})
+})
+
 module.exports = router

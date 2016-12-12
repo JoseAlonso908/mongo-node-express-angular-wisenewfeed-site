@@ -462,6 +462,53 @@ a.small-icon, button.small-icon {
 					color: #8899a6;
 					font-size: 20px;
 				}
+
+				.search-panel {
+					position: absolute;
+					width: 100%;
+					margin: 0 0 0 0;
+					padding: 16px 0;
+					z-index: 3;
+					background-color: #ffffff;
+					border-radius: 4px;
+					box-shadow: 0 5px 16px 0 rgba(#000000, 0.17);
+					opacity: 0;
+					pointer-events: none;
+					box-sizing: border-box;
+					@include transition(opacity .2s);
+
+					&.active {
+						opacity: 1;
+						pointer-events: auto;
+					}
+
+					.divider {
+						width: 100%; height: 0;
+						margin: 20px 0 20px 0;
+						// padding-right: 50px;
+						border-top: 1px solid #f0f2f4;
+					}
+
+					.results {
+						padding: 0 25px;
+
+						> a {
+							display: block;
+							font-size: 15px;
+							color: $soDark;
+							line-height: 2em;
+						}
+					}
+
+					.all-results {
+						display: block;
+						width: 100%; height: 24px;
+						line-height: 24px;
+						font-size: 15px;
+						color: $activeBlue;
+						text-align: center;
+					}
+				}
 			}
 
 			.make-post {
@@ -3424,115 +3471,119 @@ a.small-icon, button.small-icon {
 		padding: 16px;
 		text-align: center;
 	}
+}
 
-	.notification, .follower {
-		position: relative;
-		height: 42px;
-		padding: 16px;
+.notifications .notification, .followers .follower, .people.results .user {
+	position: relative;
+	height: 42px;
+	padding: 16px;
 
-		&.follower {
-			.text {
-				.name {
-					width: 135px;
-				}
-			}
-		}
-
-		&.notification {
-			display: none;
-
-			&:nth-child(-n+11) {
-				display: block !important;
-			}
-
-			@include transition(background-color 1s);
-
-			&.unread {
-				background-color: rgba($activeBlue, .1);
-			}
-
-			.text {
-				.name {
-					width: 190px;
-				}
-			}
-		}
-
-		a {
-			color: $activeBlue;
-		}
-
-		.avatar-border {
-			float: left;
-			margin-right: 8px;
-		}
-
+	&.follower {
 		.text {
-			// display: flex;
-			height: 42px;
-			padding-top: 5px;
-			// flex-direction: column;
-			// justify-content: center;
-			text-align: left;
-
 			.name {
-				display: block;
-				font-size: 14px;
-				font-weight: 900;
-				color: #545759;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-
-			.action, .role {
-				margin-top: 5px;
-				color: $iconGrey;
-				font-size: 13px;
-			}
-		}
-
-		.time {
-			display: block;
-			position: absolute;
-			// height: 42px;
-			// line-height: 42px;
-			right: 16px;
-			bottom: 8px;
-			color: $iconGrey;
-			font-size: 13px;
-		}
-
-		button {
-			display: block;
-			position: absolute;
-			height: 42px;
-			line-height: 42px;
-			right: 16px;
-			color: $iconGrey;
-			font-size: 13px;
-		}
-
-		button {
-			height: 24px;
-			margin-top: 9px;
-			padding: 0 9px;
-			line-height: 24px;
-			background: transparent;
-			border-radius: 12px;
-			border: none;
-			color: $activeBlue;
-			font-size: 12px;
-			font-weight: 900;
-			cursor: pointer;
-			@include transition(background-color .2s, color .2s);
-
-			&.following {
-				background-color: $activeBlue;
-				color: #ffffff;
+				width: 135px;
 			}
 		}
 	}
+
+	&.notification {
+		display: none;
+
+		&:nth-child(-n+11) {
+			display: block !important;
+		}
+
+		@include transition(background-color 1s);
+
+		&.unread {
+			background-color: rgba($activeBlue, .1);
+		}
+
+		.text {
+			.name {
+				width: 190px;
+			}
+		}
+	}
+
+	a {
+		color: $activeBlue;
+	}
+
+	.avatar-border {
+		float: left;
+		margin-right: 8px;
+	}
+
+	.text {
+		// display: flex;
+		height: 42px;
+		padding-top: 5px;
+		// flex-direction: column;
+		// justify-content: center;
+		text-align: left;
+
+		.name {
+			display: block;
+			font-size: 14px;
+			font-weight: 900;
+			color: #545759;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.action, .role {
+			margin-top: 5px;
+			color: $iconGrey;
+			font-size: 13px;
+		}
+	}
+
+	.time {
+		display: block;
+		position: absolute;
+		// height: 42px;
+		// line-height: 42px;
+		right: 16px;
+		bottom: 8px;
+		color: $iconGrey;
+		font-size: 13px;
+	}
+
+	button {
+		display: block;
+		position: absolute;
+		height: 42px;
+		line-height: 42px;
+		right: 16px;
+		color: $iconGrey;
+		font-size: 13px;
+	}
+
+	button {
+		height: 24px;
+		margin-top: 9px;
+		padding: 0 9px;
+		line-height: 24px;
+		background: transparent;
+		border-radius: 12px;
+		border: none;
+		color: $activeBlue;
+		font-size: 12px;
+		font-weight: 900;
+		cursor: pointer;
+		@include transition(background-color .2s, color .2s);
+
+		&.following {
+			background-color: $activeBlue;
+			color: #ffffff;
+		}
+	}
+}
+
+.people.results .user {
+	padding: 16px 0;
 }
 
 .comment-box, .question-box {

@@ -330,6 +330,21 @@ var Model = function(mongoose) {
 				{$sample: {size: count}}
 			]).exec(callback)
 		},
+
+		search: (user, q, limit = 5, callback) => {
+			user = MOI(user)
+
+			let query = {name: new RegExp(q, 'gi')}
+
+			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
+				if (blockeds.length > 0) {
+					query['_id'] = {$in: blockedIds}
+				}
+
+				blockedIds = blockeds.map((u) => u._id)
+				Model.find(query).lean().limit(limit).exec(callback)
+			})
+		},
 	}
 }
 

@@ -528,6 +528,51 @@ a.small-icon, button.small-icon {
   color: #8899a6;
   font-size: 20px;
 }
+#wrapper #top-bar-background #top-bar #search .search-panel {
+  position: absolute;
+  width: 100%;
+  margin: 0 0 0 0;
+  padding: 16px 0;
+  z-index: 3;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.17);
+  opacity: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#wrapper #top-bar-background #top-bar #search .search-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#wrapper #top-bar-background #top-bar #search .search-panel .divider {
+  width: 100%;
+  height: 0;
+  margin: 20px 0 20px 0;
+  border-top: 1px solid #f0f2f4;
+}
+#wrapper #top-bar-background #top-bar #search .search-panel .results {
+  padding: 0 25px;
+}
+#wrapper #top-bar-background #top-bar #search .search-panel .results > a {
+  display: block;
+  font-size: 15px;
+  color: #535659;
+  line-height: 2em;
+}
+#wrapper #top-bar-background #top-bar #search .search-panel .all-results {
+  display: block;
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  font-size: 15px;
+  color: #43abe7;
+  text-align: center;
+}
 #wrapper #top-bar-background #top-bar .make-post {
   width: 100px;
 }
@@ -3113,43 +3158,44 @@ a.small-icon, button.small-icon {
   padding: 16px;
   text-align: center;
 }
-.notifications .notification, .notifications .follower, .followers .notification, .followers .follower {
+
+.notifications .notification, .followers .follower, .people.results .user {
   position: relative;
   height: 42px;
   padding: 16px;
 }
-.notifications .notification.follower .text .name, .notifications .follower.follower .text .name, .followers .notification.follower .text .name, .followers .follower.follower .text .name {
+.notifications .notification.follower .text .name, .followers .follower.follower .text .name, .people.results .user.follower .text .name {
   width: 135px;
 }
-.notifications .notification.notification, .notifications .follower.notification, .followers .notification.notification, .followers .follower.notification {
+.notifications .notification.notification, .followers .follower.notification, .people.results .user.notification {
   display: none;
   -moz-transition: background-color 1s;
   -o-transition: background-color 1s;
   -webkit-transition: background-color 1s;
   transition: background-color 1s;
 }
-.notifications .notification.notification:nth-child(-n+11), .notifications .follower.notification:nth-child(-n+11), .followers .notification.notification:nth-child(-n+11), .followers .follower.notification:nth-child(-n+11) {
+.notifications .notification.notification:nth-child(-n+11), .followers .follower.notification:nth-child(-n+11), .people.results .user.notification:nth-child(-n+11) {
   display: block !important;
 }
-.notifications .notification.notification.unread, .notifications .follower.notification.unread, .followers .notification.notification.unread, .followers .follower.notification.unread {
+.notifications .notification.notification.unread, .followers .follower.notification.unread, .people.results .user.notification.unread {
   background-color: rgba(67, 171, 231, 0.1);
 }
-.notifications .notification.notification .text .name, .notifications .follower.notification .text .name, .followers .notification.notification .text .name, .followers .follower.notification .text .name {
+.notifications .notification.notification .text .name, .followers .follower.notification .text .name, .people.results .user.notification .text .name {
   width: 190px;
 }
-.notifications .notification a, .notifications .follower a, .followers .notification a, .followers .follower a {
+.notifications .notification a, .followers .follower a, .people.results .user a {
   color: #43abe7;
 }
-.notifications .notification .avatar-border, .notifications .follower .avatar-border, .followers .notification .avatar-border, .followers .follower .avatar-border {
+.notifications .notification .avatar-border, .followers .follower .avatar-border, .people.results .user .avatar-border {
   float: left;
   margin-right: 8px;
 }
-.notifications .notification .text, .notifications .follower .text, .followers .notification .text, .followers .follower .text {
+.notifications .notification .text, .followers .follower .text, .people.results .user .text {
   height: 42px;
   padding-top: 5px;
   text-align: left;
 }
-.notifications .notification .text .name, .notifications .follower .text .name, .followers .notification .text .name, .followers .follower .text .name {
+.notifications .notification .text .name, .followers .follower .text .name, .people.results .user .text .name {
   display: block;
   font-size: 14px;
   font-weight: 900;
@@ -3158,12 +3204,12 @@ a.small-icon, button.small-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.notifications .notification .text .action, .notifications .notification .text .role, .notifications .follower .text .action, .notifications .follower .text .role, .followers .notification .text .action, .followers .notification .text .role, .followers .follower .text .action, .followers .follower .text .role {
+.notifications .notification .text .action, .notifications .notification .text .role, .followers .follower .text .action, .followers .follower .text .role, .people.results .user .text .action, .people.results .user .text .role {
   margin-top: 5px;
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification .time, .notifications .follower .time, .followers .notification .time, .followers .follower .time {
+.notifications .notification .time, .followers .follower .time, .people.results .user .time {
   display: block;
   position: absolute;
   right: 16px;
@@ -3171,7 +3217,7 @@ a.small-icon, button.small-icon {
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification button, .notifications .follower button, .followers .notification button, .followers .follower button {
+.notifications .notification button, .followers .follower button, .people.results .user button {
   display: block;
   position: absolute;
   height: 42px;
@@ -3180,7 +3226,7 @@ a.small-icon, button.small-icon {
   color: #b0bec8;
   font-size: 13px;
 }
-.notifications .notification button, .notifications .follower button, .followers .notification button, .followers .follower button {
+.notifications .notification button, .followers .follower button, .people.results .user button {
   height: 24px;
   margin-top: 9px;
   padding: 0 9px;
@@ -3197,9 +3243,13 @@ a.small-icon, button.small-icon {
   -webkit-transition: background-color 0.2s, color 0.2s;
   transition: background-color 0.2s, color 0.2s;
 }
-.notifications .notification button.following, .notifications .follower button.following, .followers .notification button.following, .followers .follower button.following {
+.notifications .notification button.following, .followers .follower button.following, .people.results .user button.following {
   background-color: #43abe7;
   color: #ffffff;
+}
+
+.people.results .user {
+  padding: 16px 0;
 }
 
 .comment-box, .question-box {

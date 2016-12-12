@@ -1282,9 +1282,40 @@ angular.module('er.directives', [])
 			q: '=',
 		},
 		link: function ($scope, element, attr) {
+			$scope.dropdownVisible = false
+			$scope.loading = false
+
+			angular.element(document.body).on('click', function () {
+				$scope.dropdownVisible = false
+				$scope.$apply()
+			})
+
+			$scope.multisearch = function () {
+				var q = $scope.q.trim()
+
+				if (!q) {
+					$scope.dropdownVisible = false
+					return
+				}
+
+				$scope.loading = true
+
+				identityService.multisearch($scope.q).then(function (results) {
+					results.users = results.users.map(function (user) {
+						user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
+						user.role = user.role[0].toUpperCase() + user.role.substr(1)
+						return user
+					})
+
+					$scope.results = results
+
+					$scope.loading = false
+					$scope.dropdownVisible = true
+				})
+			}
+
 			element.find('form').on('submit', function (e) {
 				e.preventDefault()
-				console.log('wow!')
 				$location.path('/tagsearch/' + $scope.q)
 				$scope.$apply()
 			})

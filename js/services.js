@@ -368,6 +368,9 @@ angular.module('er.services', [])
 		images: function (user) {
 			return __s($http, $cookies, 'get', '/user/images', {user: user})
 		},
+		multisearch: function (q) {
+			return __s($http, $cookies, 'get', '/multisearch', {q: q})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {

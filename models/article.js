@@ -57,7 +57,7 @@ var Model = function(mongoose) {
 					articles = articles.map((a) => {
 						a.muted = false
 
-						if (muted[a.author._id.toString()]) {
+						if (!a.author instanceof mongoose.Types.ObjectId && muted[a.author._id.toString()]) {
 							a.muted = true
 						}
 
@@ -77,7 +77,7 @@ var Model = function(mongoose) {
 					articles = articles.map((a) => {
 						a.blocked = false
 
-						if (blocked[a.author._id.toString()]) {
+						if (!a.author instanceof mongoose.Types.ObjectId && blocked[a.author._id.toString()]) {
 							a.blocked = true
 						}
 
@@ -175,6 +175,37 @@ var Model = function(mongoose) {
 			})
 		},
 
+		searchForTags: (viewer, tagchar, q, limit, callback) => {
+			if (tagchar == '$') {
+				tagchar = '\\$'
+			}
+
+			let r = new RegExp(`${tagchar}[a-z]*[a-z0-9]*${q}[a-z0-9]*`, 'gi')
+			var tags = []
+
+			Model.find({text: r})/*.populate([
+				{path: 'author'},
+				{path: 'sharedFrom', populate: {
+					path: 'author',
+				}}
+			])*/.lean().exec((err, articles) => {
+				this.postProcessList(articles, viewer, (err, articles) => {
+					for (let a of articles) {
+						let aTags = a.text.match(r)
+
+						aTags = aTags.map((t) => t.toLowerCase())
+
+						tags.push(...aTags)
+					}
+
+					// Make tags unique
+					tags = [...new Set(tags)]
+
+					callback(err, tags)
+				})
+			})
+		},
+
 		search: (viewer, q, category, country, start = 0, limit = 4, callback) => {
 			let query = {}
 
@@ -192,9 +223,6 @@ var Model = function(mongoose) {
 					path: 'author',
 				}}
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
-				console.log(query)
-				console.log(err)
-				console.log(articles)
 				this.postProcessList(articles, viewer, callback)
 			})
 		},

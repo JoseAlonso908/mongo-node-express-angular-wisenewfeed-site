@@ -219,7 +219,7 @@ angular.module('er.services', [])
 		return new Promise(function (resolve, reject) {
 			$http({
 				method: 'POST',
-				url: '/profile/edit/profile',
+				url: '/user/profile/edit/profile',
 				data: {
 					token: $cookies.get('token'),
 					contact: contact,
@@ -335,23 +335,23 @@ angular.module('er.services', [])
 			this.otherCache = {}
 		},
 		updateSettings: function (data) {
-			return __s($http, $cookies, 'post', '/profile/edit/settings', data)
+			return __s($http, $cookies, 'post', '/user/profile/edit/settings', data)
 		},
 		isPasswordValid: function (password) {
-			return __s($http, $cookies, 'post', '/profile/settings/isPasswordValid', {password: password}).then(function (response) {
+			return __s($http, $cookies, 'post', '/user/profile/settings/isPasswordValid', {password: password}).then(function (response) {
 				return response.valid
 			}, function (error) {
 				return error
 			})
 		},
 		updatePassword: function (oldPassword, newPassword) {
-			return __s($http, $cookies, 'post', '/profile/settings/setPassword', {oldPassword: oldPassword, newPassword: newPassword})
+			return __s($http, $cookies, 'post', '/user/profile/settings/setPassword', {oldPassword: oldPassword, newPassword: newPassword})
 		},
 		disconnectSocial: function (provider) {
-			return __s($http, $cookies, 'post', '/profile/settings/disconnectsocial', {provider: provider})
+			return __s($http, $cookies, 'post', '/user/profile/settings/disconnectsocial', {provider: provider})
 		},
 		updateNotifications: function (data) {
-			return __s($http, $cookies, 'post', '/profile/settings/notifications', data)
+			return __s($http, $cookies, 'post', '/user/profile/settings/notifications', data)
 		},
 		mutedAuthors: function () {
 			return __s($http, $cookies, 'get', '/user/mutedauthors')
@@ -369,7 +369,7 @@ angular.module('er.services', [])
 			return __s($http, $cookies, 'get', '/user/images', {user: user})
 		},
 		multisearch: function (q) {
-			return __s($http, $cookies, 'get', '/multisearch', {q: q})
+			return __s($http, $cookies, 'get', '/user/multisearch', {q: q})
 		},
 	}
 })
@@ -382,7 +382,7 @@ angular.module('er.services', [])
 
 			$http({
 				method: 'POST',
-				url: '/profile/edit/avatar',
+				url: '/user/profile/edit/avatar',
 				headers: {
 					'Content-Type': undefined
 				},
@@ -406,7 +406,7 @@ angular.module('er.services', [])
 
 			$http({
 				method: 'POST',
-				url: '/profile/edit/wallpaper',
+				url: '/user/profile/edit/wallpaper',
 				headers: {
 					'Content-Type': undefined
 				},
@@ -431,7 +431,7 @@ angular.module('er.services', [])
 
 				$http({
 					method: 'POST',
-					url: '/profile/edit/addcertificate',
+					url: '/user/profile/edit/addcertificate',
 					headers: {
 						'Content-Type': undefined
 					},
@@ -449,7 +449,7 @@ angular.module('er.services', [])
 			return new Promise(function (resolve, reject) {
 				$http({
 					method: 'POST',
-					url: '/profile/edit/removecertificate',
+					url: '/user/profile/edit/removecertificate',
 					data: {
 						filename: cert.filename,
 						token: $cookies.get('token')
@@ -473,7 +473,7 @@ angular.module('er.services', [])
 
 				$http({
 					method: 'POST',
-					url: '/profile/edit/adddownload',
+					url: '/user/profile/edit/adddownload',
 					headers: {
 						'Content-Type': undefined
 					},
@@ -491,7 +491,7 @@ angular.module('er.services', [])
 			return new Promise(function (resolve, reject) {
 				$http({
 					method: 'POST',
-					url: '/profile/edit/removedownload',
+					url: '/user/profile/edit/removedownload',
 					data: {
 						filename: file.filename,
 						token: $cookies.get('token')
@@ -914,7 +914,7 @@ angular.module('er.services', [])
 .factory('familiarExpertsService', function ($http, $cookies) {
 	return {
 		get: function () {
-			return __s($http, $cookies, 'get', '/familiarexperts')
+			return __s($http, $cookies, 'get', '/user/familiarexperts')
 
 			// return new Promise(function (resolve, reject) {
 			// 	var familiarExperts = [
@@ -1026,8 +1026,17 @@ angular.module('er.services', [])
 })
 .factory('messagesService', function ($http, $cookies) {
 	return {
-		getConversation: function (user) {
-			return __s($http, $cookies, 'get', '/chat/conversation', {user: user})
+		getConversations: function () {
+			return __s($http, $cookies, 'get', '/chat/conversations')
+		},
+		getConversation: function (user, skip, limit) {
+			return __s($http, $cookies, 'get', '/chat/conversation', {user: user, skip: skip, limit: limit})
+		},
+		sendMessage: function (to, text) {
+			return __s($http, $cookies, 'post', '/chat/send', {to: to, text: text})
+		},
+		setRead: function (ids) {
+			return __s($http, $cookies, 'post', '/chat/setread', {ids: ids})
 		},
 	}
 })

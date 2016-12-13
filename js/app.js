@@ -82,7 +82,7 @@ angular.module('er', [
 	}
 ])
 .run(['$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
-function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService) {
+function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
 	// $templateCache.removeAll()
 
 	$cookies.put('token', 'guest')
@@ -105,6 +105,9 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 			if (!user.phone || !user.email) {
 				return $location.url('/settings')
 			}
+
+			window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
+			$rootScope.$emit('ws-available')
 
 			$rootScope.user = user
 

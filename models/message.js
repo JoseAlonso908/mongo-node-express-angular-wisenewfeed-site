@@ -28,12 +28,97 @@ var Model = function(mongoose) {
 
 			let message = new Model()
 			Object.assign(message, {from, to, text})
-			message.save(callback)
+			message.populate('from to').save((err, message) => {
+				Model.populate(message, {path: "from to"}, callback)
+			})
 		},
 
-		getConversation: (user1, user2, callback) => {
+		getConversations: (user, callback) => {
+			user = MOI(user)
+
+			Model.aggregate(
+				{
+					$match: {
+						$or: [{to: user}, {from: user}]
+					}
+				},
+				{
+					$sort: {
+						createdAt: 1
+					}
+				},
+				{
+					$group: {
+						id: {$last: "$_id"},
+						_id: {from: "$from", to: "$to"},
+						text: {$last: "$text"},
+						images: {$last: "$images"},
+						createdAt: {$last: "$createdAt"},
+						read: {$max: "$read"},
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: '_id.from',
+						foreignField: '_id',
+						as: 'from'
+					},
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: '_id.to',
+						foreignField: '_id',
+						as: 'to'
+					},
+				}
+			).exec((err, results) => {
+				// console.log(results)
+				// Normalize users list
+				// results = results.map((c) => {
+				// 	c._id.u = c._id.u.sort()
+
+				// 	return c
+				// })
+
+				results = results.filter((c) => {
+					let cUsersJSON = JSON.stringify([c._id.from, c._id.to].sort())
+
+					for (let c2 of results) {
+						let c2UsersJSON = JSON.stringify([c2._id.from, c2._id.to].sort())
+
+						if (cUsersJSON == c2UsersJSON && c.createdAt < c2.createdAt) return false
+					}
+
+					return true
+				})
+
+				// console.log(require('util').inspect(results, {showHidden: true, depth: null}))	
+
+				if (results) {
+					results = results.map((c) => {
+						c._id = c.id
+
+						c.from = c.from[0]
+						c.to = c.to[0]
+
+						return c
+					})
+
+					return callback(err, results)
+				}
+
+				return callback(err)
+			})
+		},
+
+		getConversation: (user1, user2, skip = 0, limit = 10, callback) => {
 			user1 = MOI(user1)
 			user2 = MOI(user2)
+
+			skip = Number(skip)
+			limit = Number(limit)
 
 			Model.find({$or: [
 				{
@@ -48,8 +133,12 @@ var Model = function(mongoose) {
 						{to: user1},
 					]
 				},
-			]}).populate('from to').lean().sort({createdAt: 'desc'}).exec(callback)
+			]}).populate('from to').skip(skip).limit(limit).lean().sort({createdAt: 'asc'}).exec(callback)
 		},
+
+		setRead: (user, ids, callback) => {
+			
+		}
 	}
 }
 

@@ -1026,17 +1026,155 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('chatController', function ($scope, identityService, followService) {
+.controller('chatController', function ($scope, $rootScope, $timeout, identityService, followService, messagesService) {
+	$scope.hideLoadMore = false
+
 	$scope.chatssearch = ''
+	$scope.chatChosen = false
+	
+	$scope.chatMessages = []
+	$scope.skip = 0
+	$scope.limit = 10
+	
+	$scope.activeChat
+
+	$scope.files = []
+	$scope.text = ''
+
+	$scope.filterConversations = function () {
+		var testRegexp = new RegExp($scope.search.trim(), 'i')
+
+		angular.forEach($scope.chats, function (u, i) {
+			u.visible = testRegexp.test(u.name)
+		})
+	}
+
+	$scope.reorderConversations = function () {
+		$scope.chats = $scope.chats.sort(function (a, b) {
+			if (!a.lastMessageTime) a.lastMessageTime = 0
+			if (!b.lastMessageTime) b.lastMessageTime = 0
+
+			return (new Date(b.lastMessageTime)).getTime() - (new Date(a.lastMessageTime)).getTime()
+		})
+
+		console.log($scope.chats)
+	}
+
+	$rootScope.$on('ws-available', function () {
+		window.socket.on('message', function (message) {
+			if ($scope.activeChat && message.from._id == $scope.activeChat._id) {
+				$scope.chatMessages.push(message)
+				$scope.$apply()
+
+				$timeout($scope.scrollBottom)
+			}
+
+			for (var i in $scope.chats) {
+				var c = $scope.chats[i]
+
+				if (c._id == message.from._id) {
+					c.lastMessage = message.text
+					c.lastMessageTime = message.createdAt
+				}
+			}
+
+			$scope.reorderConversations()
+		})
+	})
+
+	$scope.scrollBottom = function () {
+		document.querySelector('.chat .messages-box-wrapper').scrollTo(0, document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight)
+	}
+
+	$scope.loadMore = function () {
+		$scope.skip += $scope.limit
+		$scope.loadMessages(function (messages) {
+			if (messages.length == 0) {
+				$scope.hideLoadMore = true
+			}
+		})
+	}
+
+	$scope.selectedMessages = []
+	$scope.toggleSelectMessage = function (m) {
+		m.selected = !m.selected
+
+		if (m.selected) {
+			$scope.selectedMessages.push(m)
+		} else {
+			$scope.selectedMessages = $scope.selectedMessages.filter(function (_m) {
+				if (_m._id == m._id) return false
+				return true
+			})
+		}
+	}
+
+	$scope.clearSelectedMessages = function () {
+		$scope.selectedMessages = []
+		for (var i in $scope.chatMessages) {
+			$scope.chatMessages[i].selected = false
+		}
+	}
+
+	$scope.deleteChosenMessages = function () {
+
+	}
+
+	$scope.reportChosenMessages = function () {
+
+	}
+
+	$scope.sendMessage = function () {
+		messagesService.sendMessage($scope.activeChat._id, $scope.text).then(function (result) {
+			$scope.chatMessages.push(result)
+			$scope.text = ''
+			
+			$scope.activeChat.lastMessage = result.text
+			$scope.activeChat.lastMessageTime = result.createdAt
+
+			$scope.reorderConversations()
+
+			$timeout($scope.scrollBottom)
+		})
+	}
+
+	$scope.loadMessages = function (callback) {
+		messagesService.getConversation($scope.activeChat._id, $scope.skip, $scope.limit).then(function (messages) {
+			console.log(messages)
+
+			if ($scope.chatMessages.length == 0) {
+				$scope.chatMessages = messages
+			} else {
+				for (var i in messages) {
+					var newMessage = messages[i]
+					$scope.chatMessages.unshift(newMessage)
+				}
+			}
+
+			if (typeof callback === 'function') callback(messages)
+		})
+	}
 
 	$scope.setActive = function (user) {
+		if (user.active) return
+
+		$scope.chatMessages = []
+
 		for (var i in $scope.chats) {
 			$scope.chats[i].active = false
 		}
 
-		console.log(user)
-
 		user.active = true
+		$scope.activeChat = user
+
+		$scope.loadMessages(function () {
+			$scope.chatChosen = true
+			$scope.hideLoadMore = false
+			$scope.skip = 0
+
+			// Heh
+			$timeout($scope.scrollBottom)
+		})
 	}
 
 	$scope.chats = []
@@ -1048,22 +1186,62 @@ angular.module('er.controllers', [])
 				next()
 			})
 		},
+		conversations: function (next) {
+			messagesService.getConversations().then(function (conversations) {
+				for (var i in conversations) {
+					var c = conversations[i]
+
+					var person = (c.from._id == $scope.user._id) ? c.to : c.from
+					person.lastMessage = c.text
+					person.lastMessageTime = c.createdAt
+					person.read = c.read
+
+					$scope.chats.push(person)
+				}
+
+				next()
+			})
+		},
 		followers: function (next) {
 			followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
-				followers.map(function (person) {
+				for (var i in followers) {
+					var person = followers[i]
+
+					var alreadyIn = false
+					for (var j in $scope.chats) {
+						if (person._id == $scope.chats[j]._id) {
+							alreadyIn = true
+							break
+						}
+					}
+
+					if (alreadyIn) continue
+
 					person.role = person.role[0].toUpperCase() + person.role.substr(1)
 					$scope.chats.push(person)
-				})
+				}
 
 				next()
 			})
 		},
 		following: function (next) {
 			followService.following($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (following) {
-				following = following.map(function (person) {
+				for (var i in following) {
+					var person = following[i]
+
+					var alreadyIn = false
+					for (var j in $scope.chats) {
+						if (person._id == $scope.chats[j]._id) {
+							alreadyIn = true
+							break
+						}
+					}
+
+					if (alreadyIn) continue
+
 					person.role = person.role[0].toUpperCase() + person.role.substr(1)
 					$scope.chats.push(person)
-				})
+				}
 
 				next()
 			})
@@ -1071,5 +1249,9 @@ angular.module('er.controllers', [])
 	}, function (err) {
 		// whoop
 		console.log($scope.chats)
+
+		for (var i in $scope.chats) {
+			$scope.chats[i].visible = true
+		}
 	})
 })

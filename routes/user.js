@@ -270,7 +270,7 @@ router.post('/profile/settings/notifications', (req, res) => {
 	})
 })
 
-router.get('/user/categories', (req, res) => {
+router.get('/categories', (req, res) => {
 	let user = req.user
 	let {country} = req.query
 
@@ -311,7 +311,7 @@ router.get('/user/categories', (req, res) => {
 	})
 })
 
-router.get('/user/mutedauthors', (req, res) => {
+router.get('/mutedauthors', (req, res) => {
 	let user = req.user
 
 	models.MutedAuthor.getMutedByUser(user._id, (err, authors) => {
@@ -320,7 +320,7 @@ router.get('/user/mutedauthors', (req, res) => {
 	})
 })
 
-router.post('/user/block', (req, res) => {
+router.post('/block', (req, res) => {
 	let user = req.user,
 		blocked = req.body.user
 
@@ -330,7 +330,7 @@ router.post('/user/block', (req, res) => {
 	})
 })
 
-router.post('/user/unblock', (req, res) => {
+router.post('/unblock', (req, res) => {
 	let user = req.user,
 		blocked = req.body.user
 
@@ -340,7 +340,7 @@ router.post('/user/unblock', (req, res) => {
 	})
 })
 
-router.post('/user/report', (req, res) => {
+router.post('/report', (req, res) => {
 	let user = req.user
 	let {article} = req.body
 
@@ -350,7 +350,7 @@ router.post('/user/report', (req, res) => {
 	})
 })
 
-router.get('/user/images', (req, res) => {
+router.get('/images', (req, res) => {
 	let {user} = req.query
 
 	models.Article.getImagesByUser(user, (err, result) => {

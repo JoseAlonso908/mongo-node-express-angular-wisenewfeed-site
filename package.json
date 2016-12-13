@@ -43,6 +43,7 @@
     "satellizer": "^0.15.5",
     "serve-static": "^1.11.1",
     "sha1": "^1.1.1",
+    "socket.io": "^1.7.2",
     "twilio": "^2.11.0",
     "twitter": "^1.7.0",
     "validator": "^6.1.0"

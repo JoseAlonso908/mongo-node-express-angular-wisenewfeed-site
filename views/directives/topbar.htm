@@ -10,12 +10,12 @@
 
 	<followersicon ng-if="user && user.role != 'User'" user="user"></followersicon>
 	
-	<button ng-if="user && user.role != 'User'" ng-if="user" class="small-icon" title="Messages">
+	<a ng-href="#!/chat" ng-if="user && user.role != 'User'" ng-if="user" class="small-icon" title="Messages">
 		<div class="badge">
 			<div class="value">12</div>
 		</div>
 		<i class="material-icons">forum</i>
-	</button>
+	</a>
 
 	<notificationsicon ng-if="user && user.role != 'User'" user="user"></notificationsicon>
 

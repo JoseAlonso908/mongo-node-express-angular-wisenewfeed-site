@@ -20,11 +20,42 @@ router.use((req, res, next) => {
 	}
 })
 
-router.get('/conversation', (req, res) => {
-	let {thatguy} = req.query
+router.get('/conversations', (req, res) => {
+	models.Message.getConversations(req.user._id, (err, result) => {
+		if (err) return res.status(400).send(err)
+		else res.send(result)
+	})
+})
 
-	models.Message.getConversation(req.user._id, thatguy, (err, messages) => {
-		res.send(messages)
+router.get('/conversation', (req, res) => {
+	let {user, skip, limit} = req.query
+
+	models.Message.getConversation(req.user._id, user, skip, limit, (err, result) => {
+		if (err) return res.status(400).send(err)
+		else res.send(result)
+	})
+})
+
+router.post('/send', (req, res) => {
+	let {to, text} = req.body
+
+	models.Message.send(req.user._id, to, text, (err, result) => {
+		if (err) return res.status(400).send(err)
+		else {
+			events.emit('message', result)
+			res.send(result)
+		}
+	})
+})
+
+router.post('/setread', (req, res) => {
+	let {ids} = req.body
+
+	ids = ids.map(MOI)
+
+	models.Message.setRead(req.user._id, ids, (err, result) => {
+		if (err) return res.status(400).send(err)
+		else res.send(result)
 	})
 })
 

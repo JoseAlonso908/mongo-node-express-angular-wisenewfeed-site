@@ -214,6 +214,32 @@
 				<div class="subtitle">Choosing a service will open a window for you to log in securely and import your contacts to Expert Reaction. We won't email anyone without your consent, but we may use contact information to improve Expert and Followers suggestions</div>
 
 				<div class="divider"></div>
+
+				<div class="import-social">
+					<div class="social-info">
+						<div class="logo twitter"></div>
+						<div class="title">Twitter</div>
+					</div>
+
+					<a href="javascript:void(0);" ng-click="invite('twitter')">Search</a>
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="import-users-list">
+					<div class="user" ng-repeat="u in importedusers['twitter'] track by $index">
+						<button ng-click="toggleFollow(u)" ng-class="{following: u.isFollowing}">{{(u.isFollowing) ? 'Following' : 'Follow'}}</button>
+
+						<a ng-href="#!/person/{{u._id}}" target="_blank">
+							<avatar user="u"></avatar>
+						</a>
+
+						<div class="text">
+							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+							<div class="role">{{u.role}}</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="right">

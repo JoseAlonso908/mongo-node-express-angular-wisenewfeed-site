@@ -392,7 +392,16 @@ router.post('/invite/twitter', (req, res) => {
 	})
 
 	client.get('friends/list', (error, list, response) => {
-		res.send(list)
+		let twitterIds = list.users.map((u) => {
+			return u.id
+		})
+
+		// return res.send(list)
+
+		models.User.findByQuery({twitter: {$in: twitterIds}}, (err, users) => {
+			if (err) res.status(400).send(err)
+			else res.send(users)
+		})
 	})
 })
 

@@ -304,15 +304,18 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getLikedOfUser: (author, viewer, callback) => {
+		getLikedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)
+
+			skip = Number(skip)
+			limit = Number(limit)
 
 			Model.find({author}).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).exec((err, articles) => {
+			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
 				let likedArticles = []
@@ -333,15 +336,18 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getDislikedOfUser: (author, viewer, callback) => {
+		getDislikedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)
+
+			skip = Number(skip)
+			limit = Number(limit)
 
 			Model.find({author}).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).exec((err, articles) => {
+			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
 				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
@@ -360,15 +366,18 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getCommentedOfUser: (author, viewer, callback) => {
+		getCommentedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)
+
+			skip = Number(skip)
+			limit = Number(limit)
 
 			Model.find({author}).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).sort({createdAt: 'desc'}).exec((err, articles) => {
+			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
 				let postIds = articles.map((article) => article._id)
 
 				let commentedArticles = []

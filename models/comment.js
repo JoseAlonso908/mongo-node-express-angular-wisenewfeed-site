@@ -38,6 +38,13 @@ var Model = function(mongoose) {
 			comment.save(callback)
 		},
 
+		removeComment: (user, comment, callback) => {
+			_id = MOI(comment)
+			author = MOI(user)
+
+			Model.remove({_id, author}, callback)
+		},
+
 		getPostsComments: (postIds, callback) => {
 			let result = {}
 

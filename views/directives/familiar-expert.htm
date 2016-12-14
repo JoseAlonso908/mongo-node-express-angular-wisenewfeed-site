@@ -2,7 +2,7 @@
 	<button ng-click="mute(user)" class="hide"><i class="material-icons">close</i></button>
 	<div class="header">
 		<avatar user="user"></avatar>
-		<div class="name">{{user.name}}</div>
+		<a ng-href="#!/person/{{user._id}}" class="name">{{user.name}}</a>
 		<div class="role">{{user.role}}</div>
 	</div>
 	<div class="divider"></div>

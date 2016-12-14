@@ -83,6 +83,10 @@ var Model = function(mongoose) {
 			})
 		},
 
+		findByQuery: (query, callback) => {
+			Model.find(query).lean().exec(callback)
+		},
+
 		findByEmail: (email, callback) => {
 			Model.findOne({email}, callback)
 		},

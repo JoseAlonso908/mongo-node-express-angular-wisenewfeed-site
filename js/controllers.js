@@ -695,7 +695,7 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($scope, $location, $auth, identityService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal) {
+.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
 
@@ -726,6 +726,43 @@ angular.module('er.controllers', [])
 		for (var nTypeKey in $scope.user.notifications) {
 			$scope.user.notifications[nTypeKey] = false
 		}
+	}
+
+	$scope.importedusers = {
+		twitter: [],
+		gplus: [],
+		linkedin: [],
+	}
+
+	$scope.toggleFollow = function (user) {
+		if (user.isFollowing) {
+			followService.unfollow(user._id).then(function (result) {
+				user.isFollowing = result
+				$rootScope.$emit('update-follow')
+			})
+		} else {
+			followService.follow(user._id).then(function (result) {
+				user.isFollowing = result
+				$rootScope.$emit('update-follow')
+			})
+		}
+	}
+
+	$scope.invite = function (social) {
+		identityService.invite(social).then(function (users) {
+			async.map(users, function (user, next) {
+				user.role = user.role[0].toUpperCase() + user.role.substr(1)
+
+				followService.isFollowing(user._id).then(function (result) {
+					user.isFollowing = result
+
+					next(null, user)
+				})
+
+			}, function (err, users) {
+				$scope.importedusers[social] = users
+			})
+		})
 	}
 
 	$scope.savingFuncs = {
@@ -1031,6 +1068,7 @@ angular.module('er.controllers', [])
 
 	$scope.chatssearch = ''
 	$scope.chatChosen = false
+	$scope.loading = false
 	
 	$scope.chatMessages = []
 	$scope.skip = 0
@@ -1066,6 +1104,10 @@ angular.module('er.controllers', [])
 				$scope.chatMessages.push(message)
 				$scope.$apply()
 
+				messagesService.setRead([message._id]).then(function () {
+					message.read = true
+				})
+
 				$timeout($scope.scrollBottom)
 			}
 
@@ -1081,6 +1123,51 @@ angular.module('er.controllers', [])
 			$scope.reorderConversations()
 		})
 	})
+
+	$scope.addImage = function () {
+		if ($scope.imageLoading) return
+
+		var fileFileInput = document.querySelector('input[type=file]')
+		angular.element(fileFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+
+			var reader = new FileReader()
+			var file = e.target.files[0]
+
+			if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+				return
+			}
+
+			reader.addEventListener('load', function () {
+				$scope.$apply(function () {
+					$scope.files.push({
+						base64: reader.result,
+						fileObject: file
+					})
+
+					// Reset form to clean file input. This will
+					// let us upload the same file
+					angular.element(e.target).parent()[0].reset()
+				})
+			})
+
+			reader.readAsDataURL(file)
+		})
+
+		$timeout(function () {
+			fileFileInput.click()
+			$timeout.cancel(this)
+		}, 0)
+	}
+
+	$scope.removeUpload = function (index) {
+		if ($scope.imageLoading) return
+
+		$scope.files = $scope.files.filter(function (file, fileIndex) {
+			if (index == fileIndex) return false
+			return true
+		})
+	}
 
 	$scope.scrollBottom = function () {
 		document.querySelector('.chat .messages-box-wrapper').scrollTo(0, document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight)
@@ -1109,6 +1196,17 @@ angular.module('er.controllers', [])
 		}
 	}
 
+	$scope.hideMessages = function () {
+		var selectedIds = $scope.selectedMessages.map(function (m) {
+			return m._id
+		})
+
+		messagesService.hide(selectedIds).then(function (result) {
+			console.info('Hide result')
+			console.info(result)
+		})
+	}
+
 	$scope.clearSelectedMessages = function () {
 		$scope.selectedMessages = []
 		for (var i in $scope.chatMessages) {
@@ -1116,18 +1214,19 @@ angular.module('er.controllers', [])
 		}
 	}
 
-	$scope.deleteChosenMessages = function () {
-
-	}
-
-	$scope.reportChosenMessages = function () {
-
-	}
-
 	$scope.sendMessage = function () {
-		messagesService.sendMessage($scope.activeChat._id, $scope.text).then(function (result) {
+		var text = $scope.text.trim()
+
+		if (!text) return
+
+		var fileObjects = $scope.files.map(function (file) {
+			return file.fileObject
+		})
+
+		messagesService.sendMessage($scope.activeChat._id, text, fileObjects).then(function (result) {
 			$scope.chatMessages.push(result)
 			$scope.text = ''
+			$scope.files = []
 			
 			$scope.activeChat.lastMessage = result.text
 			$scope.activeChat.lastMessageTime = result.createdAt
@@ -1140,7 +1239,21 @@ angular.module('er.controllers', [])
 
 	$scope.loadMessages = function (callback) {
 		messagesService.getConversation($scope.activeChat._id, $scope.skip, $scope.limit).then(function (messages) {
-			console.log(messages)
+			var messagesToUser = messages.filter(function (m) {
+				if (m.to._id == $scope.user._id) return true
+				else return false
+			})
+
+
+			var messagesToUserIds = messagesToUser.map(function (m) {
+				return m._id
+			})
+
+			messagesService.setRead(messagesToUserIds).then(function () {
+				for (var i in messages) {
+					messages[i].read = true
+				}
+			})
 
 			if ($scope.chatMessages.length == 0) {
 				$scope.chatMessages = messages
@@ -1159,6 +1272,7 @@ angular.module('er.controllers', [])
 		if (user.active) return
 
 		$scope.chatMessages = []
+		$scope.loading = true
 
 		for (var i in $scope.chats) {
 			$scope.chats[i].active = false
@@ -1171,6 +1285,7 @@ angular.module('er.controllers', [])
 			$scope.chatChosen = true
 			$scope.hideLoadMore = false
 			$scope.skip = 0
+			$scope.loading = false
 
 			// Heh
 			$timeout($scope.scrollBottom)
@@ -1248,8 +1363,6 @@ angular.module('er.controllers', [])
 		},
 	}, function (err) {
 		// whoop
-		console.log($scope.chats)
-
 		for (var i in $scope.chats) {
 			$scope.chats[i].visible = true
 		}

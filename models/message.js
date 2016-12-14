@@ -13,8 +13,10 @@ var Model = function(mongoose) {
 		},
 		text		: String,
 		images		: [String],
-		hiddenFrom	: {type: Boolean, default: false},
-		hiddenTo	: {type: Boolean, default: false},
+		hiddenFor	: [{
+			type: mongoose.Schema.ObjectId,
+			ref: 'user',
+		}],
 		read 		: {type: Boolean, default: false},
 		createdAt	: {type: Date, default: Date.now},
 	})
@@ -22,12 +24,12 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('message', schema);
 
 	return {
-		send: (from, to, text, callback) => {
+		send: (from, to, text, images, callback) => {
 			from = MOI(from)
 			to = MOI(to)
 
 			let message = new Model()
-			Object.assign(message, {from, to, text})
+			Object.assign(message, {from, to, text, images})
 			message.populate('from to').save((err, message) => {
 				Model.populate(message, {path: "from to"}, callback)
 			})
@@ -37,6 +39,13 @@ var Model = function(mongoose) {
 			user = MOI(user)
 
 			Model.aggregate(
+				{
+					$match: {
+						hiddenFor: {
+							$nin: [user]
+						}
+					}
+				},
 				{
 					$match: {
 						$or: [{to: user}, {from: user}]
@@ -120,25 +129,42 @@ var Model = function(mongoose) {
 			skip = Number(skip)
 			limit = Number(limit)
 
-			Model.find({$or: [
-				{
-					$and: [
-						{from: user1},
-						{to: user2},
-					]
-				},
-				{
-					$and: [
-						{from: user2},
-						{to: user1},
-					]
-				},
-			]}).populate('from to').skip(skip).limit(limit).lean().sort({createdAt: 'asc'}).exec(callback)
+			Model.find({
+				$and: [
+					{
+						$or: [
+							{
+								$and: [
+									{from: user1},
+									{to: user2},
+								]
+							},
+							{
+								$and: [
+									{from: user2},
+									{to: user1},
+								]
+							},
+						]
+					},
+					{
+						hiddenFor: {
+							$nin: [user1]
+						}
+					}
+				]
+			}).populate('from to').skip(skip).limit(limit).lean().sort({createdAt: 'asc'}).exec(callback)
 		},
 
 		setRead: (user, ids, callback) => {
-			
-		}
+			ids = ids.map(MOI)
+			Model.update({_id: {$in: ids}}, {$set: {read: true}}, {multi: true}, callback)
+		},
+
+		hideMessages: (user, ids, callback) => {
+			ids = ids.map(MOI)
+			Model.update({_id: {$in: ids}}, {$push: {hiddenFor: user}}, {multi: true}, callback)
+		},
 	}
 }
 

@@ -139,27 +139,30 @@ router.get('/feed', (req, res) => {
 
 router.get('/feed/liked', (req, res) => {
 	let userId = req.query.user || req.user._id
+	let {start, limit} = req.query
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getLikedOfUser(userId, req.user._id, (err, articles) => {
+	models.Article.getLikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
 
 router.get('/feed/disliked', (req, res) => {
 	let userId = req.query.user || req.user._id
+	let {start, limit} = req.query
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getDislikedOfUser(userId, req.user._id, (err, articles) => {
+	models.Article.getDislikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
 
 router.get('/feed/commented', (req, res) => {
 	let userId = req.query.user || req.user._id
+	let {start, limit} = req.query
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getCommentedOfUser(userId, req.user._id, (err, articles) => {
+	models.Article.getCommentedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -284,6 +287,14 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			res.send({ok: true})
 		})
 		
+	})
+})
+
+router.post('/comment/remove', (req, res) => {
+	let {commentId} = req.body
+
+	models.Comment.removeComment(req.user._id, commentId, (err, result) => {
+		res.send(result)
 	})
 })
 

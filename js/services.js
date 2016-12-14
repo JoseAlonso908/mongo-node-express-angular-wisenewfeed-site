@@ -371,6 +371,11 @@ angular.module('er.services', [])
 		multisearch: function (q) {
 			return __s($http, $cookies, 'get', '/user/multisearch', {q: q})
 		},
+
+
+		invite: function (social) {
+			return __s($http, $cookies, 'post', '/user/invite/' + social)
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -539,8 +544,8 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/article/feed?r=' + Math.random(), params)
 		},
-		reacted: function (user, type) {
-			return __s($http, $cookies, 'get', '/article/feed/' + type, {user: user})
+		reacted: function (user, type, start, limit) {
+			return __s($http, $cookies, 'get', '/article/feed/' + type, {user: user, start: start, limit: limit})
 		},
 	}
 })
@@ -697,7 +702,10 @@ angular.module('er.services', [])
 			}, function (data, status) {
 				return data
 			})
-		}
+		},
+		remove: function (commentId) {
+			return __s($http, $cookies, 'post', '/article/comment/remove', {commentId: commentId})
+		},
 	}
 })
 .factory('reactionsService', function ($http, $cookies, $timeout) {
@@ -1032,11 +1040,50 @@ angular.module('er.services', [])
 		getConversation: function (user, skip, limit) {
 			return __s($http, $cookies, 'get', '/chat/conversation', {user: user, skip: skip, limit: limit})
 		},
-		sendMessage: function (to, text) {
-			return __s($http, $cookies, 'post', '/chat/send', {to: to, text: text})
+		sendMessage: function (to, text, files) {
+			var headers = {
+				'Authorization': $cookies.get('token'),
+			}
+
+			if (files.length > 0) {
+				var fd = new FormData()
+				fd.append('text', text)
+				fd.append('to', to)
+
+				for (var i in files) {
+					fd.append('files', files[i])
+				}
+
+				headers['Content-Type'] = undefined
+			} else {
+				fd = {
+					to: to,
+					text: text,
+				}
+			}
+
+			return $http({
+				method: 'POST',
+				url: '/chat/send',
+				headers: headers,
+				uploadEventHandlers: {
+					progress: function (e) {
+						// console.log(e.loaded, e.total)
+					},
+				},
+				data: fd,
+			}).then(function (result) {
+				return result.data
+			})
 		},
+		// sendMessage: function (to, text, files) {
+		// 	return __s($http, $cookies, 'post', '/chat/send', {to: to, text: text})
+		// },
 		setRead: function (ids) {
 			return __s($http, $cookies, 'post', '/chat/setread', {ids: ids})
+		},
+		hide: function (ids) {
+			return __s($http, $cookies, 'post', '/chat/hide', {ids: ids})
 		},
 	}
 })

@@ -102,7 +102,7 @@
 
 	<div class="divider" ng-if="user"></div>
 
-	<postcomments nocollapse="justone" post="post"></postcomments>
+	<postcomments nocollapse="justone" post="post" user="user"></postcomments>
 	<div class="comment-box" ng-if="user">
 		<avatar user="user"></avatar>
 		<textarea placeholder="Write a comment..." ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>

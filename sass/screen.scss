@@ -1191,7 +1191,7 @@ a.small-icon, button.small-icon {
 					}
 
 					.comment {
-						display: none;
+						display: none; position: relative;
 						margin: -20px -17px 0 -65px;
 						padding: 20px 17px 0 65px;
 						@include transition(background-color 1.5s .3s);
@@ -1232,6 +1232,16 @@ a.small-icon, button.small-icon {
 
 						&.highlighted {
 							background-color: rgba($activeBlue, .1);
+						}
+
+						.remove {
+							display: block; position: absolute;
+							top: 20px; right: 17px;
+
+							i {
+								color: $iconGrey;
+								font-size: 14px;
+							}
 						}
 
 						.comment-title {
@@ -1784,6 +1794,87 @@ a.small-icon, button.small-icon {
 						}
 					}
 				}
+
+				.import-social {
+					$size: 32px;
+
+					display: flex;
+					justify-content: space-between;
+
+					.social-info {
+						display: flex;
+
+						.logo {
+							width: $size; height: $size;
+							background-size: contain;
+							background-position: center;
+							background-repeat: no-repeat;
+
+							&.twitter {
+								background-image: url('../images/svg/twitter.svg');
+							}
+						}
+
+						.title {
+							height: $size;
+							margin-left: 10px;
+							line-height: $size;
+							color: $soDark;
+							font-size: 14px;
+							font-weight: 700;
+						}
+					}
+
+					a {
+						// display: flex;
+						// justify-content: space-between;
+						height: $size;
+						padding: 0 12px;
+						border-radius: 16px;
+						font-size: 13px;
+						font-weight: 900;
+						color: $activeBlue;
+						line-height: $size;
+						cursor: pointer;
+						background-color: rgba($activeBlue, .15);
+						border: none;
+
+						@include transition(background-color .2s);
+
+						&:hover {
+							background-color: darken(rgba($activeBlue, .15), 5%);
+						}
+					}
+				}
+
+				.import-users-list {
+					$size: 32px;
+
+					.user {
+						padding: 16px 0;
+
+						button {
+							height: $size;
+							right: 0;
+							margin-top: 0;
+							padding: 0 12px;
+							border-radius: 16px;
+							font-size: 13px;
+							font-weight: 900;
+							color: $activeBlue;
+							line-height: $size;
+							cursor: pointer;
+							background-color: rgba($activeBlue, .15);
+							border: none;
+
+							@include transition(background-color .2s);
+
+							&:hover {
+								background-color: darken(rgba($activeBlue, .15), 5%);
+							}
+						}
+					}
+				}
 			}
 
 			.people {
@@ -2018,6 +2109,11 @@ a.small-icon, button.small-icon {
 						&.active {
 							background-color: $activeBlue;
 
+							.date {
+								color: #ffffff;
+								opacity: .6;
+							}
+
 							.text {
 								> a {
 									color: #ffffff;
@@ -2118,6 +2214,10 @@ a.small-icon, button.small-icon {
 						box-sizing: border-box;
 						overflow: auto;
 
+						&.image-added {
+							height: calc(100% - 267px);
+						}
+
 						.messages {
 							display: flex;
 							// height: 100%;
@@ -2149,6 +2249,10 @@ a.small-icon, button.small-icon {
 									background-color: $soLight;
 								}
 
+								&.unread {
+									background-color: lighten($activeBlue, 38%);
+								}
+
 								&.selected {
 									background-color: #e8f5fc;
 								}
@@ -2178,6 +2282,34 @@ a.small-icon, button.small-icon {
 									font-size: 13px;
 									line-height: 1.5em;
 								}
+
+								.images {
+									display: flex;
+									justify-content: space-between;
+									flex-wrap: wrap;
+									margin: -1px;
+
+									&:not(.empty) {
+										margin-top: 10px;
+									}
+
+									.image {
+										// min-width: 150px;
+										flex: 2 1 0;
+										// width: 200px;
+										min-width: 200px;
+										height: 200px;
+										margin: 1px;
+										background-position: center;
+										background-repeat: no-repeat;
+										background-size: cover;
+										border-radius: 2px;
+
+										&:hover {
+											opacity: 1;
+										}
+									}
+								}
 							}
 						}
 					}
@@ -2188,6 +2320,12 @@ a.small-icon, button.small-icon {
 						font-size: 13px;
 						color: $soDark;
 						text-align: center;
+					}
+
+					.loader {
+						position: absolute;
+						margin: 80px 0 0 -12px;
+						left: 50%;
 					}
 
 					.write-message {
@@ -3739,7 +3877,7 @@ a.small-icon, button.small-icon {
 	}
 }
 
-.notifications .notification, .followers .follower, .people.results .user, .chats .user {
+.notifications .notification, .followers .follower, .people.results .user, .chats .user, .import-users-list .user {
 	position: relative;
 	height: 42px;
 	padding: 16px;

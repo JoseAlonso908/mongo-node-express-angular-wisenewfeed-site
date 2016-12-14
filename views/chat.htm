@@ -18,7 +18,7 @@
 							<avatar user="u"></avatar>
 						</a>
 
-						<div class="date" am-time-ago="u.lastMessageTime">date</div>
+						<div class="date" am-time-ago="u.lastMessageTime"></div>
 
 						<div class="text">
 							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
@@ -27,6 +27,8 @@
 					</div>
 				</div>
 				<div class="chat">
+					<div class="loader" ng-show="loading"></div>
+
 					<div class="selected-messages" ng-show="selectedMessages.length > 0">
 						<div class="title">
 							<div class="ttext">{{selectedMessages.length}} message(s) selected</div>
@@ -35,18 +37,18 @@
 							</button>
 						</div>
 						<div class="buttons">
-							<a href="javascript:void(0);">Delete</a>
+							<a href="javascript:void(0);" ng-click="hideMessages()">Delete</a>
 							<a href="javascript:void(0);">Report spam</a>
 						</div>
 					</div>
 
-					<div ng-show="!chatChosen" class="text">Choose chat at the left panel</div>
-					<div ng-show="chatChosen && chatMessages.length == 0" class="text">This conversation is empty.</div>
+					<div ng-show="!chatChosen && !loading" class="text">Choose chat at the left panel</div>
+					<div ng-show="chatChosen && chatMessages.length == 0 && !loading" class="text">This conversation is empty.</div>
 
-					<div class="messages-box-wrapper">
+					<div class="messages-box-wrapper" ng-class="{'image-added': files.length > 0}">
 						<div class="messages">
 							<a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a>
-							<div class="message" ng-class="{selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages track by $index">
+							<div class="message" ng-class="{unread: !m.read && user._id == m.to._id, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages track by $index">
 								<a ng-href="#!/person/{{m.from._id}}">
 									<avatar user="m.from"></avatar>
 								</a>
@@ -54,6 +56,10 @@
 								<div class="date" am-time-ago="m.createdAt"></div>
 								<div class="name">{{m.from.name}}</div>
 								<div class="mtext">{{m.text}}</div>
+
+								<div class="images" ng-class="{empty: m.images.length == 0}">
+									<a ng-href="image" lightbox class="image" ng-repeat="image in m.images" style="background-image: url({{image}})"></a>
+								</div>
 							</div>
 						</div>
 					</div>

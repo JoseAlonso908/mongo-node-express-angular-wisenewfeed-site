@@ -3,8 +3,12 @@
 		{{($parent.showmore ? 'Show less' : 'Show more')}}
 	</a>
 
-	<div ng-class="{highlighted: comment.highlighted}" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments track by $index">
+	<div ng-class="{highlighted: comment.highlighted}" ng-hide="comment.removed" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments track by $index">
 		<a name="c{{comment._id}}"></a>
+
+		<a href="javascript:void(0);" ng-if="user._id == comment.author._id" class="remove" title="Remove comment" ng-click="remove(comment)">
+			<i class="material-icons">close</i>
+		</a>
 
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">

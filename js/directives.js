@@ -408,7 +408,7 @@ angular.module('er.directives', [])
 						updateVisibleCount($scope.feed)
 					})
 				} else if ($scope.type && $scope.type != 'own') {
-					feedService.reacted($scope.id, $scope.type).then(function (feed) {
+					feedService.reacted($scope.id, $scope.type, start, limit).then(function (feed) {
 						setFeed(feed)
 						updateVisibleCount($scope.feed)
 					})
@@ -534,14 +534,30 @@ angular.module('er.directives', [])
 					
 				}
 
+				var commentObject = {
+					_id: '',
+					author: $scope.user,
+					createdAt: (new Date()),
+					dislikes: 0,
+					likes: 0,
+					post: post._id,
+					text: post.commentText,
+					images: $scope.files.map(function (f) {
+						return f.base64
+					})
+				}
+
+				post.comments.push(commentObject)
+
 				commentService.add(post._id, post.commentText, fileObjects).then(function () {
-					post.commentText = ''
-					$scope.files = []
 					$rootScope.$emit('reloadcomments', post._id)
 					$scope.loading = false
 				}, function () {
 					$scope.loading = false
 				})
+
+				post.commentText = ''
+				$scope.files = []
 			}
 
 			$scope.addImage = function () {
@@ -667,13 +683,14 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('postcomments', function ($rootScope, postService) {
+.directive('postcomments', function ($rootScope, postService, commentService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/postcomments.htm',
 		scope: {
 			post: '=',
 			nocollapse: '=',
+			user: '=',
 		},
 		link: function ($scope, element, attr) {
 			$scope.showmore = false
@@ -683,6 +700,18 @@ angular.module('er.directives', [])
 			$rootScope.$on('reloadcomments', function (e, args) {
 				init()
 			})
+
+			$scope.remove = function (comment) {
+				commentService.remove(comment._id).then(function (result) {
+					console.log(result)
+					console.log(result.ok)
+					console.log(result.n)
+
+					if (result.ok == 1 && result.n == 1) {
+						comment.removed = true
+					}
+				})
+			}
 
 			var init = function () {
 				postService.getComments($scope.post._id).then(function (comments) {
@@ -1055,6 +1084,7 @@ angular.module('er.directives', [])
 
 			element.on('click', function (e) {
 				e.preventDefault()
+				e.stopImmediatePropagation()
 
 				var backdrop = angular.element('<div class="backdrop"></div>'),
 					image = angular.element('<div class="image"></div>')

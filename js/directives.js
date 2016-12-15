@@ -547,6 +547,10 @@ angular.module('er.directives', [])
 					})
 				}
 
+				if (!post.comments) {
+					post.comments = []
+				}
+
 				post.comments.push(commentObject)
 
 				commentService.add(post._id, post.commentText, fileObjects).then(function () {

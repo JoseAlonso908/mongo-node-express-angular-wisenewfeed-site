@@ -277,9 +277,16 @@ var Model = function(mongoose) {
 											result.likes++
 											break
 										case 'dislike':
+											if (_id.toString() == '5842609bed78021e978d5767') {
+												console.log(reaction)
+											}
 											result.dislikes++
 											break
 									}
+								}
+
+								if (_id.toString() == '5842609bed78021e978d5767') {
+									console.log(result)
 								}
 
 								cb(null, articlesIds)

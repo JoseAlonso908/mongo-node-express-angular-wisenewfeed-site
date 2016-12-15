@@ -141,7 +141,7 @@ router.get('/feed/liked', (req, res) => {
 	let userId = req.query.user || req.user._id
 	let {start, limit} = req.query
 
-	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	// if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 	models.Article.getReactedOfUser(userId, req.user._id, 'like', start, limit, (err, articles) => {
 		res.send(articles)
 	})
@@ -151,7 +151,7 @@ router.get('/feed/disliked', (req, res) => {
 	let userId = req.query.user || req.user._id
 	let {start, limit} = req.query
 
-	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	// if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 	models.Article.getReactedOfUser(userId, req.user._id, 'dislike', start, limit, (err, articles) => {
 	// models.Article.getDislikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
@@ -162,7 +162,7 @@ router.get('/feed/commented', (req, res) => {
 	let userId = req.query.user || req.user._id
 	let {start, limit} = req.query
 
-	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+	// if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 	models.Article.getCommentedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})

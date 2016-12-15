@@ -4016,9 +4016,6 @@ a.small-icon, button.small-icon {
     height: auto;
   }
 
-  #wrapper {
-    margin: 0 15px;
-  }
   #wrapper #top-bar-background #top-bar,
   #wrapper #filters-wrapper .filters,
   #wrapper #wallpaper-block-wrapper .wallpaper-wrapper,

@@ -315,34 +315,55 @@ var Model = function(mongoose) {
 			skip = Number(skip)
 			limit = Number(limit)
 
-			models.PostReaction.Model.aggregate(
+			Model.aggregate(
+				// Filter articles by author
 				{
-					$match: {
-						author,
-						type,
-					}
+					$match: {author}
 				},
+				// Join "reactions" to each article
 				{
 					$lookup: {
-						from: 'articles',
-						localField: 'post',
-						foreignField: '_id',
-						as: 'post'
+						from: 'postreactions',
+						localField: '_id',
+						foreignField: 'post',
+						as: 'reactions'
 					}
 				},
-				{$unwind: "$post"},
+				// Remove articles that have reaction of a different type
+				{
+					$match: {
+						reactions: {
+							$elemMatch: {type}
+						}
+					}
+				},
+				// Remove unnecessary reactions from articles
 				{
 					$project: {
-						_id: "$post._id",
-						category: "$post.category",
-						country: "$post.country",
-						author: "$post.author",
-						createdAt: "$post.createdAt",
-						text: "$post.text",
-						images: "$post.images",
-						sharedFrom: "$post.sharedFrom"
+						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						reactions: {
+							$filter: {
+								input: '$reactions',
+								as: 'item',
+								cond: {$eq: ["$$item.type", type]}
+							}
+						}
 					}
 				},
+				// Calculate reactions count for each article
+				{
+					$project: {
+						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						reactionsCount: {
+							$size: '$reactions'
+						}
+					}
+				},
+				// Sort articles by descending reactions count
+				{
+					$sort: {reactionsCount: -1}
+				},
+				/// Join authors
 				{
 					$lookup: {
 						from: 'users',
@@ -351,6 +372,7 @@ var Model = function(mongoose) {
 						as: 'author'
 					}
 				},
+				// Blah blah blah
 				{$unwind: "$author"},
 				{
 					$lookup: {
@@ -380,84 +402,12 @@ var Model = function(mongoose) {
 						preserveNullAndEmptyArrays: true
 					}
 				},
-				{$sort: {createdAt: -1}},
 				{$skip: skip},
 				{$limit: limit}
 			).exec((err, articles) => {
-				let postIds = articles.map((article) => {return article._id})
-
-				let likedArticles = []
-
-				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
-					articles = articles.filter((article) => {
-						let postReactions = reactions[article._id.toString()].reactions
-
-						if (postReactions.expert.likes + postReactions.journalist.likes + postReactions.user.likes > 0) {
-							return true
-						}
-
-						return false
-					})
-
-					this.postProcessList(articles, viewer, callback)
-				})
+				this.postProcessList(articles, viewer, callback)
 			})
-
-			// Model.find({author}).populate([
-			// 	{path: 'author'},
-			// 	{path: 'sharedFrom', populate: {
-			// 		path: 'author',
-			// 	}}
-			// ]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
-			// 	let postIds = articles.map((article) => {return article._id})
-
-			// 	let likedArticles = []
-
-			// 	models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
-			// 		articles = articles.filter((article) => {
-			// 			let postReactions = reactions[article._id.toString()].reactions
-
-			// 			if (postReactions.expert.likes + postReactions.journalist.likes + postReactions.user.likes > 0) {
-			// 				return true
-			// 			}
-
-			// 			return false
-			// 		})
-
-			// 		this.postProcessList(articles, viewer, callback)
-			// 	})
-			// })
 		},
-
-		/*getDislikedOfUser: (author, viewer, skip, limit, callback) => {
-			author = MOI(author)
-
-			skip = Number(skip)
-			limit = Number(limit)
-
-			Model.find({author}).populate([
-				{path: 'author'},
-				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}}
-			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
-				let postIds = articles.map((article) => {return article._id})
-
-				models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
-					articles = articles.filter((article) => {
-						let postReactions = reactions[article._id.toString()].reactions
-
-						if (postReactions.expert.dislikes + postReactions.journalist.dislikes + postReactions.user.dislikes > 0) {
-							return true
-						}
-
-						return false
-					})
-
-					this.postProcessList(articles, viewer, callback)
-				})
-			})
-		},*/
 
 		getCommentedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)
@@ -465,12 +415,74 @@ var Model = function(mongoose) {
 			skip = Number(skip)
 			limit = Number(limit)
 
-			Model.find({author}).populate([
-				{path: 'author'},
-				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}}
-			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
+			Model.aggregate(
+				{
+					$match: {author}
+				},
+				// Join "comments" to each article
+				{
+					$lookup: {
+						from: 'comments',
+						localField: '_id',
+						foreignField: 'post',
+						as: 'comments'
+					}
+				},
+				// Calculate comments count for each article
+				{
+					$project: {
+						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						commentsCount: {
+							$size: '$comments'
+						}
+					}
+				},
+				// Sort articles by descending comments count
+				{
+					$sort: {commentsCount: -1}
+				},
+				/// Join authors
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'author',
+						foreignField: '_id',
+						as: 'author'
+					}
+				},
+				// Blah blah blah
+				{$unwind: "$author"},
+				{
+					$lookup: {
+						from: 'articles',
+						localField: 'sharedFrom',
+						foreignField: '_id',
+						as: 'sharedFrom'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'sharedFrom.author',
+						foreignField: '_id',
+						as: 'sharedFrom.author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom.author',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{$skip: skip},
+				{$limit: limit}
+			).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
 				let postIds = articles.map((article) => article._id)
 
 				let commentedArticles = []

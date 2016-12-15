@@ -277,16 +277,9 @@ var Model = function(mongoose) {
 											result.likes++
 											break
 										case 'dislike':
-											if (_id.toString() == '5842609bed78021e978d5767') {
-												console.log(reaction)
-											}
 											result.dislikes++
 											break
 									}
-								}
-
-								if (_id.toString() == '5842609bed78021e978d5767') {
-									console.log(result)
 								}
 
 								cb(null, articlesIds)
@@ -343,16 +336,20 @@ var Model = function(mongoose) {
 		},
 
 		search: (user, q, limit = 5, callback) => {
+			limit = Number(limit)
+
 			user = MOI(user)
 
-			let query = {name: new RegExp(q, 'gi')}
+			let query = {
+				name: new RegExp(q, 'gi'),
+				role: {$ne: 'user'},
+			}
 
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
-				if (blockeds.length > 0) {
-					query['_id'] = {$in: blockedIds}
-				}
+				var blockedIds = blockeds.map((b) => b._id)
+				blockedIds.push(user)
+				query['_id'] = {$nin: blockedIds}
 
-				blockedIds = blockeds.map((u) => u._id)
 				Model.find(query).lean().limit(limit).exec(callback)
 			})
 		},

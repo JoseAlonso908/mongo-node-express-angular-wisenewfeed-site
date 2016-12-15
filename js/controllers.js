@@ -1294,77 +1294,170 @@ angular.module('er.controllers', [])
 
 	$scope.chats = []
 
-	async.series({
-		user: function (next) {
-			identityService.get().then(function (user) {
-				$scope.user = user
-				next()
-			})
-		},
-		conversations: function (next) {
-			messagesService.getConversations().then(function (conversations) {
-				for (var i in conversations) {
-					var c = conversations[i]
+	$scope.showstartconversation = false
 
-					var person = (c.from._id == $scope.user._id) ? c.to : c.from
-					person.lastMessage = c.text
-					person.lastMessageTime = c.createdAt
-					person.read = c.read
+	$scope.showStartConversation = function (e) {
+		e.preventDefault()
+		e.stopImmediatePropagation()
 
-					$scope.chats.push(person)
-				}
+		$scope.showstartconversation = true
+	}
 
-				next()
-			})
-		},
-		followers: function (next) {
-			followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
-				for (var i in followers) {
-					var person = followers[i]
-
-					var alreadyIn = false
-					for (var j in $scope.chats) {
-						if (person._id == $scope.chats[j]._id) {
-							alreadyIn = true
-							break
-						}
-					}
-
-					if (alreadyIn) continue
-
-					person.role = person.role[0].toUpperCase() + person.role.substr(1)
-					$scope.chats.push(person)
-				}
-
-				next()
-			})
-		},
-		following: function (next) {
-			followService.following($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (following) {
-				for (var i in following) {
-					var person = following[i]
-
-					var alreadyIn = false
-					for (var j in $scope.chats) {
-						if (person._id == $scope.chats[j]._id) {
-							alreadyIn = true
-							break
-						}
-					}
-
-					if (alreadyIn) continue
-
-					person.role = person.role[0].toUpperCase() + person.role.substr(1)
-					$scope.chats.push(person)
-				}
-
-				next()
-			})
-		},
-	}, function (err) {
-		// whoop
-		for (var i in $scope.chats) {
-			$scope.chats[i].visible = true
-		}
+	angular.element(document.body).on('click', function () {
+		$scope.showstartconversation = false
 	})
+
+	angular.element(document.querySelector('.start-conversation-popup')).on('click', function (e) {
+		e.stopImmediatePropagation()
+	})
+
+	$scope.startconversationmessage = ''
+	$scope.foundusers = []
+	$scope.chosenusers = []
+	$scope.searchterm = ''
+	$scope.updateUsersSearch = function () {
+		var searchTerm = $scope.searchterm.trim()
+		if (!searchTerm) return
+
+		identityService.searchusers(searchTerm, 3).then(function (users) {
+			users = users.map(function (person) {
+				person.role = person.role[0].toUpperCase() + person.role.substr(1)
+
+				for (var i in $scope.chosenusers) {
+					if ($scope.chosenusers[i]._id == person._id) {
+						person.chosen = true
+						break
+					}
+				}
+
+				return person
+			})
+
+			$scope.foundusers = users
+		})
+	}
+
+	$scope.removeChosen = function (index) {
+		delete $scope.chosenusers[index]
+		$scope.chosenusers = $scope.chosenusers.filter(function (u) {
+			return !!u
+		})
+	}
+
+	$scope.chooseUser = function (u) {
+		var foundKey
+		for (var i in $scope.chosenusers) {
+			if ($scope.chosenusers[i]._id == u._id) {
+				foundKey = i
+				break
+			}
+		}
+
+		if (foundKey) {
+			$scope.removeChosen(foundKey)
+		} else {
+			$scope.chosenusers.push(u)
+		}
+
+		$scope.searchterm = ''
+		$scope.foundusers = []
+	}
+
+	$scope.sendStartMessages = function () {
+		var message = $scope.startconversationmessage.trim()
+
+		if ($scope.chosenusers.length == 0 || !message) return
+
+		async.eachSeries($scope.chosenusers, function (user, next) {
+			messagesService.sendMessage(user._id, message, []).then(function (result) {
+				next()
+			})
+		}, function () {
+			$scope.chosenusers = []
+			$scope.startconversationmessage = ''
+			$scope.showstartconversation = false
+
+			init()
+		})
+	}
+
+	var init = function () {
+		async.series({
+			user: function (next) {
+				identityService.get().then(function (user) {
+					$scope.user = user
+					next()
+				})
+			},
+			conversations: function (next) {
+				$scope.chats = []
+
+				messagesService.getConversations().then(function (conversations) {
+					for (var i in conversations) {
+						var c = conversations[i]
+
+						var person = (c.from._id == $scope.user._id) ? c.to : c.from
+						person.lastMessage = c.text
+						person.lastMessageTime = c.createdAt
+						person.read = c.read
+
+						$scope.chats.push(person)
+					}
+
+					next()
+				})
+			},
+			followers: function (next) {
+				followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
+					for (var i in followers) {
+						var person = followers[i]
+
+						var alreadyIn = false
+						for (var j in $scope.chats) {
+							if (person._id == $scope.chats[j]._id) {
+								alreadyIn = true
+								break
+							}
+						}
+
+						if (alreadyIn) continue
+
+						person.role = person.role[0].toUpperCase() + person.role.substr(1)
+						$scope.chats.push(person)
+					}
+
+					next()
+				})
+			},
+			following: function (next) {
+				followService.following($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (following) {
+					for (var i in following) {
+						var person = following[i]
+
+						var alreadyIn = false
+						for (var j in $scope.chats) {
+							if (person._id == $scope.chats[j]._id) {
+								alreadyIn = true
+								break
+							}
+						}
+
+						if (alreadyIn) continue
+
+						person.role = person.role[0].toUpperCase() + person.role.substr(1)
+						$scope.chats.push(person)
+					}
+
+					next()
+				})
+			},
+		}, function (err) {
+			// whoop
+			for (var i in $scope.chats) {
+				$scope.chats[i].visible = true
+			}
+		})
+	}
+
+	init()
 })

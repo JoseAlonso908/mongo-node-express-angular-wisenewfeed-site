@@ -10,7 +10,35 @@
 					<div class="search">
 						<a href="javascript:void(0);" class="action"><i class="material-icons">search</i></a>
 						<input type="text" placeholder="Search in conversations" ng-change="filterConversations()" ng-model="search">
-						<a href="javascript:void(0);" class="action"><i class="material-icons">add</i></a>
+						<a href="javascript:void(0);" ng-click="showStartConversation($event)" class="action"><i class="material-icons">add</i></a>
+					</div>
+
+					<div class="start-conversation-popup" ng-class="{hidden: !showstartconversation}">
+						<input type="text" id="add-user" ng-model="searchterm" ng-model-options="{debounce: 300}" ng-change="updateUsersSearch()" placeholder="Add Expert/Journalist">
+
+						<div class="users-autocomplete" ng-show="foundusers.length > 0">
+							<div class="user" ng-class="{chosen: u.chosen}" ng-click="chooseUser(u)" ng-repeat="u in foundusers track by $index">
+								<a ng-href="#!/person/{{u._id}}">
+									<avatar user="u"></avatar>
+								</a>
+
+								<div class="text">
+									<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+									<div class="role">{{u.role}}</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="chosen-users" ng-hide="chosenusers.length == 0">
+							<div class="chosen" ng-repeat="u in chosenusers track by $index">
+								<span class="name">{{u.name}}</span>
+								<a href="javascript:void(0);" ng-click="removeChosen($index)"><i class="material-icons">close</i></a>
+							</div>
+						</div>
+
+						<textarea ng-model="startconversationmessage" placeholder="Your invitation message"></textarea>
+
+						<a class="send" ng-click="sendStartMessages()" href="javascript:void(0);">Send</a>
 					</div>
 
 					<div class="user" ng-class="{unread: u.read === false, active: u.active, visible: u.visible}" ng-click="setActive(u)" ng-repeat="u in chats track by $index">
@@ -18,7 +46,7 @@
 							<avatar user="u"></avatar>
 						</a>
 
-						<div class="date" am-time-ago="u.lastMessageTime"></div>
+						<div class="date">{{u.lastMessageTime | amDateFormat:'MM.DD, HH:mm'}}</div>
 
 						<div class="text">
 							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>

@@ -168,7 +168,7 @@ var Model = function(mongoose) {
 
 		getUnreadCountForUser: (user, callback) => {
 			to = MOI(user)
-			Model.count({to}, callback)
+			Model.count({to, read: false}, callback)
 		},
 	}
 }

@@ -2083,7 +2083,7 @@ a.small-icon, button.small-icon {
 						}
 					}
 
-					.user {
+					> .user {
 						$aTime: .1s;
 
 						display: none;
@@ -2147,6 +2147,122 @@ a.small-icon, button.small-icon {
 								text-overflow: ellipsis;
 								white-space: nowrap;
 								@include transition(color $aTime, opacity $aTime);
+							}
+						}
+					}
+
+					.start-conversation-popup {
+						position: absolute;
+						width: 300px; min-height: 300px;
+						margin: -2px 0 0 130px;
+						padding: 20px;
+						background-color: #ffffff;
+						border-radius: 4px;
+						box-shadow: 0 6px 15px 0 rgba($middleGrey, .3);
+						box-sizing: border-box;
+						z-index: 200;
+
+						@include transition(opacity .2s);
+
+						&.hidden {
+							opacity: 0;
+							pointer-events: none;
+						}
+
+						input {
+							height: 36px;
+							padding: 0 10px;
+						}
+
+						textarea {
+							height: 170px;
+							padding: 10px;
+							resize: none;
+						}
+
+						input, textarea {
+							display: inline-block;
+							width: 100%;
+							margin-bottom: 16px;
+							border: 1px solid #e6e9ec;
+							background: #ffffff;
+							border-radius: 3px;
+							color: $soDark;
+							box-sizing: border-box;
+							@include transition(border-color .1s);
+
+							&:focus {
+								border-color: $activeBlue;
+							}
+
+							&.error {
+								border-color: red;
+							}
+						}
+
+						.send {
+							display: inline-block;
+							// margin-left: auto;
+							float: right;
+							height: 26px;
+							padding: 0 12px;
+							line-height: 26px;
+							font-size: 13px;
+							color: #ffffff;
+							border-radius: 13px;
+							background-color: $activeBlue;
+						}
+
+						.users-autocomplete {
+							position: absolute;
+							width: 260px;
+							margin: -10px 0 0 0;
+							background-color: #ffffff;
+							border-radius: 4px;
+							box-shadow: 0 2px 14px 0 rgba($middleGrey, .3);
+							box-sizing: border-box;
+							z-index: 201;
+
+							.user {
+								padding: 11px 16px;
+								cursor: pointer;
+
+								@include transition(background-color .1s);
+
+								&:hover, &.chosen {
+									background-color: $soLight;
+								}
+							}
+						}
+
+						.chosen-users {
+							display: flex;
+							flex-wrap: wrap;
+							padding-bottom: 16px;
+
+							.chosen {
+								display: flex;
+								margin: 0 2px 2px 0;
+								padding: 2px 5px;
+								font-size: 13px;
+								line-height: 15px;
+								color: $iconGrey;
+								border-radius: 2px;
+								border: 1px solid $iconGrey;
+
+								.name {
+									display: block;
+								}
+
+								a {
+									display: block;
+									padding-left: 5px;
+
+									i {
+										font-size: 14px;
+										color: $iconGrey;
+									}
+								}
 							}
 						}
 					}

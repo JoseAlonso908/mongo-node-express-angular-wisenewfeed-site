@@ -43,8 +43,6 @@ router.post('/send', tempUploads.array('files', 5), (req, res) => {
 
 	let filenames = []
 
-	console.log(req.files)
-
 	if (req.files && req.files.length > 0) {
 		const fs = require('fs')
 

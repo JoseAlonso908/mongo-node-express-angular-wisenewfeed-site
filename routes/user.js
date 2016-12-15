@@ -375,9 +375,16 @@ router.get('/multisearch', (req, res) => {
 		},
 	}, (err, results) => {
 		if (err) res.status(400).send(err)
-		else {
-			res.send(results)
-		}
+		else res.send(results)
+	})
+})
+
+router.get('/searchusers', (req, res) => {
+	let {q, limit} = req.query
+
+	models.User.search(req.user._id, q, limit, (err, results) => {
+		if (err) res.status(400).send(err)
+		else res.send(results)
 	})
 })
 

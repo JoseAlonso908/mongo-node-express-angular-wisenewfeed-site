@@ -1924,7 +1924,7 @@ a.small-icon, button.small-icon {
   border: none;
   background: transparent;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user {
+#wrapper > .content .middle .messages-wrapper .chats > .user {
   display: none;
   width: 100%;
   height: 72px;
@@ -1937,37 +1937,37 @@ a.small-icon, button.small-icon {
   -webkit-transition: background-color 0.1s;
   transition: background-color 0.1s;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.unread {
+#wrapper > .content .middle .messages-wrapper .chats > .user.unread {
   background-color: #eff8fd;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user:hover {
+#wrapper > .content .middle .messages-wrapper .chats > .user:hover {
   background-color: #f1f5f7;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.visible {
+#wrapper > .content .middle .messages-wrapper .chats > .user.visible {
   display: block;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.active {
+#wrapper > .content .middle .messages-wrapper .chats > .user.active {
   background-color: #43abe7;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.active .date {
+#wrapper > .content .middle .messages-wrapper .chats > .user.active .date {
   color: #ffffff;
   opacity: .6;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.active .text > a {
+#wrapper > .content .middle .messages-wrapper .chats > .user.active .text > a {
   color: #ffffff;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user.active .text .role {
+#wrapper > .content .middle .messages-wrapper .chats > .user.active .text .role {
   color: #ffffff;
   opacity: .6;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user .date {
+#wrapper > .content .middle .messages-wrapper .chats > .user .date {
   position: absolute;
   top: 17px;
   right: 16px;
   color: #b0bec8;
   font-size: 13px;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user .text > a {
+#wrapper > .content .middle .messages-wrapper .chats > .user .text > a {
   display: inline-block;
   color: #545759;
   -moz-transition: color 0.1s;
@@ -1975,7 +1975,7 @@ a.small-icon, button.small-icon {
   -webkit-transition: color 0.1s;
   transition: color 0.1s;
 }
-#wrapper > .content .middle .messages-wrapper .chats .user .text .role {
+#wrapper > .content .middle .messages-wrapper .chats > .user .text .role {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1983,6 +1983,113 @@ a.small-icon, button.small-icon {
   -o-transition: color 0.1s, opacity 0.1s;
   -webkit-transition: color 0.1s, opacity 0.1s;
   transition: color 0.1s, opacity 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup {
+  position: absolute;
+  width: 300px;
+  min-height: 300px;
+  margin: -2px 0 0 130px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 6px 15px 0 rgba(130, 137, 143, 0.3);
+  box-sizing: border-box;
+  z-index: 200;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup input {
+  height: 36px;
+  padding: 0 10px;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup textarea {
+  height: 170px;
+  padding: 10px;
+  resize: none;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup input, #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup textarea {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+  border: 1px solid #e6e9ec;
+  background: #ffffff;
+  border-radius: 3px;
+  color: #535659;
+  box-sizing: border-box;
+  -moz-transition: border-color 0.1s;
+  -o-transition: border-color 0.1s;
+  -webkit-transition: border-color 0.1s;
+  transition: border-color 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup input:focus, #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup textarea:focus {
+  border-color: #43abe7;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup input.error, #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup textarea.error {
+  border-color: red;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .send {
+  display: inline-block;
+  float: right;
+  height: 26px;
+  padding: 0 12px;
+  line-height: 26px;
+  font-size: 13px;
+  color: #ffffff;
+  border-radius: 13px;
+  background-color: #43abe7;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .users-autocomplete {
+  position: absolute;
+  width: 260px;
+  margin: -10px 0 0 0;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 14px 0 rgba(130, 137, 143, 0.3);
+  box-sizing: border-box;
+  z-index: 201;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .users-autocomplete .user {
+  padding: 11px 16px;
+  cursor: pointer;
+  -moz-transition: background-color 0.1s;
+  -o-transition: background-color 0.1s;
+  -webkit-transition: background-color 0.1s;
+  transition: background-color 0.1s;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .users-autocomplete .user:hover, #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .users-autocomplete .user.chosen {
+  background-color: #f1f5f7;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users .chosen {
+  display: flex;
+  margin: 0 2px 2px 0;
+  padding: 2px 5px;
+  font-size: 13px;
+  line-height: 15px;
+  color: #b0bec8;
+  border-radius: 2px;
+  border: 1px solid #b0bec8;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users .chosen .name {
+  display: block;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users .chosen a {
+  display: block;
+  padding-left: 5px;
+}
+#wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users .chosen a i {
+  font-size: 14px;
+  color: #b0bec8;
 }
 #wrapper > .content .middle .messages-wrapper .chat {
   position: relative;

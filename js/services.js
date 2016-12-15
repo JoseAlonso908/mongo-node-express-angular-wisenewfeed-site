@@ -371,6 +371,9 @@ angular.module('er.services', [])
 		multisearch: function (q) {
 			return __s($http, $cookies, 'get', '/user/multisearch', {q: q})
 		},
+		searchusers: function (q, limit) {
+			return __s($http, $cookies, 'get', '/user/searchusers', {q: q, limit: limit})
+		},
 
 
 		invite: function (social) {

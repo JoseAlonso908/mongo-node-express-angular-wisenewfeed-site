@@ -66,7 +66,7 @@
 
 					<div class="write-message" ng-if="chatChosen">
 						<avatar user="user"></avatar>
-						<textarea placeholder="Write a message..." class="not-empty" ng-model="$parent.text"></textarea>
+						<textarea placeholder="Write a message..." class="not-empty" ng-model="$parent.text" ng-keyup="console.log($event);$event.keyCode == 13 && $event.ctrlKey == true && sendMessage()"></textarea>
 						<button ng-click="sendMessage()" class="send">
 							<div>
 								<i class="material-icons">send</i>

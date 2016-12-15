@@ -9,14 +9,7 @@
 	</a>
 
 	<followersicon ng-if="user && user.role != 'User'" user="user"></followersicon>
-	
-	<a ng-href="#!/chat" ng-if="user && user.role != 'User'" ng-if="user" class="small-icon" title="Messages">
-		<div class="badge">
-			<div class="value">12</div>
-		</div>
-		<i class="material-icons">forum</i>
-	</a>
-
+	<messagesicon ng-if="user && user.role != 'User'" user="user"></messagesicon>
 	<notificationsicon ng-if="user && user.role != 'User'" user="user"></notificationsicon>
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">

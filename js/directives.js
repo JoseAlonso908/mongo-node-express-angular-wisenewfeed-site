@@ -1352,3 +1352,17 @@ angular.module('er.directives', [])
 		},
 	}
 })
+.directive('messagesicon', function (messagesService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/messagesicon.htm',
+		scope: {
+			q: '=',
+		},
+		link: function ($scope) {
+			messagesService.unread().then(function (result) {
+				$scope.unreadcount = result.count
+			})
+		}
+	}
+})

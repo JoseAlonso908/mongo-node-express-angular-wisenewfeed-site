@@ -1085,5 +1085,8 @@ angular.module('er.services', [])
 		hide: function (ids) {
 			return __s($http, $cookies, 'post', '/chat/hide', {ids: ids})
 		},
+		unread: function () {
+			return __s($http, $cookies, 'get', '/chat/unreadcount')
+		},
 	}
 })

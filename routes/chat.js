@@ -87,4 +87,11 @@ router.post('/hide', (req, res) => {
 	})
 })
 
+router.get('/unreadcount', (req, res) => {
+	models.Message.getUnreadCountForUser(req.user._id, (err, result) => {
+		if (err) return res.status(400).send(err)
+		else res.send({count: result})
+	})
+})
+
 module.exports = router

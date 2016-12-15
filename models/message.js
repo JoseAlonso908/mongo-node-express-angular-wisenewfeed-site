@@ -165,6 +165,11 @@ var Model = function(mongoose) {
 			ids = ids.map(MOI)
 			Model.update({_id: {$in: ids}}, {$push: {hiddenFor: user}}, {multi: true}, callback)
 		},
+
+		getUnreadCountForUser: (user, callback) => {
+			to = MOI(user)
+			Model.count({to}, callback)
+		},
 	}
 }
 

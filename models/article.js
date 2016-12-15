@@ -23,6 +23,11 @@ var Model = function(mongoose) {
 	this.postProcessList = (articles, user, callback) => {
 		articles = articles.map((a) => {
 			if (typeof a.toObject === 'function') return a.toObject()
+
+			if (!a.sharedFrom || !a.sharedFrom._id) {
+				delete a.sharedFrom
+			}
+
 			return a
 		})
 
@@ -304,18 +309,81 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getLikedOfUser: (author, viewer, skip, limit, callback) => {
+		getReactedOfUser: (author, viewer, type, skip, limit, callback) => {
 			author = MOI(author)
 
 			skip = Number(skip)
 			limit = Number(limit)
 
-			Model.find({author}).populate([
-				{path: 'author'},
-				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}}
-			]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
+			models.PostReaction.Model.aggregate(
+				{
+					$match: {
+						author,
+						type,
+					}
+				},
+				{
+					$lookup: {
+						from: 'articles',
+						localField: 'post',
+						foreignField: '_id',
+						as: 'post'
+					}
+				},
+				{$unwind: "$post"},
+				{
+					$project: {
+						_id: "$post._id",
+						category: "$post.category",
+						country: "$post.country",
+						author: "$post.author",
+						createdAt: "$post.createdAt",
+						text: "$post.text",
+						images: "$post.images",
+						sharedFrom: "$post.sharedFrom"
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'author',
+						foreignField: '_id',
+						as: 'author'
+					}
+				},
+				{$unwind: "$author"},
+				{
+					$lookup: {
+						from: 'articles',
+						localField: 'sharedFrom',
+						foreignField: '_id',
+						as: 'sharedFrom'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'sharedFrom.author',
+						foreignField: '_id',
+						as: 'sharedFrom.author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom.author',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{$sort: {createdAt: -1}},
+				{$skip: skip},
+				{$limit: limit}
+			).exec((err, articles) => {
 				let postIds = articles.map((article) => {return article._id})
 
 				let likedArticles = []
@@ -334,9 +402,34 @@ var Model = function(mongoose) {
 					this.postProcessList(articles, viewer, callback)
 				})
 			})
+
+			// Model.find({author}).populate([
+			// 	{path: 'author'},
+			// 	{path: 'sharedFrom', populate: {
+			// 		path: 'author',
+			// 	}}
+			// ]).sort({createdAt: 'desc'}).skip(skip).limit(limit).exec((err, articles) => {
+			// 	let postIds = articles.map((article) => {return article._id})
+
+			// 	let likedArticles = []
+
+			// 	models.PostReaction.getByPostIds(author, postIds, (err, reactions) => {
+			// 		articles = articles.filter((article) => {
+			// 			let postReactions = reactions[article._id.toString()].reactions
+
+			// 			if (postReactions.expert.likes + postReactions.journalist.likes + postReactions.user.likes > 0) {
+			// 				return true
+			// 			}
+
+			// 			return false
+			// 		})
+
+			// 		this.postProcessList(articles, viewer, callback)
+			// 	})
+			// })
 		},
 
-		getDislikedOfUser: (author, viewer, skip, limit, callback) => {
+		/*getDislikedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)
 
 			skip = Number(skip)
@@ -364,7 +457,7 @@ var Model = function(mongoose) {
 					this.postProcessList(articles, viewer, callback)
 				})
 			})
-		},
+		},*/
 
 		getCommentedOfUser: (author, viewer, skip, limit, callback) => {
 			author = MOI(author)

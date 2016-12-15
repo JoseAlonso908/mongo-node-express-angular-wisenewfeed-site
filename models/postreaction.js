@@ -21,6 +21,8 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('postreaction', schema);
 
 	return {
+		Model,
+
 		find: (query, callback) => {
 			Model.find(query).exec(callback)
 		},

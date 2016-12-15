@@ -1170,7 +1170,7 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.scrollBottom = function () {
-		document.querySelector('.chat .messages-box-wrapper').scrollTo(0, document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight)
+		document.querySelector('.chat .messages-box-wrapper').scrollTop = document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight
 	}
 
 	$scope.loadMore = function () {

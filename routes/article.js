@@ -142,7 +142,7 @@ router.get('/feed/liked', (req, res) => {
 	let {start, limit} = req.query
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getLikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
+	models.Article.getReactedOfUser(userId, req.user._id, 'like', start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -152,7 +152,8 @@ router.get('/feed/disliked', (req, res) => {
 	let {start, limit} = req.query
 
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	models.Article.getDislikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
+	models.Article.getReactedOfUser(userId, req.user._id, 'dislike', start, limit, (err, articles) => {
+	// models.Article.getDislikedOfUser(userId, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })

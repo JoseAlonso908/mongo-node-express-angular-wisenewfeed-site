@@ -25,18 +25,18 @@ module.exports = {
 	},
 	EXP_REWARDS: {
 		POST: {
-			create: 10,
-			like: 25,
-			share: 40,
-			react: 30,
+			create: 2,
+			like: 1,
+			share: 1,
+			react: 2,
 		},
 		COMMENT: {
-			create: 5,
-			like: 15,
+			create: 1,
+			like: 1,
 		},
 		FOLLOW: {
-			following: 5,
-			follower: 50,
+			following: 1,
+			follower: 3,
 		},
 	},
 }

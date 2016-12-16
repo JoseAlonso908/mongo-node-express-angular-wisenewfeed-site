@@ -1,6 +1,7 @@
 const 	express = require('express'),
 		path = require('path'),
-		async = require('async')
+		async = require('async'),
+		config = require('./../config')
 
 let router = express.Router()
 
@@ -35,8 +36,18 @@ router.post('/follow', (req, res) => {
 			models.Follow.isFollowing(req.user._id, following, (err, isFollowing) => {
 				if (err) res.status(400).send(err)
 				else {
-					// Add following notification
-					models.Notification.create(following, req.user._id, null, null, 'follow', () => {
+					async.series({
+						rewardFollowee: function (next) {
+							models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.FOLLOW.following, null, null, 'follow', next)
+						},
+						rewardFollowing: function (next) {
+							models.ExperienceLog.award(following, config.EXP_REWARDS.FOLLOW.follower, null, null, 'follow', next)
+						},
+						notification: function (next) {
+							// Add following notification
+							models.Notification.create(following, req.user._id, null, null, 'follow', next)
+						}
+					}, (err) => {
 						res.send({isFollowing})
 					})
 				}

@@ -32,6 +32,20 @@ var Model = function(mongoose) {
 		})
 
 		async.waterfall([
+			(next) => {
+				async.mapSeries(articles, (a, mapNext) => {
+					if (!a.sharedFrom || !a.sharedFrom.author) return mapNext(null, a)
+
+					models.User.setXpInfo(a.sharedFrom.author, (err, user) => {
+						a.sharedFrom.author = user
+						mapNext(null, a)
+					})
+				}, (err, result) => {
+					articles = result
+					next()
+				})
+			},
+
 			// Check article to be hidden for specific user
 			(next) => {
 				if (!user) return next(null, articles)

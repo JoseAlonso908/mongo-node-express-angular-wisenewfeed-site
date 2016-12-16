@@ -92,7 +92,9 @@ angular.module('er.directives', [])
 			nolink: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.number = $scope.user.rating || 1
+			console.log($scope.user)
+
+			$scope.number = $scope.user.xpInfo.level || 1
 			$scope.color = $scope.user.color || 'bronze'
 			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
 			$scope.role = $scope.user.role || 'User'
@@ -964,7 +966,7 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/filters.htm',
 	}
 })
-.directive('bigratedavatar', function ($timeout, $rootScope, experienceLevelService) {
+.directive('bigratedavatar', function ($timeout, $rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/big-rated-avatar.htm',
@@ -1005,10 +1007,11 @@ angular.module('er.directives', [])
 
 				var borderWidth = 4
 
-				$scope.user.xp = 10000000
+							  // -=--=--=-
+				// $scope.user.xp = 1000000000
 
 				var __start = Date.now()
-				var levelInfo = experienceLevelService.getLevelInfoByXP($scope.user.xp)
+				var levelInfo = $scope.user.xpInfo
 				var __end = Date.now()
 				console.info('Exp calculation took, ms', __end - __start)
 

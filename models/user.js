@@ -51,12 +51,68 @@ var Model = function(mongoose) {
 			liked 		: {type: Boolean, default: true},
 			reacted 	: {type: Boolean, default: true},
 		},
+		color 			: {type: String, default: 'bronze'},
 		xp				: {type: Number, default: 0},
+		xpInfo 			: {type: Object, default: {a: 1}},
 	})
+
+	var getLevelInfoByXP = (xp) => {
+		let level = 0,
+			xpPassed = 0,
+			prevXpPassed = 0,
+			baseXP = 50
+
+		while (xpPassed <= xp) {
+			if (xpPassed == 0) {
+				xpPassed = baseXP
+			} else {
+				var factor = 3.08 - Math.sqrt(Math.log(level))
+
+				if (factor < 1.01) {
+					factor = 1.01
+				}
+
+				xpPassed *= factor
+				xpPassed = Math.round(xpPassed)
+			}
+
+			level++
+
+			// console.log('Level: ' + level + ', MIN: ' + prevXpPassed + ', MAX: ' + xpPassed + ', GAP: ' + (xpPassed - prevXpPassed) + ', FACTOR: ' + factor)
+
+			if (xpPassed > xp) break
+			prevXpPassed = xpPassed
+		}
+
+		return {
+			level: level,
+			prevLevelXp: prevXpPassed,
+			nextLevelXp: xpPassed,
+			xpGap: xpPassed - prevXpPassed,
+		}
+	}
+
+	var setXpInfo = function (user, callback) {
+		user.xpInfo = getLevelInfoByXP(user.xp)
+
+		if (user.xpInfo.level > 0 && user.xpInfo.level < 30) {
+			user.color = 'bronze'
+		} else if (user.xpInfo.level >= 30 && user.xpInfo < 60) {
+			user.color = 'silver'
+		} else {
+			user.color = 'gold'
+		}
+
+		callback(null, user)
+	}
+
+	schema.post('init', setXpInfo)
 
 	var Model = mongoose.model('user', schema);
 
 	return {
+		setXpInfo: setXpInfo,
+
 		findOne: (params, callback) => {
 			Model.findOne(params, callback)
 		},
@@ -332,7 +388,9 @@ var Model = function(mongoose) {
 			Model.aggregate([
 				{$match: filter},
 				{$sample: {size: count}}
-			]).exec(callback)
+			]).exec((err, users) => {
+				async.mapSeries(users, setXpInfo, callback)
+			})
 		},
 
 		search: (user, q, limit = 5, callback) => {

@@ -4263,15 +4263,20 @@ a.small-icon, button.small-icon {
 
 	.list {
 		margin-top: 20px;
-		padding: 17px;
+		padding: 17px 0;
 		background-color: #ffffff;
 		border-radius: 4px;
 		box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
 		box-sizing: border-box;
 
+		> .text {
+			padding: 0 17px;
+		}
+
 		.question-box-wrapper {
-			padding-top: 30px;
-			padding-left: calc(65px - 17px);
+			// padding-top: 30px;
+			// padding-left: calc(65px);
+			padding: 30px 17px 0 65px;
 
 			.question-box {
 				.avatar-border {
@@ -4282,8 +4287,12 @@ a.small-icon, button.small-icon {
 		}
 
 		.question {
-			padding: 22px 0;
+			padding: 22px 17px;
 			border-bottom: 1px solid #f0f2f4;
+
+			&.active {
+				background-color: $soLight;
+			}
 
 			.title {
 				display: flex;

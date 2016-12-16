@@ -906,6 +906,9 @@ angular.module('er.controllers', [])
 
 	$scope.loading = false
 
+	$scope.replyMode = false
+	$scope.replyingTo
+
 	$scope.askQuestion = function () {
 		$scope.loading = true
 
@@ -920,6 +923,21 @@ angular.module('er.controllers', [])
 		questionsService.cancel(question._id).then(function () {
 			loadQuestions()
 		})
+	}
+
+	$scope.reply = function (text) {
+		$scope.loading = true
+		questionsService.reply($scope.replyingTo._id, text).then(function () {
+			$scope.loading = false
+		})
+
+		text = ''
+	}
+
+	$scope.setReplyMode = function (question) {
+		$scope.replyMode = true
+		$scope.replyingTo = question
+		$scope.question.text = ''
 	}
 
 	var loadQuestions = function (callback) {

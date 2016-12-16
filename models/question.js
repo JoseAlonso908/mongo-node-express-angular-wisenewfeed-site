@@ -17,6 +17,7 @@ var Model = function(mongoose) {
 			default: 'active',
 		},
 		text		: String,
+		response	: String,
 		createdAt	: {type: Date, default: Date.now},
 	})
 
@@ -60,6 +61,19 @@ var Model = function(mongoose) {
 				question.save(callback)
 			})
 		},
+
+		reply: (_id, response, callback) => {
+			_id = MOI(_id)
+			console.log(_id)
+			Model.findOne({_id}, (err, q) => {
+				console.log(err)
+				console.log(q)
+
+				q.response = response
+				q.type = 'replied'
+				q.save(callback)
+			})
+		}
 	}
 }
 

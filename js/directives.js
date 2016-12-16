@@ -92,7 +92,9 @@ angular.module('er.directives', [])
 			nolink: '=',
 		},
 		link: function ($scope, element, attr) {
-			console.log($scope.user)
+			if (!$scope.user) {
+				return angular.element(element).css('backgroundColor', 'red')
+			}
 
 			$scope.number = $scope.user.xpInfo.level || 1
 			$scope.color = $scope.user.color || 'bronze'

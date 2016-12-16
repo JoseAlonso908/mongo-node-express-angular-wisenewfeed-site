@@ -1,3 +1,5 @@
+const async = require('async')
+
 var Model = function(mongoose) {
 	var schema = new mongoose.Schema({
 		ObjectId	: mongoose.Schema.ObjectId,
@@ -76,7 +78,24 @@ var Model = function(mongoose) {
 					})
 				}
 
-				callback(err, following)
+				async.map(following, (f, next) => {
+					async.parallel([
+						(next) => {
+							models.User.setXpInfo(f.follower, (err, follower) => {
+								f.follower = follower
+								next()
+							})
+						},
+						(next) => {
+							models.User.setXpInfo(f.following, (err, following) => {
+								f.following = following
+								next()
+							})
+						},
+					], (err) => {
+						next(null, f)
+					})
+				}, callback)
 			})
 		},
 
@@ -108,7 +127,24 @@ var Model = function(mongoose) {
 					})
 				}
 
-				callback(err, followers)
+				async.map(followers, (f, next) => {
+					async.parallel([
+						(next) => {
+							models.User.setXpInfo(f.follower, (err, follower) => {
+								f.follower = follower
+								next()
+							})
+						},
+						(next) => {
+							models.User.setXpInfo(f.following, (err, following) => {
+								f.following = following
+								next()
+							})
+						},
+					], (err) => {
+						next(null, f)
+					})
+				}, callback)
 			})
 		},
 

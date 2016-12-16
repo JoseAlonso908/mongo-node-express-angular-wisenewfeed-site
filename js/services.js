@@ -220,7 +220,6 @@ angular.module('er.services', [])
 			.then(function (result) {
 				var user = result
 
-				user.rating = user.rating || 1
 				user.color = user.color || 'bronze'
 				user.likes = user.likes || 0
 				user.xp = user.xp || 0
@@ -990,7 +989,10 @@ angular.module('er.services', [])
 				self.list = result
 				return result
 			})
-		}
+		},
+		reply: function (id, text) {
+			return __s($http, $cookies, 'post', '/questions/reply', {question: id, text: text})
+		},
 	}
 })
 .factory('messagesService', function ($http, $cookies) {

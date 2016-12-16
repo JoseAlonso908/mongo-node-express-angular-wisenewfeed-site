@@ -44,7 +44,25 @@ router.get('/all', (req, res) => {
 
 	models.Question.getByRecipient(user, skip, limit, (err, questions) => {
 		if (err) res.status(400).send(err)
-		else res.send(questions)
+		else {
+			async.map(questions, (q, next) => {
+				models.User.setXpInfo(q.author, (err, user) => {
+					q.author = user
+					next(null, q)
+				})
+			}, (err, questions) => {
+				res.send(questions)
+			})
+		}
+	})
+})
+
+router.post('/reply', (req, res) => {
+	let {question, text} = req.query
+
+	models.Question.reply(question, text, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send(result)
 	})
 })
 

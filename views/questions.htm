@@ -3,7 +3,9 @@
 		<topbar user="user"></topbar>
 	</div>
 
-	<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	<div id="wallpaper-block-wrapper">
+		<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	</div>
 
 	<div class="content">
 		<div class="left">
@@ -23,20 +25,21 @@
 				</div>
 
 				<div class="list">
-					<div class="question" ng-repeat="question in questions">
+					<div class="question" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
 						<div class="title">
-							<div class="name">{{question.author.name}}</div>
-							<div class="date">{{question.createdAt}}</div>
+							<div class="name">{{::question.author.name}}</div>
+							<div class="date">{{::question.createdAt}}</div>
 						</div>
 
-						<div class="text">{{question.text}}</div>
+						<div class="text">{{::question.text}}</div>
+						<div class="response" ng-show="question.type == 'replied' && question.response">{{::question.response}}</div>
 
 						<div class="footer">
 							<div class="likes"><i class="material-icons">thumb_up</i> <span>0</span></div>
 
 							<div class="actions">
 								<a class="item" ng-click="cancel(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">remove_circle</i> <span>Cancel</span></a>
-								<a class="item" ng-click="reply(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">reply</i> <span>Reply</span></a>
+								<a class="item" ng-click="setReplyMode(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">reply</i> <span>Reply</span></a>
 
 								<span class="item replied" ng-show="question.type == 'replied'"><i class="material-icons">check_circle</i> <span>Replied</span></span>
 								<span class="item cancelled" ng-show="question.type == 'cancelled'"><i class="material-icons">remove_circle</i> <span>Cancelled</span></span>
@@ -45,12 +48,12 @@
 					</div>
 					<div class="text" ng-show="questions.length === 0">Questionbox is empty</div>
 
-					<div class="question-box-wrapper">
-						<div class="question-box" ng-if="user">
+					<div class="question-box-wrapper" ng-if="user" ng-hide="user._id == profile._id && !replyMode">
+						<div class="question-box">
 							<avatar user="user"></avatar>
-							<textarea placeholder="Write a comment..." ng-class="{'not-empty': question.text}" ng-model="question.text"></textarea>
+							<textarea placeholder="{{(replyMode) ? 'Write a reply...' : 'Ask a question...'}}" ng-class="{'not-empty': question.text}" ng-model="question.text"></textarea>
 
-							<button ng-disabled="loading" ng-click="$parent.askQuestion()" class="send">
+							<button ng-disabled="loading" ng-click="(replyMode) ? $parent.reply(question.text) : $parent.askQuestion()" class="send">
 								<div>
 									<i class="material-icons">send</i>
 									<div class="title">Send</div>

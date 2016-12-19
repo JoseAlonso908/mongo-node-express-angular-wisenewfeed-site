@@ -42,7 +42,7 @@ router.get('/all', (req, res) => {
 
 	user = user || req.user._id
 
-	models.Question.getByRecipient(user, skip, limit, (err, questions) => {
+	models.Question.getByRecipient(req.user._id, user, skip, limit, (err, questions) => {
 		if (err) res.status(400).send(err)
 		else {
 			async.map(questions, (q, next) => {
@@ -58,11 +58,34 @@ router.get('/all', (req, res) => {
 })
 
 router.post('/reply', (req, res) => {
-	let {question, text} = req.query
+	let {question, text} = req.body
 
-	models.Question.reply(question, text, (err, result) => {
+	async.series({
+		reply: function (cb) {
+			models.Question.reply(question, text, cb)
+		},
+		createpost: function (cb) {
+			models.Question.getById(question, (err, q) => {
+				text = `By <b>${q.author.name}</b>: <q>${q.text}</q> ${text}`
+
+				models.Article.create(req.user._id, '', '', text, [], cb)
+			})
+		}
+	}, (err) => {
 		if (err) res.status(400).send(err)
-		else res.send(result)
+		else res.send({ok: true})
+	})
+})
+
+router.post('/like', (req, res) => {
+	let {question} = req.body
+
+	models.QuestionLike.like(question, req.user._id, (err, result) => {
+		console.log(err)
+		console.log(result)
+
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
 	})
 })
 

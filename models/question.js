@@ -24,6 +24,11 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('question', schema);
 
 	return {
+		getById: (_id, callback) => {
+			_id = MOI(_id)
+			Model.findOne({_id}).populate('author').exec(callback)
+		},
+
 		create: (author, recipient, text, callback) => {
 			author = MOI(author)
 			recipient = MOI(recipient)
@@ -35,9 +40,16 @@ var Model = function(mongoose) {
 			question.save(callback)
 		},
 
-		getByRecipient: (recipient, skip = 0, limit = 100, callback) => {
+		getByRecipient: (viewer, recipient, skip = 0, limit = 100, callback) => {
 			recipient = MOI(recipient)
-			Model.find({recipient}).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec(callback)
+			Model.find({recipient}).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec((err, questions) => {
+				async.mapSeries(questions, (q, next) => {
+					models.QuestionLike.isLikedByViewer(viewer, q._id, (err, flag) => {
+						q.liked = flag
+						next(null, q)
+					})
+				}, callback)
+			})
 		},
 
 		getByRecipientOfType: (recipient, type, skip = 0, limit = 100, callback) => {
@@ -64,13 +76,8 @@ var Model = function(mongoose) {
 
 		reply: (_id, response, callback) => {
 			_id = MOI(_id)
-			console.log(_id)
 			Model.findOne({_id}, (err, q) => {
-				console.log(err)
-				console.log(q)
-
-				q.response = response
-				q.type = 'replied'
+				Object.assign(q, {response, type: 'replied'})
 				q.save(callback)
 			})
 		}

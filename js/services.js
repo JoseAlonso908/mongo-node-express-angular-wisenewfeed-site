@@ -993,6 +993,9 @@ angular.module('er.services', [])
 		reply: function (id, text) {
 			return __s($http, $cookies, 'post', '/questions/reply', {question: id, text: text})
 		},
+		like: function (id) {
+			return __s($http, $cookies, 'post', '/questions/like', {question: id})
+		},
 	}
 })
 .factory('messagesService', function ($http, $cookies) {

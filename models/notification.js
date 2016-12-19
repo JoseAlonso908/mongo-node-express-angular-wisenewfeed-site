@@ -1,3 +1,5 @@
+const async = require('async')
+
 var Model = function(mongoose) {
 	var schema = new mongoose.Schema({
 		ObjectId	: mongoose.Schema.ObjectId,
@@ -58,27 +60,26 @@ var Model = function(mongoose) {
 			query.exec((err, notifications) => {
 				if (err) res.status(400).send(err)
 
-				notifications = notifications.filter((n) => {
-					let keepIt = true
+				async.mapSeries(notifications, (n, next) => {
+					if (!n.from.xpInfo) {
+						models.User.setXpInfo(n.from, (err, user) => {
+							n.from = user
+							next(null, n)
+						})
+					} else {
+						next(null, n)
+					}
+				}, (err, notifications) => {
+					notifications = notifications.filter((n) => {
+						let keepIt = true
 
-					if (!n.from) keepIt = false
+						if (!n.from) keepIt = false
 
-					// // Skip notifications from experts
-					// if (!settings.expert && n.from.role === 'expert') keepIt = false
+						return keepIt
+					})
 
-					// // Skip notifications from journalists
-					// if (!settings.journalist && n.from.role === 'journalist') keepIt = false
-
-					// // Skip notifications about posts I liked
-					// if (!settings.liked && ['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1) keepIt = false
-
-					// // Skip notifications about posts I reacted
-					// if (!settings.liked && ['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1) keepIt = false
-
-					return keepIt
+					callback(err, notifications)
 				})
-
-				callback(err, notifications)
 			})
 		},
 

@@ -17,15 +17,15 @@
 	<div class="body">
 		<div class="title">
 			<div class="title-text">
-				<a ng-href="#!/person/{{post.author._id}}" class="name dark-bold">{{post.author.name}}</a>
+				<a ng-href="#!/person/{{post.author._id}}" class="name dark-bold">{{::post.author.name}}</a>
 
 				<a ng-if="!justone" ng-href="#!/article/{{post._id}}" class="time small-light" am-time-ago="post.createdAt"></a>
 				<div ng-if="justone" class="time small-light" am-time-ago="post.createdAt"></div>
 
 				<div class="separator" ng-show="post.author.position">&bull;</div>
-				<div class="position small-light" ng-show="post.author.position">{{post.author.position}}</div>
+				<div class="position small-light" ng-show="post.author.position">{{::post.author.position}}</div>
 				<div class="separator">&bull;</div>
-				<div class="country small-light">{{post.author.country}}</div>
+				<div class="country small-light">{{::post.author.country}}</div>
 			</div>
 
 			<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
@@ -54,12 +54,12 @@
 					<avatar user="post.sharedFrom.author"></avatar>
 
 					<div class="title-text">
-						<a ng-href="#!/person/{{post.sharedFrom.author._id}}" class="name dark-bold">{{post.sharedFrom.author.name}}</a>
+						<a ng-href="#!/person/{{post.sharedFrom.author._id}}" class="name dark-bold">{{::post.sharedFrom.author.name}}</a>
 						<div class="time small-light" am-time-ago="post.sharedFrom.createdAt"></div>
 						<div class="separator" ng-show="post.sharedFrom.author.position">&bull;</div>
-						<div class="position small-light" ng-show="post.sharedFrom.author.position">{{post.sharedFrom.author.position}}</div>
+						<div class="position small-light" ng-show="post.sharedFrom.author.position">{{::post.sharedFrom.author.position}}</div>
 						<div class="separator">&bull;</div>
-						<div class="country small-light">{{post.sharedFrom.author.country}}</div>
+						<div class="country small-light">{{::post.sharedFrom.author.country}}</div>
 					</div>
 
 					<button ng-if="post.sharedFrom.author.isFollowing === false && post.sharedFrom.author._id != user._id && user && user.role != 'User'" ng-click="follow(post.sharedFrom)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
@@ -96,7 +96,7 @@
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>
-			<div class="number">{{commentsCount || 0}}</div>
+			<div class="number">{{::commentsCount || 0}}</div>
 		</div>
 	</div>
 

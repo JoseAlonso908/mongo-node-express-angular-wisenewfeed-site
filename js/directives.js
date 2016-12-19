@@ -96,6 +96,10 @@ angular.module('er.directives', [])
 				return angular.element(element).css('backgroundColor', 'red')
 			}
 
+			if (!$scope.user.xpInfo) {
+				console.log($scope.user)
+			}
+
 			$scope.number = $scope.user.xpInfo.level || 1
 			$scope.color = $scope.user.color || 'bronze'
 			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'

@@ -973,6 +973,17 @@ a.small-icon, button.small-icon {
 							line-height: 20px;
 							letter-spacing: .3px;
 							box-sizing: border-box;
+
+							b {
+								font-weight: 700;
+							}
+
+							q {
+								display: block;
+								margin: 10px 0;
+								border-left: 2px solid #E7EBEE;
+								padding-left: 10px;
+							}
 						}
 
 						.images {
@@ -4340,6 +4351,18 @@ a.small-icon, button.small-icon {
 					display: flex;
 					justify-content: flex-end;
 
+					a.item {
+						cursor: pointer;
+
+						&:hover {
+							background-color: $iconGrey;
+
+							i, span {
+								color: #ffffff;
+							}
+						}
+					}
+
 					.item {
 						display: flex;
 						height: 20px;
@@ -4349,7 +4372,6 @@ a.small-icon, button.small-icon {
 						align-items: center;
 						border: none;
 						background: transparent;
-						cursor: pointer;
 						border-radius: 10px;
 						@include transition(background-color .1s, color .1s);
 
@@ -4362,14 +4384,6 @@ a.small-icon, button.small-icon {
 						&.cancelled {
 							i, span {
 								color: #da7673;
-							}
-						}
-
-						&:hover {
-							background-color: $iconGrey;
-
-							i, span {
-								color: #ffffff;
 							}
 						}
 
@@ -4397,6 +4411,15 @@ a.small-icon, button.small-icon {
 				color: $middleGrey;
 				font-size: 13px;
 				line-height: 1.5em;
+			}
+
+			.response {
+				margin: 16px 0;
+				color: $middleGrey;
+				font-size: 13px;
+				line-height: 1.5em;
+				border-left: 2px solid $iconGrey;
+				padding-left: 10px;
 			}
 		}
 	}

@@ -929,9 +929,23 @@ angular.module('er.controllers', [])
 		$scope.loading = true
 		questionsService.reply($scope.replyingTo._id, text).then(function () {
 			$scope.loading = false
+
+			$scope.replyingTo.response = text
+			$scope.replyingTo.type = 'replied'
+			$scope.replyingTo = null
+
+			$scope.replyMode = false
+
+			loadQuestions()
 		})
 
-		text = ''
+		$scope.question.text = ''
+	}
+
+	$scope.like = function (question) {
+		questionsService.like(question._id).then(function () {
+			question.liked = true
+		})
 	}
 
 	$scope.setReplyMode = function (question) {

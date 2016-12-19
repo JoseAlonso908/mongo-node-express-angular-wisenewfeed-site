@@ -975,6 +975,15 @@ a.small-icon, button.small-icon {
   letter-spacing: .3px;
   box-sizing: border-box;
 }
+#wrapper > .content .card.feed-item .body .content .text b {
+  font-weight: 700;
+}
+#wrapper > .content .card.feed-item .body .content .text q {
+  display: block;
+  margin: 10px 0;
+  border-left: 2px solid #E7EBEE;
+  padding-left: 10px;
+}
 #wrapper > .content .card.feed-item .body .content .images {
   display: flex;
   justify-content: space-between;
@@ -3916,6 +3925,15 @@ a.small-icon, button.small-icon {
   display: flex;
   justify-content: flex-end;
 }
+.questions .list .question .footer .actions a.item {
+  cursor: pointer;
+}
+.questions .list .question .footer .actions a.item:hover {
+  background-color: #b0bec8;
+}
+.questions .list .question .footer .actions a.item:hover i, .questions .list .question .footer .actions a.item:hover span {
+  color: #ffffff;
+}
 .questions .list .question .footer .actions .item {
   display: flex;
   height: 20px;
@@ -3925,7 +3943,6 @@ a.small-icon, button.small-icon {
   align-items: center;
   border: none;
   background: transparent;
-  cursor: pointer;
   border-radius: 10px;
   -moz-transition: background-color 0.1s, color 0.1s;
   -o-transition: background-color 0.1s, color 0.1s;
@@ -3937,12 +3954,6 @@ a.small-icon, button.small-icon {
 }
 .questions .list .question .footer .actions .item.cancelled i, .questions .list .question .footer .actions .item.cancelled span {
   color: #da7673;
-}
-.questions .list .question .footer .actions .item:hover {
-  background-color: #b0bec8;
-}
-.questions .list .question .footer .actions .item:hover i, .questions .list .question .footer .actions .item:hover span {
-  color: #ffffff;
 }
 .questions .list .question .footer .actions .item i, .questions .list .question .footer .actions .item span {
   color: #b0bec8;
@@ -3965,6 +3976,14 @@ a.small-icon, button.small-icon {
   color: #82898f;
   font-size: 13px;
   line-height: 1.5em;
+}
+.questions .list .question .response {
+  margin: 16px 0;
+  color: #82898f;
+  font-size: 13px;
+  line-height: 1.5em;
+  border-left: 2px solid #b0bec8;
+  padding-left: 10px;
 }
 
 @media (max-width: 1235px) {

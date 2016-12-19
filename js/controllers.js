@@ -913,6 +913,7 @@ angular.module('er.controllers', [])
 
 	$scope.askQuestion = function () {
 		$scope.loading = true
+		$scope.questions = []
 
 		questionsService.add($scope.id, $scope.question.text).then(function () {
 			$scope.question.text = ''

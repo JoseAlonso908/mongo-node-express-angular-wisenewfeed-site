@@ -68,7 +68,7 @@ router.post('/reply', (req, res) => {
 			models.Question.getById(question, (err, q) => {
 				text = `By <b>${q.author.name}</b>: <q>${q.text}</q> ${text}`
 
-				models.Article.create(req.user._id, '', '', text, [], cb)
+				models.Article.create(req.user._id, '', '', text, [], true /* allow HTML tags */, cb)
 			})
 		}
 	}, (err) => {

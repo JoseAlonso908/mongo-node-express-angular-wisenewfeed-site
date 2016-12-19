@@ -134,10 +134,19 @@ var Model = function(mongoose) {
 			]).lean().exec(callback)
 		},
 
-		create: (author, country, category, text, images, callback) => {
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+		create: (author, country, category, text, images, allowhtml, callback) => {
+			author = MOI(author)
 
 			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
+
+			if (!allowhtml) {
+				var buf = []
+				for (var i = text.length - 1; i >= 0; i--) {
+					if ((['>', '<', '/', '"']).indexOf(text[i]) == -1) buf.unshift(text[i])
+					else buf.unshift(['&#', text[i].charCodeAt(), ';'].join(''));
+				}
+				text = buf.join('')
+			}
 
 			let article = new Model()
 			Object.assign(article, {

@@ -38,11 +38,11 @@ router.post('/settype', (req, res) => {
 })
 
 router.get('/all', (req, res) => {
-	let {user, skip, limit} = req.query
+	let {user, skip, limit, type} = req.query
 
 	user = user || req.user._id
 
-	models.Question.getByRecipient(req.user._id, user, skip, limit, (err, questions) => {
+	models.Question.getByRecipient(req.user._id, user, type, skip, limit, (err, questions) => {
 		if (err) res.status(400).send(err)
 		else {
 			async.map(questions, (q, next) => {
@@ -80,12 +80,9 @@ router.post('/reply', (req, res) => {
 router.post('/like', (req, res) => {
 	let {question} = req.body
 
-	models.QuestionLike.like(question, req.user._id, (err, result) => {
-		console.log(err)
-		console.log(result)
-
+	models.QuestionLike.like(question, req.user._id, (err, count) => {
 		if (err) res.status(400).send(err)
-		else res.send({ok: true})
+		else res.send({count})
 	})
 })
 

@@ -57,7 +57,7 @@ angular.module('er', [
 				templateUrl: 'assets/views/settings.htm',
 				controller: 'settingsController',
 			})
-			.when('/questions/:id?', {
+			.when('/questions/:id?/:qid?', {
 				templateUrl: 'assets/views/questions.htm',
 				controller: 'questionsController',
 			})

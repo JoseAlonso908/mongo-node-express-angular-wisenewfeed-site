@@ -30,16 +30,15 @@ var Model = function(mongoose) {
 					else {
 						let like = new Model()
 						Object.assign(like, {question, author})
-						like.save(next)
+						like.save((err, result) => {
+							next()
+						})
 					}
 				},
-				(like, next) => {
+				(next) => {
 					this.getLikesCountForQuestion(question, next)
 				},
-			], (err, a) => {
-				console.log(err)
-				console.log(a)
-			})
+			], callback)
 		},
 
 		getLikesCountForQuestion: (question, callback) => {

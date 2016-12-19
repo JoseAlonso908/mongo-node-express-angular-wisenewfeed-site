@@ -839,7 +839,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('question', function (followService) {
+.directive('question', function (followService, questionsService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/question.htm',
@@ -847,15 +847,7 @@ angular.module('er.directives', [])
 			question: '='
 		},
 		link: function ($scope, element, attr) {
-			followService.isFollowing($scope.question.author._id).then(function (result) {
-				$scope.question.author.isFollowing = result
-			})
-
-			$scope.follow = function () {
-				followService.follow($scope.question.author._id).then(function (result) {
-					$scope.question.author.isFollowing = result
-				})
-			}
+			
 		}
 	}
 })
@@ -894,7 +886,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('newquestions', function ($rootScope, questionsService) {
+.directive('newquestions', function ($rootScope, questionsService, followService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/new-questions.htm',
@@ -902,29 +894,74 @@ angular.module('er.directives', [])
 			user: '='
 		},
 		link: function ($scope, element, attr) {
+			$scope.loading = true
+			$scope.questions = []
+			
 			$scope.init = function () {
-				$scope.loading = true
-				$scope.questions = []
-
-				questionsService.get(null, 0, 3).then(function (questions) {
+				questionsService.get(null, 'active', 0, 3).then(function (questions) {
 					$scope.loading = false
-					$scope.questions = questions.map(function (q) {
-						q.author.role = q.author.role[0].toUpperCase() + q.author.role.substr(1)
 
-						if (q.text.length > 100) {
-							q.text = q.text.substr(0, 100) + '...'
+					if ($scope.questions.length > 0) {
+						for (var i in questions) {
+							var newq = questions[i]
+
+							for (var j in $scope.questions) {
+								var oldq = $scope.questions[j]
+
+								if (newq._id == oldq._id) {
+									oldq.liked = newq.liked
+									oldq.likes = newq.likes
+								}
+							}
 						}
+					} else {
+						$scope.questions = questions.map(function (q) {
+							q.author.role = q.author.role[0].toUpperCase() + q.author.role.substr(1)
 
-						return q
-					})
+							if (q.text.length > 100) {
+								q.text = q.text.substr(0, 100) + '...'
+							}
+
+							return q
+						})
+
+						async.mapSeries($scope.questions, function (q, next) {
+							followService.isFollowing(q.author._id).then(function (result) {
+								q.author.isFollowing = result
+								next(null, q)
+							})
+						}, function (err, questions) {
+							$scope.questions = questions
+						})
+					}
 				}).catch(function (error) {
 					$scope.loading = false
 				})
 			}
 
 			$scope.init()
+			$rootScope.$on('updateQuestionsCounters', $scope.init)
 
-			$scope.refresh = $scope.init
+			$scope.refresh = function () {
+				$scope.questions = []
+				$scope.loading = true
+				$scope.init()
+			}
+
+			$scope.follow = function (question) {
+				followService.follow(question.author._id).then(function (result) {
+					question.author.isFollowing = result
+				})
+			}
+
+			$scope.like = function (question) {
+				questionsService.like(question._id).then(function (data) {
+					question.liked = true
+					question.likes = data.count
+
+					$rootScope.$emit('updateQuestionsCounters')
+				})
+			}
 		}
 	}
 })

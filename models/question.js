@@ -40,12 +40,28 @@ var Model = function(mongoose) {
 			question.save(callback)
 		},
 
-		getByRecipient: (viewer, recipient, skip = 0, limit = 100, callback) => {
+		getByRecipient: (viewer, recipient, type, skip = 0, limit = 100, callback) => {
 			recipient = MOI(recipient)
-			Model.find({recipient}).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec((err, questions) => {
+
+			let query = {recipient}
+			if (type) Object.assign(query, {type})
+
+			Model.find(query).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec((err, questions) => {
 				async.mapSeries(questions, (q, next) => {
-					models.QuestionLike.isLikedByViewer(viewer, q._id, (err, flag) => {
-						q.liked = flag
+					async.series({
+						likedByViewer: (done) => {
+							models.QuestionLike.isLikedByViewer(viewer, q._id, (err, flag) => {
+								q.liked = flag
+								done()
+							})
+						},
+						likesCount: (done) => {
+							models.QuestionLike.getLikesCountForQuestion(q._id, (err, count) => {
+								q.likes = count
+								done()
+							})
+						},
+					}, (err) => {
 						next(null, q)
 					})
 				}, callback)

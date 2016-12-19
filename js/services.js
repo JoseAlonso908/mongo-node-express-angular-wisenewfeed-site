@@ -976,11 +976,12 @@ angular.module('er.services', [])
 			return __s($http, $cookies, 'post', '/questions/settype', {question: id, type: 'cancelled'})
 		},
 		list: [],
-		get: function (user, skip, limit) {
+		get: function (user, type, skip, limit) {
 			var self = this
 
 			var params = {}
 			if (user) params.user = user
+			if (type) params.type = type
 			if (skip) params.skip = skip
 			if (limit) params.limit = limit
 

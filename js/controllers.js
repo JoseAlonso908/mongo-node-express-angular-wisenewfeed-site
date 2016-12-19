@@ -891,8 +891,10 @@ angular.module('er.controllers', [])
 		$scope.$apply()
 	})
 })
-.controller('questionsController', function ($routeParams, $scope, identityService, questionsService) {
+.controller('questionsController', function ($routeParams, $rootScope, $scope, $location, $anchorScroll, $timeout, identityService, questionsService) {
 	$scope.id = $routeParams.id
+	$scope.qid = $routeParams.qid
+
 	$scope.questions = []
 	$scope.types = {
 		replied: 0,
@@ -943,8 +945,11 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.like = function (question) {
-		questionsService.like(question._id).then(function () {
+		questionsService.like(question._id).then(function (data) {
 			question.liked = true
+			question.likes = data.count
+
+			$rootScope.$emit('updateQuestionsCounters')
 		})
 	}
 
@@ -962,17 +967,34 @@ angular.module('er.controllers', [])
 		}
 
 		questionsService.get($scope.id).then(function (questions) {
-			$scope.questions = questions
+			if ($scope.questions.length > 0) {
+				for (var i in questions) {
+					var newq = questions[i]
 
-			for (var i in $scope.questions) {
-				var question = $scope.questions[i]
+					for (var j in $scope.questions) {
+						var oldq = $scope.questions[j]
 
-				$scope.types[question.type]++
+						if (newq._id == oldq._id) {
+							oldq.liked = newq.liked
+							oldq.likes = newq.likes
+						}
+					}
+				}
+			} else {
+				$scope.questions = questions
+
+				for (var i in $scope.questions) {
+					var question = $scope.questions[i]
+
+					$scope.types[question.type]++
+				}
+
+				if (callback) callback()
 			}
-
-			if (callback) callback()
 		})
 	}
+
+	$rootScope.$on('updateQuestionsCounters', loadQuestions)
 
 	async.parallel([
 		function (cb) {
@@ -991,7 +1013,12 @@ angular.module('er.controllers', [])
 			loadQuestions(cb)
 		},
 	], function () {
-		// $scope.$apply()
+		$timeout(function () {
+			if ($scope.qid) {
+				// $location.hash('q' + $scope.qid)
+				$anchorScroll('q' + $scope.qid)
+			}
+		}, 500)
 	})
 })
 .controller('searchController', function ($rootScope, $scope, $routeParams, fieldsListService, groupedCountriesService, identityService) {

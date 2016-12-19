@@ -16,8 +16,6 @@
 				<div class="title-wrapper">
 					<div class="title">{{questions.length}} questions</div>
 					<div class="types">
-
-
 						<span class="type replied">{{types.replied}} replied</span>
 						<span class="type cancelled">{{types.cancelled}} cancelled</span>
 						<span class="type active">{{types.active}} active</span>
@@ -26,6 +24,8 @@
 
 				<div class="list">
 					<div class="question" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
+						<a name="q{{question._id}}"></a>
+
 						<div class="title">
 							<div class="name">{{::question.author.name}}</div>
 							<div class="date">{{::question.createdAt}}</div>
@@ -35,7 +35,7 @@
 						<div class="response" ng-show="question.type == 'replied' && question.response">{{::question.response}}</div>
 
 						<div class="footer">
-							<a href="javascript:void(0);" ng-disabled="question.liked" ng-click="like(question)" class="likes"><i class="material-icons">thumb_up</i> <span>0</span></a>
+							<a href="javascript:void(0);" ng-disabled="question.liked" ng-click="(question.liked) ? void(0) : like(question)" class="likes"><i class="material-icons">thumb_up</i> <span>{{question.likes || 0}}</span></a>
 
 							<div class="actions">
 								<a class="item" ng-click="cancel(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">remove_circle</i> <span>Cancel</span></a>

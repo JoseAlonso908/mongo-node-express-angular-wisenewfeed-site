@@ -23,6 +23,7 @@
 			</div>
 		</div>
 		<div class="right" ng-if="feedType != 'people'">
+			<onlineflag ng-if="profile" profile="profile"></onlineflag>
 			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
 			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>

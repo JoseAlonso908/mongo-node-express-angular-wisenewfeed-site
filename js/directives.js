@@ -1412,3 +1412,20 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('onlineflag', function (identityService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/onlineflag.htm',
+		scope: {
+			profile: '=',
+		},
+		link: function ($scope) {
+			$scope.loaded = false
+
+			identityService.isOnline($scope.profile._id).then(function (flag) {
+				$scope.isOnline = flag
+				$scope.loaded = true
+			})
+		}
+	}
+})

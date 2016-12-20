@@ -16,19 +16,20 @@
 				<div class="title-wrapper">
 					<div class="title">{{questions.length}} questions</div>
 					<div class="types">
-						<span class="type replied">{{types.replied}} replied</span>
-						<span class="type cancelled">{{types.cancelled}} cancelled</span>
-						<span class="type active">{{types.active}} active</span>
+						<a href="javascript:void(0);" ng-click="chosenFilter = 'replied'" ng-class="{chosen: chosenFilter == 'replied'}" class="type replied">{{types.replied}} replied</a>
+						<a href="javascript:void(0);" ng-click="chosenFilter = 'cancelled'" ng-class="{chosen: chosenFilter == 'cancelled'}" class="type cancelled">{{types.cancelled}} cancelled</a>
+						<a href="javascript:void(0);" ng-click="chosenFilter = 'active'" ng-class="{chosen: chosenFilter == 'active'}" class="type active">{{types.active}} active</a>
+						<a href="javascript:void(0);" ng-click="chosenFilter = undefined" ng-show="chosenFilter != undefined" class="type">Show all</a>
 					</div>
 				</div>
 
 				<div class="list">
-					<div class="question" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
+					<div class="question" ng-hide="chosenFilter && question.type != chosenFilter" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
 						<a name="q{{question._id}}"></a>
 
 						<div class="title">
 							<div class="name">{{::question.author.name}}</div>
-							<div class="date">{{::question.createdAt}}</div>
+							<div class="date">{{::question.createdAt | amCalendar:referenceTime:formats}}</div>
 						</div>
 
 						<div class="text">{{::question.text}}</div>
@@ -48,10 +49,10 @@
 					</div>
 					<div class="text" ng-show="questions.length === 0">Questionbox is empty</div>
 
-					<div class="question-box-wrapper" ng-if="user" ng-hide="user._id == profile._id && !replyMode">
+					<div class="question-box-wrapper" ng-if="user && profile" ng-hide="user._id == profile._id && !replyMode">
 						<div class="question-box">
 							<avatar user="user"></avatar>
-							<textarea placeholder="{{(replyMode) ? 'Write a reply...' : 'Ask a question...'}}" ng-class="{'not-empty': question.text}" ng-model="question.text"></textarea>
+							<textarea placeholder="{{(replyMode) ? 'Write a reply...' : 'Ask a question...'}}" ng-class="{'not-empty': question.text}" ng-model="question.text" maxlength="{{(replyMode) ? '' : maxlength}}"></textarea>
 
 							<button ng-disabled="loading" ng-click="(replyMode) ? $parent.reply(question.text) : $parent.askQuestion()" class="send">
 								<div>
@@ -59,6 +60,8 @@
 									<div class="title">Send</div>
 								</div>
 							</button>
+
+							<div ng-hide="replyMode" class="chars-counter">{{maxlength - question.text.length}} symbols left</div>
 
 							<form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
 							<button ng-if="files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>
@@ -76,6 +79,7 @@
 			</div>
 		</div>
 		<div class="right">
+			<onlineflag ng-if="profile" profile="profile"></onlineflag>
 			<newquestions user="profile" ng-if="profile"></newquestions>
 			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>

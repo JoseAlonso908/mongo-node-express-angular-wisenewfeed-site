@@ -331,10 +331,11 @@ angular.module('er.services', [])
 		searchusers: function (q, limit) {
 			return __s($http, $cookies, 'get', '/user/searchusers', {q: q, limit: limit})
 		},
-
-
 		invite: function (social) {
 			return __s($http, $cookies, 'post', '/user/invite/' + social)
+		},
+		isOnline: function (user) {
+			return __s($http, $cookies, 'get', '/user/isonline', {user: user})
 		},
 	}
 })

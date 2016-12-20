@@ -896,12 +896,14 @@ angular.module('er.controllers', [])
 	$scope.qid = $routeParams.qid
 
 	$scope.questions = []
+	$scope.chosenFilter
 	$scope.types = {
 		replied: 0,
 		cancelled: 0,
 		active: 0,
 	}
 
+	$scope.maxlength = 250
 	$scope.question = {
 		text: ''
 	}
@@ -923,6 +925,10 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.cancel = function (question) {
+		if ($scope.replyingTo && question._id == $scope.replyingTo._id) {
+			$scope.replyingTo = undefined
+		}
+
 		questionsService.cancel(question._id).then(function () {
 			loadQuestions()
 		})
@@ -972,12 +978,16 @@ angular.module('er.controllers', [])
 				for (var i in questions) {
 					var newq = questions[i]
 
+					$scope.types[newq.type]++
+
 					for (var j in $scope.questions) {
 						var oldq = $scope.questions[j]
 
 						if (newq._id == oldq._id) {
 							oldq.liked = newq.liked
 							oldq.likes = newq.likes
+							oldq.type = newq.type
+							oldq.response = newq.response
 						}
 					}
 				}

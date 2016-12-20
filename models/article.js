@@ -131,7 +131,16 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}}
-			]).lean().exec(callback)
+			]).lean().exec((err, article) => {
+				if (article.sharedFrom) {
+					models.User.setXpInfo(article.sharedFrom.author, (err, user) => {
+						article.sharedFrom.author = user
+						callback(err, article)
+					})
+				} else {
+					callback(err, article)
+				}
+			})
 		},
 
 		create: (author, country, category, text, images, allowhtml, callback) => {

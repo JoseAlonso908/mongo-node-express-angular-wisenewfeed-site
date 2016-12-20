@@ -412,4 +412,10 @@ router.post('/invite/twitter', (req, res) => {
 	})
 })
 
+router.get('/isonline', (req, res) => {
+	let {user} = req.query
+
+	res.send(ws.isOnline(user))
+})
+
 module.exports = router

@@ -152,6 +152,10 @@ form[name=profileForm] .ng-invalid {
   z-index: 9;
 }
 
+.text {
+  word-break: break-all;
+}
+
 input.edit-profile-input,
 textarea.edit-profile-input,
 .address-element input {
@@ -2733,6 +2737,46 @@ a.small-icon, button.small-icon {
   margin-right: 3px;
   font-size: 14px;
 }
+#wrapper > .content .right .onlineflag {
+  margin-bottom: 18px;
+  padding: 16px;
+}
+#wrapper > .content .right .onlineflag .title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 2em;
+  color: #535659;
+}
+#wrapper > .content .right .onlineflag .flag {
+  padding-left: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+#wrapper > .content .right .onlineflag .flag:before {
+  display: block;
+  position: absolute;
+  margin: 3px 0 0 -10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 4px;
+  content: '';
+}
+#wrapper > .content .right .onlineflag .flag.online {
+  color: #73c46c;
+}
+#wrapper > .content .right .onlineflag .flag.online:before {
+  background-color: #73c46c;
+}
+#wrapper > .content .right .onlineflag .flag.offline {
+  color: #da7673;
+}
+#wrapper > .content .right .onlineflag .flag.offline:before {
+  background-color: #da7673;
+}
 #wrapper > .content .about-box {
   padding: 15px;
   box-sizing: border-box;
@@ -3850,16 +3894,22 @@ a.small-icon, button.small-icon {
 .questions .title-wrapper .types .type {
   font-size: 13px;
   font-weight: 900;
-  margin-left: 20px;
+  margin-left: 15px;
+  padding: 2px 5px 2px 3px;
+  border-radius: 3px;
 }
 .questions .title-wrapper .types .type.replied {
-  color: #73c46c;
+  color: #73c46c !important;
 }
 .questions .title-wrapper .types .type.cancelled {
-  color: #da7673;
+  color: #da7673 !important;
 }
 .questions .title-wrapper .types .type.active {
-  color: #b0bec8;
+  color: #b0bec8 !important;
+}
+.questions .title-wrapper .types .type.chosen {
+  background-color: #43abe7;
+  color: #ffffff !important;
 }
 .questions .list {
   margin-top: 20px;
@@ -3878,6 +3928,11 @@ a.small-icon, button.small-icon {
 .questions .list .question-box-wrapper .question-box .avatar-border {
   position: absolute;
   margin-left: -52px;
+}
+.questions .list .question-box-wrapper .question-box .chars-counter {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #b0bec8;
 }
 .questions .list .question {
   padding: 22px 17px;

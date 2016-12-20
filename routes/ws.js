@@ -25,4 +25,10 @@ module.exports = (io) => {
 
 		socket.on('message', newMessageEvent)
 	})
+
+	return {
+		isOnline: (id) => {
+			return !!online[id]
+		}
+	}
 }

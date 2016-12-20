@@ -86,6 +86,10 @@ form[name=profileForm] {
 	z-index: 9;
 }
 
+.text {
+	word-break: break-all;
+}
+
 input.edit-profile-input,
 textarea.edit-profile-input,
 .address-element input {
@@ -3031,6 +3035,53 @@ a.small-icon, button.small-icon {
 					}
 				}
 			}
+
+			.onlineflag {
+				margin-bottom: 18px;
+				padding: 16px;
+
+				.title {
+					font-size: 14px;
+					font-weight: 700;
+					line-height: 2em;
+					color: $soDark;
+				}
+
+				.flag {
+					padding-left: 10px;
+					font-size: 13px;
+					font-weight: 700;
+
+					@include transition(all .2s);
+
+					&:before {
+						display: block;
+						position: absolute;
+						margin: 3px 0 0 -10px;
+						width: 7px; height: 7px;
+						border-radius: 4px;
+						content: '';
+					}
+
+					&.online {
+						$color: #73c46c;
+
+						color: $color;
+						&:before {
+							background-color: $color;
+						}
+					}
+
+					&.offline {
+						$color: #da7673;
+
+						color: $color;
+						&:before {
+							background-color: $color;
+						}
+					}
+				}
+			}
 		}
 
 		.about-box {
@@ -4255,18 +4306,25 @@ a.small-icon, button.small-icon {
 			.type {
 				font-size: 13px;
 				font-weight: 900;
-				margin-left: 20px;
+				margin-left: 15px;
+				padding: 2px 5px 2px 3px;
+				border-radius: 3px;
 
 				&.replied {
-					color: #73c46c;
+					color: #73c46c !important;
 				}
 
 				&.cancelled {
-					color: #da7673;
+					color: #da7673 !important;
 				}
 
 				&.active {
-					color: $iconGrey;
+					color: $iconGrey !important;
+				}
+
+				&.chosen {
+					background-color: $activeBlue;
+					color: #ffffff !important;
 				}
 			}
 		}
@@ -4293,6 +4351,12 @@ a.small-icon, button.small-icon {
 				.avatar-border {
 					position: absolute;
 					margin-left: -52px;
+				}
+
+				.chars-counter {
+					margin: 10px 0 0;
+					font-size: 13px;
+					color: $iconGrey;
 				}
 			}
 		}

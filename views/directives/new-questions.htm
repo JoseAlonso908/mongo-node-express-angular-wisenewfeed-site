@@ -1,7 +1,7 @@
 <div class="new-questions">
 	<div class="header">
 		<div class="title"><span ng-show="questions.length > 0">{{questions.length}} </span>New questions</div>
-		<a href="javascript:void(0);" ng-show="questions.length > 0" class="cta-button view-all">View all</a>
+		<a ng-href="#!/questions/{{user._id}}" ng-show="questions.length > 0" class="cta-button view-all">View all</a>
 	</div>
 
 	<div class="loader" ng-show="loading"></div>

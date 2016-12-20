@@ -12,7 +12,7 @@
 			<profileinfo ng-if="profile" profile="profile"></profileinfo>
 		</div>
 		<div class="middle">
-			<post post="post" user="user" ng-if="user && post" justone="true"></post>
+			<post post="post" user="user" ng-if="post" justone="true"></post>
 		</div>
 		<div class="right" ng-if="feedType != 'people'">
 			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>

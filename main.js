@@ -172,4 +172,4 @@ app.use('/chat', require('./routes/chat'))
 
 const server = app.listen(8006)
 const io = require('socket.io')(server)
-require('./routes/ws')(io)
+global.ws = require('./routes/ws')(io)

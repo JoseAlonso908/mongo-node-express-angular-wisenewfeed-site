@@ -1164,7 +1164,7 @@ angular.module('er.controllers', [])
 	
 	$scope.chatMessages = []
 	$scope.skip = 0
-	$scope.limit = 10
+	$scope.limit = 20
 	
 	$scope.activeChat
 

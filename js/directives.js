@@ -856,30 +856,31 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/familiar-expert.htm',
 		scope: {
+			person: '=',
 			user: '='
 		},
 		link: function ($scope, element, attr) {
-			$scope.user.role = $scope.user.role[0].toUpperCase() + $scope.user.role.substr(1)
+			$scope.person.role = $scope.person.role[0].toUpperCase() + $scope.person.role.substr(1)
 
-			followService.isFollowing($scope.user._id).then(function (result) {
-				$scope.user.isFollowing = result
+			followService.isFollowing($scope.person._id).then(function (result) {
+				$scope.person.isFollowing = result
 			})
 
-			$scope.mute = function (user) {
-				postService.mute(user._id)
-				delete $scope.user
+			$scope.mute = function (person) {
+				postService.mute(person._id)
+				delete $scope.person
 			}
 
-			$scope.follow = function (user) {
-				followService.follow(user._id).then(function (result) {
-					$scope.user.isFollowing = result
+			$scope.follow = function (person) {
+				followService.follow(person._id).then(function (result) {
+					$scope.person.isFollowing = result
 					$rootScope.$emit('update-follow')
 				})
 			}
 
-			$scope.unfollow = function (user) {
-				followService.unfollow(user._id).then(function (result) {
-					$scope.user.isFollowing = result
+			$scope.unfollow = function (person) {
+				followService.unfollow(person._id).then(function (result) {
+					$scope.person.isFollowing = result
 					$rootScope.$emit('update-follow')
 				})
 			}
@@ -1398,17 +1399,29 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('messagesicon', function (messagesService) {
+.directive('messagesicon', function ($interval, messagesService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/messagesicon.htm',
 		scope: {
 			q: '=',
 		},
-		link: function ($scope) {
-			messagesService.unread().then(function (result) {
-				$scope.unreadcount = result.count
+		link: function ($scope, element) {
+			var updateUnreadCounter = function () {
+				messagesService.unread().then(function (result) {
+					$scope.unreadcount = result.count
+				})
+			}
+
+			var refreshInterval = $interval(function () {
+				updateUnreadCounter()
+			}, 3000)
+
+			element.on('$destroy', function () {
+				$interval.cancel(refreshInterval)
 			})
+
+			updateUnreadCounter()
 		}
 	}
 })

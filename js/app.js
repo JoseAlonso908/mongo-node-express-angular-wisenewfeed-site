@@ -65,7 +65,7 @@ angular.module('er', [
 				templateUrl: 'assets/views/search.htm',
 				controller: 'searchController',
 			})
-			.when('/chat', {
+			.when('/chat/:user?', {
 				templateUrl: 'assets/views/chat.htm',
 				controller: 'chatController',
 			})
@@ -97,7 +97,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		var nextURI = next.split('#!')[1]
 
-		var requireAuth = ['/my', '/settings']
+		var requireAuth = ['/my', '/settings', '/chat']
 
 		identityService.get().then(function (user) {
 			if (!user) return

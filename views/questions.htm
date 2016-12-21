@@ -14,12 +14,12 @@
 		<div class="middle">
 			<div class="questions">
 				<div class="title-wrapper">
-					<div class="title">{{questions.length}} questions</div>
+					<div class="title">{{visibleQuestionsCount}} question{{(visibleQuestionsCount != 1) ? 's' : ''}}</div>
 					<div class="types">
-						<a href="javascript:void(0);" ng-click="chosenFilter = 'replied'" ng-class="{chosen: chosenFilter == 'replied'}" class="type replied">{{types.replied}} replied</a>
-						<a href="javascript:void(0);" ng-click="chosenFilter = 'cancelled'" ng-class="{chosen: chosenFilter == 'cancelled'}" class="type cancelled">{{types.cancelled}} cancelled</a>
-						<a href="javascript:void(0);" ng-click="chosenFilter = 'active'" ng-class="{chosen: chosenFilter == 'active'}" class="type active">{{types.active}} active</a>
-						<a href="javascript:void(0);" ng-click="chosenFilter = undefined" ng-show="chosenFilter != undefined" class="type">Show all</a>
+						<a href="javascript:void(0);" ng-click="setFilter('replied')" ng-class="{chosen: chosenFilter == 'replied'}" class="type replied">{{types.replied}} replied</a>
+						<a href="javascript:void(0);" ng-click="setFilter('cancelled')" ng-class="{chosen: chosenFilter == 'cancelled'}" class="type cancelled">{{types.cancelled}} cancelled</a>
+						<a href="javascript:void(0);" ng-click="setFilter('active')" ng-class="{chosen: chosenFilter == 'active'}" class="type active">{{types.active}} active</a>
+						<a href="javascript:void(0);" ng-click="setFilter(undefined)" ng-show="chosenFilter != undefined" class="type">Show all</a>
 					</div>
 				</div>
 
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="text" ng-show="questions.length === 0">Questionbox is empty</div>
+					<div class="text" ng-show="visibleQuestionsCount === 0">Nothing to display</div>
 
 					<div class="question-box-wrapper" ng-if="user && profile" ng-hide="user._id == profile._id && !replyMode">
 						<div class="question-box">

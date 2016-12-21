@@ -408,7 +408,9 @@ var Model = function(mongoose) {
 				blockedIds.push(user)
 				query['_id'] = {$nin: blockedIds}
 
-				Model.find(query).lean().limit(limit).exec(callback)
+				Model.find(query).lean().limit(limit).exec((err, users) => {
+					async.mapSeries(users, setXpInfo, callback)
+				})
 			})
 		},
 	}

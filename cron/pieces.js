@@ -4,17 +4,8 @@ const env = 'development'
 const path = require('path')
 
 global.__root = path.join(__dirname, '..')
-
-var mongoose = require('mongoose')
-mongoose.Promise = Promise
-let connection = mongoose.connect(config.MONGO[env].DSN)
-
-global.models = {
-	User: require('./../models/user')(connection),
-	Article: require('./../models/article')(connection),
-	Comment: require('./../models/comment')(connection),
-	Piece: require('./../models/piece')(connection),
-}
+var modelWrapper = require('./../model')(config.MONGO[env].DSN, __root)
+global.models = modelWrapper.models()
 
 let pieces = {
 	'#': {
@@ -32,8 +23,10 @@ let pieces = {
 	},
 }
 
-models.Article.getAll((err, articles) => {
+models.Article.getAll(null, null, null, null, null, (err, articles) => {
 	for (let article of articles) {
+		if (!article.text) continue
+
 		let aPieces = article.text.match(/(\#[a-z0-9]+|\@[a-z0-9]+|\$[a-z0-9]+)/gi)
 
 		if (!aPieces) continue
@@ -64,6 +57,6 @@ models.Article.getAll((err, articles) => {
 
 	models.Piece.clearAll(() => {
 		models.Piece.addMulti(insertionItems)
-		mongoose.connection.close()
+		modelWrapper.closeConnection()
 	})
 })

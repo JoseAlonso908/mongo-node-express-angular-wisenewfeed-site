@@ -96,6 +96,10 @@
 			.middle {
 				width: 75%;
 
+				&.wide {
+					width: 100%;
+				}
+
 				.people {
 					person {
 						width: calc(50% - 10px);
@@ -221,6 +225,10 @@
 
 			.middle {
 				width: calc(70% - 20px) !important;
+
+				&.wide {
+					width: 100% !important;
+				}
 			}
 		}
 	}
@@ -539,6 +547,28 @@
 				.settings-wrapper {
 					display: block !important;
 					margin-bottom: 20px;
+				}
+
+				.messages-wrapper {
+					// flex-wrap: wrap;
+
+					.chats {
+						width: 78px;
+
+						.search {
+							display: none;
+						}
+
+						.user {
+							.text, .date {
+								display: none;
+							}
+						}
+					}
+
+					.chat {
+						width: calc(100% - 78px);
+					}
 				}
 			}
 		}

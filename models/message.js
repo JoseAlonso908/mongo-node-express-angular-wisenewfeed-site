@@ -63,7 +63,7 @@ var Model = function(mongoose) {
 						text: {$last: "$text"},
 						images: {$last: "$images"},
 						createdAt: {$last: "$createdAt"},
-						read: {$max: "$read"},
+						read: {$min: "$read"},
 					}
 				},
 				{
@@ -91,34 +91,51 @@ var Model = function(mongoose) {
 				// 	return c
 				// })
 
-				results = results.filter((c) => {
-					let cUsersJSON = JSON.stringify([c._id.from, c._id.to].sort())
+				async.mapSeries(results, (c, next) => {
+					async.series([
+						(cb) => {
+							models.User.setXpInfo(c.from[0], (err, user) => {
+								c.from[0] = user
+								cb()
+							})
+						},
+						(cb) => {
+							models.User.setXpInfo(c.to[0], (err, user) => {
+								c.to[0] = user
+								cb()
+							})
+						},
+					], (err) => {
+						next(null, c)
+					})
+				}, (err, results) => {
+					results = results.filter((c) => {
+						let cUsersJSON = JSON.stringify([c._id.from, c._id.to].sort())
 
-					for (let c2 of results) {
-						let c2UsersJSON = JSON.stringify([c2._id.from, c2._id.to].sort())
+						for (let c2 of results) {
+							let c2UsersJSON = JSON.stringify([c2._id.from, c2._id.to].sort())
 
-						if (cUsersJSON == c2UsersJSON && c.createdAt < c2.createdAt) return false
-					}
+							if (cUsersJSON == c2UsersJSON && c.createdAt < c2.createdAt) return false
+						}
 
-					return true
-				})
-
-				// console.log(require('util').inspect(results, {showHidden: true, depth: null}))	
-
-				if (results) {
-					results = results.map((c) => {
-						c._id = c.id
-
-						c.from = c.from[0]
-						c.to = c.to[0]
-
-						return c
+						return true
 					})
 
-					return callback(err, results)
-				}
+					if (results) {
+						results = results.map((c) => {
+							c._id = c.id
 
-				return callback(err)
+							c.from = c.from[0]
+							c.to = c.to[0]
+
+							return c
+						})
+
+						return callback(err, results)
+					}
+
+					return callback(err)
+				})
 			})
 		},
 
@@ -153,7 +170,12 @@ var Model = function(mongoose) {
 						}
 					}
 				]
-			}).populate('from to').skip(skip).limit(limit).lean().sort({createdAt: 'asc'}).exec(callback)
+			}).populate('from to').sort({createdAt: 'desc'}).skip(skip).limit(limit).lean().exec(callback)
+		},
+
+		getByIdsLean: (ids, callback) => {
+			ids = ids.map(MOI)
+			Model.find({_id: {$in: ids}}).populate('from to').lean().exec(callback)
 		},
 
 		setRead: (user, ids, callback) => {

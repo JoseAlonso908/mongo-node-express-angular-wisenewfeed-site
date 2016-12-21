@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 	next()
 })
 
-global.models = require('./model')(config.MONGO[env].DSN, __dirname)
+global.models = require('./model')(config.MONGO[env].DSN, __dirname).models()
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.htm'))

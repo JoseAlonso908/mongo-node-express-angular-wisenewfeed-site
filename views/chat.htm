@@ -3,7 +3,7 @@
 		<topbar user="user"></topbar>
 	</div>
 
-	<div class="content">
+	<div class="content chat-content">
 		<div class="middle wide flex">
 			<div class="messages-wrapper">
 				<div class="chats">
@@ -18,12 +18,10 @@
 
 						<div class="users-autocomplete" ng-show="foundusers.length > 0">
 							<div class="user" ng-class="{chosen: u.chosen}" ng-click="chooseUser(u)" ng-repeat="u in foundusers track by $index">
-								<a ng-href="#!/person/{{u._id}}">
-									<avatar user="u"></avatar>
-								</a>
-
+								<avatar user="u" nolink="true"></avatar>
+								
 								<div class="text">
-									<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+									<div ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</div>
 									<div class="role">{{u.role}}</div>
 								</div>
 							</div>
@@ -41,15 +39,11 @@
 						<a class="send" ng-click="sendStartMessages()" href="javascript:void(0);">Send</a>
 					</div>
 
-					<div class="user" ng-class="{unread: u.read === false, active: u.active, visible: u.visible}" ng-click="setActive(u)" ng-repeat="u in chats track by $index">
-						<a ng-href="#!/person/{{u._id}}">
-							<avatar user="u"></avatar>
-						</a>
-
-						<div class="date">{{u.lastMessageTime | amDateFormat:'MM.DD, HH:mm'}}</div>
-
+					<div class="user" ng-class="{unread: u.read === false, active: u.active, visible: u.visible}" ng-click="setActive(u)" ng-repeat="u in chats">
+						<avatar user="u" nolink="true"></avatar>
+						<div class="date" ng-show="u.lastMessageTime">{{u.lastMessageTime | amDateFormat:'MM.DD, HH:mm'}}</div>
 						<div class="text">
-							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+							<a ng-href="#!/person/{{u._id}}" class="name">{{::u.name}}</a>
 							<div class="role">{{u.lastMessage || u.role}}</div>
 						</div>
 					</div>
@@ -66,24 +60,24 @@
 						</div>
 						<div class="buttons">
 							<a href="javascript:void(0);" ng-click="hideMessages()">Delete</a>
-							<a href="javascript:void(0);">Report spam</a>
+							<!-- <a href="javascript:void(0);">Report spam</a> -->
 						</div>
 					</div>
 
-					<div ng-show="!chatChosen && !loading" class="text">Choose chat at the left panel</div>
+					<div ng-show="!chatChosen && !loading" class="text">Conversation is not chosen</div>
 					<div ng-show="chatChosen && chatMessages.length == 0 && !loading" class="text">This conversation is empty.</div>
 
 					<div class="messages-box-wrapper" ng-class="{'image-added': files.length > 0}">
 						<div class="messages">
-							<a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a>
-							<div class="message" ng-class="{unread: !m.read && user._id == m.to._id, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages track by $index">
+							<!-- <a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a> -->
+							<div class="message" ng-hide="m.hidden" ng-class="{unread: !m.read, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages">
 								<a ng-href="#!/person/{{m.from._id}}">
 									<avatar user="m.from"></avatar>
 								</a>
 
 								<div class="date" am-time-ago="m.createdAt"></div>
-								<div class="name">{{m.from.name}}</div>
-								<div class="mtext">{{m.text}}</div>
+								<div class="name">{{::m.from.name}}</div>
+								<div class="mtext">{{::m.text}}</div>
 
 								<div class="images" ng-class="{empty: m.images.length == 0}">
 									<a ng-href="image" lightbox class="image" ng-repeat="image in m.images" style="background-image: url({{image}})"></a>

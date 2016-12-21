@@ -902,6 +902,22 @@ angular.module('er.controllers', [])
 		cancelled: 0,
 		active: 0,
 	}
+	$scope.visibleQuestionsCount = 0
+	
+	$scope.setFilter = function (filter) {
+		$scope.chosenFilter = filter
+		$scope.recalcQuestionsCounter()
+	}
+
+	$scope.recalcQuestionsCounter = function () {
+		$scope.visibleQuestionsCount = 0
+
+		for (var i in $scope.questions) {
+			if ($scope.questions[i].type == $scope.chosenFilter) {
+				$scope.visibleQuestionsCount++
+			}
+		}
+	}
 
 	$scope.maxlength = 250
 	$scope.question = {
@@ -922,6 +938,8 @@ angular.module('er.controllers', [])
 			$scope.loading = false
 			loadQuestions()
 		})
+
+		$scope.recalcQuestionsCounter()
 	}
 
 	$scope.cancel = function (question) {
@@ -930,7 +948,7 @@ angular.module('er.controllers', [])
 		}
 
 		questionsService.cancel(question._id).then(function () {
-			loadQuestions()
+			loadQuestions($scope.recalcQuestionsCounter)
 		})
 	}
 
@@ -945,7 +963,7 @@ angular.module('er.controllers', [])
 
 			$scope.replyMode = false
 
-			loadQuestions()
+			loadQuestions($scope.recalcQuestionsCounter)
 		})
 
 		$scope.question.text = ''
@@ -991,6 +1009,8 @@ angular.module('er.controllers', [])
 						}
 					}
 				}
+
+				if (callback) callback()
 			} else {
 				$scope.questions = questions
 
@@ -999,6 +1019,8 @@ angular.module('er.controllers', [])
 
 					$scope.types[question.type]++
 				}
+
+				$scope.visibleQuestionsCount = $scope.questions.length
 
 				if (callback) callback()
 			}
@@ -1133,7 +1155,7 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('chatController', function ($scope, $rootScope, $timeout, identityService, followService, messagesService) {
+.controller('chatController', function ($scope, $rootScope, $timeout, $routeParams, identityService, followService, messagesService) {
 	$scope.hideLoadMore = false
 
 	$scope.chatssearch = ''
@@ -1158,14 +1180,12 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.reorderConversations = function () {
-		$scope.chats = $scope.chats.sort(function (a, b) {
+		$scope.chats = JSON.parse(JSON.stringify($scope.chats.sort(function (a, b) {
 			if (!a.lastMessageTime) a.lastMessageTime = 0
 			if (!b.lastMessageTime) b.lastMessageTime = 0
 
 			return (new Date(b.lastMessageTime)).getTime() - (new Date(a.lastMessageTime)).getTime()
-		})
-
-		console.log($scope.chats)
+		})))
 	}
 
 	$rootScope.$on('ws-available', function () {
@@ -1187,10 +1207,29 @@ angular.module('er.controllers', [])
 				if (c._id == message.from._id) {
 					c.lastMessage = message.text
 					c.lastMessageTime = message.createdAt
+					c.read = message.read
 				}
 			}
 
 			$scope.reorderConversations()
+		})
+
+		window.socket.on('messagesread', function (messagesIds) {
+			console.log('messages read')
+			console.log(messagesIds)
+
+			for (var i in $scope.chatMessages) {
+				var m = $scope.chatMessages[i]
+
+				for (var j in messagesIds) {
+					var readId = messagesIds[j]
+
+					if (m._id == readId) {
+						m.read = true
+						break
+					}
+				}
+			}
 		})
 	})
 
@@ -1243,7 +1282,15 @@ angular.module('er.controllers', [])
 		document.querySelector('.chat .messages-box-wrapper').scrollTop = document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight
 	}
 
+	angular.element(document.querySelector('.messages-box-wrapper')).on('scroll', function (e) {
+		if (e.target.scrollTop == 0 && !$scope.hideLoadMore) {
+			$scope.loadMore()
+		}
+	})
+
 	$scope.loadMore = function () {
+		console.log('load more')
+
 		$scope.skip += $scope.limit
 		$scope.loadMessages(function (messages) {
 			if (messages.length == 0) {
@@ -1272,6 +1319,12 @@ angular.module('er.controllers', [])
 		})
 
 		messagesService.hide(selectedIds).then(function (result) {
+			$scope.selectedMessages = $scope.selectedMessages.map(function (m) {
+				m.hidden = true
+				return m
+			})
+			$scope.selectedMessages = []
+
 			console.info('Hide result')
 			console.info(result)
 		})
@@ -1314,19 +1367,20 @@ angular.module('er.controllers', [])
 				else return false
 			})
 
-
 			var messagesToUserIds = messagesToUser.map(function (m) {
 				return m._id
 			})
 
 			messagesService.setRead(messagesToUserIds).then(function () {
 				for (var i in messages) {
-					messages[i].read = true
+					if (messages[i].to._id == $scope.user._id) {
+						messages[i].read = true
+					}
 				}
 			})
 
 			if ($scope.chatMessages.length == 0) {
-				$scope.chatMessages = messages
+				$scope.chatMessages = messages.reverse()
 			} else {
 				for (var i in messages) {
 					var newMessage = messages[i]
@@ -1341,6 +1395,7 @@ angular.module('er.controllers', [])
 	$scope.setActive = function (user) {
 		if (user.active) return
 
+		$scope.skip = 0
 		$scope.chatMessages = []
 		$scope.loading = true
 
@@ -1350,6 +1405,7 @@ angular.module('er.controllers', [])
 
 		user.active = true
 		$scope.activeChat = user
+		// $scope.activeChat.read = true
 
 		$scope.loadMessages(function () {
 			$scope.chatChosen = true
@@ -1390,6 +1446,15 @@ angular.module('er.controllers', [])
 		if (!searchTerm) return
 
 		identityService.searchusers(searchTerm, 3).then(function (users) {
+			users = users.filter(function (person) {
+				for (var i in $scope.chats) {
+					var existingUser = $scope.chats[i]
+
+					if (existingUser._id == person._id) return false
+					return true
+				}
+			})
+
 			users = users.map(function (person) {
 				person.role = person.role[0].toUpperCase() + person.role.substr(1)
 
@@ -1490,7 +1555,7 @@ angular.module('er.controllers', [])
 							}
 						}
 
-						if (alreadyIn) continue
+						if (alreadyIn || person.role == 'user') continue
 
 						person.role = person.role[0].toUpperCase() + person.role.substr(1)
 						$scope.chats.push(person)
@@ -1512,7 +1577,7 @@ angular.module('er.controllers', [])
 							}
 						}
 
-						if (alreadyIn) continue
+						if (alreadyIn || person.role == 'user') continue
 
 						person.role = person.role[0].toUpperCase() + person.role.substr(1)
 						$scope.chats.push(person)
@@ -1522,6 +1587,32 @@ angular.module('er.controllers', [])
 				})
 			},
 		}, function (err) {
+			$scope.reorderConversations()
+
+			if ($routeParams.user) {
+				var inChat = false
+				for (var i in $scope.chats) {
+					var user = $scope.chats[i]
+
+					if (user._id == $routeParams.user) {
+						inChat = true
+						$scope.setActive(user)
+						break
+					}
+				}
+
+				if (!inChat) {
+					identityService.getOther($routeParams.user).then(function (user) {
+						user.visible = true
+						$scope.chats.unshift(user)
+						$scope.setActive(user)
+					})
+				}
+			}
+
+
+			console.log($scope.chats)
+
 			// whoop
 			for (var i in $scope.chats) {
 				$scope.chats[i].visible = true

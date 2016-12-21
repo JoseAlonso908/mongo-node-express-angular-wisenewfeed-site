@@ -4,7 +4,7 @@
 	<div ng-show="user && profile && user.role != 'User'">
 		<div class="buttons narrow" ng-hide="user._id == profile._id">
 			<a ng-href="#!/questions/{{profile._id}}" class="ask-question"><i class="material-icons">help</i> <div class="title">Ask question</div></a>
-			<a class="message"><i class="material-icons">message</i> <div class="title">Message</div></a>
+			<a ng-href="#!/chat/{{profile._id}}" class="message"><i class="material-icons">message</i> <div class="title">Message</div></a>
 
 			<a ng-show="!profile.isFollowing" class="follow" ng-click="follow(profile)"><i class="material-icons">person_add</i> <div class="title">Follow</div></a>
 			<a ng-show="profile.isFollowing" class="follow" ng-click="unfollow(profile)"><i class="material-icons">person_outline</i> <div class="title">Unfollow</div></a>

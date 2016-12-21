@@ -797,6 +797,9 @@ a.small-icon, button.small-icon {
   margin: 0 auto 0;
   padding-bottom: 20px;
 }
+#wrapper > .content.chat-content {
+  height: calc(100% - 125px);
+}
 #wrapper > .content a {
   color: #43abe7;
 }
@@ -1989,6 +1992,7 @@ a.small-icon, button.small-icon {
   transition: color 0.1s;
 }
 #wrapper > .content .middle .messages-wrapper .chats > .user .text .role {
+  height: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3912,6 +3916,8 @@ a.small-icon, button.small-icon {
   color: #ffffff !important;
 }
 .questions .list {
+  max-height: 600px;
+  overflow: auto;
   margin-top: 20px;
   padding: 17px 0;
   background-color: #ffffff;
@@ -4095,6 +4101,9 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle {
     width: 75%;
   }
+  #wrapper .content .middle.wide {
+    width: 100%;
+  }
   #wrapper .content .middle .people person {
     width: calc(50% - 10px);
   }
@@ -4169,6 +4178,9 @@ a.small-icon, button.small-icon {
   }
   #wrapper .content .middle {
     width: calc(70% - 20px) !important;
+  }
+  #wrapper .content .middle.wide {
+    width: 100% !important;
   }
 }
 @media (max-width: 800px) {
@@ -4349,6 +4361,18 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle .settings-wrapper {
     display: block !important;
     margin-bottom: 20px;
+  }
+  #wrapper .content .middle .messages-wrapper .chats {
+    width: 78px;
+  }
+  #wrapper .content .middle .messages-wrapper .chats .search {
+    display: none;
+  }
+  #wrapper .content .middle .messages-wrapper .chats .user .text, #wrapper .content .middle .messages-wrapper .chats .user .date {
+    display: none;
+  }
+  #wrapper .content .middle .messages-wrapper .chat {
+    width: calc(100% - 78px);
   }
 
   .popup .footer a {

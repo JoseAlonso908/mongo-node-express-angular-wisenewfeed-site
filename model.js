@@ -27,5 +27,12 @@ module.exports = (dsn, __root) => {
 		return id
 	}
 
-	return models
+	return {
+		models: () => {
+			return models
+		},
+		closeConnection: () => {
+			mongoose.connection.close()
+		},
+	}
 }

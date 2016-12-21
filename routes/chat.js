@@ -70,9 +70,29 @@ router.post('/send', tempUploads.array('files', 5), (req, res) => {
 router.post('/setread', (req, res) => {
 	let {ids} = req.body
 
-	models.Message.setRead(req.user._id, ids, (err, result) => {
+	async.series([
+		(next) => {
+			models.Message.getByIdsLean(ids, (err, messages) => {
+				let partnersIds = messages.map((m) => {
+					if (m.from._id == req.user._id.toString()) {
+						return m.to._id
+					} else if (m.to._id == req.user._id.toString()) {
+						return m.from._id
+					}
+				}).map(String)
+				
+				partnersIds = Array.from(new Set(partnersIds))
+
+				ws.messagesIsRead(partnersIds, ids)
+				next()
+			})
+		},
+		(next) => {
+			models.Message.setRead(req.user._id, ids, next)
+		},
+	], (err) => {
 		if (err) return res.status(400).send(err)
-		else res.send(result)
+		else res.send({ok: true})
 	})
 })
 

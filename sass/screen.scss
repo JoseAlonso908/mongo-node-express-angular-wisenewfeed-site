@@ -772,6 +772,10 @@ a.small-icon, button.small-icon {
 		// flex-wrap: wrap;
 		padding-bottom: 20px;
 
+		&.chat-content {
+			height: calc(100% - 125px);
+		}
+
 		a {
 			color: $activeBlue;
 		}
@@ -2158,6 +2162,7 @@ a.small-icon, button.small-icon {
 							}
 
 							.role {
+								height: 16px;
 								overflow: hidden;
 								text-overflow: ellipsis;
 								white-space: nowrap;
@@ -4331,6 +4336,8 @@ a.small-icon, button.small-icon {
 	}
 
 	.list {
+		max-height: 600px;
+		overflow: auto;
 		margin-top: 20px;
 		padding: 17px 0;
 		background-color: #ffffff;

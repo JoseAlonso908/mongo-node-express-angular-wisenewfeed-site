@@ -19,7 +19,7 @@ module.exports = (io) => {
 			for (let userId in online) {
 				let socketId = online[userId]
 
-				if (socketId == socket.id) delete socketId
+				if (socketId == socket.id) delete online[userId]
 			}
 		})
 
@@ -29,6 +29,14 @@ module.exports = (io) => {
 	return {
 		isOnline: (id) => {
 			return !!online[id]
+		},
+		messagesIsRead: (users, messagesIds) => {
+			for (let id of users) {
+				if (online[id]) {
+					console.log(`Emitting ${JSON.stringify(messagesIds)} to ${id} - ${online[id]}`)
+					io.to(online[id]).emit('messagesread', messagesIds)
+				}
+			}
 		}
 	}
 }

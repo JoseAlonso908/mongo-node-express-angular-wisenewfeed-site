@@ -6,6 +6,7 @@ module.exports = (io) => {
 		let recipientSocketId = online[messageObject.to._id.toString()]
 
 		if (recipientSocketId) {
+			console.log(`Sending message to ${messageObject.to.name} (${messageObject.to._id}) from ${messageObject.from.name} (${messageObject.from._id})`)
 			io.to(recipientSocketId).emit('message', messageObject)
 		}
 	}
@@ -14,12 +15,17 @@ module.exports = (io) => {
 
 	io.on('connection', (socket) => {
 		online[socket.handshake.query.uid] = socket.id
+
+		console.log(`New connection: ${socket.handshake.query.uid}`)
 	
 		socket.on('disconnect', () => {
 			for (let userId in online) {
 				let socketId = online[userId]
 
-				if (socketId == socket.id) delete online[userId]
+				if (socketId == socket.id) {
+					console.log(`Disconnection: ${userId}`)
+					delete online[userId]
+				}
 			}
 		})
 
@@ -33,7 +39,6 @@ module.exports = (io) => {
 		messagesIsRead: (users, messagesIds) => {
 			for (let id of users) {
 				if (online[id]) {
-					console.log(`Emitting ${JSON.stringify(messagesIds)} to ${id} - ${online[id]}`)
 					io.to(online[id]).emit('messagesread', messagesIds)
 				}
 			}

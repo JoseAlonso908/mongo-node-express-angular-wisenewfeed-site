@@ -1211,6 +1211,7 @@ angular.module('er.controllers', [])
 				}
 			}
 
+			$scope.$apply()
 			$scope.reorderConversations()
 		})
 
@@ -1230,6 +1231,8 @@ angular.module('er.controllers', [])
 					}
 				}
 			}
+
+			$scope.$apply()
 		})
 	})
 

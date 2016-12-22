@@ -1,9 +1,9 @@
-<button class="small-icon" title="Followers" ng-click="showDropdown($event)">
+<a class="small-icon" title="Followers" ng-click="showDropdown($event)">
 	<div class="badge" ng-show="count > 0">
 		<div class="value">{{count}}</div>
 	</div>
 	<i class="material-icons">person</i>
-</button>
+</a>
 
 <div class="followers floating" ng-class="{active: dropdownVisible}"> 
 	<div class="follower" ng-repeat="f in followers">

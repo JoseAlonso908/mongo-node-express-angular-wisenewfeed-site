@@ -15,7 +15,7 @@
 			</div>
 			<div class="divider" ng-show="results.tags.length > 0"></div>
 			<div class="people results">
-				<div class="user" ng-repeat="u in results.users track by $index">
+				<div class="user" ng-repeat="u in results.users">
 					<a ng-href="#!/person/{{u._id}}">
 						<avatar user="u"></avatar>
 					</a>

@@ -561,7 +561,7 @@ a.small-icon, button.small-icon {
 					}
 				}
 
-				.view-profile {
+				.view-profile, .role {
 					font-size: 11px;
 					color: $iconGrey;
 				}
@@ -2807,10 +2807,10 @@ a.small-icon, button.small-icon {
 					// &:not(.empty) {
 					// 	animation: pulsephoto .4s linear infinite;
 					// }
-				}
 
-				.photo-placeholder {
-					width: 84px; height: 0;
+					&.placeholder {
+						height: 0 !important;
+					}
 				}
 
 				@keyframes pulsephoto {
@@ -3250,6 +3250,7 @@ a.small-icon, button.small-icon {
 					background-position: center;
 					background-repeat: no-repeat;
 					background-size: cover;
+					background-color: #ffffff;
 					border-radius: 50%;
 					box-sizing: border-box;
 					border: 2px solid #ffffff;

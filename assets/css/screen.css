@@ -614,7 +614,7 @@ a.small-icon, button.small-icon {
   content: 'keyboard_arrow_down';
   font-family: 'Material Icons';
 }
-#wrapper #top-bar-background #top-bar #user-block .view-profile {
+#wrapper #top-bar-background #top-bar #user-block .view-profile, #wrapper #top-bar-background #top-bar #user-block .role {
   font-size: 11px;
   color: #b0bec8;
 }
@@ -2543,9 +2543,8 @@ a.small-icon, button.small-icon {
   border-radius: 2px;
   margin-bottom: 4px;
 }
-#wrapper > .content .left .photos .photo-placeholder {
-  width: 84px;
-  height: 0;
+#wrapper > .content .left .photos .photo.placeholder {
+  height: 0 !important;
 }
 @keyframes pulsephoto {
   0% {
@@ -2936,6 +2935,7 @@ a.small-icon, button.small-icon {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #ffffff;
   border-radius: 50%;
   box-sizing: border-box;
   border: 2px solid #ffffff;
@@ -4102,6 +4102,18 @@ a.small-icon, button.small-icon {
   }
   #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats {
     margin-left: 140px;
+  }
+  #wrapper .content .left .photos {
+    width: 191px;
+    height: 191px;
+  }
+  #wrapper .content .left .photos .photo, #wrapper .content .left .photos .other-photos {
+    width: 61px;
+    height: 61px;
+  }
+  #wrapper .content .left .photos .other-photos {
+    font-size: 24px;
+    line-height: 61px;
   }
   #wrapper .content .middle {
     width: 75%;

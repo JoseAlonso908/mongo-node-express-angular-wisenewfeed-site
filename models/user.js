@@ -393,14 +393,18 @@ var Model = function(mongoose) {
 			})
 		},
 
-		search: (user, q, limit = 5, callback) => {
+		search: (user, q, role, skip = 0, limit = 5, callback) => {
+			skip = Number(skip)
 			limit = Number(limit)
 
 			user = MOI(user)
 
+			let roleQuery = {$ne: 'user'}
+			if (role) roleQuery = role
+
 			let query = {
 				name: new RegExp(q, 'gi'),
-				role: {$ne: 'user'},
+				role: roleQuery,
 			}
 
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
@@ -408,7 +412,7 @@ var Model = function(mongoose) {
 				blockedIds.push(user)
 				query['_id'] = {$nin: blockedIds}
 
-				Model.find(query).lean().limit(limit).exec((err, users) => {
+				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
 					async.mapSeries(users, setXpInfo, callback)
 				})
 			})

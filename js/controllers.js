@@ -1404,7 +1404,7 @@ angular.module('er.controllers', [])
 		var searchTerm = $scope.searchterm.trim()
 		if (!searchTerm) return
 
-		identityService.searchusers(searchTerm, 3).then(function (users) {
+		identityService.searchusers(searchTerm, null, 0, 3).then(function (users) {
 			users = users.filter(function (person) {
 				for (var i in $scope.chats) {
 					var existingUser = $scope.chats[i]
@@ -1649,4 +1649,43 @@ angular.module('er.controllers', [])
 	}
 
 	init()
+})
+.controller('usersListController', function ($scope, $rootScope, $routeParams, identityService, followService) {
+	angular.element(window).on('scroll', function (e) {
+		if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.loading && $scope.canLoadMore) {
+			$scope.init()
+		}
+	})
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+	})
+
+	$scope.start = 0
+	$scope.limit = 15
+	$scope.canLoadMore = true
+	$scope.people = []
+
+	$scope.init = function () {
+		$scope.loading = true
+
+		identityService.searchusers('', $routeParams.role, $scope.start, $scope.limit).then(function (users) {
+			if (users.length == 0) {
+				$scope.canLoadMore = false
+			}
+
+			if ($scope.start == 0) {
+				$scope.people = users
+			} else {
+				for (var i in users) {
+					$scope.people.push(users[i])
+				}
+			}
+
+			$scope.start += $scope.limit
+			$scope.loading = false
+		})
+	}
+
+	$scope.init()
 })

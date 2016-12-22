@@ -371,7 +371,7 @@ router.get('/multisearch', (req, res) => {
 			models.Article.searchForTags(user, '#', q, 5, next)
 		},
 		users: (next) => {
-			models.User.search(user, q, 5, next)
+			models.User.search(user, q, null, 0, 5, next)
 		},
 	}, (err, results) => {
 		if (err) res.status(400).send(err)
@@ -380,9 +380,9 @@ router.get('/multisearch', (req, res) => {
 })
 
 router.get('/searchusers', (req, res) => {
-	let {q, limit} = req.query
+	let {q, role, start, limit} = req.query
 
-	models.User.search(req.user._id, q, limit, (err, results) => {
+	models.User.search(req.user._id, q, role, start, limit, (err, results) => {
 		if (err) res.status(400).send(err)
 		else res.send(results)
 	})

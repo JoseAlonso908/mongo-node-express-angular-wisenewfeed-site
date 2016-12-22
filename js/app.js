@@ -69,6 +69,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/chat.htm',
 				controller: 'chatController',
 			})
+			.when('/users/:role?', {
+				templateUrl: 'assets/views/userslist.htm',
+				controller: 'usersListController',
+			})
 
 
 		$authProvider.facebook({

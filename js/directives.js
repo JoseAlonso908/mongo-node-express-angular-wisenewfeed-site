@@ -334,8 +334,6 @@ angular.module('er.directives', [])
 
 			angular.element(window).on('scroll', function (e) {
 				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
-					// start += originalLimit
-					// limit += originalLimit
 					init({addmore: true})
 				}
 			})

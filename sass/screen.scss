@@ -3262,7 +3262,7 @@ a.small-icon, button.small-icon {
 
 					@include transition(background-color .2s);
 
-					&.questions, &.ask-question, &.message, &.follow, &.edit-profile, &.change-background, &.save-changes {
+					&.questions, &.ask-question, &.message, &.follow, &.edit-profile, &.change-background {
 						background-color: $activeBlue;
 
 						&:hover {
@@ -3279,14 +3279,14 @@ a.small-icon, button.small-icon {
 					// 	}
 					// }
 
-					// &.save-changes {
-					// 	color: #424242;
-					// 	background-color: #ffffff;
+					&.save-changes {
+						color: #424242;
+						background-color: #ffffff;
 
-					// 	&:hover {
-					// 		background-color: rgba(#ffffff, .8);
-					// 	}
-					// }
+						&:hover {
+							background-color: rgba(#ffffff, .8);
+						}
+					}
 
 					i {
 						margin: 6px 4px 0 0;

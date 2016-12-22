@@ -97,7 +97,7 @@ var Model = function(mongoose) {
 
 		if (user.xpInfo.level > 0 && user.xpInfo.level < 30) {
 			user.color = 'bronze'
-		} else if (user.xpInfo.level >= 30 && user.xpInfo < 60) {
+		} else if (user.xpInfo.level >= 30 && user.xpInfo.level < 60) {
 			user.color = 'silver'
 		} else {
 			user.color = 'gold'

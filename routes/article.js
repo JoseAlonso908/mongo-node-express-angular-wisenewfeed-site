@@ -68,17 +68,17 @@ router.get('/one', (req, res) => {
 })
 
 router.get('/all', (req, res) => {
-	let {category, country, start, limit} = req.query
+	let {category, country, filter, start, limit} = req.query
 
-	models.Article.getAll((req.user) ? req.user._id : null, category, country, start, limit, (err, articles) => {
+	models.Article.getAll((req.user) ? req.user._id : null, category, country, filter, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
 
 router.get('/search', (req, res) => {
-	let {q, category, country, start, limit} = req.query
+	let {q, category, country, filter, start, limit} = req.query
 
-	models.Article.search((req.user) ? req.user._id : null, q, category, country, start, limit, (err, articles) => {
+	models.Article.search((req.user) ? req.user._id : null, q, category, country, filter, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })

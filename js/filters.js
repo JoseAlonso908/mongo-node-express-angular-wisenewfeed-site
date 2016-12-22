@@ -2,19 +2,24 @@ angular.module('er.filters', [])
 .filter('tags', function () {
 	return function (input) {
 		input = input || ''
-		return input.replace(/#([a-z]+[a-z0-9]+)/gi, '<a href="#!/tagsearch/#$1" class="text-tag">#$1</a>')
+
+		// input = input.replace(new RegExp('<br>', 'gi'), "\r\n")
+
+		return input.replace(/(<br>|^|\s)#([a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
+			return space + '<a href="#!/tagsearch/%23' + tag + '" class="text-tag">#' + tag + '</a>'
+		})
 	}
 })
 .filter('people', function () {
 	return function (input) {
 		input = input || ''
-		return input.replace(/@([a-z]+[a-z0-9]+)/gi, '<a href="#!/tagsearch/@$1" class="text-people">@$1</a>')
+		return input.replace(/(<br>|^|\s)@([a-z]+[a-z0-9]+)/gmi, '$1<a href="#!/tagsearch/@$2" class="text-people">@$2</a>')
 	}
 })
 .filter('categories', function () {
 	return function (input) {
 		input = input || ''
-		return input.replace(/\$([a-z]+[a-z0-9]+)/gi, '<a href="#!/tagsearch/$$$1" class="text-category">$$$1</a>')
+		return input.replace(/(<br>|^|\s)\$([a-z]+[a-z0-9]+)/gmi, '$1<a href="#!/tagsearch/$$$2" class="text-category">$$$2</a>')
 	}
 })
 .filter('textLinks', function ($filter) {

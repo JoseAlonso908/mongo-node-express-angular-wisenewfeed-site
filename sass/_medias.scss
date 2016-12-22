@@ -177,7 +177,7 @@
 						margin: 60px 0 0 -138px;
 					}
 
-					.name, .view-profile {
+					.name, .view-profile, .role {
 						display: none;
 					}
 				}
@@ -405,6 +405,10 @@
 }
 
 @media (max-width: 600px) {
+	.hideonmobile {
+		display: none;
+	}
+
 	#landing-wrapper {
 		#header-wrapper {
 			height: 130px;
@@ -434,6 +438,14 @@
 	}
 
 	#wrapper {
+		.results-banner {
+			display: none;
+		}
+
+		.mobile-search-wrapper {
+			display: block;
+		}
+
 		#top-bar-background {
 			#top-bar {
 				#search {
@@ -583,6 +595,25 @@
 			a {
 				width: 100%;
 				margin-bottom: 10px;
+			}
+		}
+	}
+
+	.questions {
+		.title-wrapper {
+			flex-wrap: wrap;
+
+			.title, .types {
+				width: 100%;
+			}
+
+			.types {
+				margin-top: 15px;
+				text-align: right;
+
+				.type {
+					margin-left: 5px;
+				}
 			}
 		}
 	}

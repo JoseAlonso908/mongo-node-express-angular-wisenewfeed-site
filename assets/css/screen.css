@@ -502,81 +502,6 @@ a.small-icon, button.small-icon {
   background-position: center;
   background-size: contain;
 }
-#wrapper #top-bar-background #top-bar #search {
-  position: relative;
-  width: 341px;
-  height: 36px;
-}
-#wrapper #top-bar-background #top-bar #search input[type="text"] {
-  width: 100%;
-  height: 100%;
-  padding: 0 17px;
-  border-radius: 18px;
-  border: 1px solid #dbe0e3;
-  background: #ffffff;
-  box-sizing: border-box;
-  font-size: 13px;
-  color: #748d9e;
-  -moz-transition: border 0.2s;
-  -o-transition: border 0.2s;
-  -webkit-transition: border 0.2s;
-  transition: border 0.2s;
-}
-#wrapper #top-bar-background #top-bar #search input[type="text"]:focus, #wrapper #top-bar-background #top-bar #search input[type="text"].active {
-  border-color: #43abe7;
-}
-#wrapper #top-bar-background #top-bar #search i {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  color: #8899a6;
-  font-size: 20px;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel {
-  position: absolute;
-  width: 100%;
-  margin: 0 0 0 0;
-  padding: 16px 0;
-  z-index: 3;
-  background-color: #ffffff;
-  border-radius: 4px;
-  box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.17);
-  opacity: 0;
-  pointer-events: none;
-  box-sizing: border-box;
-  -moz-transition: opacity 0.2s;
-  -o-transition: opacity 0.2s;
-  -webkit-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel .divider {
-  width: 100%;
-  height: 0;
-  margin: 20px 0 20px 0;
-  border-top: 1px solid #f0f2f4;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel .results {
-  padding: 0 25px;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel .results > a {
-  display: block;
-  font-size: 15px;
-  color: #535659;
-  line-height: 2em;
-}
-#wrapper #top-bar-background #top-bar #search .search-panel .all-results {
-  display: block;
-  width: 100%;
-  height: 24px;
-  line-height: 24px;
-  font-size: 15px;
-  color: #43abe7;
-  text-align: center;
-}
 #wrapper #top-bar-background #top-bar .make-post {
   width: 100px;
 }
@@ -640,6 +565,16 @@ a.small-icon, button.small-icon {
   -webkit-filter: blur(10px);
   filter: blur(10px);
 }
+#wrapper .mobile-search-wrapper {
+  display: none;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+#wrapper .mobile-search-wrapper #search {
+  width: 100%;
+}
 #wrapper #filters-wrapper {
   width: 100%;
 }
@@ -675,7 +610,7 @@ a.small-icon, button.small-icon {
   transition: background-color 0.1s;
   cursor: pointer;
 }
-#wrapper #filters-wrapper .filters .menu-buttons:hover {
+#wrapper #filters-wrapper .filters .menu-buttons:hover, #wrapper #filters-wrapper .filters .menu-buttons.active {
   opacity: 1;
   background-color: #b5c3cd;
 }
@@ -3003,28 +2938,90 @@ a.small-icon, button.small-icon {
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes {
   background-color: #43abe7;
 }
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow:hover {
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.follow:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.questions:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.ask-question:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.message:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.follow:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes:hover {
   background-color: #2ca1e4;
-}
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.change-background:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.edit-profile:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.change-background:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes {
-  color: #424242;
-  background-color: #ffffff;
-}
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div.save-changes:hover, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a.save-changes:hover {
-  background-color: rgba(255, 255, 255, 0.8);
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div i, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a i {
   margin: 6px 4px 0 0;
   font-size: 18px;
+}
+#wrapper #search {
+  position: relative;
+  width: 341px;
+  height: 36px;
+}
+#wrapper #search input[type="text"] {
+  width: 100%;
+  height: 100%;
+  padding: 0 17px;
+  border-radius: 18px;
+  border: 1px solid #dbe0e3;
+  background: #ffffff;
+  box-sizing: border-box;
+  font-size: 13px;
+  color: #748d9e;
+  -moz-transition: border 0.2s;
+  -o-transition: border 0.2s;
+  -webkit-transition: border 0.2s;
+  transition: border 0.2s;
+}
+#wrapper #search input[type="text"]:focus, #wrapper #search input[type="text"].active {
+  border-color: #43abe7;
+}
+#wrapper #search i {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: #8899a6;
+  font-size: 20px;
+}
+#wrapper #search .search-panel {
+  position: absolute;
+  width: 100%;
+  margin: 0 0 0 0;
+  padding: 16px 0;
+  z-index: 3;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.17);
+  opacity: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+#wrapper #search .search-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#wrapper #search .search-panel .divider {
+  width: 100%;
+  height: 0;
+  margin: 20px 0 20px 0;
+  border-top: 1px solid #f0f2f4;
+}
+#wrapper #search .search-panel .results {
+  padding: 0 25px;
+}
+#wrapper #search .search-panel .results > a {
+  display: block;
+  font-size: 15px;
+  color: #535659;
+  line-height: 2em;
+}
+#wrapper #search .search-panel .all-results {
+  display: block;
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  font-size: 15px;
+  color: #43abe7;
+  text-align: center;
 }
 
 #landing-wrapper {
@@ -3921,16 +3918,18 @@ a.small-icon, button.small-icon {
   color: #ffffff !important;
 }
 .questions .list {
-  max-height: 600px;
-  overflow: auto;
   margin-top: 20px;
-  padding: 17px 0;
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 3px 6px 0 rgba(130, 137, 143, 0.3);
   box-sizing: border-box;
 }
-.questions .list > .text {
+.questions .list .questions-list-wrapper {
+  max-height: 520px;
+  padding: 17px 0;
+  overflow: auto;
+}
+.questions .list .questions-list-wrapper > .text {
   padding: 0 17px;
 }
 .questions .list .question-box-wrapper {
@@ -4174,7 +4173,7 @@ a.small-icon, button.small-icon {
   #wrapper #top-bar-background #top-bar #user-block .user-menu {
     margin: 60px 0 0 -138px;
   }
-  #wrapper #top-bar-background #top-bar #user-block .name, #wrapper #top-bar-background #top-bar #user-block .view-profile {
+  #wrapper #top-bar-background #top-bar #user-block .name, #wrapper #top-bar-background #top-bar #user-block .view-profile, #wrapper #top-bar-background #top-bar #user-block .role {
     display: none;
   }
   #wrapper #filters-wrapper .filters {
@@ -4291,6 +4290,10 @@ a.small-icon, button.small-icon {
   }
 }
 @media (max-width: 600px) {
+  .hideonmobile {
+    display: none;
+  }
+
   #landing-wrapper #header-wrapper {
     height: 130px;
   }
@@ -4309,6 +4312,12 @@ a.small-icon, button.small-icon {
     margin: 0 auto 40px;
   }
 
+  #wrapper .results-banner {
+    display: none;
+  }
+  #wrapper .mobile-search-wrapper {
+    display: block;
+  }
   #wrapper #top-bar-background #top-bar #search {
     display: none;
   }
@@ -4398,6 +4407,20 @@ a.small-icon, button.small-icon {
   .popup .footer a {
     width: 100%;
     margin-bottom: 10px;
+  }
+
+  .questions .title-wrapper {
+    flex-wrap: wrap;
+  }
+  .questions .title-wrapper .title, .questions .title-wrapper .types {
+    width: 100%;
+  }
+  .questions .title-wrapper .types {
+    margin-top: 15px;
+    text-align: right;
+  }
+  .questions .title-wrapper .types .type {
+    margin-left: 5px;
   }
 }
 @media (max-width: 400px) {

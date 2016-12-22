@@ -34,20 +34,26 @@ var Model = function(mongoose) {
 		async.waterfall([
 			(next) => {
 				async.mapSeries(articles, (a, mapNext) => {
+					models.User.setXpInfo(a.author, (err, user) => {
+						a.author = user
+						mapNext(null, a)
+					})
+				}, next)
+			},
+
+			(articles, next) => {
+				async.mapSeries(articles, (a, mapNext) => {
 					if (!a.sharedFrom || !a.sharedFrom.author) return mapNext(null, a)
 
 					models.User.setXpInfo(a.sharedFrom.author, (err, user) => {
 						a.sharedFrom.author = user
 						mapNext(null, a)
 					})
-				}, (err, result) => {
-					articles = result
-					next()
-				})
+				}, next)
 			},
 
 			// Check article to be hidden for specific user
-			(next) => {
+			(articles, next) => {
 				if (!user) return next(null, articles)
 
 				let articleIds = articles.map((a) => a._id)
@@ -121,6 +127,77 @@ var Model = function(mongoose) {
 		], callback)
 	}
 
+	this.getFilterAggregationOptions = (filter) => {
+		let filterAggregationOptions = []
+
+		switch (filter) {
+			case 'top':
+				filterAggregationParams = [
+					{
+						$lookup: {
+							from: 'postreactions',
+							localField: '_id',
+							foreignField: 'post',
+							as: 'reactions',
+						},
+					},
+					{
+						$project: {
+							category: 1,
+							country: 1,
+							text: 1,
+							author: 1,
+							createdAt: 1,
+							images: 1,
+							reactionsCount: {$size: {
+								$filter: {
+									input: '$reactions',
+									as: 'r',
+									cond: {$eq: ['$$r.type', 'like']},
+								},
+							}},
+						},
+					},
+					{
+						$sort: {reactionsCount: -1},
+					},
+				]
+				break;
+			case 'news':
+				filterAggregationParams = [
+					{
+						$sort: {createdAt: -1},
+					},
+				]
+				break;
+			case 'journalist':
+			case 'expert':
+				filterAggregationParams = [
+					{
+						$match: {"author.role": filter},
+					},
+					{
+						$sort: {createdAt: -1},
+					},
+				]
+				break;
+			case 'photos':
+				filterAggregationParams = [
+					{
+						$match: {
+							"images.0": {$exists: true},
+						},
+					},
+					{
+						$sort: {createdAt: -1},
+					},
+				]
+				break;
+		}
+
+		return filterAggregationParams
+	}
+
 	return {
 		Model,
 
@@ -146,8 +223,6 @@ var Model = function(mongoose) {
 		create: (author, country, category, text, images, allowhtml, callback) => {
 			author = MOI(author)
 
-			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
-
 			if (!allowhtml) {
 				var buf = []
 				for (var i = text.length - 1; i >= 0; i--) {
@@ -156,6 +231,8 @@ var Model = function(mongoose) {
 				}
 				text = buf.join('')
 			}
+
+			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
 			let article = new Model()
 			Object.assign(article, {
@@ -194,7 +271,7 @@ var Model = function(mongoose) {
 			Model.remove({_id, author}, callback)
 		},
 
-		getAll: (viewer, category, country, start = 0, limit = 4, callback) => {
+		getAll: (viewer, category, country, filter, start = 0, limit = 4, callback) => {
 			let query = {}
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
@@ -202,12 +279,64 @@ var Model = function(mongoose) {
 			start = Number(start)
 			limit = Number(limit)
 
-			Model.find(query).select('-__v').populate([
-				{path: 'author'},
-				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}}
-			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
+			var filterAggregationOptions = []
+
+			if (!filter) filter = 'news'
+			filterAggregationOptions = this.getFilterAggregationOptions(filter)
+
+			var aggregationOptions = [
+				{
+					$match: query
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'author',
+						foreignField: '_id',
+						as: 'author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$author',
+						preserveNullAndEmptyArrays: true
+					},
+				},
+				{
+					$lookup: {
+						from: 'articles',
+						localField: 'sharedFrom',
+						foreignField: '_id',
+						as: 'sharedFrom'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'sharedFrom.author',
+						foreignField: '_id',
+						as: 'sharedFrom.author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom.author',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+			]
+
+			aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
+			if (start) aggregationOptions.push({$skip: start})
+			if (limit) aggregationOptions.push({$limit: limit})
+
+			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
 				this.postProcessList(articles, viewer, callback)
 			})
 		},
@@ -243,7 +372,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		search: (viewer, q, category, country, start = 0, limit = 4, callback) => {
+		search: (viewer, q, category, country, filter, start = 0, limit = 4, callback) => {
 			let query = {}
 
 			Object.assign(query, {text: new RegExp(q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi')})
@@ -254,12 +383,61 @@ var Model = function(mongoose) {
 			start = Number(start)
 			limit = Number(limit)
 
-			Model.find(query).select('-__v').populate([
-				{path: 'author'},
-				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}}
-			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
+			if (!filter) filter = 'news'
+			filterAggregationOptions = this.getFilterAggregationOptions(filter)
+
+			var aggregationOptions = [
+				{
+					$match: query
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'author',
+						foreignField: '_id',
+						as: 'author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$author',
+						preserveNullAndEmptyArrays: true
+					},
+				},
+				{
+					$lookup: {
+						from: 'articles',
+						localField: 'sharedFrom',
+						foreignField: '_id',
+						as: 'sharedFrom'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'sharedFrom.author',
+						foreignField: '_id',
+						as: 'sharedFrom.author'
+					}
+				},
+				{
+					$unwind: {
+						path: '$sharedFrom.author',
+						preserveNullAndEmptyArrays: true
+					}
+				},
+			]
+
+			aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
+			aggregationOptions = aggregationOptions.concat([{$skip: start}, {$limit: limit}])
+
+			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
 				this.postProcessList(articles, viewer, callback)
 			})
 		},

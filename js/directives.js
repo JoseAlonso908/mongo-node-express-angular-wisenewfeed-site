@@ -236,14 +236,18 @@ angular.module('er.directives', [])
 
 			angular.element(window).on('scroll', function (e) {
 				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
-					// start += originalLimit
-					// limit += originalLimit
 					init({addmore: true})
 				}
 			})
 
 			$rootScope.$on('updateFeedVisibleCount', function (event) {
 				updateVisibleCount($scope.feed)
+			})
+
+			$rootScope.$on('feedFilter', function (event, filter) {
+				$scope.filter = filter
+
+				init()
 			})
 
 			var updateVisibleCount = function (feed) {
@@ -296,6 +300,7 @@ angular.module('er.directives', [])
 					q: $scope.q,
 					start: start,
 					limit: limit,
+					filter: $scope.filter,
 				}).then(function (feed) {
 					setFeed(feed)
 					updateVisibleCount($scope.feed)
@@ -319,8 +324,9 @@ angular.module('er.directives', [])
 			var start = 0,
 				originalLimit = limit = 5
 
-			$scope.lastCategory = undefined,
-			$scope.lastCountry = undefined
+			$scope.lastCategory
+			$scope.lastCountry
+			$scope.filter
 
 			$rootScope.$on('reloadfeed', function () {
 				init()
@@ -350,6 +356,12 @@ angular.module('er.directives', [])
 				} else {
 					$scope.lastCountry = country.title
 				}
+
+				init()
+			})
+
+			$rootScope.$on('feedFilter', function (event, filter) {
+				$scope.filter = filter
 
 				init()
 			})
@@ -421,7 +433,7 @@ angular.module('er.directives', [])
 						updateVisibleCount($scope.feed)
 					})
 				} else {
-					var feedAttributes = {category: $scope.lastCategory, country: $scope.lastCountry}
+					var feedAttributes = {category: $scope.lastCategory, country: $scope.lastCountry, filter: $scope.filter}
 					if ($scope.user) feedAttributes['user'] = $scope.user._id
 					feedAttributes['start'] = start
 					feedAttributes['limit'] = limit
@@ -1004,10 +1016,40 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('filters', function () {
+.directive('filters', function ($rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/filters.htm',
+		link: function ($scope, element) {
+			$scope.filters = [
+				{
+					title: 'Top',
+					filter: 'top',
+				},
+				{
+					title: 'News',
+					filter: 'news',
+				},
+				{
+					title: 'Journalist',
+					filter: 'journalist',
+				},
+				{
+					title: 'Expert',
+					filter: 'expert',
+				},
+				{
+					title: 'Photos',
+					filter: 'photos',
+				},
+			]
+
+			$scope.activeFilter = 'news'
+			$scope.setFilter = function (filter) {
+				$scope.activeFilter = filter
+				$rootScope.$emit('feedFilter', filter)
+			}
+		},
 	}
 })
 .directive('bigratedavatar', function ($timeout, $rootScope) {
@@ -1057,10 +1099,9 @@ angular.module('er.directives', [])
 				var __start = Date.now()
 				var levelInfo = $scope.user.xpInfo
 				var __end = Date.now()
-				console.info('Exp calculation took, ms', __end - __start)
-
-				console.log($scope.user.xp)
-				console.log(levelInfo)
+				// console.info('Exp calculation took, ms', __end - __start)
+				// console.log($scope.user.xp)
+				// console.log(levelInfo)
 
 				$scope.level = levelInfo.level
 				var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100

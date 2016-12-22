@@ -912,9 +912,13 @@ angular.module('er.controllers', [])
 	$scope.recalcQuestionsCounter = function () {
 		$scope.visibleQuestionsCount = 0
 
-		for (var i in $scope.questions) {
-			if ($scope.questions[i].type == $scope.chosenFilter) {
-				$scope.visibleQuestionsCount++
+		if (!$scope.chosenFilter) {
+			$scope.visibleQuestionsCount = $scope.questions.length
+		} else {
+			for (var i in $scope.questions) {
+				if ($scope.questions[i].type == $scope.chosenFilter) {
+					$scope.visibleQuestionsCount++
+				}
 			}
 		}
 	}
@@ -1055,7 +1059,7 @@ angular.module('er.controllers', [])
 	})
 })
 .controller('searchController', function ($rootScope, $scope, $routeParams, fieldsListService, groupedCountriesService, identityService) {
-	console.log($routeParams.query)
+	$routeParams.query = decodeURIComponent($routeParams.query)
 
 	$scope.q = $routeParams.query
 

@@ -23,15 +23,16 @@ let pieces = {
 	},
 }
 
-models.Article.getAll(null, null, null, null, null, (err, articles) => {
+models.Article.getAll(null, null, null, null, null, null, (err, articles) => {
 	for (let article of articles) {
 		if (!article.text) continue
 
-		let aPieces = article.text.match(/(\#[a-z0-9]+|\@[a-z0-9]+|\$[a-z0-9]+)/gi)
-
+		let aPieces = article.text.match(/(^|\s)(\#[a-z0-9]+|\@[a-z0-9]+|\$[a-z0-9]+)/gi)
 		if (!aPieces) continue
 
 		for (let aPiece of aPieces) {
+			aPiece = aPiece.trim()
+
 			let typeChar = aPiece[0]
 
 			if (pieces[typeChar].list[aPiece] === undefined) {

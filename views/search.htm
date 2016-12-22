@@ -2,11 +2,19 @@
 	<div id="top-bar-background">
 		<topbar q="q" user="user"></topbar>
 	</div>
-	<!-- <filters></filters> -->
+
 	<div class="results-banner">Results for "{{::q}}"</div>
 
+	<div id="filters-wrapper">
+		<filters></filters>
+	</div>
+	
+	<div class="mobile-search-wrapper">
+		<search q="q"></search>
+	</div>
+
 	<div class="content">
-		<div class="left">
+		<div class="left hideonmobile">
 			<profilecard ng-if="user" user="user"></profilecard>
 			<pieces></pieces>
 		</div>

@@ -4366,6 +4366,9 @@ a.small-icon, button.small-icon {
   #wrapper .content .left .stats.mobile {
     display: flex;
   }
+  #wrapper .content .left .photos {
+    width: 100%;
+  }
   #wrapper .content .middle {
     width: 100% !important;
   }

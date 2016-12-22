@@ -110,16 +110,6 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 				return $location.url('/settings')
 			}
 
-			if (!window.socket) {
-				console.log('gu 1')
-				if (!user) return
-				console.log('gu 2')
-				window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
-				console.log('gu 3')
-				$rootScope.$emit('ws-available')
-				console.log('gu 4')
-			}
-
 			$rootScope.user = user
 
 			if (requireAuth.indexOf(nextURI) > -1 && (!user/* || user.role == 'User'*/)) {

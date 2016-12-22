@@ -1180,65 +1180,13 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.reorderConversations = function () {
-		$scope.chats = JSON.parse(JSON.stringify($scope.chats.sort(function (a, b) {
+		$scope.chats = $scope.chats.sort(function (a, b) {
 			if (!a.lastMessageTime) a.lastMessageTime = 0
 			if (!b.lastMessageTime) b.lastMessageTime = 0
 
 			return (new Date(b.lastMessageTime)).getTime() - (new Date(a.lastMessageTime)).getTime()
-		})))
+		})
 	}
-
-	$rootScope.$on('ws-available', function () {
-		window.socket.on('message', function (message) {
-			console.log('message received')
-			console.log(message)
-			console.log($scope.activeChat)
-			console.log($scope.chats)
-
-			if ($scope.activeChat && message.from._id == $scope.activeChat._id) {
-				$scope.chatMessages.push(message)
-
-				messagesService.setRead([message._id]).then(function () {
-					message.read = true
-				})
-
-				$timeout($scope.scrollBottom)
-			}
-
-			for (var i in $scope.chats) {
-				var c = $scope.chats[i]
-
-				if (c._id == message.from._id) {
-					$scope.chats[i].lastMessage = message.text
-					$scope.chats[i].lastMessageTime = message.createdAt
-					$scope.chats[i].read = message.read
-				}
-			}
-
-			$scope.$digest()
-			$scope.reorderConversations()
-		})
-
-		window.socket.on('messagesread', function (messagesIds) {
-			console.log('messages read')
-			console.log(messagesIds)
-
-			for (var i in $scope.chatMessages) {
-				var m = $scope.chatMessages[i]
-
-				for (var j in messagesIds) {
-					var readId = messagesIds[j]
-
-					if (m._id == readId) {
-						m.read = true
-						break
-					}
-				}
-			}
-
-			$scope.$apply()
-		})
-	})
 
 	$scope.addImage = function () {
 		if ($scope.imageLoading) return
@@ -1528,6 +1476,69 @@ angular.module('er.controllers', [])
 			user: function (next) {
 				identityService.get().then(function (user) {
 					$scope.user = user
+
+					console.log('gu 1')
+					if (!user) return
+					console.log('gu 2')
+					window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
+					console.log('gu 3')
+					
+					window.socket.on('connect', function () {
+						console.log('ws available')
+
+						window.socket.on('message', function (message) {
+							console.log('message received')
+							console.log(message)
+							console.log($scope.activeChat)
+							console.log($scope.chats)
+
+							if ($scope.activeChat && message.from._id == $scope.activeChat._id) {
+								$scope.chatMessages.push(message)
+
+								messagesService.setRead([message._id]).then(function () {
+									message.read = true
+								})
+
+								$timeout($scope.scrollBottom)
+							}
+
+							for (var i in $scope.chats) {
+								var c = $scope.chats[i]
+
+								if (c._id == message.from._id) {
+									console.log($scope.chats[i])
+
+									$scope.chats[i].lastMessage = message.text
+									$scope.chats[i].lastMessageTime = message.createdAt
+									$scope.chats[i].read = message.read
+								}
+							}
+
+							$scope.reorderConversations()
+							$scope.$digest()
+						})
+
+						window.socket.on('messagesread', function (messagesIds) {
+							console.log('messages read')
+							console.log(messagesIds)
+
+							for (var i in $scope.chatMessages) {
+								var m = $scope.chatMessages[i]
+
+								for (var j in messagesIds) {
+									var readId = messagesIds[j]
+
+									if (m._id == readId) {
+										m.read = true
+										break
+									}
+								}
+							}
+
+							$scope.$apply()
+						})
+					})
+
 					next()
 				})
 			},

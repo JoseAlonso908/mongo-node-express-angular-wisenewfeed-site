@@ -605,8 +605,12 @@
 	#wrapper {
 		#top-bar-background {
 			#top-bar {
+				#logo {
+					width: 100px;
+				}
+
 				.small-icon, .floating:not(.user-menu) {
-					display: none;
+					// display: none;
 				}
 			}
 		}

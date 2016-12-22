@@ -4389,8 +4389,8 @@ a.small-icon, button.small-icon {
     margin: 0 auto 30px;
   }
 
-  #wrapper #top-bar-background #top-bar .small-icon, #wrapper #top-bar-background #top-bar .floating:not(.user-menu) {
-    display: none;
+  #wrapper #top-bar-background #top-bar #logo {
+    width: 100px;
   }
   #wrapper #filters-wrapper .filters {
     justify-content: flex-start;

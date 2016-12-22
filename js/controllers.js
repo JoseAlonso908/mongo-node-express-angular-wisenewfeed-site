@@ -1471,6 +1471,12 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	$scope.$on('$destroy', function () {
+		console.info('SCOPE DESTROYING')
+		window.socket.disconnect()
+		window.socket = undefined
+	})
+
 	var init = function () {
 		async.series({
 			user: function (next) {

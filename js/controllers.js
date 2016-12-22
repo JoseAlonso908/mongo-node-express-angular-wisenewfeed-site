@@ -1190,6 +1190,9 @@ angular.module('er.controllers', [])
 
 	$rootScope.$on('ws-available', function () {
 		window.socket.on('message', function (message) {
+			console.log('message received')
+			console.log(message)
+
 			if ($scope.activeChat && message.from._id == $scope.activeChat._id) {
 				$scope.chatMessages.push(message)
 				$scope.$apply()
@@ -1205,9 +1208,9 @@ angular.module('er.controllers', [])
 				var c = $scope.chats[i]
 
 				if (c._id == message.from._id) {
-					c.lastMessage = message.text
-					c.lastMessageTime = message.createdAt
-					c.read = message.read
+					$scope.chats[i].lastMessage = message.text
+					$scope.chats[i].lastMessageTime = message.createdAt
+					$scope.chats[i].read = message.read
 				}
 			}
 

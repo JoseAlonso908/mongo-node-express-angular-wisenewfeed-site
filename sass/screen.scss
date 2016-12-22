@@ -2808,6 +2808,10 @@ a.small-icon, button.small-icon {
 					// }
 				}
 
+				.photo-placeholder {
+					width: 84px; height: 0;
+				}
+
 				@keyframes pulsephoto {
 					0% {
 						background-color: $iconGrey;

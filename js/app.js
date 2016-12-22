@@ -95,19 +95,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 	}
 
 	identityService.get().then(function (user) {
-		console.log('gu 1')
 
-		if (!user) return
-
-		console.log('gu 2')
-
-		window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
-
-		console.log('gu 3')
-		 
-		$rootScope.$emit('ws-available')
-
-		console.log('gu 4')
 	})
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -120,6 +108,16 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 
 			if (!user.phone || !user.email) {
 				return $location.url('/settings')
+			}
+
+			if (!window.socket) {
+				console.log('gu 1')
+				if (!user) return
+				console.log('gu 2')
+				window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
+				console.log('gu 3')
+				$rootScope.$emit('ws-available')
+				console.log('gu 4')
 			}
 
 			$rootScope.user = user

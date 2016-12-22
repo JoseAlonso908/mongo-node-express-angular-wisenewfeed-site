@@ -1214,7 +1214,7 @@ angular.module('er.controllers', [])
 				}
 			}
 
-			$scope.$apply()
+			$scope.$digest()
 			$scope.reorderConversations()
 		})
 

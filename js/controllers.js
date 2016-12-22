@@ -1192,10 +1192,11 @@ angular.module('er.controllers', [])
 		window.socket.on('message', function (message) {
 			console.log('message received')
 			console.log(message)
+			console.log($scope.activeChat)
+			console.log($scope.chats)
 
 			if ($scope.activeChat && message.from._id == $scope.activeChat._id) {
 				$scope.chatMessages.push(message)
-				$scope.$apply()
 
 				messagesService.setRead([message._id]).then(function () {
 					message.read = true

@@ -1299,7 +1299,7 @@ angular.module('er.controllers', [])
 	$scope.sendMessage = function () {
 		var text = $scope.text.trim()
 
-		if (!text) return
+		if (!text && $scope.files.length == 0) return
 
 		var fileObjects = $scope.files.map(function (file) {
 			return file.fileObject

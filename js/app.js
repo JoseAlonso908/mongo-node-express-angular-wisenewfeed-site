@@ -104,7 +104,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 		window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
 
 		console.log('gu 3')
-		
+		 
 		$rootScope.$emit('ws-available')
 
 		console.log('gu 4')

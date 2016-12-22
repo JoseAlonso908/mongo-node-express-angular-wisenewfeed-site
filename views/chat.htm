@@ -17,7 +17,7 @@
 						<input type="text" id="add-user" ng-model="searchterm" ng-model-options="{debounce: 300}" ng-change="updateUsersSearch()" placeholder="Add Expert/Journalist">
 
 						<div class="users-autocomplete" ng-show="foundusers.length > 0">
-							<div class="user" ng-class="{chosen: u.chosen}" ng-click="chooseUser(u)" ng-repeat="u in foundusers">
+							<div class="user" ng-class="{chosen: u.chosen}" ng-click="chooseUser(u)" ng-repeat="u in foundusers track by u._id">
 								<avatar user="u" nolink="true"></avatar>
 								
 								<div class="text">

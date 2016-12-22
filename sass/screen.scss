@@ -2792,7 +2792,7 @@ a.small-icon, button.small-icon {
 			.photos {
 				display: flex;
 				justify-content: space-between;
-				align-content: space-between;
+				align-content: flex-start;
 				flex-flow: row wrap;
 				width: 261px; height: 261px;
 
@@ -2802,6 +2802,7 @@ a.small-icon, button.small-icon {
 					background-position: center;
 					background-size: cover;
 					border-radius: 2px;
+					margin-bottom: 2px;
 
 					// &:not(.empty) {
 					// 	animation: pulsephoto .4s linear infinite;

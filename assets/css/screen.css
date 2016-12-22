@@ -2529,7 +2529,7 @@ a.small-icon, button.small-icon {
 #wrapper > .content .left .photos {
   display: flex;
   justify-content: space-between;
-  align-content: space-between;
+  align-content: flex-start;
   flex-flow: row wrap;
   width: 261px;
   height: 261px;

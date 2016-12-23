@@ -1238,6 +1238,7 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.scrollBottom = function () {
+		if (!document.querySelector('.chat .messages-box-wrapper .messages')) return
 		document.querySelector('.chat .messages-box-wrapper').scrollTop = document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight
 	}
 
@@ -1385,8 +1386,8 @@ angular.module('er.controllers', [])
 			$scope.loading = false
 
 			// Heh
-			$timeout($scope.scrollBottom)
 			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
+			$timeout($scope.scrollBottom)
 		})
 	}
 

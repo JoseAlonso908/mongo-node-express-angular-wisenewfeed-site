@@ -1278,7 +1278,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			if (typeof $scope.onEdit === 'function') {
 				$scope.editing = true
-				$scope.chooseFile = function (e) {
+				$scope.chooseFile = function () {
 					var fileInput = element[0].querySelector('input[type=file]')
 					angular.element(fileInput).on('change', function (e) {
 						e.stopImmediatePropagation()
@@ -1308,15 +1308,9 @@ angular.module('er.directives', [])
 
 				var borderWidth = 4
 
-							  // -=--=--=-
-				// $scope.user.xp = 1000000000
-
 				var __start = Date.now()
 				var levelInfo = $scope.user.xpInfo
 				var __end = Date.now()
-				// console.info('Exp calculation took, ms', __end - __start)
-				// console.log($scope.user.xp)
-				// console.log(levelInfo)
 
 				$scope.level = levelInfo.level
 				var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100

@@ -2851,6 +2851,11 @@ a.small-icon, button.small-icon {
   height: 204px;
   border-radius: 50%;
 }
+#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper form, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper form input[type=file] {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar {
   display: flex;
   position: absolute;
@@ -2872,11 +2877,6 @@ a.small-icon, button.small-icon {
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar i {
   color: #ffffff;
-}
-#wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar form input[type=file] {
-  width: 0;
-  height: 0;
-  visibility: hidden;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .avatar {
   position: absolute;

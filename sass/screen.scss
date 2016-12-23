@@ -3174,6 +3174,11 @@ a.small-icon, button.small-icon {
 				border-radius: 50%;
 				// background-color: #ffffff;
 
+				form, form input[type=file] {
+					width: 0; height: 0;
+					visibility: hidden;
+				}
+
 				.change-avatar {
 					display: flex;
 					position: absolute;
@@ -3192,11 +3197,6 @@ a.small-icon, button.small-icon {
 
 					i {
 						color: #ffffff;
-					}
-
-					form, form input[type=file] {
-						width: 0; height: 0;
-						visibility: hidden;
 					}
 				}
 

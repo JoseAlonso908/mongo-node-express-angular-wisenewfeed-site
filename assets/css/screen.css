@@ -3960,7 +3960,7 @@ a.small-icon, button.small-icon {
   padding: 0 17px;
 }
 .questions .list .question-box-wrapper {
-  padding: 30px 17px 0 65px;
+  padding: 30px 17px 10px 65px;
 }
 .questions .list .question-box-wrapper .question-box .avatar-border {
   position: absolute;

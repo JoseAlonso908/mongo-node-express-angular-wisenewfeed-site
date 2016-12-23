@@ -1546,13 +1546,22 @@ angular.module('er.controllers', [])
 							console.log('messages read')
 							console.log(messagesIds)
 
-							for (var i in $scope.chatMessages) {
-								var m = $scope.chatMessages[i]
+							for (var i in messagesIds) {
+								var readId = messagesIds[i]
 
-								for (var j in messagesIds) {
-									var readId = messagesIds[j]
+								for (var j in $scope.chatMessages) {
+									var m = $scope.chatMessages[i]
 
 									if (m._id == readId) {
+										m.read = true
+										break
+									}
+								}
+
+								for (var j in $scope.chats) {
+									var m = $scope.chats[i]
+
+									if (m && m.lastMessageId == readId) {
 										m.read = true
 										break
 									}

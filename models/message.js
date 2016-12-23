@@ -63,7 +63,7 @@ var Model = function(mongoose) {
 						text: {$last: "$text"},
 						images: {$last: "$images"},
 						createdAt: {$last: "$createdAt"},
-						read: {$min: "$read"},
+						read: {$last: "$read"},
 					}
 				},
 				{
@@ -83,14 +83,6 @@ var Model = function(mongoose) {
 					},
 				}
 			).exec((err, results) => {
-				// console.log(results)
-				// Normalize users list
-				// results = results.map((c) => {
-				// 	c._id.u = c._id.u.sort()
-
-				// 	return c
-				// })
-
 				async.mapSeries(results, (c, next) => {
 					async.series([
 						(cb) => {

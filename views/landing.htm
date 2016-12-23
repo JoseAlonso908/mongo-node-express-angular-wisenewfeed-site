@@ -77,41 +77,22 @@
 
 					<form name="signupForm" novalidate>
 						<input type="text" name="name" ng-model="signup.name" placeholder="Full name" minlength="6" ng-required="true">
-						<!-- <div class="field-tip" ng-class="{visible: (!signupForm.name.$valid && signupForm.name.$touched)}">
-							<ul>
-								<li ng-if="signupForm.name.$error.required">Name should be present</li>
-								<li ng-if="signupForm.name.$error.minlength">Name should be at least 6 symbols long</li>
-							</ul>
-						</div> -->
 
 						<select class="half"
 							name="country"
 							chosen
+							placeholder="Country"
 							data-placeholder-text-single="'Country'"
 							allow-single-deselect="false"
+							ng-required="true"
 							ng-model="signup.country"
 							ng-options="country as country.title for country in countries"
 						>
-							<option value=""></option>
+							<option value="">Country</option>
 						</select>
 
-						<!-- <input type="text" class="half" name="country" autocomplete="off" ng-model="signup.country.title" ng-model-options="{debounce: 300}" placeholder="Country"  ng-minlength="1" required> -->
-						<!-- <autosuggest ng-if="countries" suggestions="countries" view-title="title" ng-model="signup.country"></autosuggest> -->
 						<input type="text" class="half" name="phone" ng-model="signup.phone" placeholder="Phone number" ng-minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" required>
-						<!-- <div class="field-tip" ng-class="{visible: ((!signupForm.phone.$valid && signupForm.phone.$touched) || !signupForm.country.$valid && signupForm.country.$touch)}">
-							<ul>
-								<li ng-if="signupForm.phone.$error.required">Phone number should be present</li>
-								<li ng-if="signupForm.phone.$error.minlength">Phone number should be longer</li>
-								<li ng-if="signupForm.country.$error.required">Country should be present</li>
-							</ul>
-						</div> -->
 						<input type="email" name="email" ng-model="signup.email" placeholder="Email" ng-minlength="1" required>
-						<!-- <div class="field-tip" ng-class="{visible: (!signupForm.email.$valid && signupForm.email.$touched)}">
-							<ul>
-								<li ng-if="signupForm.email.$error.required">Email should be present</li>
-								<li ng-if="signupForm.email.$error.email">Email should valid</li>
-							</ul>
-						</div> -->
 						<input type="password" name="password" ng-class="{ngInvalid: !signup.password}" ng-model="signup.password" placeholder="Password" ng-minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" required>
 						<div class="field-tip" ng-class="{visible: (!signupForm.password.$valid && signupForm.password.$touched)}">
 							<ul>
@@ -125,10 +106,6 @@
 							<input type="submit" ng-click="doSignup()" value="Sign up">
 						</div>
 					</form>
-
-					<!-- <div class="auth-error" ng-show="signupForm.name.$error.required && signupForm.name.$touched">Name is empty</div>
-					<div class="auth-error" ng-show="signupForm.name.$error.minlength && signupForm.name.$touched">Name should be longer</div>
-					<div class="auth-error" ng-show="signupForm.country.$error.required && signupForm.country.$touched">Country should be specified</div> -->
 
 					<div class="auth-error" ng-if="signup.error">{{signup.error}}</div>
 				</div>

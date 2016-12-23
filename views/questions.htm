@@ -24,7 +24,7 @@
 				</div>
 
 				<div class="list">
-					<div class="questions-list-wrapper">
+					<div class="questions-list-wrapper" ng-scrollbar>
 						<div class="question" ng-hide="chosenFilter && question.type != chosenFilter" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
 							<a name="q{{question._id}}"></a>
 
@@ -81,9 +81,8 @@
 			</div>
 		</div>
 		<div class="right">
-			<onlineflag ng-if="profile" profile="profile"></onlineflag>
+			<onlineflag ng-hide="profile._id == user._id" ng-if="profile" profile="profile"></onlineflag>
 			<newquestions user="profile" ng-if="profile"></newquestions>
-			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>
 		</div>
 	</div>

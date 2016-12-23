@@ -375,10 +375,17 @@ var Model = function(mongoose) {
 		search: (viewer, q, category, country, filter, start = 0, limit = 4, callback) => {
 			let query = {}
 
-			Object.assign(query, {text: new RegExp(q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi')})
+			Object.assign(query, {$and: [
+					{text: new RegExp(q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi')}
+				]
+			})
 
-			// if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			if (category) {
+				query['$and'].push({text: new RegExp(`\\$${category}`, 'gi')})
+			}
 			if (country) Object.assign(query, {country})
+
+			console.log(query)
 
 			start = Number(start)
 			limit = Number(limit)

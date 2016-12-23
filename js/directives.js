@@ -468,6 +468,26 @@ angular.module('er.directives', [])
 				updateVisibleCount($scope.feed)
 			})
 
+			$rootScope.$on('feedCategory', function (event, category) {
+				if (category.id === 0) {
+					$scope.lastCategory = undefined
+				} else {
+					$scope.lastCategory = category.tag
+				}
+
+				init()
+			})
+
+			$rootScope.$on('feedCountry', function (event, country) {
+				if (country.id === 0) {
+					$scope.lastCountry = undefined
+				} else {
+					$scope.lastCountry = country.title
+				}
+
+				init()
+			})
+
 			$rootScope.$on('feedFilter', function (event, filter) {
 				$scope.filter = filter
 
@@ -525,6 +545,8 @@ angular.module('er.directives', [])
 					start: start,
 					limit: limit,
 					filter: $scope.filter,
+					category: $scope.lastCategory,
+					country: $scope.lastCountry,
 				}).then(function (feed) {
 					setFeed(feed)
 					updateVisibleCount($scope.feed)

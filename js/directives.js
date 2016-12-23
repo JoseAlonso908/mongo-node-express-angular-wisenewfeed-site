@@ -309,18 +309,22 @@ angular.module('er.directives', [])
 			nolink: '=',
 		},
 		link: function ($scope, element, attr) {
+			$scope.nl = $scope.nolink || false
+
+			$scope.user.role = $scope.user.role[0].toUpperCase() + $scope.user.role.substr(1)
+
 			if (!$scope.user) {
 				return angular.element(element).css('backgroundColor', 'red')
-			}
-
-			if (!$scope.user.xpInfo) {
-				console.log($scope.user)
 			}
 
 			$scope.number = $scope.user.xpInfo.level || 1
 			$scope.color = $scope.user.color || 'bronze'
 			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
 			$scope.role = $scope.user.role || 'User'
+
+			if ($scope.role == 'User') {
+				$scope.nl = true
+			}
 		}
 	}
 })

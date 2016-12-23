@@ -15,7 +15,9 @@
 		<avatar user="n.from"></avatar>
 
 		<div class="text">
-			<a ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
+			<a ng-if="n.from.role != 'User'" ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
+			<span ng-if="n.from.role == 'User'" ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</span>
+
 			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">
 					<span ng-switch-when="like">liked</span>

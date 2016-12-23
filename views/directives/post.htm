@@ -90,7 +90,7 @@
 		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
 			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
 		</button>
-		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString()" ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
+		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && user.role != 'User'" ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
 			<i class="material-icons">share</i> <span class="title">Share</span>
 		</button>
 

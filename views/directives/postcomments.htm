@@ -12,7 +12,8 @@
 
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
-			<a ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
+			<span ng-if="user.role == 'User'" class="name dark-bold">{{comment.author.name}}</span>
+			<a ng-if="user.role != 'User'" ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>
 		<div class="text" ng-bind-html="comment.text | textLinks"></div>

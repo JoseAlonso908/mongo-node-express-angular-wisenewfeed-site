@@ -1296,6 +1296,14 @@ angular.module('er.controllers', [])
 		}
 	}
 
+	$scope.makeChatsInactive = function () {
+		for (var i in $scope.chats) {
+			$scope.chats[i].active = false
+		}
+
+		$scope.activeChat = undefined
+	}
+
 	$scope.sendMessage = function () {
 		var text = $scope.text.trim()
 
@@ -1563,6 +1571,7 @@ angular.module('er.controllers', [])
 						person.lastMessage = c.text
 						person.lastMessageTime = c.createdAt
 						person.read = c.read
+						person.role = person.role[0].toUpperCase() + person.role.substr(1)
 
 						$scope.chats.push(person)
 					}

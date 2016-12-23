@@ -6,7 +6,7 @@
 	<div class="content chat-content">
 		<div class="middle wide flex">
 			<div class="messages-wrapper">
-				<div class="chats">
+				<div class="chats" ng-class="{hidden: !!activeChat}">
 					<div class="search">
 						<a href="javascript:void(0);" class="action"><i class="material-icons">search</i></a>
 						<input type="text" placeholder="Search in conversations" ng-change="filterConversations()" ng-model="search">
@@ -48,7 +48,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="chat">
+				<div class="chat" ng-class="{hidden: !activeChat}">
+					<div class="close-chat" ng-click="makeChatsInactive()">
+						<i class="material-icons">keyboard_arrow_left</i>
+						<div class="title">Close chat</div>
+					</div>
+
 					<div class="loader" ng-show="loading"></div>
 
 					<div class="selected-messages" ng-show="selectedMessages.length > 0">

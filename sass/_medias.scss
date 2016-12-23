@@ -451,6 +451,11 @@
 				#search {
 					display: none;
 				}
+
+				.notifications {
+					height: 400px;
+					overflow: auto;
+				}
 			}
 		}
 
@@ -540,6 +545,10 @@
 			.middle {
 				width: 100% !important;
 
+				&.flex {
+					height: 100%;
+				}
+
 				.card.feed-item {
 					.body {
 						.title {
@@ -566,24 +575,52 @@
 				}
 
 				.messages-wrapper {
-					// flex-wrap: wrap;
+					height: 100%;
+					flex-wrap: wrap;
+					overflow: auto;
 
-					.chats {
-						width: 78px;
+					.chats, .chat {
+						width: 100%;
+						height: 100%;
 
-						.search {
-							display: none;
-						}
-
-						.user {
-							.text, .date {
-								display: none;
+						&.chats {
+							.start-conversation-popup {
+								width: 100%;
+								margin-left: 0;
 							}
 						}
-					}
 
-					.chat {
-						width: calc(100% - 78px);
+						&.chat {
+							height: 100%;
+
+							.close-chat {
+								display: flex;
+								justify-content: flex-start;
+								height: 32px;
+
+								i, .title {
+									display: inline-block;
+									line-height: 32px;
+									color: $activeBlue;
+								}
+
+								i {
+									font-size: 22px;
+								}
+
+								.title {
+									font-size: 14px;
+								}
+							}
+
+							.messages-box-wrapper {
+								height: calc(100% - 162px - 32px);
+							}
+						}
+
+						&.hidden {
+							display: none;
+						}
 					}
 				}
 			}

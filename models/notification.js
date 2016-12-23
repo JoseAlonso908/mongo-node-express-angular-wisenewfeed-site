@@ -60,9 +60,13 @@ var Model = function(mongoose) {
 			query.exec((err, notifications) => {
 				if (err) return res.status(400).send(err)
 
-				async.mapSeries(notifications, (n, next) => {
-					console.log(n)
+				notifications = notifications.filter((n) => {
+					let keepIt = true
+					if (!n.from) keepIt = false
+					return keepIt
+				})
 
+				async.mapSeries(notifications, (n, next) => {
 					if (!n.from.xpInfo) {
 						models.User.setXpInfo(n.from, (err, user) => {
 							n.from = user
@@ -71,17 +75,7 @@ var Model = function(mongoose) {
 					} else {
 						next(null, n)
 					}
-				}, (err, notifications) => {
-					notifications = notifications.filter((n) => {
-						let keepIt = true
-
-						if (!n.from) keepIt = false
-
-						return keepIt
-					})
-
-					callback(err, notifications)
-				})
+				}, callback)
 			})
 		},
 

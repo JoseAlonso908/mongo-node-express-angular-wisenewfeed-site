@@ -37,13 +37,13 @@ var Model = function(mongoose) {
 
 	return {
 		create: (to, from, post, comment, type, callback) => {
-			if (typeof to !== 'object') to = mongoose.Types.ObjectId(to)
-			if (typeof from !== 'object') from = mongoose.Types.ObjectId(from)
-			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
-			if (typeof comment !== 'object') comment = mongoose.Types.ObjectId(comment)
+			to = MOI(to)
+			from = MOI(from)
+			post = MOI(post)
+			comment = MOI(comment)
 
 			// Don't let notification to be sent to same user who made it
-			if (to.toString() === from.toString()) {
+			if (to.toString() == from.toString()) {
 				return callback()
 			}
 

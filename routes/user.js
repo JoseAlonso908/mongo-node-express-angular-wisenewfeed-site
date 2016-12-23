@@ -363,12 +363,24 @@ router.get('/multisearch', (req, res) => {
 	let user = req.user
 	let {q} = req.query
 
+	q = decodeURIComponent(q)
+
 	async.parallel({
 		categories: (next) => {
-			models.Article.searchForTags(user, '$', q, 5, next)
+			let _q = q
+
+			if (_q[0] == '#') return next()
+			else if (_q[0] == '$') _q = _q.substr(1)
+			
+			models.Article.searchForTags(user, '$', _q, 5, next)
 		},
 		tags: (next) => {
-			models.Article.searchForTags(user, '#', q, 5, next)
+			let _q = q
+
+			if (_q[0] == '$') return next()
+			else if (_q[0] == '#') _q = _q.substr(1)
+			
+			models.Article.searchForTags(user, '#', _q, 5, next)
 		},
 		users: (next) => {
 			models.User.search(user, q, null, 0, 5, next)

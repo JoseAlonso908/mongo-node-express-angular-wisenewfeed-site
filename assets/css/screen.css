@@ -4460,6 +4460,11 @@ a.small-icon, button.small-icon {
   #wrapper .content .middle .messages-wrapper .chats.chat .messages-box-wrapper, #wrapper .content .middle .messages-wrapper .chat.chat .messages-box-wrapper {
     height: calc(100% - 162px - 32px);
   }
+  #wrapper .content .middle .messages-wrapper .chats.chat .messages-box-wrapper .message .date, #wrapper .content .middle .messages-wrapper .chat.chat .messages-box-wrapper .message .date {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
   #wrapper .content .middle .messages-wrapper .chats.hidden, #wrapper .content .middle .messages-wrapper .chat.hidden {
     display: none;
   }

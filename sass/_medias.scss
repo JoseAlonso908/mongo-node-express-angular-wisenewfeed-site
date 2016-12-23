@@ -615,6 +615,14 @@
 
 							.messages-box-wrapper {
 								height: calc(100% - 162px - 32px);
+
+								.message {
+									.date {
+										position: relative;
+										top: 0;
+										right: 0;
+									}
+								}
 							}
 						}
 

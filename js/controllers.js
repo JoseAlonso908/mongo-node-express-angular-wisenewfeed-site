@@ -1565,7 +1565,7 @@ angular.module('er.controllers', [])
 						})
 					})
 
-					if (window.socket.connected) {
+					if (window.socket && window.socket.connected) {
 						$rootScope.$broadcast('ws-ready')
 					}
 

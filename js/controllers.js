@@ -1386,6 +1386,7 @@ angular.module('er.controllers', [])
 
 			// Heh
 			$timeout($scope.scrollBottom)
+			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
 		})
 	}
 

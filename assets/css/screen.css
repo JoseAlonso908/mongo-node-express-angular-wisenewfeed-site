@@ -2047,6 +2047,9 @@ a.small-icon, button.small-icon {
   position: relative;
   width: calc(100% - 300px);
 }
+#wrapper > .content .middle .messages-wrapper .chat .close-chat {
+  display: none;
+}
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages {
   display: flex;
   justify-content: space-between;
@@ -2107,7 +2110,6 @@ a.small-icon, button.small-icon {
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: flex-end;
-  position: absolute;
   width: 100%;
   min-height: 100%;
 }
@@ -2572,7 +2574,7 @@ a.small-icon, button.small-icon {
 }
 #wrapper > .content .right .familiar-experts .card, #wrapper > .content .right .new-questions .card {
   position: relative;
-  padding: 5px 15px 15px;
+  padding: 10px 15px 15px;
   margin-bottom: 12px;
   box-sizing: border-box;
 }
@@ -2598,6 +2600,7 @@ a.small-icon, button.small-icon {
   margin-right: 10px;
 }
 #wrapper > .content .right .familiar-experts .card > .header .name, #wrapper > .content .right .new-questions .card > .header .name {
+  display: block;
   padding-top: 8px;
   padding-right: 10px;
   color: #545759;
@@ -2728,6 +2731,7 @@ a.small-icon, button.small-icon {
   line-height: 20px;
 }
 #wrapper > .content .about-box a {
+  margin: 0 2px;
   font-size: 13px;
 }
 #wrapper > .content .about-box a:not(.advertise) {
@@ -4988,3 +4992,59 @@ a.small-icon, button.small-icon {
   }
 }
 /* @end */
+.ngsb-wrap {
+  -ms-touch-action: none;
+}
+.ngsb-wrap:hover .ngsb-scrollbar {
+  opacity: 1;
+}
+.ngsb-wrap .ngsb-container {
+  width: auto;
+  overflow: hidden;
+}
+.ngsb-wrap .ngsb-scrollbar {
+  width: 16px;
+  height: 100%;
+  top: 0;
+  right: 0;
+  opacity: 0.75;
+}
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: auto;
+}
+.ngsb-wrap .ngsb-scrollbar a.ngsb-thumb-container {
+  margin: 20px 0;
+}
+.ngsb-wrap .ngsb-scrollbar .ngsb-track {
+  height: 100%;
+  margin: 0 auto;
+  width: 6px;
+  background: transparent;
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+}
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos {
+  cursor: pointer;
+  width: 100%;
+  height: 30px;
+}
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos .ngsb-thumb {
+  width: 4px;
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 10px;
+  text-align: center;
+  background: rgba(202, 212, 219, 0.4);
+  -moz-transition: background 0.2s;
+  -o-transition: background 0.2s;
+  -webkit-transition: background 0.2s;
+  transition: background 0.2s;
+}
+.ngsb-wrap .ngsb-scrollbar .ngsb-thumb-pos:hover .ngsb-thumb {
+  background: rgba(202, 212, 219, 0.7);
+}

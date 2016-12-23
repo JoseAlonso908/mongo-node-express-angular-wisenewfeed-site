@@ -1,14 +1,17 @@
  var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
+// require('ng-scrollbar') 
 
 window.numeral = require('numeral')
 window.async = require('async')
 
 // angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'ngCookies', 'er.controllers', 'er.services', 'er.directives', 'satellizer'])
 // .config(['$locationProvider', '$routeProvider', '$authProvider',
+
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
+	// 'ngScrollbar',
 	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider',

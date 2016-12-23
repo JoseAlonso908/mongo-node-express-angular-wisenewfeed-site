@@ -1241,8 +1241,8 @@ angular.module('er.controllers', [])
 		document.querySelector('.chat .messages-box-wrapper').scrollTop = document.querySelector('.chat .messages-box-wrapper .messages').scrollHeight
 	}
 
-	angular.element(document.querySelector('.messages-box-wrapper')).on('scroll', function (e) {
-		if (e.target.scrollTop == 0 && !$scope.hideLoadMore) {
+	$rootScope.$on('scrollbar-redraw', function (e, element, top) {
+		if (top == 0 && !$scope.hideLoadMore) {
 			$scope.loadMore()
 		}
 	})
@@ -1318,12 +1318,14 @@ angular.module('er.controllers', [])
 			$scope.text = ''
 			$scope.files = []
 			
+			$scope.activeChat.lastMessageId = result._id
 			$scope.activeChat.lastMessage = result.text
 			$scope.activeChat.lastMessageTime = result.createdAt
 
 			$scope.reorderConversations()
 
-			$timeout($scope.scrollBottom)
+			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
+			// $timeout($scope.scrollBottom)
 		})
 	}
 
@@ -1355,6 +1357,8 @@ angular.module('er.controllers', [])
 				}
 			}
 
+			$scope.$broadcast('rebuild-chat-messages')
+
 			if (typeof callback === 'function') callback(messages)
 		})
 	}
@@ -1381,7 +1385,7 @@ angular.module('er.controllers', [])
 			$scope.loading = false
 
 			// Heh
-			$timeout($scope.scrollBottom)
+			// $timeout($scope.scrollBottom)
 		})
 	}
 
@@ -1526,12 +1530,14 @@ angular.module('er.controllers', [])
 								if (c._id == message.from._id) {
 									console.log($scope.chats[i])
 
+									$scope.chats[i].lastMessageId = message._id
 									$scope.chats[i].lastMessage = message.text
 									$scope.chats[i].lastMessageTime = message.createdAt
 									$scope.chats[i].read = message.read
 								}
 							}
 
+							$scope.$broadcast('rebuild-chat-messages')
 							$scope.reorderConversations()
 							$scope.$digest()
 						})
@@ -1568,6 +1574,7 @@ angular.module('er.controllers', [])
 						var c = conversations[i]
 
 						var person = (c.from._id == $scope.user._id) ? c.to : c.from
+						person.lastMessageId = c._id
 						person.lastMessage = c.text
 						person.lastMessageTime = c.createdAt
 						person.read = c.read

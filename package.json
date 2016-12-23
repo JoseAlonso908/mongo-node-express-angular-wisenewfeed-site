@@ -37,6 +37,7 @@
     "moment": "^2.15.1",
     "mongoose": "^4.6.4",
     "multer": "^1.2.0",
+    "ng-scrollbar": "0.0.8",
     "numeral": "^1.5.3",
     "random-string": "^0.1.2",
     "request": "^2.78.0",

@@ -2229,6 +2229,10 @@ a.small-icon, button.small-icon {
 					position: relative;
 					width: calc(100% - 300px);
 
+					.close-chat {
+						display: none;
+					}
+
 					.selected-messages {
 						$size: 42px;
 
@@ -2299,7 +2303,7 @@ a.small-icon, button.small-icon {
 							flex: 1 1 auto;
 							flex-direction: column;
 							justify-content: flex-end;
-							position: absolute;
+							// position: absolute;
 							width: 100%; min-height: 100%;
 
 							.load-more {
@@ -2854,7 +2858,7 @@ a.small-icon, button.small-icon {
 
 				.card {
 					position: relative;
-					padding: 5px 15px 15px;
+					padding: 10px 15px 15px;
 					margin-bottom: 12px;
 					box-sizing: border-box;
 
@@ -2885,6 +2889,7 @@ a.small-icon, button.small-icon {
 						}
 
 						.name {
+							display: block;
 							padding-top: 8px;
 							padding-right: 10px;
 							color: #545759;
@@ -3039,6 +3044,7 @@ a.small-icon, button.small-icon {
 			line-height: 20px;
 
 			a {
+				margin: 0 2px;
 				font-size: 13px;
 			}
 
@@ -4519,3 +4525,4 @@ a.small-icon, button.small-icon {
 
 @import "medias";
 @import "chosen";
+@import "scrollbar";

@@ -72,7 +72,7 @@
 					<div ng-show="!chatChosen && !loading" class="text">Conversation is not chosen</div>
 					<div ng-show="chatChosen && chatMessages.length == 0 && !loading" class="text">This conversation is empty.</div>
 
-					<div class="messages-box-wrapper" ng-class="{'image-added': files.length > 0}">
+					<div class="messages-box-wrapper" ng-scrollbar bottom rebuild-bottom-on="rebuild-chat-messages-bottom" rebuild-on="rebuild-chat-messages" ng-class="{'image-added': files.length > 0}">
 						<div class="messages">
 							<!-- <a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a> -->
 							<div class="message" ng-hide="m.hidden" ng-class="{unread: !m.read, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages">

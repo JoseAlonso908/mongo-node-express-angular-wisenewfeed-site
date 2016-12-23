@@ -29,7 +29,7 @@ gulp.task('browserify', () => {
 	}))
 	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('angular.js', {
-		// outSourceMap: true,
+		outSourceMap: true,
 		mangle: true
 	}).on('error', gulpUtil.log))
 	.pipe(plumber())
@@ -40,7 +40,7 @@ gulp.task('js', () => {
 	gulp.src(['./js/*.js', '!./js/app.js'])
 	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('app.js', {
-		// outSourceMap: true,
+		outSourceMap: true,
 		mangle: true
 	}).on('error', gulpUtil.log))
 	.pipe(plumber())

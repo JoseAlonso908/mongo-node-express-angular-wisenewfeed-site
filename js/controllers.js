@@ -1385,9 +1385,7 @@ angular.module('er.controllers', [])
 			$scope.skip = 0
 			$scope.loading = false
 
-			// Heh
-			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
-			$timeout($scope.scrollBottom)
+			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')}, 50)
 		})
 	}
 

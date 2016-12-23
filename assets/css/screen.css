@@ -1163,6 +1163,10 @@ a.small-icon, button.small-icon {
   line-height: 20px;
   letter-spacing: .3px;
 }
+#wrapper > .content .card.feed-item .comments .comment .showmore {
+  font-size: 13px;
+  font-weight: 700;
+}
 #wrapper > .content .card.feed-item .comments .comment .stats {
   margin-top: 12px;
 }

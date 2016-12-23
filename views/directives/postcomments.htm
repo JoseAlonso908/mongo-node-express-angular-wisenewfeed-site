@@ -12,8 +12,9 @@
 
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
-			<span ng-if="user.role == 'User'" class="name dark-bold">{{comment.author.name}}</span>
-			<a ng-if="user.role != 'User'" ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
+			<span ng-if="comment.author.role == 'User'" class="name dark-bold">{{comment.author.name}}</span>
+			<a ng-if="comment.author.role != 'User'" ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
+
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>
 		<div class="text" ng-bind-html="comment.text | textLinks"></div>
@@ -21,6 +22,8 @@
 		<div class="images">
 			<a ng-href="image" lightbox class="image" ng-repeat="image in comment.images" style="background-image: url({{image}})"></a>
 		</div>
+
+		<a href="javascript:void(0);" class="showmore" ng-show="comment.fullText != '' && !comment.hideShowMore" ng-click="comment.text = comment.fullText; comment.hideShowMore = true">Show more...</a>
 
 		<commentreactions comment="comment"></commentreactions>
 

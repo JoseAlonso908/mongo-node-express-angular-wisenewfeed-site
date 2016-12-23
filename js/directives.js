@@ -7,6 +7,9 @@ angular.module('er.directives', [])
 			transclude: true,
 			scope: { 'showYScrollbar': '=?isBarShown' },
 			link: function (scope, element, attrs) {
+				// That's bad!
+				if (window.innerWidth < 600) return
+
 				var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
 				var flags = { bottom: attrs.hasOwnProperty('bottom') };
 				var win = angular.element($window);
@@ -936,8 +939,6 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.showmore = false
-
 			$scope.comments = []
 
 			$rootScope.$on('reloadcomments', function (e, args) {
@@ -958,6 +959,20 @@ angular.module('er.directives', [])
 
 			var init = function () {
 				postService.getComments($scope.post._id).then(function (comments) {
+					for (var i in comments) {
+						var c = comments[i]
+						c.fullText = ''
+
+						if (c.text.length > 500) {
+							c.fullText = c.text
+							c.text = c.text.substr(0, 500) + '...'
+						}
+
+						comments[i] = c
+					}
+
+					console.log(comments)
+
 					$scope.comments = comments
 					$scope.$parent.commentsCount = $scope.comments.length
 					$scope.post.comments = comments

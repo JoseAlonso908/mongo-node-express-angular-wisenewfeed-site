@@ -1325,7 +1325,7 @@ angular.module('er.controllers', [])
 			$scope.reorderConversations()
 
 			$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
-			// $timeout($scope.scrollBottom)
+			$timeout($scope.scrollBottom)
 		})
 	}
 
@@ -1385,7 +1385,7 @@ angular.module('er.controllers', [])
 			$scope.loading = false
 
 			// Heh
-			// $timeout($scope.scrollBottom)
+			$timeout($scope.scrollBottom)
 		})
 	}
 

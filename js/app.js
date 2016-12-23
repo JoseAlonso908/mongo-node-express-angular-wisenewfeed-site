@@ -113,7 +113,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 		identityService.get().then(function (user) {
 			if (!user) return
 
-			if (!window.socket) {
+			if (!window.socket || !window.socket.connected) {
 				window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
 				window.socket.on('connect', function () {
 					console.log('ws-ready')

@@ -1209,7 +1209,7 @@ a.small-icon, button.small-icon {
   opacity: 1;
 }
 #wrapper > .content .left, #wrapper > .content .right {
-  width: calc(25% - 34px);
+  width: calc(25% - 26px);
 }
 #wrapper > .content .middle {
   width: 50%;
@@ -2468,12 +2468,12 @@ a.small-icon, button.small-icon {
   justify-content: space-between;
   align-content: flex-start;
   flex-flow: row wrap;
-  width: 261px;
-  height: 261px;
+  width: 269px;
+  height: 269px;
 }
 #wrapper > .content .left .photos .photo {
-  width: 84px;
-  height: 84px;
+  width: 86px;
+  height: 86px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -2732,6 +2732,11 @@ a.small-icon, button.small-icon {
 }
 #wrapper > .content .about-box a {
   margin: 0 2px;
+  font-size: 14px;
+  line-height: 1.5em;
+  white-space: nowrap;
+}
+#wrapper > .content .about-box a.advertise {
   font-size: 13px;
 }
 #wrapper > .content .about-box a:not(.advertise) {
@@ -2743,6 +2748,13 @@ a.small-icon, button.small-icon {
   margin: 10px 0 10px -15px;
   padding-right: 50px;
   border-top: 1px solid #f0f2f4;
+}
+#wrapper > .content .about-box .advertise-wrapper {
+  margin: 10px -15px -15px;
+  padding: 15px;
+  margin-left: -15px;
+  border-top: 1px solid #f0f2f4;
+  background-color: #f9fafb;
 }
 #wrapper #wallpaper-block-wrapper {
   width: 100%;
@@ -4999,8 +5011,11 @@ a.small-icon, button.small-icon {
   opacity: 1;
 }
 .ngsb-wrap .ngsb-container {
+  display: flex;
   width: auto;
   overflow: hidden;
+  min-height: 100%;
+  align-items: flex-end;
 }
 .ngsb-wrap .ngsb-scrollbar {
   width: 16px;

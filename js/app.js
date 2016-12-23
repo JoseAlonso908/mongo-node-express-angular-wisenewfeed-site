@@ -102,7 +102,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 	}
 
 	identityService.get().then(function (user) {
-
+		if (!user) return
 	})
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -112,6 +112,14 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 
 		identityService.get().then(function (user) {
 			if (!user) return
+
+			if (!window.socket) {
+				window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
+				window.socket.on('connect', function () {
+					console.log('ws-ready')
+					$rootScope.$emit('ws-ready')
+				})
+			}
 
 			if (!user.phone || !user.email) {
 				return $location.url('/settings')

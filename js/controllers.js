@@ -1499,15 +1499,8 @@ angular.module('er.controllers', [])
 				identityService.get().then(function (user) {
 					$scope.user = user
 
-					console.log('gu 1')
-					if (!user) return
-					console.log('gu 2')
-					window.socket = io.connect(location.origin, {query: 'uid=' + user._id})
-					console.log('gu 3')
-					
-					window.socket.on('connect', function () {
-						console.log('ws available')
-
+					$rootScope.$on('ws-ready', function () {
+						console.log('ws-ready 2')
 						window.socket.on('message', function (message) {
 							console.log('message received')
 							console.log(message)
@@ -1537,7 +1530,7 @@ angular.module('er.controllers', [])
 								}
 							}
 
-							$scope.$broadcast('rebuild-chat-messages')
+							$timeout(function () {$scope.$broadcast('rebuild-chat-messages-bottom')})
 							$scope.reorderConversations()
 							$scope.$digest()
 						})
@@ -1550,7 +1543,7 @@ angular.module('er.controllers', [])
 								var readId = messagesIds[i]
 
 								for (var j in $scope.chatMessages) {
-									var m = $scope.chatMessages[i]
+									var m = $scope.chatMessages[j]
 
 									if (m._id == readId) {
 										m.read = true
@@ -1559,7 +1552,7 @@ angular.module('er.controllers', [])
 								}
 
 								for (var j in $scope.chats) {
-									var m = $scope.chats[i]
+									var m = $scope.chats[j]
 
 									if (m && m.lastMessageId == readId) {
 										m.read = true
@@ -1571,6 +1564,10 @@ angular.module('er.controllers', [])
 							$scope.$apply()
 						})
 					})
+
+					if (window.socket.connected) {
+						$rootScope.$broadcast('ws-ready')
+					}
 
 					next()
 				})

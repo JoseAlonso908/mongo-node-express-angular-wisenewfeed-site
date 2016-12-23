@@ -75,7 +75,7 @@
 					<div class="messages-box-wrapper" ng-scrollbar bottom rebuild-bottom-on="rebuild-chat-messages-bottom" rebuild-on="rebuild-chat-messages" ng-class="{'image-added': files.length > 0}">
 						<div class="messages">
 							<!-- <a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a> -->
-							<div class="message" ng-hide="m.hidden" ng-class="{unread: !m.read, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages">
+							<div class="message" ng-hide="m.hidden" ng-class="{unread: !m.read, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages track by m._id">
 								<a ng-href="#!/person/{{m.from._id}}">
 									<avatar user="m.from"></avatar>
 								</a>

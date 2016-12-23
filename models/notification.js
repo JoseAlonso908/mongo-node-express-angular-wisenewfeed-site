@@ -53,7 +53,7 @@ var Model = function(mongoose) {
 		},
 
 		getForUser: (to, settings, callback, lean, skip = 0, limit = 10) => {
-			if (typeof to !== 'object') to = MOI(to)
+			to = MOI(to)
 
 			let query = Model.find({to}).populate('to from post comment').skip(skip).limit(limit).sort({createdAt: 'desc'})
 			if (lean) query.lean()
@@ -61,6 +61,8 @@ var Model = function(mongoose) {
 				if (err) return res.status(400).send(err)
 
 				async.mapSeries(notifications, (n, next) => {
+					console.log(n)
+
 					if (!n.from.xpInfo) {
 						models.User.setXpInfo(n.from, (err, user) => {
 							n.from = user

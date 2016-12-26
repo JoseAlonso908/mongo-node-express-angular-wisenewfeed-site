@@ -344,7 +344,9 @@ var Model = function(mongoose) {
 
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
 				if (filter == 'photos') {
-					callback(null, articles)
+					let images = []
+					for (let a of articles) {images = images.concat(a.images)}
+					callback(null, images)
 				} else {
 					this.postProcessList(articles, viewer, callback)
 				}
@@ -455,8 +457,13 @@ var Model = function(mongoose) {
 			aggregationOptions = aggregationOptions.concat([{$skip: start}, {$limit: limit}])
 
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
+				console.log(err)
+				console.log(articles)
+
 				if (filter == 'photos') {
-					callback(null, articles)
+					let images = []
+					for (let a of articles) {images = images.concat(a.images)}
+					callback(null, images)
 				} else {
 					this.postProcessList(articles, viewer, callback)
 				}

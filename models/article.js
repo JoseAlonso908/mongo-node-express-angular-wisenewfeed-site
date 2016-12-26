@@ -191,6 +191,12 @@ var Model = function(mongoose) {
 					{
 						$sort: {createdAt: -1},
 					},
+					{
+						$unwind: {path: '$images'},
+					},
+					{
+						$project: {images: 1},
+					},
 				]
 				break;
 		}
@@ -337,7 +343,11 @@ var Model = function(mongoose) {
 			if (limit) aggregationOptions.push({$limit: limit})
 
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
-				this.postProcessList(articles, viewer, callback)
+				if (filter == 'photos') {
+					callback(null, articles)
+				} else {
+					this.postProcessList(articles, viewer, callback)
+				}
 			})
 		},
 
@@ -445,7 +455,11 @@ var Model = function(mongoose) {
 			aggregationOptions = aggregationOptions.concat([{$skip: start}, {$limit: limit}])
 
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
-				this.postProcessList(articles, viewer, callback)
+				if (filter == 'photos') {
+					callback(null, articles)
+				} else {
+					this.postProcessList(articles, viewer, callback)
+				}
 			})
 		},
 

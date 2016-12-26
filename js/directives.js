@@ -460,7 +460,7 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			var start = 0,
-				originalLimit = limit = 3
+				originalLimit = limit = 5
 
 			angular.element(window).on('scroll', function (e) {
 				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
@@ -532,6 +532,8 @@ angular.module('er.directives', [])
 
 				var setFeed = function (feed) {
 					$scope.feedLoading = false
+
+
 
 					if (start > 0 || options.addmore) {
 						for (var i in feed) {

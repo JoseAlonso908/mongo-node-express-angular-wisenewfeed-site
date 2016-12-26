@@ -1,4 +1,11 @@
 @media (max-width: 1235px) {
+	.images-list {
+		.image {
+			width: 210px;
+			margin-bottom: 20px;
+		}
+	}
+
 	#landing-wrapper {
 		#header-wrapper {
 			#header {
@@ -128,6 +135,12 @@
 }
 
 @media (max-width: 1024px) {
+	.images-list {
+		.image {
+			width: 250px;
+		}
+	}
+
 	.only-mobile {
 		display: block !important;
 	}
@@ -235,6 +248,12 @@
 }
 
 @media (max-width: 800px) {
+	.images-list {
+		.image {
+			width: 100%;
+		}
+	}
+
 	#landing-wrapper {
 		#header-wrapper {
 			#header {

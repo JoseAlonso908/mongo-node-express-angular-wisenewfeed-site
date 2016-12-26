@@ -38,7 +38,7 @@ angular.module('er.filters', [])
 	}
 })
 .filter('youtube', function ($sce) {
-	var ytbRegex = new RegExp('https?:&#47;&#47;(www\.)?youtu\.?be(\.com&#47;watch\\?v=|&#47;)([a-zA-Z0-9-]+)', 'i')
+	var ytbRegex = new RegExp('https?:&#47;&#47;(www\.)?youtu\.?be(\.com&#47;watch\\?v=|&#47;)([a-zA-Z0-9_-]+)', 'i')
 
 	return function (input) {
 		input = input.replace(ytbRegex, '<iframe width="100%" height="285" src="//www.youtube.com/embed/$3" frameborder="0" allowfullscreen></iframe>')

@@ -8,7 +8,7 @@ angular.module('er.directives', [])
 			scope: { 'showYScrollbar': '=?isBarShown' },
 			link: function (scope, element, attrs) {
 				// That's bad!
-				if (window.innerWidth < 600) return
+				if (window.innerWidth < 600 || (/ipad|iphone/i).test(navigator.userAgent)) return
 
 				var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
 				var flags = { bottom: attrs.hasOwnProperty('bottom') };

@@ -1085,40 +1085,8 @@ angular.module('er.controllers', [])
 	var getCountriesList = function () {
 		groupedCountriesService.get(($scope.chosenCategory && $scope.chosenCategory.id !== 0) ? $scope.chosenCategory.tag : undefined).then(function (result) {
 			if (!$scope.countries || $scope.countries.length == 0) {
-				for (var i in result) {
-					var continent = result[i]
-
-					if (continent.count) {
-						continent.additional = numeral(continent.count).format('0a').toUpperCase()
-					}
-
-					for (var j in continent.sub) {
-						var country = continent.sub[j]
-						if (country.count == 0) continue
-
-						country.additional = numeral(country.count).format('0a').toUpperCase()
-					}
-				}
-
 				$scope.countries = result
-
 				$scope.chosenCountry = result[0]
-			} else {
-				for (var i in result) {
-					var newContinent = result[i]
-					var oldContinent = $scope.countries[i]
-
-					if (newContinent.count == 0) delete oldContinent.additional
-					else oldContinent.additional = numeral(newContinent.count).format('0a').toUpperCase()
-
-					for (var j in newContinent.sub) {
-						var newCountry = newContinent.sub[j]
-						var oldCountry = oldContinent.sub[j]
-
-						if (newCountry.count == 0) delete oldCountry.additional
-						else oldCountry.additional = numeral(newCountry.count).format('0a').toUpperCase()
-					}
-				}
 			}
 		})
 	}
@@ -1133,27 +1101,8 @@ angular.module('er.controllers', [])
 
 		fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
 			if (!$scope.categories || $scope.categories.length === 0) {
-				for (var i in result) {
-					if (result[i].count == 0) continue
-
-					result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
-				}
-
 				$scope.categories = result
 				$scope.chosenCategory = result[0]
-			} else {
-				for (var i in result) {
-					var newCategory = result[i]
-
-					for (var j in $scope.categories) {
-						var oldCategory = $scope.categories[j]
-
-						if (oldCategory.id == newCategory.id) {
-							if (newCategory.count == 0) delete oldCategory.additional
-							else oldCategory.additional = numeral(newCategory.count).format('0a').toUpperCase()
-						}
-					}
-				}
 			}
 		})
 	}
@@ -1719,4 +1668,34 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.init()
+})
+.controller('profilePhotosController', function ($scope, $routeParams, identityService) {
+	var loadProfile = function (callback) {
+		async.parallel([
+			function (next) {
+				identityService.getOther($routeParams.id).then(function (profile) {
+					$scope.profile = profile
+					next()
+				})
+			},
+			function (next) {
+				identityService.images($routeParams.id).then(function (images) {
+					$scope.images = images
+					next()
+				})
+			},
+		], callback)
+	}
+
+	async.parallel([
+		function (cb) {
+			identityService.get().then(function (user) {
+				$scope.user = user
+				cb()
+			})
+		},
+		function (cb) {
+			loadProfile(cb)
+		},
+	])
 })

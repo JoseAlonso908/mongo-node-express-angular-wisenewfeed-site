@@ -4085,6 +4085,20 @@ a.small-icon, button.small-icon {
   padding-left: 10px;
 }
 
+.images-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.images-list .image {
+  display: block;
+  width: 270px;
+  height: 200px;
+  margin-bottom: 30px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @media (max-width: 1235px) {
   #landing-wrapper #header-wrapper #header {
     width: 900px;

@@ -4552,6 +4552,20 @@ a.small-icon, button.small-icon {
 	}
 }
 
+.images-list {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+
+	.image {
+		display: block;
+		width: 270px; height: 200px;
+		margin-bottom: 30px;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+}
+
 @import "medias";
 @import "chosen";
 @import "scrollbar";

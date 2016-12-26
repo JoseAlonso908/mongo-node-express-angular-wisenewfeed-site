@@ -1753,3 +1753,15 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('photos', function (identityService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/photos.htm',
+		scope: {
+			images: '=',
+		},
+		link: function ($scope) {
+			
+		}
+	}
+})

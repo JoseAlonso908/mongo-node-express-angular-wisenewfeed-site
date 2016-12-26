@@ -345,6 +345,9 @@ angular.module('er.services', [])
 		isOnline: function (user) {
 			return __s($http, $cookies, 'get', '/user/isonline', {user: user})
 		},
+		images: function (user) {
+			return __s($http, $cookies, 'get', '/user/images', {user: user})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {

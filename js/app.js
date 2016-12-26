@@ -29,6 +29,7 @@ angular.module('er', [
 			})
 			.when('/', {
 				templateUrl: 'assets/views/home.htm',
+				controller: 'homeController',
 			})
 			.when('/my', {
 				templateUrl: 'assets/views/profile.htm',
@@ -75,6 +76,10 @@ angular.module('er', [
 			.when('/users/:role?', {
 				templateUrl: 'assets/views/userslist.htm',
 				controller: 'usersListController',
+			})
+			.when('/photos/:id?', {
+				templateUrl: 'assets/views/profilephotos.htm',
+				controller: 'profilePhotosController',
 			})
 
 

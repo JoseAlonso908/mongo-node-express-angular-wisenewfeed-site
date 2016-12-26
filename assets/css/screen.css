@@ -513,6 +513,7 @@ a.small-icon, button.small-icon {
 #wrapper #top-bar-background #top-bar #user-block {
   width: 200px;
   height: 36px;
+  margin-top: -8px;
 }
 #wrapper #top-bar-background #top-bar #user-block .avatar-wrapper {
   width: 42px;
@@ -577,6 +578,7 @@ a.small-icon, button.small-icon {
 }
 #wrapper #filters-wrapper {
   width: 100%;
+  height: 46px;
 }
 #wrapper #filters-wrapper .filters {
   display: flex;
@@ -750,7 +752,7 @@ a.small-icon, button.small-icon {
   box-sizing: border-box;
 }
 #wrapper > .content .card.user-info {
-  padding: 25px;
+  padding: 25px 25px 12px;
 }
 #wrapper > .content .card.user-info .mini-wallpaper {
   width: calc(100% + (25px * 2));
@@ -950,7 +952,6 @@ a.small-icon, button.small-icon {
   border-radius: 4px;
 }
 #wrapper > .content .card.feed-item .body .content .shared {
-  margin-left: 10px;
   border-left: 2px solid #E7EBEE;
   padding-left: 10px;
 }
@@ -1045,6 +1046,9 @@ a.small-icon, button.small-icon {
   margin: 20px 0 20px -65px;
   padding-right: 50px;
   border-top: 1px solid #f0f2f4;
+}
+#wrapper > .content .card.feed-item .actions {
+  margin: -10px 0;
 }
 #wrapper > .content .card.feed-item .actions button {
   height: 26px;
@@ -2759,6 +2763,8 @@ a.small-icon, button.small-icon {
   margin-left: -15px;
   border-top: 1px solid #f0f2f4;
   background-color: #f9fafb;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 #wrapper #wallpaper-block-wrapper {
   width: 100%;
@@ -3807,6 +3813,9 @@ a.small-icon, button.small-icon {
 .comment-box, .question-box, .write-message {
   position: relative;
 }
+.comment-box form, .question-box form, .write-message form {
+  height: 0;
+}
 .comment-box textarea, .question-box textarea, .write-message textarea {
   width: 100%;
   height: 38px;
@@ -3826,6 +3835,7 @@ a.small-icon, button.small-icon {
   height: 76px;
 }
 .comment-box textarea.not-empty + .send, .question-box textarea.not-empty + .send, .write-message textarea.not-empty + .send {
+  display: block;
   margin-top: 6px;
   opacity: 1;
   pointer-events: auto;
@@ -3855,6 +3865,7 @@ a.small-icon, button.small-icon {
   color: #a1b2be;
 }
 .comment-box .send, .question-box .send, .write-message .send {
+  display: none;
   width: 75px;
   height: 26px;
   margin-top: -8px;

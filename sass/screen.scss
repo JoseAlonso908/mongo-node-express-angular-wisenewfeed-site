@@ -452,6 +452,7 @@ a.small-icon, button.small-icon {
 
 			#user-block {
 				width: 200px; height: 36px;
+				margin-top: -8px;
 
 				.avatar-wrapper {
 					width: 42px; height: 42px;
@@ -529,7 +530,7 @@ a.small-icon, button.small-icon {
 	}
 
 	#filters-wrapper {
-		width: 100%;
+		width: 100%; height: 46px;
 
 		.filters {
 			display: flex; position: relative;
@@ -730,7 +731,7 @@ a.small-icon, button.small-icon {
 			box-sizing: border-box;
 
 			&.user-info {
-				padding: 25px;
+				padding: 25px 25px 12px;
 
 				.mini-wallpaper {
 					width: calc(100% + (25px * 2)); height: 64px;
@@ -964,7 +965,7 @@ a.small-icon, button.small-icon {
 						}
 
 						.shared {
-							margin-left: 10px;
+							// margin-left: 10px;
 							border-left: 2px solid #E7EBEE;
 							padding-left: 10px;
 
@@ -1080,6 +1081,8 @@ a.small-icon, button.small-icon {
 				}
 
 				.actions {
+					margin: -10px 0;
+
 					button {
 						$buttonBg: #e8f5fc;
 
@@ -3077,6 +3080,8 @@ a.small-icon, button.small-icon {
 				margin-left: -15px;
 				border-top: 1px solid #f0f2f4;
 				background-color: #f9fafb;
+				border-bottom-left-radius: 4px;
+				border-bottom-right-radius: 4px;
 			}
 		}
 	}
@@ -4225,6 +4230,10 @@ a.small-icon, button.small-icon {
 .comment-box, .question-box, .write-message {
 	position: relative;
 
+	form {
+		height: 0;
+	}
+
 	textarea {
 		width: 100%; height: 38px;
 		padding: 10px;
@@ -4244,6 +4253,7 @@ a.small-icon, button.small-icon {
 			height: 76px;
 
 			& + .send {
+				display: block;
 				margin-top: 6px;
 				opacity: 1;
 				pointer-events: auto;
@@ -4275,6 +4285,7 @@ a.small-icon, button.small-icon {
 	}
 
 	.send {
+		display: none;
 		width: 75px; height: 26px;
 		margin-top: -8px;
 		padding: 0 12px;

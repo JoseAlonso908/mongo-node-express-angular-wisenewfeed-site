@@ -67,7 +67,7 @@
 		<div class="value tinted" ng-show="!images || images.length == 0">Not available</div>
 		<div class="photos" ng-if="images && images.length > 0">
 			<a ng-href="image" class="photo" lightbox ng-class="{empty: image === ''}" style="background-image: url('{{image}}');" ng-repeat="image in images | limitTo: 8"></a>
-			<div class="other-photos" ng-if="images.length > 8">+{{images.length - 8}}</div>
+			<a ng-href="#!/photos/{{profile._id}}" class="other-photos" ng-if="images.length > 8">+{{images.length - 8}}</a>
 			<div class="photo placeholder"></div>
 			<div class="photo placeholder"></div>
 			<div class="photo placeholder"></div>

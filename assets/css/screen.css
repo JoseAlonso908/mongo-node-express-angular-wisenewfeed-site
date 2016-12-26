@@ -4098,6 +4098,9 @@ a.small-icon, button.small-icon {
   background-position: center;
   background-repeat: no-repeat;
 }
+.images-list .image.placeholder {
+  height: 0;
+}
 
 @media (max-width: 1235px) {
   #landing-wrapper #header-wrapper #header {

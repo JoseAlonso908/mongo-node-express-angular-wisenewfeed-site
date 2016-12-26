@@ -4563,6 +4563,10 @@ a.small-icon, button.small-icon {
 		margin-bottom: 30px;
 		background-position: center;
 		background-repeat: no-repeat;
+
+		&.placeholder {
+			height: 0;
+		}
 	}
 }
 

@@ -4563,6 +4563,8 @@ a.small-icon, button.small-icon {
 		margin-bottom: 30px;
 		background-position: center;
 		background-repeat: no-repeat;
+		background-color: #ffffff;
+		box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
 
 		&.placeholder {
 			height: 0;

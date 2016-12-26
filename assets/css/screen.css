@@ -3955,15 +3955,19 @@ a.small-icon, button.small-icon {
   box-sizing: border-box;
 }
 .questions .list .questions-list-wrapper {
+  position: relative;
   max-height: 520px;
   padding: 17px 0;
-  overflow: auto;
+  overflow: hidden;
+}
+.questions .list .questions-list-wrapper .questions-list {
+  height: 520px;
 }
 .questions .list .questions-list-wrapper > .text {
   padding: 0 17px;
 }
 .questions .list .question-box-wrapper {
-  padding: 30px 17px 10px 65px;
+  padding: 10px 17px 10px 65px;
 }
 .questions .list .question-box-wrapper .question-box .avatar-border {
   position: absolute;
@@ -5016,6 +5020,11 @@ a.small-icon, button.small-icon {
   }
 }
 /* @end */
+.message-box-wrapper .ngsb-container {
+  display: flex;
+  align-items: flex-end;
+}
+
 .ngsb-wrap {
   -ms-touch-action: none;
 }
@@ -5023,11 +5032,9 @@ a.small-icon, button.small-icon {
   opacity: 1;
 }
 .ngsb-wrap .ngsb-container {
-  display: flex;
   width: auto;
   overflow: hidden;
   min-height: 100%;
-  align-items: flex-end;
 }
 .ngsb-wrap .ngsb-scrollbar {
   width: 16px;

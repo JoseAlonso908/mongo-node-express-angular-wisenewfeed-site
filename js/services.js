@@ -162,6 +162,14 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/static/categories', params)
 		},
+		search: function (country) {
+			var params = {}
+			if (country) {
+				params.country = country
+			}
+
+			return __s($http, $cookies, 'get', '/static/categories/search', params)
+		},
 		getForUser: function (country) {
 			var params = {}
 			if (country) {

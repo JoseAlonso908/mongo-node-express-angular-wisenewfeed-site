@@ -37,11 +37,13 @@ angular.module('er.filters', [])
 		return encodeURIComponent(input)
 	}
 })
-.filter('youtube', function ($sce) {
+.filter('embedvideos', function ($sce) {
 	var ytbRegex = new RegExp('https?:&#47;&#47;(www\.)?youtu\.?be(\.com&#47;watch\\?v=|&#47;)([a-zA-Z0-9_-]+)', 'i')
+	var vimeoRegex = new RegExp('https?:&#47;&#47;(www\.)?vimeo\.com&#47;([0-9]+)', 'i')
 
 	return function (input) {
 		input = input.replace(ytbRegex, '<iframe width="100%" height="285" src="//www.youtube.com/embed/$3" frameborder="0" allowfullscreen></iframe>')
+		input = input.replace(vimeoRegex, '<iframe width="100%" height="285" src="//player.vimeo.com/video/$2" frameborder="0" allowfullscreen></iframe>')
 
 		return $sce.trustAsHtml(input)
 	}

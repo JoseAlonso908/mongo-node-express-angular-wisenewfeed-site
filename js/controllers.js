@@ -907,6 +907,8 @@ angular.module('er.controllers', [])
 	$scope.setFilter = function (filter) {
 		$scope.chosenFilter = filter
 		$scope.recalcQuestionsCounter()
+
+		$scope.$broadcast('rebuild-questions-box')
 	}
 
 	$scope.recalcQuestionsCounter = function () {
@@ -996,6 +998,11 @@ angular.module('er.controllers', [])
 		}
 
 		questionsService.get($scope.id).then(function (questions) {
+			var done = function () {
+				$scope.$broadcast('rebuild-questions-box')	
+				if (typeof callback === 'function') callback()
+			}
+
 			if ($scope.questions.length > 0) {
 				for (var i in questions) {
 					var newq = questions[i]
@@ -1014,7 +1021,7 @@ angular.module('er.controllers', [])
 					}
 				}
 
-				if (callback) callback()
+				done()
 			} else {
 				$scope.questions = questions
 
@@ -1026,7 +1033,7 @@ angular.module('er.controllers', [])
 
 				$scope.visibleQuestionsCount = $scope.questions.length
 
-				if (callback) callback()
+				done()
 			}
 		})
 	}
@@ -1422,8 +1429,10 @@ angular.module('er.controllers', [])
 					var existingUser = $scope.chats[i]
 
 					if (existingUser._id == person._id) return false
-					return true
+					else continue
 				}
+
+				return true
 			})
 
 			users = users.map(function (person) {

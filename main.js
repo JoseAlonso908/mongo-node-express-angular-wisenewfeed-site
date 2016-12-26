@@ -140,7 +140,6 @@ app.get('/static/categories', (req, res) => {
 	let categories = getCategories()
 
 	models.Article.getByUsers([], null, [], null, country, null, null, (err, articles) => {
-	// models.Article.getAllLean((err, articles) => {
 		categories[0].count = articles.length
 
 		for (let category of categories) {

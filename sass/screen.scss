@@ -4391,9 +4391,14 @@ a.small-icon, button.small-icon {
 		box-sizing: border-box;
 
 		.questions-list-wrapper {
+			position: relative;
 			max-height: 520px;
 			padding: 17px 0;
-			overflow: auto;
+			overflow: hidden;
+
+			.questions-list {
+				height: 520px;
+			}
 
 			> .text {
 				padding: 0 17px;
@@ -4403,7 +4408,7 @@ a.small-icon, button.small-icon {
 		.question-box-wrapper {
 			// padding-top: 30px;
 			// padding-left: calc(65px);
-			padding: 30px 17px 10px 65px;
+			padding: 10px 17px 10px 65px;
 
 			.question-box {
 				.avatar-border {

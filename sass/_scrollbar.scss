@@ -1,3 +1,10 @@
+.message-box-wrapper {
+	.ngsb-container {
+		display: flex;
+		align-items: flex-end;
+	}
+}
+
 .ngsb-wrap {
 	-ms-touch-action: none;
 
@@ -6,11 +13,9 @@
 	}
 
 	.ngsb-container {
-		display: flex;
 		width: auto;
 		overflow: hidden;
 		min-height: 100%;
-		align-items: flex-end;
 		// transition: 0.5s all;
 	}
 

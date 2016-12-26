@@ -27,7 +27,7 @@ models.Article.getAll(null, null, null, null, null, null, (err, articles) => {
 	for (let article of articles) {
 		if (!article.text) continue
 
-		let aPieces = article.text.match(/(^|\s)(\#[a-z0-9]+|\@[a-z0-9]+|\$[a-z0-9]+)/gi)
+		let aPieces = article.text.match(/(^|\s)(\#[a-z]+[a-z0-9]*|\@[a-z]+[a-z0-9]*|\$[a-z]+[a-z0-9]*)/gi)
 		if (!aPieces) continue
 
 		for (let aPiece of aPieces) {

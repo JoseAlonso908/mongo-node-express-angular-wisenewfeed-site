@@ -938,7 +938,7 @@ a.small-icon, button.small-icon {
   margin: 1px;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: inherit;
   border-radius: 2px;
 }
 #wrapper > .content .card.feed-item .body .content .images .image:hover {
@@ -1923,6 +1923,7 @@ a.small-icon, button.small-icon {
 }
 #wrapper > .content .middle .messages-wrapper .chats > .user .text > a {
   display: inline-block;
+  max-width: 150px;
   color: #545759;
   -moz-transition: color 0.1s;
   -o-transition: color 0.1s;
@@ -3674,6 +3675,9 @@ a.small-icon, button.small-icon {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+.backdrop .image.small {
+  background-size: initial;
 }
 
 .notifications, .followers {

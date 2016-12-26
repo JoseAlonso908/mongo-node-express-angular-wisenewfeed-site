@@ -1424,12 +1424,28 @@ angular.module('er.directives', [])
 			var imageUrl = window.location.origin + '/' + $scope.ngHref
 			var body = angular.element(document.body)
 
+			var small = false
+
+			var i = new Image()
+			i.src = imageUrl
+			i.onload = function () {
+				if (i.width < window.innerWidth && i.height < window.innerHeight) {
+					small = true
+				}
+			}
+
 			element.on('click', function (e) {
 				e.preventDefault()
 				e.stopImmediatePropagation()
 
 				var backdrop = angular.element('<div class="backdrop"></div>'),
 					image = angular.element('<div class="image"></div>')
+
+				if (small) {
+					image.addClass('small')
+				} else {
+					image.removeClass('small')
+				}
 
 				image.css('backgroundImage', 'url(' + imageUrl + ')')
 

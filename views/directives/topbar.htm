@@ -9,7 +9,7 @@
 	</a>
 
 	<followersicon ng-if="user && user.role != 'User'" user="user"></followersicon>
-	<messagesicon ng-if="user && user.role != 'User'" user="user"></messagesicon>
+	<messagesicon ng-if="user" user="user"></messagesicon>
 	<notificationsicon ng-if="user && user.role != 'User'" user="user"></notificationsicon>
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">

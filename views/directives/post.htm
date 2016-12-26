@@ -43,7 +43,7 @@
 		</div>
 
 		<div class="content" ng-class="{collapsed: !justone}">
-			<div class="text" ng-bind-html="post.text | textLinks"></div>
+			<div class="text" ng-bind-html="post.text | textLinks | youtube | url"></div>
 
 			<div class="images">
 				<a ng-href="image" lightbox class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></a>

@@ -125,7 +125,7 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 				return $location.url('/settings')
 			}
 
-			var notForUser = ['/my', '/chat']
+			var notForUser = ['/my']
 
 			if (user.role == 'User' && notForUser.indexOf(nextURI) > -1) {
 				return $location.url('/')

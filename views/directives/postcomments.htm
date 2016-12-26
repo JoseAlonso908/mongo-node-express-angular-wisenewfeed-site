@@ -17,7 +17,7 @@
 
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>
-		<div class="text" ng-bind-html="comment.text | textLinks"></div>
+		<div class="text" ng-bind-html="comment.text | textLinks | url"></div>
 
 		<div class="images">
 			<a ng-href="image" lightbox class="image" ng-repeat="image in comment.images" style="background-image: url({{image}})"></a>

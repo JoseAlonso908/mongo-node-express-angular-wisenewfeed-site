@@ -203,8 +203,8 @@ a {
 
 .cta-button {
 	display: inline-flex; position: relative;
-	justify-content: space-around;
-	flex-flow: row nowrap;
+	@include justify-content(space-around);
+	@include flex-flow(row nowrap);
 	padding: 0 13px;
 
 	height: 36px;
@@ -342,8 +342,8 @@ a.small-icon, button.small-icon {
 	}
 
 	.badge {
-		display: flex;
-		justify-content: center;
+		@include display-flex;
+		@include justify-content(center);
 		position: absolute;
 		top: -4px; right: -4px;
 		min-width: 16px; height: 16px;
@@ -422,9 +422,9 @@ a.small-icon, button.small-icon {
 		}
 
 		#top-bar {
-			display: flex; position: relative;
-			justify-content: space-between;
-			align-items: center;
+			@include display-flex; position: relative;
+			@include justify-content(space-between);
+			@include align-items(center);
 
 			max-width: 1180px; height: 81px;
 			width: 100%;
@@ -533,8 +533,8 @@ a.small-icon, button.small-icon {
 		width: 100%; height: 46px;
 
 		.filters {
-			display: flex; position: relative;
-			justify-content: space-between;
+			@include display-flex; position: relative;
+			@include justify-content(space-between);
 			max-width: 1180px; height: 70px;
 			width: 100%;
 			margin: 0 auto 0;
@@ -567,10 +567,10 @@ a.small-icon, button.small-icon {
 				}
 
 				&.dropdown {
-					display: flex;
+					@include display-flex;
 					width: 155px;
 					padding-right: 25px;
-					flex-wrap: nowrap;
+					@include flex-wrap(nowrap);
 					text-transform: none;
 
 					.title {
@@ -701,13 +701,13 @@ a.small-icon, button.small-icon {
 	}
 
 	> .content {
-		display: flex;
-		justify-content: space-between;
+		@include display-flex;
+		@include justify-content(space-between);
 		flex-direction: row;
 		max-width: 1180px;
 		width: 100%;
 		margin: 0 auto 0;
-		// flex-wrap: wrap;
+		// @include flex-wrap(wrap);
 		padding-bottom: 20px;
 
 		&.chat-content {
@@ -806,8 +806,8 @@ a.small-icon, button.small-icon {
 
 				.body {
 					.title {
-						// display: flex;
-						// justify-content: space-between;
+						// @include display-flex;
+						// @include justify-content(space-between);
 						position: relative;
 						height: 36px;
 						line-height: 36px;
@@ -933,9 +933,9 @@ a.small-icon, button.small-icon {
 						}
 
 						.images {
-							display: flex;
-							justify-content: space-between;
-							flex-wrap: wrap;
+							@include display-flex;
+							@include justify-content(space-between);
+							@include flex-wrap(wrap);
 							margin: -1px;
 
 							// width: 100%;
@@ -1015,16 +1015,16 @@ a.small-icon, button.small-icon {
 				}
 
 				.ratings {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 					margin-top: 13px;
 
 					$ratingsText: rgba($activeBlue, .5);
 
 					.rating {
-						display: flex;
-						justify-content: space-between;
-						flex-flow: wrap;
+						@include display-flex;
+						@include justify-content(space-between);
+						@include flex-flow(wrap);
 						padding: 6px 10px;
 						background-color: #f2f7fb;
 						border-radius: 4px;
@@ -1111,8 +1111,8 @@ a.small-icon, button.small-icon {
 					}
 
 					.comments-count {
-						display: flex;
-						justify-content: space-between;
+						@include display-flex;
+						@include justify-content(space-between);
 						width: 30px;
 						margin-top: 7px;
 						float: right;
@@ -1251,9 +1251,9 @@ a.small-icon, button.small-icon {
 						}
 
 						.images {
-							display: flex;
-							justify-content: space-between;
-							flex-wrap: wrap;
+							@include display-flex;
+							@include justify-content(space-between);
+							@include flex-wrap(wrap);
 							margin: 10px -1px -1px -1px;
 
 							// width: 100%;
@@ -1289,7 +1289,7 @@ a.small-icon, button.small-icon {
 			order: 2;
 
 			&.flex {
-				display: flex;
+				@include display-flex;
 			}
 
 			&.wide {
@@ -1362,9 +1362,9 @@ a.small-icon, button.small-icon {
 					}
 
 					div {
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
+						@include display-flex;
+						@include justify-content(space-between);
+						@include align-items(center);
 
 						.title {
 							color: #ffffff;
@@ -1710,16 +1710,16 @@ a.small-icon, button.small-icon {
 					}
 
 					.info {
-						display: flex;
-						justify-content: center;
+						@include display-flex;
+						@include justify-content(center);
 						flex-direction: column;
-						// align-items: center;
+						// @include align-items(center);
 						height: $height;
 						margin-left: 15px;
 						float: left;
 
 						.title, .name {
-							flex-wrap: wrap;
+							@include flex-wrap(wrap);
 							width: 100%;
 						}
 
@@ -1738,8 +1738,8 @@ a.small-icon, button.small-icon {
 						float: right;
 
 						button {
-							display: flex;
-							justify-content: space-between;
+							@include display-flex;
+							@include justify-content(space-between);
 							height: $height;
 							padding: 0 12px;
 							border-radius: 16px;
@@ -1763,11 +1763,11 @@ a.small-icon, button.small-icon {
 				.import-social {
 					$size: 32px;
 
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 
 					.social-info {
-						display: flex;
+						@include display-flex;
 
 						.logo {
 							width: $size; height: $size;
@@ -1791,8 +1791,8 @@ a.small-icon, button.small-icon {
 					}
 
 					a {
-						// display: flex;
-						// justify-content: space-between;
+						// @include display-flex;
+						// @include justify-content(space-between);
 						height: $size;
 						padding: 0 12px;
 						border-radius: 16px;
@@ -1843,9 +1843,9 @@ a.small-icon, button.small-icon {
 			}
 
 			.people {
-				display: flex;
-				justify-content: space-between;
-				flex-wrap: wrap;
+				@include display-flex;
+				@include justify-content(space-between);
+				@include flex-wrap(wrap);
 
 				.flex-people-placeholder {
 					width: 285px; height: 0;
@@ -1889,8 +1889,8 @@ a.small-icon, button.small-icon {
 					}
 
 					.buttons {
-						display: flex; position: absolute;
-						justify-content: flex-end;
+						@include display-flex; position: absolute;
+						@include justify-content(flex-end);
 						width: 100%;
 						margin-top: -30px;
 
@@ -1972,8 +1972,8 @@ a.small-icon, button.small-icon {
 						padding: 20px 20px 20px;
 
 						.title {
-							display: flex;
-							justify-content: flex-start;
+							@include display-flex;
+							@include justify-content(flex-start);
 
 							.name {
 								font-size: 14px;
@@ -2005,10 +2005,10 @@ a.small-icon, button.small-icon {
 			}
 
 			.messages-wrapper {
-				display: flex; position: relative;
+				@include display-flex; position: relative;
 				width: 100%; min-height: 100%;
-				justify-content: space-between;
-				align-items: stretch;
+				@include justify-content(space-between);
+				@include align-items(stretch);
 				background-color: #ffffff;
 				border-radius: 4px;
 				box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
@@ -2202,12 +2202,12 @@ a.small-icon, button.small-icon {
 						}
 
 						.chosen-users {
-							display: flex;
-							flex-wrap: wrap;
+							@include display-flex;
+							@include flex-wrap(wrap);
 							padding-bottom: 16px;
 
 							.chosen {
-								display: flex;
+								@include display-flex;
 								margin: 0 2px 2px 0;
 								padding: 2px 5px;
 								font-size: 13px;
@@ -2245,8 +2245,8 @@ a.small-icon, button.small-icon {
 					.selected-messages {
 						$size: 42px;
 
-						display: flex;
-						justify-content: space-between;
+						@include display-flex;
+						@include justify-content(space-between);
 						position: absolute;
 						width: 100%; height: $size;
 						padding: 0 16px;
@@ -2259,7 +2259,7 @@ a.small-icon, button.small-icon {
 						z-index: 100;
 
 						.title {
-							display: flex;
+							@include display-flex;
 
 							.ttext {
 								font-size: 13px;
@@ -2278,7 +2278,7 @@ a.small-icon, button.small-icon {
 						}
 
 						.buttons {
-							display: flex;
+							@include display-flex;
 
 							a {
 								display: block;
@@ -2306,12 +2306,12 @@ a.small-icon, button.small-icon {
 						}
 
 						.messages {
-							display: flex;
+							@include display-flex;
 							// height: 100%;
-							// flex-wrap: wrap;
+							// @include flex-wrap(wrap);
 							flex: 1 1 auto;
 							flex-direction: column;
-							justify-content: flex-end;
+							@include justify-content(flex-end);
 							// position: absolute;
 							width: 100%; min-height: 100%;
 
@@ -2371,9 +2371,9 @@ a.small-icon, button.small-icon {
 								}
 
 								.images {
-									display: flex;
-									justify-content: space-between;
-									flex-wrap: wrap;
+									@include display-flex;
+									@include justify-content(space-between);
+									@include flex-wrap(wrap);
 									margin: -1px;
 
 									&:not(.empty) {
@@ -2478,16 +2478,16 @@ a.small-icon, button.small-icon {
 
 			.stats.mobile {
 				display: none;
-				justify-content: space-between;
+				@include justify-content(space-between);
 				margin-bottom: 15px;
 
 				a {
-					display: flex;
+					@include display-flex;
 					width: 20%;
 					padding: 5px 0;
-					justify-content: center;
-					align-items: center;
-					flex-wrap: wrap;
+					@include justify-content(center);
+					@include align-items(center);
+					@include flex-wrap(wrap);
 
 					@include transition(background-color .2s);
 
@@ -2533,8 +2533,8 @@ a.small-icon, button.small-icon {
 				}
 
 				.rating-wrapper {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 					position: relative;
 					margin-top: 14px;
 
@@ -2708,9 +2708,9 @@ a.small-icon, button.small-icon {
 				}
 
 				.attach-file {
-					display: flex;
-					justify-content: center;
-					align-items: center;
+					@include display-flex;
+					@include justify-content(center);
+					@include align-items(center);
 					width: 100%; height: 36px;
 					cursor: pointer;
 					border-radius: 18px;
@@ -2740,10 +2740,10 @@ a.small-icon, button.small-icon {
 			}
 
 			.photos {
-				display: flex;
-				justify-content: space-between;
-				align-content: flex-start;
-				flex-flow: row wrap;
+				@include display-flex;
+				@include justify-content(space-between);
+				@include align-content(flex-start);
+				@include flex-flow(row wrap);
 				width: 269px; height: 269px;
 
 				.photo {
@@ -2842,8 +2842,8 @@ a.small-icon, button.small-icon {
 				margin-bottom: 20px;
 
 				> .header {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 					margin-bottom: 18px;
 					
 					.title {
@@ -2930,8 +2930,8 @@ a.small-icon, button.small-icon {
 					}
 
 					> .footer {
-						display: flex;
-						justify-content: space-between;
+						@include display-flex;
+						@include justify-content(space-between);
 
 						.likes-row-wrapper {
 							position: relative;
@@ -2955,7 +2955,7 @@ a.small-icon, button.small-icon {
 						}
 
 						.likes {
-							display: flex;
+							@include display-flex;
 							font-size: 13px;
 							font-weight: 900;
 							color: $iconGrey;
@@ -2967,7 +2967,7 @@ a.small-icon, button.small-icon {
 						}
 
 						.follow, .reply {
-							display: flex;
+							@include display-flex;
 							font-size: 13px;
 							font-weight: 900;
 
@@ -2980,13 +2980,13 @@ a.small-icon, button.small-icon {
 				}
 
 				> .footer {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 					padding-top: 10px;
 					color: $activeBlue;
 
 					a {
-						display: flex;
+						@include display-flex;
 						font-size: 13px;
 
 						i {
@@ -3120,17 +3120,17 @@ a.small-icon, button.small-icon {
 				border-bottom-right-radius: 5px;
 
 				.stats {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 
 					height: 100%;
 					margin-left: 230px;
 
 					.stat {
-						display: flex;
-						justify-content: center;
-						flex-flow: row wrap;
-						align-content: center;
+						@include display-flex;
+						@include justify-content(center);
+						@include flex-flow(row wrap);
+						@include align-content(center);
 						box-sizing: border-box;
 
 						height: 100%;
@@ -3191,10 +3191,10 @@ a.small-icon, button.small-icon {
 				}
 
 				.change-avatar {
-					display: flex;
+					@include display-flex;
 					position: absolute;
-					justify-content: center;
-					align-items: center;
+					@include justify-content(center);
+					@include align-items(center);
 					width: calc(100% - 3px); height: calc(100% - 3px);
 					margin: 1px 0 0 1px;
 					border-radius: 50%;
@@ -3264,23 +3264,23 @@ a.small-icon, button.small-icon {
 			}
 
 			.buttons {
-				display: flex;
-				justify-content: space-between;
+				@include display-flex;
+				@include justify-content(space-between);
 				position: absolute;
 				width: calc(100% - 285px - 15px);
 				margin: 285px 0 0 285px;
 
 				&.single {
-					justify-content: flex-end;
+					@include justify-content(flex-end);
 				}
 
 				&.narrow {
-					justify-content: flex-start;
+					@include justify-content(flex-start);
 				}
 
 				& > div, & > a {
-					display: flex;
-					justify-content: space-between;
+					@include display-flex;
+					@include justify-content(space-between);
 					height: 32px;
 					margin-right: 12px;
 					padding: 0 12px;
@@ -3418,9 +3418,9 @@ a.small-icon, button.small-icon {
 		}
 
 		#header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			@include display-flex;
+			@include justify-content(space-between);
+			@include align-items(center);
 			max-width: 1180px; height: 100%;
 			width: 100%;
 			margin: 0 auto 0;
@@ -3436,9 +3436,9 @@ a.small-icon, button.small-icon {
 			}
 
 			#header-buttons {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
+				@include display-flex;
+				@include justify-content(space-between);
+				@include align-items(center);
 				margin-left: 220px;
 
 				a {
@@ -3497,18 +3497,18 @@ a.small-icon, button.small-icon {
 		}
 
 		.content {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			@include display-flex;
+			@include justify-content(space-between);
+			@include align-items(center);
 			max-width: 1180px; height: 100%;
 			width: 100%;
 			min-height: 800px;
 			margin: 0 auto 0;
 
 			&.confirm-signup, &.reset-password {
-				justify-content: center;
-				flex-flow: column wrap;
-				align-items: center;
+				@include justify-content(center);
+				@include flex-flow(column wrap);
+				@include align-items(center);
 
 				a {
 					color: $activeBlue;
@@ -3566,8 +3566,8 @@ a.small-icon, button.small-icon {
 					}
 
 					.footer {
-						display: flex;
-						justify-content: space-between;
+						@include display-flex;
+						@include justify-content(space-between);
 
 						button {
 							&.cta-button {
@@ -3740,9 +3740,9 @@ a.small-icon, button.small-icon {
 						}
 
 						.form-footer {
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
+							@include display-flex;
+							@include justify-content(space-between);
+							@include align-items(center);
 
 							input[type="submit"] {
 								display: inline-block;
@@ -3834,13 +3834,13 @@ a.small-icon, button.small-icon {
 
 					&.login {
 						.socials {
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
+							@include display-flex;
+							@include justify-content(space-between);
+							@include align-items(center);
 
 							.social-buttons {
-								display: flex;
-								justify-content: space-between;
+								@include display-flex;
+								@include justify-content(space-between);
 
 								a {
 									display: block;
@@ -3871,9 +3871,9 @@ a.small-icon, button.small-icon {
 					}
 
 					.continue-wrapper {
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
+						@include display-flex;
+						@include justify-content(space-between);
+						@include align-items(center);
 					}
 
 					a {
@@ -3926,9 +3926,9 @@ a.small-icon, button.small-icon {
 }
 
 .backdrop {
-	display: flex; position: fixed;
-	justify-content: center;
-	align-items: center;
+	@include display-flex; position: fixed;
+	@include justify-content(center);
+	@include align-items(center);
 	top: 0; left: 0;
 	width: 100%; height: 100%;
 	background-color: rgba(#000000, .5);
@@ -4061,7 +4061,7 @@ a.small-icon, button.small-icon {
 }
 
 .backdrop {
-	display: flex;
+	@include display-flex;
 	position: fixed;
 	top: 0; left: 0;
 	width: 100%; height: 100%;
@@ -4157,11 +4157,11 @@ a.small-icon, button.small-icon {
 	}
 
 	.text {
-		// display: flex;
+		// @include display-flex;
 		height: 42px;
 		padding-top: 5px;
 		// flex-direction: column;
-		// justify-content: center;
+		// @include justify-content(center);
 		text-align: left;
 
 		.name {
@@ -4302,9 +4302,9 @@ a.small-icon, button.small-icon {
 		}
 
 		div {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			@include display-flex;
+			@include justify-content(space-between);
+			@include align-items(center);
 
 			.title {
 				color: #ffffff;
@@ -4357,9 +4357,9 @@ a.small-icon, button.small-icon {
 
 .questions {
 	.title-wrapper {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		@include display-flex;
+		@include justify-content(space-between);
+		@include align-items(center);
 
 		.title {
 			color: $soDark;
@@ -4444,8 +4444,8 @@ a.small-icon, button.small-icon {
 			}
 
 			.title {
-				display: flex;
-				justify-content: space-between;
+				@include display-flex;
+				@include justify-content(space-between);
 
 				.name {
 					color: $soDark;
@@ -4460,14 +4460,14 @@ a.small-icon, button.small-icon {
 			}
 
 			.footer {
-				display: flex;
-				justify-content: space-between;
+				@include display-flex;
+				@include justify-content(space-between);
 
 				.likes {
-					display: flex;
+					@include display-flex;
 					height: 20px;
-					justify-content: space-around;
-					align-items: center;
+					@include justify-content(space-around);
+					@include align-items(center);
 					color: $iconGrey;
 
 					i, span {
@@ -4486,8 +4486,8 @@ a.small-icon, button.small-icon {
 				}
 
 				.actions {
-					display: flex;
-					justify-content: flex-end;
+					@include display-flex;
+					@include justify-content(flex-end);
 
 					a.item {
 						cursor: pointer;
@@ -4502,12 +4502,12 @@ a.small-icon, button.small-icon {
 					}
 
 					.item {
-						display: flex;
+						@include display-flex;
 						height: 20px;
 						margin-left: 15px;
 						padding: 0 10px 0 5px;
-						justify-content: space-around;
-						align-items: center;
+						@include justify-content(space-around);
+						@include align-items(center);
 						border: none;
 						background: transparent;
 						border-radius: 10px;
@@ -4564,9 +4564,9 @@ a.small-icon, button.small-icon {
 }
 
 .images-list {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
+	@include display-flex;
+	@include justify-content(space-between);
+	@include flex-wrap(wrap);
 
 	.image {
 		display: block;

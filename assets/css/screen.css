@@ -271,7 +271,9 @@ a[disabled] {
 .cta-button {
   display: inline-flex;
   position: relative;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
+  -webkit-flex-flow: row nowrap;
   flex-flow: row nowrap;
   padding: 0 13px;
   height: 36px;
@@ -402,7 +404,9 @@ a.small-icon, button.small-icon {
   transition: color 0.2s;
 }
 .small-icon .badge {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
   position: absolute;
   top: -4px;
@@ -483,9 +487,12 @@ a.small-icon, button.small-icon {
   z-index: 101;
 }
 #wrapper #top-bar-background #top-bar {
+  display: -webkit-flex;
   display: flex;
   position: relative;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
   max-width: 1180px;
   height: 81px;
@@ -581,8 +588,10 @@ a.small-icon, button.small-icon {
   height: 46px;
 }
 #wrapper #filters-wrapper .filters {
+  display: -webkit-flex;
   display: flex;
   position: relative;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   max-width: 1180px;
   height: 70px;
@@ -617,9 +626,11 @@ a.small-icon, button.small-icon {
   background-color: #b5c3cd;
 }
 #wrapper #filters-wrapper .filters .menu-buttons.dropdown {
+  display: -webkit-flex;
   display: flex;
   width: 155px;
   padding-right: 25px;
+  -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
   text-transform: none;
 }
@@ -726,7 +737,9 @@ a.small-icon, button.small-icon {
   background-color: #f2f3f4;
 }
 #wrapper > .content {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   flex-direction: row;
   max-width: 1180px;
@@ -928,8 +941,11 @@ a.small-icon, button.small-icon {
   padding-left: 10px;
 }
 #wrapper > .content .card.feed-item .body .content .images {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   margin: -1px;
 }
@@ -994,13 +1010,18 @@ a.small-icon, button.small-icon {
   display: block;
 }
 #wrapper > .content .card.feed-item .ratings {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   margin-top: 13px;
 }
 #wrapper > .content .card.feed-item .ratings .rating {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-flow: wrap;
   flex-flow: wrap;
   padding: 6px 10px;
   background-color: #f2f7fb;
@@ -1076,7 +1097,9 @@ a.small-icon, button.small-icon {
   font-size: 13px;
 }
 #wrapper > .content .card.feed-item .actions .comments-count {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   width: 30px;
   margin-top: 7px;
@@ -1197,8 +1220,11 @@ a.small-icon, button.small-icon {
   opacity: 1;
 }
 #wrapper > .content .card.feed-item .comments .comment .images {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   margin: 10px -1px -1px -1px;
 }
@@ -1223,6 +1249,7 @@ a.small-icon, button.small-icon {
   order: 2;
 }
 #wrapper > .content .middle.flex {
+  display: -webkit-flex;
   display: flex;
 }
 #wrapper > .content .middle.wide {
@@ -1287,8 +1314,11 @@ a.small-icon, button.small-icon {
   background-color: #1c95db;
 }
 #wrapper > .content .middle .on-your-mind .send div {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 #wrapper > .content .middle .on-your-mind .send div .title {
@@ -1571,7 +1601,9 @@ a.small-icon, button.small-icon {
   background-size: contain;
 }
 #wrapper > .content .middle .settings-wrapper .social-network .info {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
   flex-direction: column;
   height: 32px;
@@ -1579,6 +1611,7 @@ a.small-icon, button.small-icon {
   float: left;
 }
 #wrapper > .content .middle .settings-wrapper .social-network .info .title, #wrapper > .content .middle .settings-wrapper .social-network .info .name {
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -1594,7 +1627,9 @@ a.small-icon, button.small-icon {
   float: right;
 }
 #wrapper > .content .middle .settings-wrapper .social-network .actions button {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   height: 32px;
   padding: 0 12px;
@@ -1615,10 +1650,13 @@ a.small-icon, button.small-icon {
   background-color: rgba(44, 161, 228, 0.15);
 }
 #wrapper > .content .middle .settings-wrapper .import-social {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 #wrapper > .content .middle .settings-wrapper .import-social .social-info {
+  display: -webkit-flex;
   display: flex;
 }
 #wrapper > .content .middle .settings-wrapper .import-social .social-info .logo {
@@ -1683,8 +1721,11 @@ a.small-icon, button.small-icon {
   background-color: rgba(44, 161, 228, 0.15);
 }
 #wrapper > .content .middle .people {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 #wrapper > .content .middle .people .flex-people-placeholder {
@@ -1733,8 +1774,10 @@ a.small-icon, button.small-icon {
   margin: 80px 0 0 36px;
 }
 #wrapper > .content .middle .people .person .buttons {
+  display: -webkit-flex;
   display: flex;
   position: absolute;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   width: 100%;
   margin-top: -30px;
@@ -1815,7 +1858,9 @@ a.small-icon, button.small-icon {
   padding: 20px 20px 20px;
 }
 #wrapper > .content .middle .people .person .content .title {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: flex-start;
   justify-content: flex-start;
 }
 #wrapper > .content .middle .people .person .content .title .name {
@@ -1840,11 +1885,14 @@ a.small-icon, button.small-icon {
   line-height: 16px;
 }
 #wrapper > .content .middle .messages-wrapper {
+  display: -webkit-flex;
   display: flex;
   position: relative;
   width: 100%;
   min-height: 100%;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: stretch;
   align-items: stretch;
   background-color: #ffffff;
   border-radius: 4px;
@@ -2026,11 +2074,14 @@ a.small-icon, button.small-icon {
   background-color: #f1f5f7;
 }
 #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users {
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   padding-bottom: 16px;
 }
 #wrapper > .content .middle .messages-wrapper .chats .start-conversation-popup .chosen-users .chosen {
+  display: -webkit-flex;
   display: flex;
   margin: 0 2px 2px 0;
   padding: 2px 5px;
@@ -2059,7 +2110,9 @@ a.small-icon, button.small-icon {
   display: none;
 }
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   position: absolute;
   width: 100%;
@@ -2074,6 +2127,7 @@ a.small-icon, button.small-icon {
   z-index: 100;
 }
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages .title {
+  display: -webkit-flex;
   display: flex;
 }
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages .title .ttext {
@@ -2089,6 +2143,7 @@ a.small-icon, button.small-icon {
   font-size: 16px;
 }
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages .buttons {
+  display: -webkit-flex;
   display: flex;
 }
 #wrapper > .content .middle .messages-wrapper .chat .selected-messages .buttons a {
@@ -2114,9 +2169,11 @@ a.small-icon, button.small-icon {
   height: calc(100% - 267px);
 }
 #wrapper > .content .middle .messages-wrapper .chat .messages-box-wrapper .messages {
+  display: -webkit-flex;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   width: 100%;
   min-height: 100%;
@@ -2173,8 +2230,11 @@ a.small-icon, button.small-icon {
   line-height: 1.5em;
 }
 #wrapper > .content .middle .messages-wrapper .chat .messages-box-wrapper .messages .message .images {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   margin: -1px;
 }
@@ -2263,15 +2323,20 @@ a.small-icon, button.small-icon {
 }
 #wrapper > .content .left .stats.mobile {
   display: none;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   margin-bottom: 15px;
 }
 #wrapper > .content .left .stats.mobile a {
+  display: -webkit-flex;
   display: flex;
   width: 20%;
   padding: 5px 0;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-align-items: center;
   align-items: center;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   -moz-transition: background-color 0.2s;
   -o-transition: background-color 0.2s;
@@ -2310,7 +2375,9 @@ a.small-icon, button.small-icon {
   text-align: center;
 }
 #wrapper > .content .left .user-profile-info .rating-wrapper {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   position: relative;
   margin-top: 14px;
@@ -2442,8 +2509,11 @@ a.small-icon, button.small-icon {
   font-weight: 900;
 }
 #wrapper > .content .left .user-description-block .attach-file {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-align-items: center;
   align-items: center;
   width: 100%;
   height: 36px;
@@ -2472,9 +2542,13 @@ a.small-icon, button.small-icon {
   font-weight: 900;
 }
 #wrapper > .content .left .photos {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-content: flex-start;
   align-content: flex-start;
+  -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   width: 269px;
   height: 269px;
@@ -2561,7 +2635,9 @@ a.small-icon, button.small-icon {
   margin-bottom: 20px;
 }
 #wrapper > .content .right .familiar-experts > .header, #wrapper > .content .right .new-questions > .header {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   margin-bottom: 18px;
 }
@@ -2636,7 +2712,9 @@ a.small-icon, button.small-icon {
   line-height: 20px;
 }
 #wrapper > .content .right .familiar-experts .card > .footer, #wrapper > .content .right .new-questions .card > .footer {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 #wrapper > .content .right .familiar-experts .card > .footer .likes-row-wrapper, #wrapper > .content .right .new-questions .card > .footer .likes-row-wrapper {
@@ -2659,6 +2737,7 @@ a.small-icon, button.small-icon {
   border-radius: 3px;
 }
 #wrapper > .content .right .familiar-experts .card > .footer .likes, #wrapper > .content .right .new-questions .card > .footer .likes {
+  display: -webkit-flex;
   display: flex;
   font-size: 13px;
   font-weight: 900;
@@ -2669,6 +2748,7 @@ a.small-icon, button.small-icon {
   font-size: 14px;
 }
 #wrapper > .content .right .familiar-experts .card > .footer .follow, #wrapper > .content .right .familiar-experts .card > .footer .reply, #wrapper > .content .right .new-questions .card > .footer .follow, #wrapper > .content .right .new-questions .card > .footer .reply {
+  display: -webkit-flex;
   display: flex;
   font-size: 13px;
   font-weight: 900;
@@ -2678,12 +2758,15 @@ a.small-icon, button.small-icon {
   font-size: 15px;
 }
 #wrapper > .content .right .familiar-experts > .footer, #wrapper > .content .right .new-questions > .footer {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   padding-top: 10px;
   color: #43abe7;
 }
 #wrapper > .content .right .familiar-experts > .footer a, #wrapper > .content .right .new-questions > .footer a {
+  display: -webkit-flex;
   display: flex;
   font-size: 13px;
 }
@@ -2805,15 +2888,21 @@ a.small-icon, button.small-icon {
   border-bottom-right-radius: 5px;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   height: 100%;
   margin-left: 230px;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .footer .stats .stat {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
+  -webkit-align-content: center;
   align-content: center;
   box-sizing: border-box;
   height: 100%;
@@ -2867,9 +2956,12 @@ a.small-icon, button.small-icon {
   visibility: hidden;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .rated-avatar-wrapper .change-avatar {
+  display: -webkit-flex;
   display: flex;
   position: absolute;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-align-items: center;
   align-items: center;
   width: calc(100% - 3px);
   height: calc(100% - 3px);
@@ -2935,20 +3027,26 @@ a.small-icon, button.small-icon {
   line-height: 35px;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   position: absolute;
   width: calc(100% - 285px - 15px);
   margin: 285px 0 0 285px;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons.single {
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons.narrow {
+  -webkit-justify-content: flex-start;
   justify-content: flex-start;
 }
 #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > div, #wrapper #wallpaper-block-wrapper .wallpaper-wrapper .buttons > a {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   height: 32px;
   margin-right: 12px;
@@ -3072,8 +3170,11 @@ a.small-icon, button.small-icon {
   box-shadow: 0 3px 12px rgba(130, 137, 143, 0.2);
 }
 #landing-wrapper #header-wrapper #header {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
   max-width: 1180px;
   height: 100%;
@@ -3091,8 +3192,11 @@ a.small-icon, button.small-icon {
   background-repeat: no-repeat;
 }
 #landing-wrapper #header-wrapper #header #header-buttons {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
   margin-left: 220px;
 }
@@ -3152,8 +3256,11 @@ a.small-icon, button.small-icon {
   background-image: url("../images/landing.jpg");
 }
 #landing-wrapper #content-wrapper .content {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
   max-width: 1180px;
   height: 100%;
@@ -3162,8 +3269,11 @@ a.small-icon, button.small-icon {
   margin: 0 auto 0;
 }
 #landing-wrapper #content-wrapper .content.confirm-signup, #landing-wrapper #content-wrapper .content.reset-password {
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-flex-flow: column wrap;
   flex-flow: column wrap;
+  -webkit-align-items: center;
   align-items: center;
 }
 #landing-wrapper #content-wrapper .content.confirm-signup a, #landing-wrapper #content-wrapper .content.reset-password a {
@@ -3220,7 +3330,9 @@ a.small-icon, button.small-icon {
   border-color: red;
 }
 #landing-wrapper #content-wrapper .content.confirm-signup .block .footer, #landing-wrapper #content-wrapper .content.reset-password .block .footer {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 #landing-wrapper #content-wrapper .content.confirm-signup .block .footer button.cta-button, #landing-wrapper #content-wrapper .content.reset-password .block .footer button.cta-button {
@@ -3369,8 +3481,11 @@ a.small-icon, button.small-icon {
   margin-right: 12px;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div form .form-footer input[type="submit"] {
@@ -3458,12 +3573,17 @@ a.small-icon, button.small-icon {
   border-top: 1px solid #f0f2f4;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div.login .socials {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div.login .socials .social-buttons {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div.login .socials .social-buttons a {
@@ -3488,8 +3608,11 @@ a.small-icon, button.small-icon {
   margin-top: 48px;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div .continue-wrapper {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 #landing-wrapper #content-wrapper .content .auth-blocks > div a {
@@ -3537,9 +3660,12 @@ a.small-icon, button.small-icon {
 }
 
 .backdrop {
+  display: -webkit-flex;
   display: flex;
   position: fixed;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-align-items: center;
   align-items: center;
   top: 0;
   left: 0;
@@ -3664,6 +3790,7 @@ a.small-icon, button.small-icon {
 }
 
 .backdrop {
+  display: -webkit-flex;
   display: flex;
   position: fixed;
   top: 0;
@@ -3882,8 +4009,11 @@ a.small-icon, button.small-icon {
   background-color: #1c95db;
 }
 .comment-box .send div, .question-box .send div, .write-message .send div {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 .comment-box .send div .title, .question-box .send div .title, .write-message .send div .title {
@@ -3930,8 +4060,11 @@ a.small-icon, button.small-icon {
 }
 
 .questions .title-wrapper {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-align-items: center;
   align-items: center;
 }
 .questions .title-wrapper .title {
@@ -3997,7 +4130,9 @@ a.small-icon, button.small-icon {
   background-color: #f1f5f7;
 }
 .questions .list .question .title {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 .questions .list .question .title .name {
@@ -4010,13 +4145,18 @@ a.small-icon, button.small-icon {
   font-size: 13px;
 }
 .questions .list .question .footer {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 .questions .list .question .footer .likes {
+  display: -webkit-flex;
   display: flex;
   height: 20px;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
+  -webkit-align-items: center;
   align-items: center;
   color: #b0bec8;
 }
@@ -4032,7 +4172,9 @@ a.small-icon, button.small-icon {
   font-weight: 900;
 }
 .questions .list .question .footer .actions {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
 }
 .questions .list .question .footer .actions a.item {
@@ -4045,11 +4187,14 @@ a.small-icon, button.small-icon {
   color: #ffffff;
 }
 .questions .list .question .footer .actions .item {
+  display: -webkit-flex;
   display: flex;
   height: 20px;
   margin-left: 15px;
   padding: 0 10px 0 5px;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
+  -webkit-align-items: center;
   align-items: center;
   border: none;
   background: transparent;
@@ -4097,8 +4242,11 @@ a.small-icon, button.small-icon {
 }
 
 .images-list {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 .images-list .image {

@@ -1,6 +1,6 @@
 <div class="user-profile-info" ng-if="profile">
 	<div class="info">
-		<div class="name">{{profile.name}}</div>
+		<a ng-href="#!/person/{{profile._id}}" class="name">{{profile.name}}</a>
 		<div class="position">{{profile.title}}</div>
 	</div>
 

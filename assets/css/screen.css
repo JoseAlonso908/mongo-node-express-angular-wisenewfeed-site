@@ -2362,6 +2362,7 @@ a.small-icon, button.small-icon {
   display: none;
 }
 #wrapper > .content .left .user-profile-info .name {
+  display: block;
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: 500;

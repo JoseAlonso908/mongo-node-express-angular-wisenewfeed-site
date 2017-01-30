@@ -57,12 +57,12 @@ router.get('/familiarexperts', (req, res) => {
 			async.mapSeries(experts, (user, next) => {
 				models.User.getReactionsOnUser(user._id, (reactions) => {
 					user.reactions = reactions
-					
+
 					user.likes_percentage = 0
 					if (reactions.likes > 0 || reactions.dislikes > 0) {
 						user.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
 					}
-					
+
 					next(null, user)
 				})
 			}, (err, experts) => {
@@ -344,10 +344,26 @@ router.post('/report', (req, res) => {
 	let user = req.user
 	let {article} = req.body
 
-	models.Report.report(article, user._id, (err, result) => {
-		if (err) res.status(400).send(err)
-		else res.send({ok: true})
-	})
+    async.parallel({
+        report: cb => {
+            models.Report.report(article, user._id, (err, result) => cb(err))
+        },
+        hide: cb => {
+            models.HiddenArticle.hide(article, req.user._id, (err, result) => cb(err))
+        },
+		notify: cb => {
+            //TODO: Make sure that req.headers.host and etc is sutable for this case
+            mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS,
+                `ER: Article reported`,
+                `Article ${req.protocol}://${req.headers.host}/#!/article/${article} has been reported by ${user.name}(${user.email})`,
+                err => cb(err)
+            )
+		}
+    }, (err, result) => {
+        if (err) res.status(400).send(err)
+        else res.send({ok: true})
+    })
+
 })
 
 router.get('/images', (req, res) => {
@@ -371,7 +387,7 @@ router.get('/multisearch', (req, res) => {
 
 			if (_q[0] == '#') return next()
 			else if (_q[0] == '$') _q = _q.substr(1)
-			
+
 			models.Article.searchForTags(user, '$', _q, 5, next)
 		},
 		tags: (next) => {
@@ -379,7 +395,7 @@ router.get('/multisearch', (req, res) => {
 
 			if (_q[0] == '$') return next()
 			else if (_q[0] == '#') _q = _q.substr(1)
-			
+
 			models.Article.searchForTags(user, '#', _q, 5, next)
 		},
 		users: (next) => {

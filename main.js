@@ -15,7 +15,7 @@ const
 	countriesList = require('countries-list'),
 	Mailgun = require('mailgun').Mailgun
 
-let mailgun = new Mailgun(config.MAILGUN.APIKEY)
+global.mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
 

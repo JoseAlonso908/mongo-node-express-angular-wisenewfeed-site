@@ -15,8 +15,6 @@ var __s = function ($http, $cookies, method, url, data) {
 		query.params = data
 	}
 
-	// console.log(query)
-
 	return $http(query).then(function (result) {
 		return result.data
 	})
@@ -220,7 +218,7 @@ angular.module('er.services', [])
 			// 	var d = $q.defer()
 
 			// 	d.resolve(self.otherCache[id])
-				
+
 			// 	return d.promise
 			// }
 
@@ -941,6 +939,7 @@ angular.module('er.services', [])
 			{id: 2, title: 'Canada News', count: 12478392},
 			{id: 3, title: 'Buzz News', count: 4478392},
 			{id: 4, title: 'Science', count: 2478392},
+			{id: 4, title: 'Science', count: 2478392},
 			{id: 5, title: 'Business', count: 532952},
 			{id: 6, title: 'Health', count: 422321},
 			{id: 7, title: 'Technology', count: 352210},
@@ -1067,5 +1066,40 @@ angular.module('er.services', [])
 		unread: function () {
 			return __s($http, $cookies, 'get', '/chat/unreadcount')
 		},
+	}
+})
+.factory('friendshipService', function ($http, $q, $cookies) {
+	return {
+		add: function (id, phone) {
+            var d = $q.defer()
+
+            $http.post('/friends/add', {id: id, phone: phone}).then(function (response) {
+                d.resolve(response.data)
+            }, function (error) {
+                d.reject(error.data.message)
+            })
+
+            return d.promise
+        },
+		/* Remove by USER ID*/
+		remove: function (id) {
+            var d = $q.defer()
+
+            $http.post('/friends/remove', {id: id}).then(function (response) {
+                d.resolve(response.data)
+            }, function (error) {
+                d.reject(error.data.message)
+            })
+
+            return d.promise
+        },
+        isFriend: function (id) {
+            return __s($http, $cookies, 'get', '/friends/isFriend', {id: id})
+                .then(function (result) {
+                    return result.isFriend
+                }, function (data, status) {
+                    return data
+                })
+        }
 	}
 })

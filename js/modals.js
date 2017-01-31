@@ -187,7 +187,7 @@ angular.module('er.modals', [])
 			} catch (e) {
 				console.error('localStorage is not supported', e)
 			}
-			
+
 			findMyAccountModal.deactivate()
 		}, function (error) {
 			$scope.codeLoading = false
@@ -204,4 +204,31 @@ angular.module('er.modals', [])
 })
 .controller('reportModalController', function ($scope, $parent, reportModal) {
 	$scope.close = reportModal.deactivate
+})
+.factory('friendshipConfirmModal', function (btfModal) {
+    return btfModal({
+        controller: 'friendshipConfirmModalController',
+        controllerAs: 'modal',
+        templateUrl: 'assets/views/modals/friendship-confirm.htm',
+    })
+})
+.controller('friendshipConfirmModalController', function ($scope, $parent, userID, friendshipConfirmModal, friendshipService) {
+    $scope.close = friendshipConfirmModal.deactivate
+
+    $scope.confirm = function () {
+        $scope.phoneError = false
+        if (!$scope.phone) return $scope.phoneError = true
+
+        $scope.loading = true
+        friendshipService.add(userID, $scope.phone).then(function (data) {
+            $scope.loading = false
+            $scope.added = true
+            console.log('$parent.profile', $parent.profile);
+            $parent.profile.isFriend = data.result
+            console.log('data rslt', data.result);
+        }, function (error) {
+            $scope.loading = false
+            $scope.error = 'Unable to add user to friends list'
+        })
+    }
 })

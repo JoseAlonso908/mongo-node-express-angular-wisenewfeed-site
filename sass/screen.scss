@@ -3294,7 +3294,7 @@ a.small-icon, button.small-icon {
 
 					@include transition(background-color .2s);
 
-					&.questions, &.ask-question, &.message, &.follow, &.edit-profile, &.change-background {
+					&.questions, &.ask-question, &.message, &.follow, &.edit-profile, &.change-background, &.add-contact {
 						background-color: $activeBlue;
 
 						&:hover {

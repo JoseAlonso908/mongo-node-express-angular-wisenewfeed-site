@@ -13,7 +13,7 @@ module.exports = (dsn, __root) => {
 		'CommentReaction', 'PhoneVerification', 'ResetPassword',
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
 		'QuestionLike', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
-		'Report', 'ExperienceLog', 'Message'],
+		'Report', 'ExperienceLog', 'Message', 'Friend'],
 
 		models = {}
 

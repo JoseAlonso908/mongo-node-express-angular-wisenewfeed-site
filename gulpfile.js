@@ -9,7 +9,8 @@ var gulp = require('gulp'),
 	plumber = require('gulp-plumber'),
 	gulpUtil = require('gulp-util'),
 	htmlmin = require('gulp-htmlmin'),
-	clean = require('gulp-clean')
+	clean = require('gulp-clean'),
+	browserSync = require('browser-sync').create()
 
 gulp.task('css', () => {
 	gulp.src('./sass/*.scss')
@@ -19,6 +20,7 @@ gulp.task('css', () => {
 		sass: './sass',
 	}).on('error', gulpUtil.log))
 	.pipe(gulp.dest('./assets/css'))
+	.pipe(browserSync.stream())
 })
 
 gulp.task('browserify', () => {
@@ -56,24 +58,20 @@ gulp.task('html', () => {
 	.pipe(gulp.dest('./assets/views'))
 })
 
-gulp.task('watch', () => {
-	gulp.watch('./sass/*.scss', () => {
-		gulp.run(['css'])
+gulp.task('serve', () => {
+	browserSync.init({
+		proxy: {
+			target: 'http://localhost:8006',
+			ws: true,
+		}
 	})
 
-	gulp.watch('./js/app.js', () => {
-		gulp.run('browserify')
-	})
-
-	gulp.watch(['./js/*.js', '!./js/app.js'], () => {
-		gulp.run('js')
-	})
-
-	gulp.watch(['./views/**/*.htm', './views/**/*.html'], () => {
-		gulp.run('html')
-	})
+	gulp.watch('./sass/*.scss', ['css'])
+	gulp.watch('./js/app.js', ['browserify']).on('change', browserSync.reload)
+	gulp.watch(['./js/*.js', '!./js/app.js'], ['js']).on('change', browserSync.reload)
+	gulp.watch(['./views/**/*.htm', './views/**/*.html'], ['html']).on('change', browserSync.reload)
 })
 
-gulp.task('default', ['watch'], () => {
+gulp.task('default', ['serve'], () => {
 	gulp.start(['css', 'browserify', 'js', 'html'])
 })

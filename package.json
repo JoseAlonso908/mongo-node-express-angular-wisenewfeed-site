@@ -50,6 +50,7 @@
     "validator": "^6.1.0"
   },
   "devDependencies": {
+    "browser-sync": "^2.18.6",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.3.2",

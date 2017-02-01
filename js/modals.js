@@ -214,10 +214,13 @@ angular.module('er.modals', [])
 })
 .controller('friendshipConfirmModalController', function ($scope, $parent, userID, friendshipConfirmModal, friendshipService) {
     $scope.close = friendshipConfirmModal.deactivate
-
+	$scope.validatePhone = function (input) {
+		var phoneRegex = /^\+([0-9]{8,15})$/
+		return phoneRegex.test(input)
+    }
     $scope.confirm = function () {
         $scope.phoneError = false
-        if (!$scope.phone) return $scope.phoneError = true
+        if (!$scope.phone || !$scope.validatePhone($scope.phone)) return $scope.phoneError = true
 
         $scope.loading = true
         friendshipService.add(userID, $scope.phone).then(function (data) {

@@ -1161,6 +1161,31 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('friendrequest', function (friendshipService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/friend-request.htm',
+		scope: {
+			user: '=',
+            friendshipRequest: '='
+		},
+		link: function ($scope, element, attr) {
+            console.log($scope);
+            $scope.friendshipRequest.user.role = $scope.friendshipRequest.user.role[0].toUpperCase() + $scope.friendshipRequest.user.role.substr(1)
+
+			$scope.accept = function (friendshipRequest) {
+				friendshipService.accept(friendshipRequest._id)
+				delete $scope.friendshipRequest
+			}
+
+			$scope.decline = function (friendshipRequest) {
+                friendshipService.decline(friendshipRequest._id).then(function (result) {
+                    delete $scope.friendshipRequest
+				})
+			}
+		}
+	}
+})
 .directive('newquestions', function ($rootScope, questionsService, followService) {
 	return {
 		restrict: 'E',
@@ -1254,6 +1279,24 @@ angular.module('er.directives', [])
 				})
 			}
 			
+			$scope.init()
+		}
+	}
+})
+.directive('friendshiprequests', function (friendshipService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/friend-requests.htm',
+		link: function ($scope, element, attr) {
+			$scope.init = function () {
+                $scope.friendshipRequests = []
+				$scope.friendshipRequestsLoading = true
+                friendshipService.pending().then(function (friendshipRequests) {
+					$scope.friendshipRequests = friendshipRequests
+					$scope.friendshipRequestsLoading = false
+				})
+			}
+
 			$scope.init()
 		}
 	}

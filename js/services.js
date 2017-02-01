@@ -1073,7 +1073,7 @@ angular.module('er.services', [])
 		add: function (id, phone) {
             var d = $q.defer()
 
-            $http.post('/friends/add', {id: id, phone: phone}).then(function (response) {
+            $http.post('/friendship/add', {id: id, phone: phone}).then(function (response) {
                 d.resolve(response.data)
             }, function (error) {
                 d.reject(error.data.message)
@@ -1085,7 +1085,44 @@ angular.module('er.services', [])
 		remove: function (id) {
             var d = $q.defer()
 
-            $http.post('/friends/remove', {id: id}).then(function (response) {
+            $http.post('/friendship/remove', {id: id}).then(function (response) {
+                d.resolve(response.data)
+            }, function (error) {
+                d.reject(error.data.message)
+            })
+
+            return d.promise
+        },
+		/* List of pending requests */
+		pending: function () {
+            console.log('pending requests called');
+            var d = $q.defer()
+
+            $http.get('/friendship/pending', {limit: 3}).then(function (response) {
+                d.resolve(response.data)
+            }, function (error) {
+                d.reject(error.data.message)
+            })
+
+            return d.promise
+        },
+		/* Accept friendship request */
+        accept: function (id) {
+            var d = $q.defer()
+
+            $http.post('/friendship/accept', {id: id}).then(function (response) {
+                d.resolve(response.data)
+            }, function (error) {
+                d.reject(error.data.message)
+            })
+
+            return d.promise
+        },
+		/* Remove request by friendship request id*/
+		decline: function (id) {
+            var d = $q.defer()
+
+            $http.post('/friendship/decline', {id: id}).then(function (response) {
                 d.resolve(response.data)
             }, function (error) {
                 d.reject(error.data.message)
@@ -1094,7 +1131,7 @@ angular.module('er.services', [])
             return d.promise
         },
         isFriend: function (id) {
-            return __s($http, $cookies, 'get', '/friends/isFriend', {id: id})
+            return __s($http, $cookies, 'get', '/friendship/isFriend', {id: id})
                 .then(function (result) {
                     return result.isFriend
                 }, function (data, status) {

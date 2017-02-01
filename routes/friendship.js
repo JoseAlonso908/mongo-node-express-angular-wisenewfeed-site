@@ -1,5 +1,4 @@
 const express = require('express'),
-    path = require('path'),
     async = require('async'),
     config = require('./../config')
 
@@ -21,9 +20,9 @@ router.use((req, res, next) => {
 router.get('/isFriend', (req, res) => {
     let {id} = req.query
     console.log(req.query);
-    models.Friend.isFriend(req.user._id, id, (err, isFriend) => {
+    models.Friendship.isFriend(req.user._id, id, (err, status) => {
         if (err) res.status(400).send(err)
-        else res.send({isFriend})
+        else res.send(status)
     })
 })
 
@@ -37,7 +36,7 @@ router.post('/add', (req, res) => {
             })
         },
         (result, cb) => {
-            models.Friend.add(id, req.user._id, (err, result) => {
+            models.Friendship.add(id, req.user._id, (err, result) => {
                 cb(err)
             })
         }
@@ -49,10 +48,37 @@ router.post('/add', (req, res) => {
 
 router.post('/remove', (req, res) => {
     let {id} = req.body
-    models.Friend.unfriend(id, req.user._id, (err, result) => {
+    models.Friendship.unfriend(id, req.user._id, (err, result) => {
         console.log(result);
         if (err) return res.status(400).send(err)
         res.send({isFriend: false})
+    })
+})
+
+router.post('/accept', (req, res) => {
+    let {id} = req.body
+    models.Friendship.accept(id, req.user._id, (err, result) => {
+        console.log('Error: %s, result: %s', err, result)
+        if (err) return res.status(400).send(err)
+        res.send({ok: true})
+    })
+})
+
+router.post('/decline', (req, res) => {
+    let {id} = req.body
+    models.Friendship.remove(id, req.user._id, (err, result) => {
+        console.log('Error: %s, result: %s', err, result);
+        if (err) return res.status(400).send(err)
+        res.send({ok: true})
+    })
+})
+
+router.get('/pending', (req, res) => {
+    let {skip, limit} = req.query
+    models.Friendship.pending(req.user._id, skip, limit, (err, result) => {
+        console.log('Error: %s, result: %s', err, result);
+        if (err) return res.status(400).send(err)
+        res.send(result)
     })
 })
 

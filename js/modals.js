@@ -223,9 +223,7 @@ angular.module('er.modals', [])
         friendshipService.add(userID, $scope.phone).then(function (data) {
             $scope.loading = false
             $scope.added = true
-            console.log('$parent.profile', $parent.profile);
-            $parent.profile.isFriend = data.result
-            console.log('data rslt', data.result);
+            $parent.profile.isFriend = data.isFriend
         }, function (error) {
             $scope.loading = false
             $scope.error = 'Unable to add user to friends list'

@@ -99,6 +99,31 @@
 			<div class="number">{{::commentsCount || 0}}</div>
 		</div>
 	</div>
+	<div class="divider"></div>
+
+	<div class="actions">
+		<button socialshare
+				socialshare-provider="facebook"
+				socialshare-title="{{post.text | cut:true:30}}"
+				socialshare-description="{{post.text | cut:true:140}}"
+				socialshare-url="{{window.location}}">
+			<i class="fa fa-facebook-f"></i> <span class="title">Share to Facebook</span>
+		</button>
+		<button socialshare
+				socialshare-provider="twitter"
+				socialshare-text="{{post.text | cut:true:60}}"
+				socialshare-hashtags="expertreaction"
+				socialshare-url="{{window.location}}">
+			<i class="fa fa-twitter"></i> <span class="title">Share to Twitter</span>
+		</button>
+		<button socialshare
+				socialshare-provider="linkedin"
+				socialshare-text="{{post.text | cut:true:30}}"
+				socialshare-description="{{post.text | cut:true:140}}"
+				socialshare-source="{{window.location}}">
+			<i class="fa fa-linkedin"></i><span class="title">Share to Linkedin</span>
+		</button>
+	</div>
 
 	<div class="divider" ng-if="user"></div>
 

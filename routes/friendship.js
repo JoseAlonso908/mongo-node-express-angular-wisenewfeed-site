@@ -20,7 +20,7 @@ router.use((req, res, next) => {
 router.get('/isFriend', (req, res) => {
     let {id} = req.query
     console.log(req.query);
-    models.Friendship.isFriend(req.user._id, id, (err, status) => {
+    models.Friendship.isFriend(id, req.user._id, (err, status) => {
         if (err) res.status(400).send(err)
         else res.send(status)
     })
@@ -42,16 +42,15 @@ router.post('/add', (req, res) => {
         }
     ], (err, result) => {
         if (err) return res.status(400).send(err)
-        res.send({isFriend: true})
+        res.send({requested: true, accepted: false, isInitiator: true})
     })
 })
 
 router.post('/remove', (req, res) => {
     let {id} = req.body
     models.Friendship.unfriend(id, req.user._id, (err, result) => {
-        console.log(result);
         if (err) return res.status(400).send(err)
-        res.send({isFriend: false})
+        res.send({requested: false, accepted: false})
     })
 })
 
@@ -60,7 +59,7 @@ router.post('/accept', (req, res) => {
     models.Friendship.accept(id, req.user._id, (err, result) => {
         console.log('Error: %s, result: %s', err, result)
         if (err) return res.status(400).send(err)
-        res.send({ok: true})
+        res.send({requested: true, accepted: true})
     })
 })
 

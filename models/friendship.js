@@ -45,12 +45,27 @@ var Model = function (mongoose) {
         unfriend: (friend, user, callback) => {
             if (typeof friend !== 'object') friend = mongoose.Types.ObjectId(friend)
             if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
-
-            Model.remove({friend, user}, callback)
+            // Logical Problems available  with condition
+            Model.remove({
+                $or: [
+                    {
+                        $and: [
+                            {'user': user},
+                            {'friend': friend}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {'user': friend},
+                            {'friend': user}
+                        ]
+                    }
+                ]
+            }, callback)
         },
         accept: (_id, ownerID, callback) => {
             if (typeof ownerID !== 'object') ownerID = mongoose.Types.ObjectId(ownerID)
-            Model.findOneAndUpdate({_id, friend: ownerID}, {accepted:true}, callback)
+            Model.findOneAndUpdate({_id, friend: ownerID}, {accepted: true}, callback)
         },
         remove: (_id, executorID, callback) => {
             if (typeof executorID !== 'object') executorID = mongoose.Types.ObjectId(executorID)
@@ -83,7 +98,12 @@ var Model = function (mongoose) {
                     }
                 ]
             }).lean().exec((err, friendship) => {
-                callback(err, {friendship: !!friendship, accepted: friendship ? friendship.accepted : null})
+                callback(err, {
+                    requested: !!friendship,
+                    accepted: friendship ? friendship.accepted : false,
+                    isInitiator: (friendship && friendship.user.toString() === user.toString()),
+                    requestID: friendship ? friendship._id : null
+                })
             })
         },
         pending: (userID, skip, limit, callback) => {

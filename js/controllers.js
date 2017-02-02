@@ -405,16 +405,14 @@ angular.module('er.controllers', [])
 
 			async.parallel([
 				function (next) {
-                    console.log('IS FOLLOWING ?');
                     followService.isFollowing($scope.profile._id).then(function (result) {
 						$scope.profile.isFollowing = result
 						next()
 					})
 				},
 				function (next) {
-                    console.log('IS FRIEND ? ');
                     friendshipService.isFriend($scope.profile._id).then(function (result) {
-                        $scope.profile.isFriend = result
+                        $scope.profile.friendship = result
                         next()
                     })
 				}
@@ -485,16 +483,14 @@ angular.module('er.controllers', [])
 
         async.parallel([
             function (next) {
-                console.log('IS FOLLOWING ?');
                 followService.isFollowing($scope.profile._id).then(function (result) {
                     $scope.profile.isFollowing = result
                     next()
                 })
             },
             function (next) {
-                console.log('IS FRIEND ? ');
                 friendshipService.isFriend($scope.profile._id).then(function (result) {
-                    $scope.profile.isFriend = result
+                    $scope.profile.friendship = result
                     next()
                 })
             },

@@ -1133,7 +1133,7 @@ angular.module('er.services', [])
         isFriend: function (id) {
             return __s($http, $cookies, 'get', '/friendship/isFriend', {id: id})
                 .then(function (result) {
-                    return result.isFriend
+                    return result
                 }, function (data, status) {
                     return data
                 })

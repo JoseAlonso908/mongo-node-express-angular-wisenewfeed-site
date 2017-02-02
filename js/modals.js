@@ -220,16 +220,19 @@ angular.module('er.modals', [])
     }
     $scope.confirm = function () {
         $scope.phoneError = false
-        if (!$scope.phone || !$scope.validatePhone($scope.phone)) return $scope.phoneError = true
+        if (!$scope.phone || !$scope.validatePhone($scope.phone)) {
+			$scope.error = 'Invalid phone number format'
+            return $scope.phoneError = true
+		}
 
         $scope.loading = true
         friendshipService.add(userID, $scope.phone).then(function (data) {
+            $parent.profile.friendship = data
             $scope.loading = false
             $scope.added = true
-            $parent.profile.isFriend = data.isFriend
         }, function (error) {
             $scope.loading = false
-            $scope.error = 'Unable to add user to friends list'
+            $scope.error = 'Phone number is not fit. Please, try again'
         })
     }
 })

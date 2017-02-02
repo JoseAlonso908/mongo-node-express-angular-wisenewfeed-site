@@ -1169,18 +1169,17 @@ angular.module('er.directives', [])
 			user: '=',
             friendshipRequest: '='
 		},
-		link: function ($scope, element, attr) {
-            console.log($scope);
-            $scope.friendshipRequest.user.role = $scope.friendshipRequest.user.role[0].toUpperCase() + $scope.friendshipRequest.user.role.substr(1)
+		link: function (scope, element, attr) {
+            scope.friendshipRequest.user.role = scope.friendshipRequest.user.role[0].toUpperCase() + scope.friendshipRequest.user.role.substr(1)
 
-			$scope.accept = function (friendshipRequest) {
+			scope.accept = function (friendshipRequest) {
 				friendshipService.accept(friendshipRequest._id)
-				delete $scope.friendshipRequest
+				delete scope.friendshipRequest
 			}
 
-			$scope.decline = function (friendshipRequest) {
+			scope.decline = function (friendshipRequest) {
                 friendshipService.decline(friendshipRequest._id).then(function (result) {
-                    delete $scope.friendshipRequest
+                    delete scope.friendshipRequest
 				})
 			}
 		}
@@ -1287,17 +1286,21 @@ angular.module('er.directives', [])
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/friend-requests.htm',
-		link: function ($scope, element, attr) {
-			$scope.init = function () {
+		scope: {
+			user: '='
+		},
+		controller: function ($scope) {
+            $scope.init = function () {
                 $scope.friendshipRequests = []
-				$scope.friendshipRequestsLoading = true
+                $scope.friendshipRequestsLoading = true
                 friendshipService.pending().then(function (friendshipRequests) {
-					$scope.friendshipRequests = friendshipRequests
-					$scope.friendshipRequestsLoading = false
-				})
-			}
-
-			$scope.init()
+                    $scope.friendshipRequests = friendshipRequests
+                    $scope.friendshipRequestsLoading = false
+                })
+            }
+        },
+		link: function (scope, element, attr) {
+			scope.init()
 		}
 	}
 })
@@ -1697,9 +1700,20 @@ angular.module('er.directives', [])
 
             $scope.removeContact = function (userID) {
                 friendshipService.remove(userID).then(function (data) {
-                    $scope.profile.isFriend = data.isFriend
+                    $scope.profile.friendship = data
                 }, function (error) {
                     console.log(error);
+                })
+            }
+            $scope.acceptFriendship = function (requestID) {
+                friendshipService.accept(requestID).then(function (result) {
+                    $scope.profile.friendship = result
+                })
+            }
+
+            $scope.declineFriendship = function (requestID) {
+                friendshipService.decline(requestID).then(function (result) {
+                    $scope.profile.friendship = null
                 })
             }
         },

@@ -25,7 +25,7 @@
 		<div class="right" ng-if="feedType != 'people'">
 			<onlineflag ng-hide="profile._id == user._id" ng-if="profile" profile="profile"></onlineflag>
 			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
-			<friendshiprequests></friendshiprequests>
+			<friendshiprequests user="user" ng-show="profile._id == user._id"></friendshiprequests>
 			<familiarexperts></familiarexperts>
 			<aboutbox></aboutbox>
 		</div>

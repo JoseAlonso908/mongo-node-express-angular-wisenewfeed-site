@@ -130,6 +130,7 @@ global.getCategories = () => {
 		{id: 7, title: 'Technology', tag: 'technology', count: 0},
 		{id: 8, title: 'Sport', tag: 'sport', count: 0},
 		{id: 9, title: 'Entertainment', tag: 'entertainment', count: 0},
+		{id: 10, title: 'Lesson learned', tag: 'lessonlearned', count: 0},
 	]
 }
 

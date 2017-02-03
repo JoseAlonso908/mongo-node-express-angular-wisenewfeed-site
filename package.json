@@ -28,6 +28,7 @@
     "angular-passport": "^1.0.5",
     "angular-route": "^1.5.8",
     "angular-sanitize": "^1.5.8",
+    "angular-socialshare": "~2.3.5",
     "async": "^2.1.2",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",

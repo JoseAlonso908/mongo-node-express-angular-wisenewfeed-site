@@ -10,7 +10,8 @@ window.async = require('async')
 // .config(['$locationProvider', '$routeProvider', '$authProvider',
 
 angular.module('er', [
-	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'), 'angularMoment', require('satellizer'),
+	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
+	'angularMoment', require('satellizer'), require('angular-socialshare'),
 	// 'ngScrollbar',
 	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])

@@ -1,8 +1,8 @@
-var sequence = '' 
+var sequence = ''
 angular.element(document).on('keydown', function (e) {
 	e.stopImmediatePropagation()
 	sequence += e.key
-	
+
 	if (sequence.toLowerCase() === 'yapidor') {
 		angular.element(document.body).css('fontFamily', 'Comic Sans MS')
 		var all = document.querySelectorAll('*')
@@ -17,7 +17,7 @@ angular.element(document).on('keydown', function (e) {
 
 angular.module('er.controllers', [])
 .controller('startController', function (	$scope, $auth, $location, $cookies, $timeout,
-											countriesListService, confirmAccountModal, 
+											countriesListService, confirmAccountModal,
 											validateEmailService, validatePhoneService,
 											forgotPasswordModal, findMyAccountModal, identityService
 ) {
@@ -79,13 +79,13 @@ angular.module('er.controllers', [])
 
 	$scope.doneSignup = function (phoneVerified) {
 		if (!phoneVerified) return
-		
+
 		$cookies.putObject('signup-params', $scope.signup)
 		$location.url('/confirmsignup')
 	}
 
 	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
-	
+
 	$scope.doSignup = function () {
 		console.log($scope.signup)
 
@@ -217,7 +217,7 @@ angular.module('er.controllers', [])
 
 	$scope.setActiveCountry = function (item) {
 		$scope.chosenCountry = item
-		
+
 		$rootScope.$emit('updateCategoriesFilter')
 		$rootScope.$emit('feedCountry', item)
 	}
@@ -319,7 +319,7 @@ angular.module('er.controllers', [])
 		// 	$scope.user = user
 		// 	$scope.profile = user
 		// })
-	})	
+	})
 })
 .controller('profileFeedController', function ($rootScope, $routeParams, $scope, identityService) {
 	$scope.type = $routeParams.type
@@ -390,7 +390,7 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('profilePeopleController', function ($rootScope, $routeParams, $scope, identityService, followService) {
+.controller('profilePeopleController', function ($rootScope, $routeParams, $scope, identityService, followService, friendshipService) {
 	$scope.type = $routeParams.type
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
@@ -403,11 +403,20 @@ angular.module('er.controllers', [])
 				$scope.profile.reactions = profile.reactions
 			}
 
-			followService.isFollowing($scope.profile._id).then(function (result) {
-				$scope.profile.isFollowing = result
-
-				if (callback) callback()
-			})
+			async.parallel([
+				function (next) {
+                    followService.isFollowing($scope.profile._id).then(function (result) {
+						$scope.profile.isFollowing = result
+						next()
+					})
+				},
+				function (next) {
+                    friendshipService.isFriend($scope.profile._id).then(function (result) {
+                        $scope.profile.friendship = result
+                        next()
+                    })
+				}
+            ], callback)
 		})
 	}
 
@@ -463,28 +472,37 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('personController', function ($routeParams, $scope, $location, identityService, followService) {
+.controller('personController', function ($routeParams, $scope, $location, identityService, followService, friendshipService) {
 	$scope.type = 'own'
+    identityService.getOther($routeParams.id).then(function (profile) {
+        if (!$scope.profile) {
+            $scope.profile = profile
+        } else {
+            $scope.profile.reactions = profile.reactions
+        }
 
-	async.parallel([
-		function (cb) {
-			identityService.getOther($routeParams.id).then(function (profile) {
-				$scope.profile = profile
-
-				followService.isFollowing($scope.profile._id).then(function (result) {
-					$scope.profile.isFollowing = result
-					cb()
-				})
-			})
-		},
-		function (cb) {
-			identityService.get().then(function (user) {
-				$scope.user = user
-				cb()
-			}, cb)
-		}
-	], function () {
-	})
+        async.parallel([
+            function (next) {
+                followService.isFollowing($scope.profile._id).then(function (result) {
+                    $scope.profile.isFollowing = result
+                    next()
+                })
+            },
+            function (next) {
+                friendshipService.isFriend($scope.profile._id).then(function (result) {
+                    $scope.profile.friendship = result
+                    next()
+                })
+            },
+			function (next) {
+                identityService.get().then(function (user) {
+                    $scope.user = user
+                    next()
+                }, next)
+            }
+        ], function () {
+        })
+    })
 
 	$scope.follow = function (user) {
 		followService.follow($scope.profile._id).then(function (result) {
@@ -504,7 +522,7 @@ angular.module('er.controllers', [])
 		downloadsService, updateProfileService
 ) {
 	$scope.wallpaperStyle = {}
-	
+
 	$scope.saving = false
 	$scope.saveChanges = function () {
 		if ($scope.saving) return
@@ -543,7 +561,7 @@ angular.module('er.controllers', [])
 
 			$scope.$apply(function () {
 				var file = e.target.files[0]
-				
+
 				if (file.type.split('/')[0] != 'image') return alert('You can upload only images')
 
 				uploadWallpaperService(file).then(function (result) {
@@ -591,7 +609,7 @@ angular.module('er.controllers', [])
 				$scope.user.certificates = user.certificates
 			})
 		}).catch(function (error) {
-			
+
 		})
 	}
 
@@ -625,7 +643,7 @@ angular.module('er.controllers', [])
 				$scope.user.downloads = user.downloads
 			})
 		}).catch(function (error) {
-			
+
 		})
 	}
 
@@ -884,7 +902,7 @@ angular.module('er.controllers', [])
 		},
 		function () {
 			fieldsListService.get().then(function (list) {
-				$scope.fields = list 
+				$scope.fields = list
 			})
 		},
 	], function () {
@@ -903,7 +921,7 @@ angular.module('er.controllers', [])
 		active: 0,
 	}
 	$scope.visibleQuestionsCount = 0
-	
+
 	$scope.setFilter = function (filter) {
 		$scope.chosenFilter = filter
 		$scope.recalcQuestionsCounter()
@@ -999,7 +1017,7 @@ angular.module('er.controllers', [])
 
 		questionsService.get($scope.id).then(function (questions) {
 			var done = function () {
-				$scope.$broadcast('rebuild-questions-box')	
+				$scope.$broadcast('rebuild-questions-box')
 				if (typeof callback === 'function') callback()
 			}
 
@@ -1121,11 +1139,11 @@ angular.module('er.controllers', [])
 	$scope.chatssearch = ''
 	$scope.chatChosen = false
 	$scope.loading = false
-	
+
 	$scope.chatMessages = []
 	$scope.skip = 0
 	$scope.limit = 20
-	
+
 	$scope.activeChat
 
 	$scope.files = []
@@ -1274,7 +1292,7 @@ angular.module('er.controllers', [])
 			$scope.chatMessages.push(result)
 			$scope.text = ''
 			$scope.files = []
-			
+
 			$scope.activeChat.lastMessageId = result._id
 			$scope.activeChat.lastMessage = result.text
 			$scope.activeChat.lastMessageTime = result.createdAt

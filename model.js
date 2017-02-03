@@ -5,15 +5,15 @@ module.exports = (dsn, __root) => {
 
 	// Mongoose's own promise is deprecated
 	mongoose.Promise = Promise
-
 	let connection = mongoose.connect(dsn)
+    mongoose.set('debug', true);
 
 	let modelsNames =
 		['User', 'Token', 'Article', 'Comment', 'PostReaction',
 		'CommentReaction', 'PhoneVerification', 'ResetPassword',
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
 		'QuestionLike', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
-		'Report', 'ExperienceLog', 'Message'],
+		'Report', 'ExperienceLog', 'Message', 'Friendship'],
 
 		models = {}
 

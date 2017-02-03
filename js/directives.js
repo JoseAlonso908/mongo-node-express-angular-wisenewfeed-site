@@ -1254,6 +1254,30 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('friendrequest', function (friendshipService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/friend-request.htm',
+		scope: {
+			user: '=',
+            friendshipRequest: '='
+		},
+		link: function (scope, element, attr) {
+            scope.friendshipRequest.user.role = scope.friendshipRequest.user.role[0].toUpperCase() + scope.friendshipRequest.user.role.substr(1)
+
+			scope.accept = function (friendshipRequest) {
+				friendshipService.accept(friendshipRequest._id)
+				delete scope.friendshipRequest
+			}
+
+			scope.decline = function (friendshipRequest) {
+                friendshipService.decline(friendshipRequest._id).then(function (result) {
+                    delete scope.friendshipRequest
+				})
+			}
+		}
+	}
+})
 .directive('newquestions', function ($rootScope, questionsService, followService) {
 	return {
 		restrict: 'E',
@@ -1348,6 +1372,28 @@ angular.module('er.directives', [])
 			}
 
 			$scope.init()
+		}
+	}
+})
+.directive('friendshiprequests', function (friendshipService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/friend-requests.htm',
+		scope: {
+			user: '='
+		},
+		controller: function ($scope) {
+            $scope.init = function () {
+                $scope.friendshipRequests = []
+                $scope.friendshipRequestsLoading = true
+                friendshipService.pending().then(function (friendshipRequests) {
+                    $scope.friendshipRequests = friendshipRequests
+                    $scope.friendshipRequestsLoading = false
+                })
+            }
+        },
+		link: function (scope, element, attr) {
+			scope.init()
 		}
 	}
 })
@@ -1717,7 +1763,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('wallpaperblock', function ($rootScope, followService) {
+.directive('wallpaperblock', function ($rootScope, followService, friendshipConfirmModal, friendshipService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/wallpaperblock.htm',
@@ -1740,7 +1786,30 @@ angular.module('er.directives', [])
 					$rootScope.$emit('update-follow')
 				})
 			}
-		},
+
+            $scope.addContact = function (userID) {
+                friendshipConfirmModal.activate({$parent: $scope, userID: userID})
+            }
+
+            $scope.removeContact = function (userID) {
+                friendshipService.remove(userID).then(function (data) {
+                    $scope.profile.friendship = data
+                }, function (error) {
+                    console.log(error);
+                })
+            }
+            $scope.acceptFriendship = function (requestID) {
+                friendshipService.accept(requestID).then(function (result) {
+                    $scope.profile.friendship = result
+                })
+            }
+
+            $scope.declineFriendship = function (requestID) {
+                friendshipService.decline(requestID).then(function (result) {
+                    $scope.profile.friendship = null
+                })
+            }
+        },
 	}
 })
 .directive('profileinfo', function (identityService) {

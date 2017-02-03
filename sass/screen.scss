@@ -710,6 +710,9 @@ a.small-icon, button.small-icon {
 		// @include flex-wrap(wrap);
 		padding-bottom: 20px;
 
+		&.centered {
+			@include justify-content(center);
+		}
 		&.chat-content {
 			height: calc(100% - 125px);
 		}
@@ -723,7 +726,104 @@ a.small-icon, button.small-icon {
 			text-align: center;
 			color: $soDark;
 		}
+		//Signup for beta page
+		.single-column {
+			background-color: white;
+			width: 80%;
+			@include display-flex;
+			@include flex-flow(row wrap);
 
+			.role-heading {
+				width: 100%;
+				display: block;
+				list-style-type: none;
+				li {
+					width: 50%;
+					float: left;
+					text-align: center;
+					line-height: 50px;
+					font-weight: bold;
+					cursor: pointer;
+					border-bottom: 3px solid #e6e6e6;
+					color: $iconGrey;
+					&.active, &:hover{
+						border-bottom: 3px solid $activeBlue;
+						color: $activeBlue;
+					}
+				}
+			}
+			.form-container {
+				width: 100%;
+				padding: 0 40px;
+				float: left;
+			}
+			.group {
+				&:last-child {
+					padding-bottom: 35px;
+				}
+				.title {
+					text-align: center;
+					font-weight: bold;
+					font-size: 16px;
+					padding: 35px 0;
+
+				}
+
+				.input-group {
+					display: inline-block;
+					font-size: 14px;
+					width: 100%;
+					&:not(:last-child) {
+						margin-bottom: 16px;
+					}
+
+					label {
+						display: inline-block;
+						color: $middleGrey;
+						text-align: right;
+						padding-right: 20px;
+						line-height: 35px;
+						width: 120px;
+						float: left;
+					}
+
+					input, textarea {
+						width: calc(100% - 140px);
+						border: 1px solid #e6e9ec;
+						box-sizing: border-box;
+						display: inline-block;
+						background: #ffffff;
+						border-radius: 3px;
+						line-height: 35px;
+						padding: 0 10px;
+						color: $soDark;
+						float: right;
+						@include transition(border-color .1s);
+
+						&:focus {
+							border-color: $activeBlue;
+						}
+
+						&.error {
+							border-color: red;
+						}
+
+						&.half {
+							width: calc(50% - 80px);
+							&:not(:last-child) {
+								margin-left: 20px;
+							}
+						}
+					}
+					textarea {
+						padding: 10px;
+						resize: none;
+						height: 200px;
+					}
+				}
+			}
+
+		}
 		.card {
 			background-color: #ffffff;
 			border-radius: 4px;

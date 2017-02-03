@@ -22,6 +22,10 @@ angular.module('er', [
 
 		$locationProvider.hashPrefix('!')
 		$routeProvider
+            .when('/beta', {
+                templateUrl: 'assets/views/beta.htm',
+                controller: 'betaController'
+            })
 			.when('/start', {
 				templateUrl: 'assets/views/landing.htm',
 			})

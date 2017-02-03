@@ -96,8 +96,10 @@
 		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
 			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
 		</button>
-		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && user.role != 'User'" ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
-			<i class="material-icons">share</i> <span class="title">Share</span>
+		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && user.role != 'User'"
+				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
+			<i class="material-icons">share</i>
+			<span class="title">Share {{post.sharedIn.length > 0 ? post.sharedIn.length : ''}}</span>
 		</button>
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
@@ -112,21 +114,21 @@
 				socialshare-provider="facebook"
 				socialshare-title="{{post.text | cut:true:30}}"
 				socialshare-description="{{post.text | cut:true:140}}"
-				socialshare-url="{{window.location}}">
+				socialshare-url="{{getURL(post._id)}}">
 			<i class="fa fa-facebook-f"></i> <span class="title">Share to Facebook</span>
 		</button>
 		<button socialshare
 				socialshare-provider="twitter"
 				socialshare-text="{{post.text | cut:true:60}}"
 				socialshare-hashtags="expertreaction"
-				socialshare-url="{{window.location}}">
+				socialshare-url="{{getURL(post._id)}}">
 			<i class="fa fa-twitter"></i> <span class="title">Share to Twitter</span>
 		</button>
 		<button socialshare
 				socialshare-provider="linkedin"
 				socialshare-text="{{post.text | cut:true:30}}"
 				socialshare-description="{{post.text | cut:true:140}}"
-				socialshare-source="{{window.location}}">
+				socialshare-source="{{getURL(post._id)}}">
 			<i class="fa fa-linkedin"></i><span class="title">Share to Linkedin</span>
 		</button>
 	</div>

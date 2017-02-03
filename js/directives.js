@@ -750,7 +750,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('post', function ($rootScope, $timeout, identityService, postService, commentService, reactionsService, followService, reportModal) {
+.directive('post', function ($rootScope, $window, $timeout, identityService, postService, commentService, reactionsService, followService, reportModal) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/post.htm',
@@ -781,7 +781,9 @@ angular.module('er.directives', [])
 			followService.isFollowing($scope.post.author._id).then(function (result) {
 				$scope.post.author.isFollowing = result
 			})
-
+			$scope.getURL = function (id) {
+				return $window.location.origin + '/#!/article/' + id
+            }
 			$scope.setEditingMode = function (post, mode) {
 				mode = (typeof mode !== 'undefined') ? mode : true
 
@@ -950,6 +952,17 @@ angular.module('er.directives', [])
 				} else if (type == 'dislike' && $scope.post.youdid.like) {
 					$scope.post.youdid.like = false
 				}
+                /** SHIT_START
+				 * TODO: Should be something normal instead of this hack
+				 * sharedIn array contains articles IDs.
+				 * To update counter according to expected result I`ll change array size
+				 * */
+                if (type == 'share' && unreact) {
+                    $scope.post.sharedIn.pop()
+                } else if (type == 'share' && !unreact) {
+                    $scope.post.sharedIn.push(null)
+                }
+                /** SHIT_END */
 
 				reactionsService[action](post._id, type).then(function (result) {
 					$rootScope.$emit('reloadreactions', post._id)

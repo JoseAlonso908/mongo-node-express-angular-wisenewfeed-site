@@ -247,6 +247,24 @@ var Model = function(mongoose) {
 			article.save(callback)
 		},
 
+		edit: (_id, author, text, images, callback) => {
+			author = MOI(author)
+
+			Model.findOne({_id, author}).exec((err, post) => {
+				var buf = []
+				for (var i = text.length - 1; i >= 0; i--) {
+					if ((['>', '<', '/', '"']).indexOf(text[i]) == -1) buf.unshift(text[i])
+					else buf.unshift(['&#', text[i].charCodeAt(), ';'].join(''));
+				}
+				text = buf.join('')
+
+				text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
+
+				Object.assign(post, {text})
+				post.save(callback)
+			})
+		},
+
 		share: (author, sharedFrom, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
@@ -266,7 +284,7 @@ var Model = function(mongoose) {
 		unshare: (author, sharedFrom, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
-			
+
 			Model.remove({author, sharedFrom}, callback)
 		},
 

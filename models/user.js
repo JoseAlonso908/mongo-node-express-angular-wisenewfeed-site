@@ -54,6 +54,7 @@ var Model = function(mongoose) {
 		color 			: {type: String, default: 'bronze'},
 		xp				: {type: Number, default: 0},
 		xpInfo 			: {type: Object, default: {a: 1}},
+		lastVisit		: Date,
 	})
 
 	var getLevelInfoByXP = (xp) => {
@@ -113,6 +114,15 @@ var Model = function(mongoose) {
 	return {
 		setXpInfo: setXpInfo,
 
+		updateLastVisit: (_id, callback) => {
+			_id = MOI(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.lastVisit = (new Date())
+				user.save(callback)
+			})
+		},
+
 		findOne: (params, callback) => {
 			Model.findOne(params, callback)
 		},
@@ -130,7 +140,7 @@ var Model = function(mongoose) {
 
 		isPasswordValid: (_id, password, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
-			
+
 			password = sha1(password)
 
 			Model.findOne({_id, password}, (err, user) => {

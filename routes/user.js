@@ -13,6 +13,10 @@ let tempUploads = multer({
 	}
 })
 
+ws.WSEmitter.on('disconnect', (userId) => {
+	models.User.updateLastVisit(userId, () => {})
+})
+
 let router = express.Router()
 
 router.use(function (err, req, res, next) {
@@ -57,12 +61,12 @@ router.get('/familiarexperts', (req, res) => {
 			async.mapSeries(experts, (user, next) => {
 				models.User.getReactionsOnUser(user._id, (reactions) => {
 					user.reactions = reactions
-					
+
 					user.likes_percentage = 0
 					if (reactions.likes > 0 || reactions.dislikes > 0) {
 						user.likes_percentage = parseInt((reactions.likes / (reactions.likes + reactions.dislikes)) * 100)
 					}
-					
+
 					next(null, user)
 				})
 			}, (err, experts) => {
@@ -371,7 +375,7 @@ router.get('/multisearch', (req, res) => {
 
 			if (_q[0] == '#') return next()
 			else if (_q[0] == '$') _q = _q.substr(1)
-			
+
 			models.Article.searchForTags(user, '$', _q, 5, next)
 		},
 		tags: (next) => {
@@ -379,7 +383,7 @@ router.get('/multisearch', (req, res) => {
 
 			if (_q[0] == '$') return next()
 			else if (_q[0] == '#') _q = _q.substr(1)
-			
+
 			models.Article.searchForTags(user, '#', _q, 5, next)
 		},
 		users: (next) => {

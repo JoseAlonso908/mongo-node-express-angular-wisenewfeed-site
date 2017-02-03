@@ -6,9 +6,9 @@
 // @import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&subset=cyrillic-ext');
 
 @import "compass/reset";
-@import "compass/css3"; 
+@import "compass/css3";
 
-$activeBlue: #43abe7; 
+$activeBlue: #43abe7;
 $iconGrey: #b0bec8;
 $middleGrey: #82898f;
 $soDark: #535659;
@@ -429,12 +429,12 @@ a.small-icon, button.small-icon {
 			max-width: 1180px; height: 81px;
 			width: 100%;
 			margin: 0 auto 0;
-			
+
 			#logo {
 				display: block;
 				width: 135px; height: 47px;
 				margin-right: 100px;
-				background-image: url('../images/logo.png');
+				background-image: url('../images/logo-small.png');
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: contain;
@@ -677,7 +677,7 @@ a.small-icon, button.small-icon {
 
 								&.active {
 									background-color: #ffffff;
-									
+
 									&:after, &::after {
 										@extend .material-icons-pseudo-class;
 										position: absolute;
@@ -911,6 +911,18 @@ a.small-icon, button.small-icon {
 							overflow: hidden;
 						}
 
+						textarea.text {
+							width: 100%; height: 200px;
+							padding: 10px;
+							border: 1px solid $activeBlue;
+							border-radius: 3px;
+							font-family: 'Roboto';
+							font-size: 13px;
+							box-sizing: border-box;
+							line-height: 20px;
+							resize: none;
+						}
+
 						.text {
 							margin-bottom: 12px;
 							// padding-right: 40px;
@@ -929,6 +941,26 @@ a.small-icon, button.small-icon {
 								margin: 10px 0;
 								border-left: 2px solid #E7EBEE;
 								padding-left: 10px;
+							}
+						}
+
+						.buttons {
+							@include display-flex;
+							@include justify-content(flex-end);
+							width: 100%;
+
+							.cta-button {
+								height: 24px;
+								margin-left: 8px;
+								color: #ffffff;
+
+								&.cancel {
+									background-color: $middleGrey;
+
+									&:hover {
+										background-color: darken($middleGrey, 10%);
+									}
+								}
 							}
 						}
 
@@ -1138,6 +1170,7 @@ a.small-icon, button.small-icon {
 					.show-more {
 						display: block;
 						width: 100%; height: 32px;
+						margin-bottom: 20px;
 						font-size: 13px;
 						line-height: 32px;
 						text-align: center;
@@ -1194,18 +1227,37 @@ a.small-icon, button.small-icon {
 							background-color: rgba($activeBlue, .1);
 						}
 
-						.remove {
-							display: block; position: absolute;
+						.comment-actions-wrapper {
+							@include display-flex;
+							@include justify-content(space-between);
+							position: absolute;
+							width: 36px;
 							top: 20px; right: 17px;
 
-							i {
-								color: $iconGrey;
-								font-size: 14px;
+							.remove, .edit {
+								display: block;
+
+								i {
+									color: $iconGrey;
+									font-size: 14px;
+								}
 							}
 						}
 
 						.comment-title {
 							padding-top: 12px;
+						}
+
+						textarea.text {
+							width: 100%; height: 72px;
+							padding: 10px;
+							border: 1px solid $activeBlue;
+							border-radius: 3px;
+							font-family: 'Roboto';
+							font-size: 13px;
+							box-sizing: border-box;
+							line-height: 20px;
+							resize: none;
 						}
 
 						.text {
@@ -1214,6 +1266,26 @@ a.small-icon, button.small-icon {
 							color: $middleGrey;
 							line-height: 20px;
 							letter-spacing: .3px;
+						}
+
+						.buttons {
+							@include display-flex;
+							@include justify-content(flex-end);
+							width: 100%;
+
+							.cta-button {
+								height: 24px;
+								margin-left: 8px;
+								color: #ffffff;
+
+								&.cancel {
+									background-color: $middleGrey;
+
+									&:hover {
+										background-color: darken($middleGrey, 10%);
+									}
+								}
+							}
 						}
 
 						.showmore {
@@ -1309,7 +1381,7 @@ a.small-icon, button.small-icon {
 					float: left;
 				}
 
-				textarea {
+				textarea, div[contenteditable] {
 					width: calc(100% - 54px); height: 38px;
 					float: right;
 					margin-top: 2px;
@@ -1322,6 +1394,7 @@ a.small-icon, button.small-icon {
 					resize: none;
 					line-height: 16px;
 					overflow: hidden;
+					background-color: #ffffff;
 
 					// @include transition(height .1s);
 
@@ -1342,6 +1415,10 @@ a.small-icon, button.small-icon {
 							display: block;
 							margin: 15px 0 0 56px;
 						}
+					}
+
+					tag {
+						color: $activeBlue;
 					}
 				}
 
@@ -1418,7 +1495,7 @@ a.small-icon, button.small-icon {
 
 				.upload-files {
 					margin: 15px 0 0 54px;
-					
+
 					.file {
 						width: 90px; height: 90px;
 						margin: 0 5px;
@@ -1537,7 +1614,7 @@ a.small-icon, button.small-icon {
 						line-height: 36px;
 						text-align: center;
 						float: left;
-						
+
 						i {
 							font-size: 16px;
 							line-height: 36px;
@@ -2721,7 +2798,7 @@ a.small-icon, button.small-icon {
 					&:hover {
 						background-color: rgba($activeBlue, .25);
 					}
-					
+
 					i {
 						margin-right: 5px;
 						font-size: 20px;
@@ -2846,7 +2923,7 @@ a.small-icon, button.small-icon {
 					@include display-flex;
 					@include justify-content(space-between);
 					margin-bottom: 18px;
-					
+
 					.title {
 						padding-top: 5px;
 						color: $soDark;
@@ -2886,7 +2963,7 @@ a.small-icon, button.small-icon {
 						margin-top: 5px; right: 4px;
 						border: none;
 						background: transparent;
-						
+
 						i {
 							font-size: 15px;
 						}
@@ -3043,6 +3120,16 @@ a.small-icon, button.small-icon {
 						}
 					}
 				}
+
+				.last-seen {
+					font-size: 13px;
+					line-height: 2em;
+					color: $soDark;
+
+					span {
+						font-weight: 700;
+					}
+				}
 			}
 		}
 
@@ -3108,7 +3195,7 @@ a.small-icon, button.small-icon {
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: cover;
-				
+
 				&.empty {
 					@include background-image(linear-gradient(top, darken($soLight, 2%) 1%, $iconGrey 100%) !important);
 				}
@@ -3430,7 +3517,7 @@ a.small-icon, button.small-icon {
 				display: block;
 				width: 135px; height: 47px;
 				margin-right: 100px;
-				background-image: url('../images/logo.png');
+				background-image: url('../images/logo-small.png');
 				background-size: contain;
 				background-position: center;
 				background-repeat: no-repeat;
@@ -4322,7 +4409,7 @@ a.small-icon, button.small-icon {
 
 	.upload-files {
 		margin-top: 15px;
-		
+
 		.file {
 			width: 90px; height: 90px;
 			margin: 0 5px;

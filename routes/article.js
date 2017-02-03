@@ -35,7 +35,7 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 				newFilename = file.filename + '.' + extension
 
 			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'posts', newFilename))
-			
+
 			filenames.push(path.join('uploads', 'posts', newFilename))
 		}
 	}
@@ -44,6 +44,32 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
 			res.send({ok: true})
 		})
+	})
+})
+
+router.post('/edit', tempUploads.array('files', 5), (req, res) => {
+	let {postId, text} = req.body
+
+	let filenames = []
+
+	if (req.files && req.files.length > 0) {
+		const fs = require('fs')
+
+		for (let file of req.files) {
+			let filename = file.filename,
+				extension = file.originalname.split('.').slice(-1),
+				tempPath = file.path,
+				newFilename = file.filename + '.' + extension
+
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'posts', newFilename))
+
+			filenames.push(path.join('uploads', 'posts', newFilename))
+		}
+	}
+
+	models.Article.edit(postId, req.user._id, text, [], (err, article) => {
+		if (err) res.status(400).send({message: 'Error updating post'})
+		else res.send({ok: true, article})
 	})
 })
 
@@ -187,7 +213,7 @@ router.get('/comment/get', (req, res) => {
 
 router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
-	
+
 	let {postId, text} = req.body
 
 	let filenames = []
@@ -202,7 +228,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 				newFilename = file.filename + '.' + extension
 
 			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'comments', newFilename))
-			
+
 			filenames.push(path.join('uploads', 'comments', newFilename))
 		}
 	}
@@ -287,7 +313,35 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 		], (err) => {
 			res.send({ok: true})
 		})
-		
+
+	})
+})
+
+router.post('/comment/edit', tempUploads.array('files', 5), (req, res) => {
+	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
+
+	let {commentId, text} = req.body
+
+	let filenames = []
+
+	if (req.files && req.files.length > 0) {
+		const fs = require('fs')
+
+		for (let file of req.files) {
+			let filename = file.filename,
+				extension = file.originalname.split('.').slice(-1),
+				tempPath = file.path,
+				newFilename = file.filename + '.' + extension
+
+			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'comments', newFilename))
+
+			filenames.push(path.join('uploads', 'comments', newFilename))
+		}
+	}
+
+	models.Comment.editComment(commentId, req.user._id, text, [], (err, comment) => {
+		if (err) res.status(400).send({message: 'Error updating comment'})
+		else res.send({ok: true, comment})
 	})
 })
 

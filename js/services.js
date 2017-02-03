@@ -206,8 +206,6 @@ angular.module('er.services', [])
 })
 .factory('identityService', function ($http, $timeout, $cookies, $auth, $q, $rootScope) {
 	var _user = undefined
-	// console.log('Remembered user')
-	// console.log(_user)
 
 	return {
 		otherCache: {
@@ -215,14 +213,6 @@ angular.module('er.services', [])
 		},
 		getOther: function (id) {
 			var self = this
-
-			// if (self.otherCache[id]) {
-			// 	var d = $q.defer()
-
-			// 	d.resolve(self.otherCache[id])
-				
-			// 	return d.promise
-			// }
 
 			return __s($http, $cookies, 'get', '/user', {id: id})
 			.then(function (result) {
@@ -243,8 +233,6 @@ angular.module('er.services', [])
 
 				user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
-				// self.otherCache[id] = user
-
 				return user
 			}, function (data, status) {
 				return data
@@ -255,10 +243,7 @@ angular.module('er.services', [])
 			var d = $q.defer(),
 				self = this
 
-			// var user = $cookies.getObject('user')
 			if (_user && (clean === undefined || clean === false)) {
-				// console.log('Returning remembered')
-				// console.log(_user)
 				d.resolve(_user)
 			} else {
 				return __s($http, $cookies, 'get', '/me' + ((clean) ? ('?x=' + Math.random()) : ''))
@@ -279,12 +264,6 @@ angular.module('er.services', [])
 					user.contact = user.contact || {email: '', phone: '', skype: '', linkedin: '', fb: ''}
 
 					_user = user
-
-					// if (localStorage.rememberLogin && localStorage.rememberLogin != 'false') {
-					// 	// $cookies.putObject('user', user, {expires: new Date(Date.now() + (168 * 3600 * 1000))})
-					// } else {
-					// 	// $cookies.putObject('user', user)
-					// }
 
 					$cookies.put('token', $auth.getToken())
 
@@ -558,12 +537,41 @@ angular.module('er.services', [])
 					},
 					data: fd,
 				})
-				.success(function (data) {
-					resolve(data)
+				.success(resolve)
+				.error(reject)
+			})
+		},
+		update: function (postId, text, files) {
+			return new Promise(function (resolve, reject) {
+				var headers = {
+					'Authorization': $cookies.get('token'),
+				}
+
+				if (files.length > 0) {
+					var fd = new FormData()
+					fd.append('postId', postId)
+					fd.append('text', text)
+
+					for (var i in files) {
+						fd.append('files', files[i])
+					}
+
+					headers['Content-Type'] = undefined
+				} else {
+					fd = {
+						postId: postId,
+						text: text
+					}
+				}
+
+				$http({
+					method: 'POST',
+					url: '/article/edit',
+					headers: headers,
+					data: fd,
 				})
-				.error(function (data, status) {
-					reject(data)
-				})
+				.success(resolve)
+				.error(reject)
 			})
 		},
 		remove: function (postId) {
@@ -673,6 +681,39 @@ angular.module('er.services', [])
 				return result
 			}, function (data, status) {
 				return data
+			})
+		},
+		update: function (commentId, text, files) {
+			return new Promise(function (resolve, reject) {
+				var headers = {
+					'Authorization': $cookies.get('token'),
+				}
+
+				if (files.length > 0) {
+					var fd = new FormData()
+					fd.append('commentId', commentId)
+					fd.append('text', text)
+
+					for (var i in files) {
+						fd.append('files', files[i])
+					}
+
+					headers['Content-Type'] = undefined
+				} else {
+					fd = {
+						commentId: commentId,
+						text: text
+					}
+				}
+
+				$http({
+					method: 'POST',
+					url: '/article/comment/edit',
+					headers: headers,
+					data: fd,
+				})
+				.success(resolve)
+				.error(reject)
 			})
 		},
 		remove: function (commentId) {
@@ -895,40 +936,6 @@ angular.module('er.services', [])
 	return {
 		get: function () {
 			return __s($http, $cookies, 'get', '/user/familiarexperts')
-
-			// return new Promise(function (resolve, reject) {
-			// 	var familiarExperts = [
-			// 		{
-			// 			id: 1,
-			// 			name: 'Keanu Reeves',
-			// 			role: 'Expert',
-			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-			// 			color: 'bronze',
-			// 			rating: 2,
-			// 			likes_percentage: 70,
-			// 		},
-			// 		{
-			// 			id: 2,
-			// 			name: 'Keanu Reeves',
-			// 			role: 'Expert',
-			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-			// 			color: 'bronze',
-			// 			rating: 2,
-			// 			likes_percentage: 70,
-			// 		},
-			// 		{
-			// 			id: 3,
-			// 			name: 'Keanu Reeves',
-			// 			role: 'Expert',
-			// 			image: 'https://s.aolcdn.com/hss/storage/midas/627f1d890718ff2c58318a280145a153/203216448/nicholas-cage-con-air.jpg',
-			// 			color: 'bronze',
-			// 			rating: 2,
-			// 			likes_percentage: 70,
-			// 		},
-			// 	]
-
-			// 	resolve(familiarExperts)
-			// })
 		}
 	}
 })

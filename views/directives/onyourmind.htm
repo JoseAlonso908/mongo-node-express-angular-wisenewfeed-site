@@ -1,6 +1,9 @@
 <div class="on-your-mind" ng-class="{loading: loading}">
 	<avatar user="user"></avatar>
-	<textarea placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" ng-model="text"></textarea>
+
+	<div placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" contenteditable ng-model="text"></div>
+	<!-- <textarea placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" ng-model="text"></textarea> -->
+
 	<button class="send" ng-click="create()" ng-disabled="loading">
 		<div>
 			<i class="material-icons">send</i>

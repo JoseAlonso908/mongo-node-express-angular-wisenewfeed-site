@@ -38,6 +38,11 @@ gulp.task('browserify', () => {
 	.pipe(gulp.dest('./assets/scripts'))
 })
 
+gulp.task('browserify-watch', ['browserify'], (done) => {
+	browserSync.reload()
+	done()
+})
+
 gulp.task('js', () => {
 	gulp.src(['./js/*.js', '!./js/app.js'])
 	.pipe(ngAnnotate().on('error', gulpUtil.log))
@@ -47,6 +52,11 @@ gulp.task('js', () => {
 	}).on('error', gulpUtil.log))
 	.pipe(plumber())
 	.pipe(gulp.dest('./assets/scripts'))
+})
+
+gulp.task('js-watch', ['js', 'browserify'], (done) => {
+	browserSync.reload()
+	done()
 })
 
 gulp.task('html', () => {
@@ -67,8 +77,7 @@ gulp.task('serve', () => {
 	})
 
 	gulp.watch('./sass/*.scss', ['css'])
-	gulp.watch('./js/app.js', ['browserify']).on('change', browserSync.reload)
-	gulp.watch(['./js/*.js', '!./js/app.js'], ['js']).on('change', browserSync.reload)
+	gulp.watch(['./js/*.js', '!./js/app.js'], ['js-watch'])
 	gulp.watch(['./views/**/*.htm', './views/**/*.html'], ['html']).on('change', browserSync.reload)
 })
 

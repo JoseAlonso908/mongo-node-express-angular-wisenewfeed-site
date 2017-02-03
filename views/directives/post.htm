@@ -13,7 +13,6 @@
 <div class="card feed-item" ng-if="!post.hidden && !post.muted && !post.blocked">
 	<avatar user="post.author"></avatar>
 
-	<!-- <div ng-if="post.shared">{{post | json}}</div> -->
 	<div class="body">
 		<div class="title">
 			<div class="title-text">
@@ -29,10 +28,11 @@
 			</div>
 
 			<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
-			
+
 			<button ng-if="post.author.isFollowing === false && post.author._id != user._id && user && user.role != 'User'" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
 
 			<div class="post-menu" ng-if="user" ng-class="{active: post.menu}">
+				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="setEditingMode(post, true)">Edit</a>
 				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>
 				<a href="javascript:void(0);" ng-click="hide(post)" ng-if="post.author._id != user._id">Hide this post</a>
 				<a href="javascript:void(0);" ng-click="unfollow(post)" ng-if="post.author._id != user._id && post.author.isFollowing">Unfollow this expert</a>
@@ -43,9 +43,15 @@
 		</div>
 
 		<div class="content" ng-class="{collapsed: !justone}">
-			<div class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
+			<textarea class="text" ng-show="editing" ng-model="post.editingText" ng-disabled="loading"></textarea>
+			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
 
-			<div class="images">
+			<div class="buttons" ng-show="editing">
+				<button ng-click="setEditingMode(post, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>
+				<button ng-click="updatePost(post)" ng-disabled="loading" class="save cta-button">Save</button>
+			</div>
+
+			<div class="images" ng-hide="editing">
 				<a ng-href="image" lightbox class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></a>
 			</div>
 
@@ -74,9 +80,9 @@
 				</div>
 			</div>
 
-			<a ng-href="#!/article/{{post._id}}" class="collapsed-shade" ng-class="{visible: expandVisible}"></a>
+			<a ng-href="#!/article/{{post._id}}" class="collapsed-shade" ng-class="{visible: expandVisible}" ng-hide="editing"></a>
 		</div>
-		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article">View full article</a>
+		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
 	</div>
 
 	<postreactions post="post"></postreactions>
@@ -113,11 +119,11 @@
 			</div>
 		</button>
 
-		<form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
-		<button ng-if="files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>
+		<form ng-if="user.role != 'User'"><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
+		<button ng-if="user.role != 'User' && files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>
 
 		<div class="clear"></div>
-		<div class="upload-files" ng-show="files.length > 0">
+		<div class="upload-files" ng-if="user.role != 'User'" ng-show="files.length > 0">
 			<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
 				<a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
 			</div>

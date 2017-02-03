@@ -1,4 +1,10 @@
 angular.module('er.filters', [])
+.filter('br2nl', function () {
+	return function (input) {
+		input = input || ''
+		return input.replace(/<br\s*\/?\s*>/gmi, "\r\n")
+	}
+})
 .filter('tags', function () {
 	return function (input) {
 		input = input || ''

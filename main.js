@@ -161,6 +161,10 @@ app.get('/static/categories', (req, res) => {
 
 global.events = new (require('events'))()
 
+const server = app.listen(8006)
+const io = require('socket.io')(server)
+global.ws = require('./routes/ws')(io)
+
 app.use(require('./routes/general'))
 app.use('/user', require('./routes/user'))
 app.use('/article', require('./routes/article'))
@@ -168,7 +172,3 @@ app.use('/follow', require('./routes/follow'))
 app.use('/n', require('./routes/notification'))
 app.use('/questions', require('./routes/question'))
 app.use('/chat', require('./routes/chat'))
-
-const server = app.listen(8006)
-const io = require('socket.io')(server)
-global.ws = require('./routes/ws')(io)

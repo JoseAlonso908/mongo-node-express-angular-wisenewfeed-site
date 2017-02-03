@@ -1,4 +1,8 @@
 module.exports = (io) => {
+	const EventEmitter = require('events')
+	class WSEmitterClass extends EventEmitter{}
+	var WSEmitter = new WSEmitterClass()
+
 	// user ID: socket ID
 	var online = {}
 
@@ -17,13 +21,14 @@ module.exports = (io) => {
 		online[socket.handshake.query.uid] = socket.id
 
 		console.log(`New connection: ${socket.handshake.query.uid}`)
-	
+
 		socket.on('disconnect', () => {
 			for (let userId in online) {
 				let socketId = online[userId]
 
 				if (socketId == socket.id) {
 					console.log(`Disconnection: ${userId}`)
+					WSEmitter.emit('disconnect', userId)
 					delete online[userId]
 				}
 			}
@@ -33,6 +38,7 @@ module.exports = (io) => {
 	})
 
 	return {
+		WSEmitter,
 		isOnline: (id) => {
 			return !!online[id]
 		},

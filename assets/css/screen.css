@@ -504,7 +504,7 @@ a.small-icon, button.small-icon {
   width: 135px;
   height: 47px;
   margin-right: 100px;
-  background-image: url("../images/logo.png");
+  background-image: url("../images/logo-small.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -923,6 +923,18 @@ a.small-icon, button.small-icon {
   max-height: 400px;
   overflow: hidden;
 }
+#wrapper > .content .card.feed-item .body .content textarea.text {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid #43abe7;
+  border-radius: 3px;
+  font-family: 'Roboto';
+  font-size: 13px;
+  box-sizing: border-box;
+  line-height: 20px;
+  resize: none;
+}
 #wrapper > .content .card.feed-item .body .content .text {
   margin-bottom: 12px;
   color: #82898f;
@@ -939,6 +951,24 @@ a.small-icon, button.small-icon {
   margin: 10px 0;
   border-left: 2px solid #E7EBEE;
   padding-left: 10px;
+}
+#wrapper > .content .card.feed-item .body .content .buttons {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+}
+#wrapper > .content .card.feed-item .body .content .buttons .cta-button {
+  height: 24px;
+  margin-left: 8px;
+  color: #ffffff;
+}
+#wrapper > .content .card.feed-item .body .content .buttons .cta-button.cancel {
+  background-color: #82898f;
+}
+#wrapper > .content .card.feed-item .body .content .buttons .cta-button.cancel:hover {
+  background-color: #696f75;
 }
 #wrapper > .content .card.feed-item .body .content .images {
   display: -webkit-flex;
@@ -1126,6 +1156,7 @@ a.small-icon, button.small-icon {
   display: block;
   width: 100%;
   height: 32px;
+  margin-bottom: 20px;
   font-size: 13px;
   line-height: 32px;
   text-align: center;
@@ -1169,18 +1200,37 @@ a.small-icon, button.small-icon {
 #wrapper > .content .card.feed-item .comments .comment.highlighted {
   background-color: rgba(67, 171, 231, 0.1);
 }
-#wrapper > .content .card.feed-item .comments .comment .remove {
-  display: block;
+#wrapper > .content .card.feed-item .comments .comment .comment-actions-wrapper {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
   position: absolute;
+  width: 36px;
   top: 20px;
   right: 17px;
 }
-#wrapper > .content .card.feed-item .comments .comment .remove i {
+#wrapper > .content .card.feed-item .comments .comment .comment-actions-wrapper .remove, #wrapper > .content .card.feed-item .comments .comment .comment-actions-wrapper .edit {
+  display: block;
+}
+#wrapper > .content .card.feed-item .comments .comment .comment-actions-wrapper .remove i, #wrapper > .content .card.feed-item .comments .comment .comment-actions-wrapper .edit i {
   color: #b0bec8;
   font-size: 14px;
 }
 #wrapper > .content .card.feed-item .comments .comment .comment-title {
   padding-top: 12px;
+}
+#wrapper > .content .card.feed-item .comments .comment textarea.text {
+  width: 100%;
+  height: 72px;
+  padding: 10px;
+  border: 1px solid #43abe7;
+  border-radius: 3px;
+  font-family: 'Roboto';
+  font-size: 13px;
+  box-sizing: border-box;
+  line-height: 20px;
+  resize: none;
 }
 #wrapper > .content .card.feed-item .comments .comment .text {
   margin-top: 12px;
@@ -1188,6 +1238,24 @@ a.small-icon, button.small-icon {
   color: #82898f;
   line-height: 20px;
   letter-spacing: .3px;
+}
+#wrapper > .content .card.feed-item .comments .comment .buttons {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+}
+#wrapper > .content .card.feed-item .comments .comment .buttons .cta-button {
+  height: 24px;
+  margin-left: 8px;
+  color: #ffffff;
+}
+#wrapper > .content .card.feed-item .comments .comment .buttons .cta-button.cancel {
+  background-color: #82898f;
+}
+#wrapper > .content .card.feed-item .comments .comment .buttons .cta-button.cancel:hover {
+  background-color: #696f75;
 }
 #wrapper > .content .card.feed-item .comments .comment .showmore {
   font-size: 13px;
@@ -1267,7 +1335,7 @@ a.small-icon, button.small-icon {
 #wrapper > .content .middle .on-your-mind .avatar-border {
   float: left;
 }
-#wrapper > .content .middle .on-your-mind textarea {
+#wrapper > .content .middle .on-your-mind textarea, #wrapper > .content .middle .on-your-mind div[contenteditable] {
   width: calc(100% - 54px);
   height: 38px;
   float: right;
@@ -1281,21 +1349,25 @@ a.small-icon, button.small-icon {
   resize: none;
   line-height: 16px;
   overflow: hidden;
+  background-color: #ffffff;
 }
-#wrapper > .content .middle .on-your-mind textarea.not-empty {
+#wrapper > .content .middle .on-your-mind textarea.not-empty, #wrapper > .content .middle .on-your-mind div[contenteditable].not-empty {
   height: 72px;
 }
-#wrapper > .content .middle .on-your-mind textarea.not-empty + .send {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send, #wrapper > .content .middle .on-your-mind div[contenteditable].not-empty + .send {
   margin-top: 15px;
   opacity: 1;
   pointer-events: auto;
 }
-#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1, #wrapper > .content .middle .on-your-mind div[contenteditable].not-empty + .send + .upload-image-1 {
   display: none;
 }
-#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 + .upload-image-2 {
+#wrapper > .content .middle .on-your-mind textarea.not-empty + .send + .upload-image-1 + .upload-image-2, #wrapper > .content .middle .on-your-mind div[contenteditable].not-empty + .send + .upload-image-1 + .upload-image-2 {
   display: block;
   margin: 15px 0 0 56px;
+}
+#wrapper > .content .middle .on-your-mind textarea tag, #wrapper > .content .middle .on-your-mind div[contenteditable] tag {
+  color: #43abe7;
 }
 #wrapper > .content .middle .on-your-mind .send {
   width: 75px;
@@ -2815,6 +2887,14 @@ a.small-icon, button.small-icon {
 #wrapper > .content .right .onlineflag .flag.offline:before {
   background-color: #da7673;
 }
+#wrapper > .content .right .onlineflag .last-seen {
+  font-size: 13px;
+  line-height: 2em;
+  color: #535659;
+}
+#wrapper > .content .right .onlineflag .last-seen span {
+  font-weight: 700;
+}
 #wrapper > .content .about-box {
   padding: 15px;
   box-sizing: border-box;
@@ -3187,7 +3267,7 @@ a.small-icon, button.small-icon {
   width: 135px;
   height: 47px;
   margin-right: 100px;
-  background-image: url("../images/logo.png");
+  background-image: url("../images/logo-small.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

@@ -27,8 +27,8 @@ var Model = function(mongoose) {
 		},
 
 		addComment: (post, author, text, images, callback) => {
-			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
-			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
+			post = MOI(post)
+			author = MOI(author)
 
 			let comment = new Model()
 			Object.assign(comment, {
@@ -36,6 +36,16 @@ var Model = function(mongoose) {
 			})
 
 			comment.save(callback)
+		},
+
+		editComment: (_id, author, text, images, callback) => {
+			_id = MOI(_id)
+			author = MOI(author)
+
+			Model.findOne({_id, author}).exec((err, comment) => {
+				Object.assign(comment, {text})
+				comment.save(callback)
+			})
 		},
 
 		removeComment: (user, comment, callback) => {

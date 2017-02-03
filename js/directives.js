@@ -1,4 +1,47 @@
 angular.module('er.directives', [])
+.directive('contenteditable', function() {
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			function read() {
+				var selection = rangy.saveSelection()
+
+				var text = element.html()
+
+				// remove all tags markers (we'll put them back later)
+				text = text.replace(/<tag>([\s\S]*?)<\/tag>/gmi, "$1")
+
+				text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
+					return space + '<tag>' + tag + '</tag>'
+				})
+
+				element.html(text)
+				rangy.restoreSelection(selection)
+				rangy.removeMarkers(selection)
+
+				text = element.html()
+
+				// turn <br> into newline character
+				text = text.replace(/<br\s?\/?>/gi, "\n")
+				// fix divs
+				text = text.replace(/<div.*?>([\s\S]*?)<\/div>/gmi, "\n$1")
+				// remove all other tags
+				text = text.replace(/(<[a-zA-Z0-9-]+.*?>([\s\S]*?)<\/[a-zA-Z0-9-]+>|<[a-zA-Z0-9-]+.*\/>)/gmi, "$2")
+
+				ngModel.$setViewValue(text)
+			}
+
+			ngModel.$render = function() {
+				element.html(ngModel.$viewValue || "")
+			}
+
+			element.bind("blur input", function() {
+				scope.$apply(read)
+			})
+		}
+	}
+})
 .directive('ngScrollbar', ['$parse', '$window', '$rootScope',
 	function ($parse, $window, $rootScope) {
 		return {
@@ -131,9 +174,6 @@ angular.module('er.directives', [])
 					track = angular.element(angular.element(tools.children()[0]).children()[1]);
 					page.height = element[0].offsetHeight;
 					page.scrollHeight = transculdedContainer[0].scrollHeight;
-
-					console.log(page.height)
-					console.log(page.scrollHeight)
 
 					if (page.height < page.scrollHeight) {
 						scope.showYScrollbar = true;
@@ -413,17 +453,20 @@ angular.module('er.directives', [])
 				})
 			}
 
-			angular.element(element[0].querySelector('textarea')).on('keyup keypress', function (e) {
-				var text = e.target.value,
+			var ce = element[0].querySelector('[contenteditable]')
+			$scope.$watch(function () {
+				return $scope.text
+			}, function (newValue, oldValue) {
+				var text = newValue.trim(),
 					linesCount = text.split(/\n/).length
 
-				var paddingTop = parseInt(window.getComputedStyle(e.target).paddingTop),
-					paddingBottom = parseInt(window.getComputedStyle(e.target).paddingBottom)
+				var paddingTop = parseInt(window.getComputedStyle(ce).paddingTop, 10),
+					paddingBottom = parseInt(window.getComputedStyle(ce).paddingBottom, 10)
 
 				if (linesCount > 3) {
-					angular.element(e.target).css('height', (((linesCount + 1) * 16) + (paddingTop + paddingBottom + 2)) + 'px')
+					angular.element(ce).css('height', (((linesCount + 1) * 16) + (paddingTop + paddingBottom + 2)) + 'px')
 				} else {
-					angular.element(e.target).css('height', '')
+					angular.element(ce).css('height', '')
 				}
 			})
 		}
@@ -559,7 +602,7 @@ angular.module('er.directives', [])
 				})
 			}
 
-			init()			
+			init()
 		},
 	}
 })
@@ -719,6 +762,7 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.expandVisible = false
+			$scope.editing = false
 
 			$timeout(function () {
 				if ($scope.justone) return
@@ -737,6 +781,29 @@ angular.module('er.directives', [])
 			followService.isFollowing($scope.post.author._id).then(function (result) {
 				$scope.post.author.isFollowing = result
 			})
+
+			$scope.setEditingMode = function (post, mode) {
+				mode = (typeof mode !== 'undefined') ? mode : true
+
+				if (mode) {
+					post.editingText = post.text.replace(/<br\s*\/?\s*>/gmi, "\r\n")
+				} else {
+					post.editingText = null
+				}
+
+				$scope.editing = mode
+			}
+
+			$scope.updatePost = function (post) {
+				$scope.loading = true
+
+				postService.update(post._id, post.editingText, []).then(function (result) {
+					$scope.loading = false
+					post.text = result.article.text
+					$scope.setEditingMode(post, false)
+					$scope.$apply()
+				})
+			}
 
 			$scope.follow = function (post) {
 				followService.follow(post.author._id).then(function (result) {
@@ -801,7 +868,7 @@ angular.module('er.directives', [])
 				})
 
 				var progress = function () {
-					
+
 				}
 
 				var commentObject = {
@@ -812,6 +879,7 @@ angular.module('er.directives', [])
 					likes: 0,
 					post: post._id,
 					text: post.commentText,
+					hideShowMore: true,
 					images: $scope.files.map(function (f) {
 						return f.base64
 					})
@@ -973,6 +1041,29 @@ angular.module('er.directives', [])
 				init()
 			})
 
+			$scope.setEditingMode = function (comment, mode) {
+				mode = (typeof mode !== 'undefined') ? mode : true
+
+				if (mode) {
+					comment.editingText = comment.text.replace(/<br\s*\/?\s*>/gmi, "\r\n")
+				} else {
+					comment.editingText = null
+				}
+
+				comment.editing = mode
+			}
+
+			$scope.updateComment = function (comment) {
+				$scope.loading = true
+
+				commentService.update(comment._id, comment.editingText, []).then(function (result) {
+					$scope.loading = false
+					comment.text = result.comment.text
+					$scope.setEditingMode(comment, false)
+					$scope.$apply()
+				})
+			}
+
 			$scope.remove = function (comment) {
 				commentService.remove(comment._id).then(function (result) {
 					console.log(result)
@@ -1005,7 +1096,7 @@ angular.module('er.directives', [])
 					$scope.$parent.commentsCount = $scope.comments.length
 					$scope.post.comments = comments
 					$scope.$apply()
-					
+
 					$rootScope.$emit('commentsloaded', $scope.post._id)
 				})
 			}
@@ -1121,7 +1212,7 @@ angular.module('er.directives', [])
 			question: '='
 		},
 		link: function ($scope, element, attr) {
-			
+
 		}
 	}
 })
@@ -1171,7 +1262,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.loading = true
 			$scope.questions = []
-			
+
 			$scope.init = function () {
 				questionsService.get(null, 'active', 0, 3).then(function (questions) {
 					$scope.loading = false
@@ -1253,7 +1344,7 @@ angular.module('er.directives', [])
 					$scope.familiarExpertsLoading = false
 				})
 			}
-			
+
 			$scope.init()
 		}
 	}
@@ -1391,7 +1482,7 @@ angular.module('er.directives', [])
 			$scope.show = false
 
 			var lastUserValue
-			
+
 			$scope.$watch('ngModel', function (newValue, oldValue) {
 				if (newValue && newValue.title != oldValue.title && oldValue.title != lastUserValue) {
 					$scope.filteredSuggestions = []
@@ -1605,7 +1696,7 @@ angular.module('er.directives', [])
 
 			$scope.showDropdown = function (e) {
 				e.stopImmediatePropagation();
-				
+
 				$timeout(function () {
 					document.body.click()
 					$scope.dropdownVisible = !$scope.dropdownVisible
@@ -1748,8 +1839,11 @@ angular.module('er.directives', [])
 		link: function ($scope) {
 			$scope.loaded = false
 
+			console.log($scope.profile)
+
 			identityService.isOnline($scope.profile._id).then(function (flag) {
 				$scope.isOnline = flag
+				$scope.lastVisit = $scope.profile.lastVisit
 				$scope.loaded = true
 			})
 		}
@@ -1763,7 +1857,7 @@ angular.module('er.directives', [])
 			images: '=',
 		},
 		link: function ($scope) {
-			
+
 		}
 	}
 })

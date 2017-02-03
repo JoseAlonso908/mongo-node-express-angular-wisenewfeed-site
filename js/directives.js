@@ -853,8 +853,10 @@ angular.module('er.directives', [])
 
 			$scope.report = function (post) {
 				identityService.report(post._id).then(function (result) {
+                    $scope.post.hidden = true
 					reportModal.activate({$parent: $scope})
-				})
+                    $rootScope.$emit('updateFeedVisibleCount')
+                })
 			}
 
 			$scope.files = []

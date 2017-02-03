@@ -348,10 +348,26 @@ router.post('/report', (req, res) => {
 	let user = req.user
 	let {article} = req.body
 
-	models.Report.report(article, user._id, (err, result) => {
-		if (err) res.status(400).send(err)
-		else res.send({ok: true})
-	})
+    async.parallel({
+        report: cb => {
+            models.Report.report(article, user._id, (err, result) => cb(err))
+        },
+        hide: cb => {
+            models.HiddenArticle.hide(article, req.user._id, (err, result) => cb(err))
+        },
+		notify: cb => {
+            //TODO: Make sure that req.headers.host and etc is sutable for this case
+            mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS,
+                `ER: Article reported`,
+                `Article ${req.protocol}://${req.headers.host}/#!/article/${article} has been reported by ${user.name}(${user.email})`,
+                err => cb(err)
+            )
+		}
+    }, (err, result) => {
+        if (err) res.status(400).send(err)
+        else res.send({ok: true})
+    })
+
 })
 
 router.get('/images', (req, res) => {

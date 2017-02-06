@@ -1,3 +1,4 @@
+<form name="signupBetaForm" novalidate>
 <div id="wrapper">
     <div id="top-bar-background">
         <topbar user="user"></topbar>
@@ -16,11 +17,11 @@
                     <div class="title">General Information</div>
                     <div class="input-group">
                         <label for="fullName">Full name</label>
-                        <input type="text" name="name" id="fullName">
+                        <input ng-model="signup.name" type="text" name="name" id="fullName">
                     </div>
                     <div class="input-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title" id="title">
+                        <input ng-model="signup.title" type="text" name="title" id="title">
                     </div>
                     <div class="input-group">
                         <label for="company">Company</label>
@@ -131,10 +132,11 @@
                     </div>
 
                     <div class="submit-block">
-                        <button class="action-button">Finish registration</button>
+                        <button class="action-button" ng-click="fakeSubmit">Finish registration</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</form>

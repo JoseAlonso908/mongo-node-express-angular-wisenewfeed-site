@@ -726,6 +726,7 @@ a.small-icon, button.small-icon {
 			text-align: center;
 			color: $soDark;
 		}
+
 		//Signup for beta page
 		.single-column {
 			background-color: white;
@@ -760,10 +761,11 @@ a.small-icon, button.small-icon {
 			}
 
 			.group {
-				border-bottom: 1px solid $soLight;
+				$sidePadding: 40px;
 				padding-bottom: 35px;
-				padding-left: 40px;
-				padding-right: 40px;
+				padding-right: $sidePadding;
+				padding-left: $sidePadding;
+				border-bottom: 1px solid $soLight;
 
 				&:last-child {
 					border-bottom: none;
@@ -824,6 +826,9 @@ a.small-icon, button.small-icon {
 						}
 
 						&.half {
+							/* 50% - ( LabelWidth/2) + paddingBetweenInputs )
+							So we have 50% - ((120+20)/2) + 10)
+							*/
 							width: calc(50% - 80px);
 							&:not(:last-child) {
 								margin-left: 20px;

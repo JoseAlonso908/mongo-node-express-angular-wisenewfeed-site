@@ -651,6 +651,46 @@
 					}
 				}
 			}
+
+			.single-column {
+				width: 100%;
+
+				.group {
+					$sidePadding: 20px;
+					padding-left: $sidePadding;
+					padding-right: $sidePadding;
+
+					.input-group {
+						&.with-file-upload {
+							input {
+								/* 100%- (label width + padding) - fileUploadBtn width*/
+								width: calc(100% - 140px - 100px);
+							}
+						}
+						label {
+							width: 80px;
+						}
+
+						input, textarea {
+							width: calc(100% - 100px);
+							&.half {
+								/* 50% - ( LabelWidth/2) + paddingBetweenInputs )
+								So we have 50% - ((80+20)/2) + 10)
+								*/
+								width: calc(50% - 60px);
+							}
+						}
+						.notice {
+							padding-left: 0;
+							text-align: right;
+						}
+					}
+				}
+
+				.submit-block {
+					padding-top: 20px;
+				}
+			}
 		}
 	}
 
@@ -915,6 +955,39 @@
 								float: right;
 							}
 						}
+					}
+				}
+			}
+			.single-column .group {
+				$sidePadding: 20px;
+				padding-left: $sidePadding;
+				padding-right: $sidePadding;
+
+				.input-group {
+					&.with-file-upload {
+						@include justify-content(flex-end);
+						input {
+							/* 100%- (label width + padding) - fileUploadBtn width*/
+							width: 100%;
+						}
+					}
+					label {
+						text-align: left;
+						float: left;
+						width: 100%;
+					}
+
+					input, textarea {
+						width: 100%;
+						&.half {
+							/* 50% - ( paddingBetweenInputs ) So we have 50% - 10  */
+							width: calc(50% - 10px);
+						}
+					}
+
+					.attach-file {
+						order: 5;
+						margin-top: 10px;
 					}
 				}
 			}

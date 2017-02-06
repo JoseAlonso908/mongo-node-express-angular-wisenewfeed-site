@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 	gulpUtil = require('gulp-util'),
 	htmlmin = require('gulp-htmlmin'),
 	clean = require('gulp-clean'),
+	runSequence = require('run-sequence'),
 	browserSync = require('browser-sync').create()
 
 gulp.task('css', () => {
@@ -54,9 +55,11 @@ gulp.task('js', () => {
 	.pipe(gulp.dest('./assets/scripts'))
 })
 
-gulp.task('js-watch', ['js', 'browserify'], (done) => {
-	browserSync.reload()
-	done()
+gulp.task('js-watch', (done) => {
+	runSequence('js', 'browserify', () => {
+		browserSync.reload()
+		done()
+	})
 })
 
 gulp.task('html', () => {

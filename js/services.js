@@ -464,6 +464,9 @@ angular.module('er.services', [])
 		all: function (params) {
 			return __s($http, $cookies, 'get', '/article/all', params)
 		},
+		friends: function (params) {
+			return __s($http, $cookies, 'get', '/article/friendsfeed', params)
+		},
 		search: function (params) {
 			return __s($http, $cookies, 'get', '/article/search', params)
 		},
@@ -477,19 +480,8 @@ angular.module('er.services', [])
 		my: function () {
 			return __s($http, $cookies, 'get', '/article/my')
 		},
-		feed: function (category, country, userId) {
+		feed: function (params) {
 			var params = {}
-			if (userId) {
-				params.userId = userId
-			}
-
-			if (category) {
-				params.category = category
-			}
-
-			if (country) {
-				params.country = country
-			}
 
 			return __s($http, $cookies, 'get', '/article/feed?r=' + Math.random(), params)
 		},

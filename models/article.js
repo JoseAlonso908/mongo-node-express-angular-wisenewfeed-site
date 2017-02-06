@@ -21,6 +21,8 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('article', schema);
 
 	this.postProcessList = (articles, user, callback) => {
+		console.log('incoming', articles.length)
+
 		articles = articles.map((a) => {
 			if (typeof a.toObject === 'function') return a.toObject()
 
@@ -69,6 +71,8 @@ var Model = function(mongoose) {
 						return a
 					})
 
+					console.log('hidden', articles.length)
+
 					next(null, articles)
 				})
 			},
@@ -89,6 +93,8 @@ var Model = function(mongoose) {
 						return a
 					})
 
+					console.log('muted', articles.length)
+
 					next(null, articles)
 				})
 			},
@@ -108,6 +114,8 @@ var Model = function(mongoose) {
 
 						return a
 					})
+
+					console.log('blocked', articles.length)
 
 					next(null, articles)
 				})
@@ -538,6 +546,9 @@ var Model = function(mongoose) {
 			authors = (authors) ? authors.map(MOI) : authors
 			shares = (shares) ? shares.map(MOI) : shares
 
+			start = Number(start)
+			limit = Number(limit)
+
 			// let query = {$or: [{author: {$in: authors}}, {_id: {$in: shares}}]}
 			let query = {$or: []}
 
@@ -555,6 +566,9 @@ var Model = function(mongoose) {
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
+			console.log('query')
+			console.log(query)
+			console.log(category)
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {

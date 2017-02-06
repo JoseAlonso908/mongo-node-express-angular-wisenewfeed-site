@@ -730,6 +730,7 @@ a.small-icon, button.small-icon {
 		.single-column {
 			background-color: white;
 			width: 80%;
+			max-width: 760px;
 			@include display-flex;
 			@include flex-flow(row wrap);
 
@@ -752,15 +753,22 @@ a.small-icon, button.small-icon {
 					}
 				}
 			}
+
 			.form-container {
 				width: 100%;
-				padding: 0 40px;
 				float: left;
 			}
+
 			.group {
+				border-bottom: 1px solid $soLight;
+				padding-bottom: 35px;
+				padding-left: 40px;
+				padding-right: 40px;
+
 				&:last-child {
-					padding-bottom: 35px;
+					border-bottom: none;
 				}
+
 				.title {
 					text-align: center;
 					font-weight: bold;
@@ -776,7 +784,14 @@ a.small-icon, button.small-icon {
 					&:not(:last-child) {
 						margin-bottom: 16px;
 					}
-
+					&.with-file-upload {
+						display: flex;
+						flex-flow: row wrap;
+						input {
+							/* 100%- (label width + padding) - fileUploadBtn width*/
+							width: calc(100% - 140px - 140px);
+						}
+					}
 					label {
 						display: inline-block;
 						color: $middleGrey;
@@ -815,15 +830,90 @@ a.small-icon, button.small-icon {
 							}
 						}
 					}
+
 					textarea {
 						padding: 10px;
 						resize: none;
-						height: 200px;
+						height: 150px;
 					}
+
+					.add-more {
+						font-weight: bold;
+						float: right;
+					}
+
+					.attach-file {
+						@include transition(background-color .2s);
+						@include justify-content(center);
+						@include align-items(center);
+						@include display-flex;
+						order: 3;
+						cursor: pointer;
+						margin-left: 20px;
+						border-radius: 18px;
+						width: 120px; height: 36px;
+						background-color: rgba($activeBlue, .15);
+
+						&:hover {
+							background-color: rgba($activeBlue, .25);
+						}
+
+						i {
+							margin-right: 5px;
+							font-size: 20px;
+						}
+
+						i, .title {
+							display: inline-block;
+							color: $activeBlue;
+						}
+
+						.title {
+							margin-bottom: 0;
+							font-size: 13px;
+							font-weight: 900;
+						}
+					}
+
+					.notice {
+						padding-left: 140px;
+						color: $middleGrey;
+						margin-top: 5px;
+						font-size: 11px;
+						width: 100%;
+						order: 4;
+					}
+
 				}
 			}
 
+			.submit-block {
+				@include justify-content(center);
+				@include display-flex;
+			}
+
+			.action-button {
+				@include transition(background-color .2s);
+				@include justify-content(space-between);
+				@include display-flex;
+				border-radius: 16px;
+				margin-right: 12px;
+				line-height: 32px;
+				font-weight: 900;
+				padding: 0 12px;
+				font-size: 13px;
+				cursor: pointer;
+				color: #ffffff;
+				height: 32px;
+				border: none;
+
+				background-color: $activeBlue;
+				&:hover {
+					background-color: darken($activeBlue, 5%);
+				}
+			}
 		}
+
 		.card {
 			background-color: #ffffff;
 			border-radius: 4px;

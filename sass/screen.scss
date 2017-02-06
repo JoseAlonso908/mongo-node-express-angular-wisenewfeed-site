@@ -13,6 +13,7 @@ $iconGrey: #b0bec8;
 $middleGrey: #82898f;
 $soDark: #535659;
 $soLight: #f1f5f7;
+$errorRed: #aa180e;
 
 @import "loader";
 
@@ -778,6 +779,9 @@ a.small-icon, button.small-icon {
 					padding: 35px 0;
 
 				}
+				.experience .input-group{
+					margin-bottom: 16px;
+				}
 
 				.input-group {
 					display: inline-block;
@@ -812,6 +816,7 @@ a.small-icon, button.small-icon {
 						background: #ffffff;
 						border-radius: 3px;
 						line-height: 35px;
+						font-size: 12px;
 						padding: 0 10px;
 						color: $soDark;
 						float: right;
@@ -834,12 +839,16 @@ a.small-icon, button.small-icon {
 								margin-left: 20px;
 							}
 						}
+						&.hidden-file-input {
+							display: none;
+						}
 					}
 
 					textarea {
 						padding: 10px;
 						resize: none;
 						height: 150px;
+						line-height: 15px;
 					}
 
 					.add-more {
@@ -888,7 +897,11 @@ a.small-icon, button.small-icon {
 						width: 100%;
 						order: 4;
 					}
-
+					.error-block {
+						color: $errorRed;
+						text-align: right;
+						padding: 10px 0;
+					}
 				}
 			}
 

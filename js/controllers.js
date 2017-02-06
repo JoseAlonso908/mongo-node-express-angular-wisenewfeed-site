@@ -1815,3 +1815,124 @@ angular.module('er.controllers', [])
 		},
 	])
 })
+.controller('betaController', function ($scope, certificatesService, identityService, downloadsService, $timeout) {
+    $scope.errors = {}
+    $scope.signup = {
+        role: 'expert',
+        contacts: [],
+        certificates: [{title: '', file: ''}],
+        experience: [{from: '', to: '', place: ''}],
+		additional: [{title: '', file: ''}]
+    }
+    $scope.attachCertificate = function () {
+        var certificateFileInput = document.querySelector('input[type=file][name=certificate]:last-of-type')
+        angular.element(certificateFileInput).on('change', function (e) {
+            e.stopImmediatePropagation()
+
+            $scope.$apply(function () {
+                var file = e.target.files[0]
+
+                certificatesService.add(file).then(function (result) {
+                    identityService.get(true).then(function (user) {
+                        $scope.user.certificates = user.certificates
+                    })
+                }).catch(function (error) {
+                    console.log(error);
+                    alert('Error while uploading file. File size should be lower than 5 megabytes.')
+                })
+            })
+        })
+
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
+
+    $scope.removeCertificate = function (cert) {
+        certificatesService.remove(cert).then(function (result) {
+            identityService.get(true).then(function (user) {
+                $scope.user.certificates = user.certificates
+            })
+        }).catch(function (error) {
+
+        })
+    }
+
+    $scope.attachDownload = function () {
+        var certificateFileInput = document.querySelector('input[type=file][name=additional]:last-of-type')
+        angular.element(certificateFileInput).on('change', function (e) {
+            e.stopImmediatePropagation()
+
+            $scope.$apply(function () {
+                var file = e.target.files[0]
+
+                downloadsService.add(file).then(function (result) {
+                    identityService.get(true).then(function (user) {
+                        $scope.user.downloads = user.downloads
+                    })
+                }).catch(function (error) {
+                    console.log(err);
+                    alert('Error while uploading file. File size should be lower than 5 megabytes.')
+                })
+            })
+        })
+
+        $timeout(function () {
+            certificateFileInput.click()
+            $timeout.cancel(this)
+        }, 0)
+    }
+
+    $scope.removeDownload = function (file) {
+        downloadsService.remove(file).then(function (result) {
+            identityService.get(true).then(function (user) {
+                $scope.user.downloads = user.downloads
+            })
+        }).catch(function (error) {
+
+        })
+    }
+
+    $scope.addMoreCertificates = function () {
+        var lastCert = $scope.signup.certificates[$scope.signup.certificates.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificates.push({title: '', file: ''})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+
+    $scope.addMoreExperience = function () {
+        var lastExperience = $scope.signup.experience[$scope.signup.experience.length - 1]
+        console.log(lastExperience);
+        if (lastExperience.place && lastExperience.from && lastExperience.to) {
+            $scope.errors.experienceFillRequried = false
+            $scope.signup.experience.push({from: '', to: '', place: ''})
+        } else {
+            $scope.errors.experienceFillRequried = true
+            return false
+        }
+    }
+    $scope.addMoreContacts = function () {
+        if ($scope.signup.contacts.length >= 5) {
+            $scope.errors.contactsLimit = true
+            return false
+        }
+        $scope.errors.contactsLimit = false
+        $scope.signup.contacts.push('')
+    }
+    $scope.addMoreAdditional = function () {
+        var last = $scope.signup.additional[$scope.signup.additional.length - 1]
+        if (last.title && last.file) {
+            $scope.errors.additionalFillRequried = false
+            $scope.signup.additional.push({title: '', file: ''})
+        } else {
+            $scope.errors.additionalFillRequried = true
+        }
+    }
+
+    $scope.fakeSubmit = function (event) {
+        console.log($scope.signup);
+    }
+})

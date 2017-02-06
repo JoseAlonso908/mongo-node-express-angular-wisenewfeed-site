@@ -3561,7 +3561,7 @@ a.small-icon, button.small-icon {
 					@include justify-content(flex-start);
 				}
 
-				& > div, & > a {
+				& > div, & > a, & > span  {
 					@include display-flex;
 					@include justify-content(space-between);
 					height: 32px;

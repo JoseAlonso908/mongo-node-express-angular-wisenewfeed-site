@@ -36,7 +36,7 @@ angular.module('er.directives', [])
 				element.html(ngModel.$viewValue || "")
 			}
 
-			element.bind("blur input", function() {
+			element.bind("input", function() {
 				scope.$apply(read)
 			})
 		}
@@ -457,6 +457,8 @@ angular.module('er.directives', [])
 			$scope.$watch(function () {
 				return $scope.text
 			}, function (newValue, oldValue) {
+				if (!newValue) return
+
 				var text = newValue.trim(),
 					linesCount = text.split(/\n/).length
 
@@ -663,7 +665,7 @@ angular.module('er.directives', [])
 				$scope.mutedAuthors = authors
 			})
 
-			var feedType = 'all'
+			var feedType = 'feed'
 
 			$rootScope.$on('updateFeedVisibleCount', function (event) {
 				updateVisibleCount($scope.feed)
@@ -694,6 +696,10 @@ angular.module('er.directives', [])
 					feedType = 'all'
 				}
 
+				if (attr.hasOwnProperty('friendsfeed')) {
+					feedType = 'friends'
+				}
+
 				$scope.feedLoading = true
 
 				if (start == 0 || !options.addmore) {
@@ -715,6 +721,8 @@ angular.module('er.directives', [])
 					start += feed.length
 				}
 
+				console.log($scope.type)
+
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {
 						setFeed(feed)
@@ -731,13 +739,15 @@ angular.module('er.directives', [])
 					feedAttributes['start'] = start
 					feedAttributes['limit'] = limit
 
+					console.log(feedType)
+
 					feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
 						// $scope.feedLoading = false
 						// $scope.feed = feed
 
 						if (feed.length == 0 && feedType != 'all' && start == 0) {
-							feedType = 'all'
-							return init()
+							// feedType = 'all'
+							// return init()
 						}
 
 						setFeed(feed)
@@ -1091,8 +1101,6 @@ angular.module('er.directives', [])
 
 						comments[i] = c
 					}
-
-					console.log(comments)
 
 					$scope.comments = comments
 					$scope.$parent.commentsCount = $scope.comments.length

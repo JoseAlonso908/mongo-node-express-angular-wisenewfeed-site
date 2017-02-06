@@ -112,6 +112,22 @@ var Model = function (mongoose) {
             if (skip) query.skip(Number(skip))
             if (limit) query.skip(Number(limit))
             query.exec(callback)
+        },
+        friends: (user, callback) => {
+            user = MOI(user)
+            Model.find({$or: [{user}, {friend: user}]}).lean().exec((err, friendships) => {
+                if (err) return callback(err)
+
+                let friendsIds = friendships.map((friendship) => {
+                    if (friendship.user == user.toString()) {
+                        return friendship.friend
+                    } else {
+                        return friendship.user
+                    }
+                })
+
+                callback(err, friendsIds)
+            })
         }
     }
 }

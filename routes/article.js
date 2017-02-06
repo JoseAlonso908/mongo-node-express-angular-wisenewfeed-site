@@ -125,17 +125,44 @@ router.get('/byuser', (req, res) => {
 	})
 })
 
+router.get('/friendsfeed', (req, res) => {
+	let {category, country, start, limit} = req.query
+	let userId = req.query.userId || req.user._id
+
+	let authors = []
+	// Include user's articles into feed
+	authors.push(userId)
+
+	async.series([
+		(cb) => {
+			models.Friendship.friends(userId, (err, friends) => {
+				authors = authors.concat(friends)
+				cb()
+			})
+		},
+	], (err) => {
+		models.Article.getByUsers(authors, req.user._id, [], category, country, start, limit, (err, articles) => {
+			if (err) res.status(400).send(err)
+			else res.send(articles)
+		})
+	})
+})
+
 router.get('/feed', (req, res) => {
 	let {category, country, start, limit} = req.query
 	let userId = req.query.userId || req.user._id
 
 	let authors = []
-	authors.push(userId)
+	if (req.user.role != 'user') {
+		// Include user's articles into feed
+		authors.push(userId)
+	}
 
 	let shares = []
 
 	async.waterfall([
 		(cb) => {
+			// Add users who you're following
 			models.Follow.followingByFollower(userId, null, null, null, (err, following) => {
 				for (let user of following) {
 					authors.push(user.following._id)
@@ -145,6 +172,7 @@ router.get('/feed', (req, res) => {
 			})
 		},
 		(cb) => {
+			// TODO: Not needed anymore
 			models.PostReaction.getUserShares(userId, (err, userShares) => {
 				shares = userShares.map((reaction) => {
 					return reaction.post.toString()
@@ -156,9 +184,7 @@ router.get('/feed', (req, res) => {
 	], () => {
 		models.Article.getByUsers(authors, req.user._id, [], category, country, start, limit, (err, articles) => {
 			if (err) res.status(400).send(err)
-			else {
-				res.send(articles)
-			}
+			else res.send(articles)
 		})
 	})
 })

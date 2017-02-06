@@ -1,13 +1,9 @@
  var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
-// require('ng-scrollbar') 
 
 window.numeral = require('numeral')
 window.async = require('async')
-
-// angular.module('er', ['ngRoute', 'ngSanitize', 'angularMoment', 'ngCookies', 'er.controllers', 'er.services', 'er.directives', 'satellizer'])
-// .config(['$locationProvider', '$routeProvider', '$authProvider',
 
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
@@ -15,9 +11,9 @@ angular.module('er', [
 	// 'ngScrollbar',
 	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
-.config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider',
-	function config($locationProvider, $routeProvider, $authProvider, $compileProvider) {
-		$compileProvider.debugInfoEnabled(false)
+.config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$logProvider',
+	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $logProvider) {
+		$compileProvider.debugInfoEnabled(true)
 		$compileProvider.aHrefSanitizationWhitelist(/^\s*(http|https|javascript):/)
 
 		$locationProvider.hashPrefix('!')
@@ -36,6 +32,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/home.htm',
 				controller: 'homeController',
 			})
+            .when('/friendsfeed', {
+                templateUrl: 'assets/views/friendsfeed.htm',
+                controller: 'friendsFeedController'
+            })
 			.when('/my', {
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'profileController',

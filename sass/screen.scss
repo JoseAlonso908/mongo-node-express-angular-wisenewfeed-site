@@ -888,7 +888,14 @@ a.small-icon, button.small-icon {
 							font-weight: 900;
 						}
 					}
-
+					.failed {
+						text-align: center;
+						color: $errorRed;
+					}
+					.success {
+						text-align: center;
+						color: $activeBlue;
+					}
 					.notice {
 						padding-left: 140px;
 						color: $middleGrey;
@@ -930,6 +937,11 @@ a.small-icon, button.small-icon {
 				background-color: $activeBlue;
 				&:hover {
 					background-color: darken($activeBlue, 5%);
+				}
+				&.disabled {
+					background-color: #7e868e;
+					cursor: pointer;
+					pointer-events: none;
 				}
 			}
 		}

@@ -140,6 +140,12 @@
             </div>
         {% endfor %}
 
+        <!-- CERTIFICATES -->
+        <div class="sub-heading">Certificates</div>
+        {% for item in form.certificates %}
+        <a href="{{item.file}}">{{item.title}}</a>
+        {% endfor %}
+
         <!-- ADDITIONAL FILES -->
         {% if form.additional %}
             <div class="sub-heading">Additional files</div>
@@ -147,12 +153,6 @@
             <a href="{{item.file}}">{{item.title}}</a>
             {% endfor %}
         {% endif %}
-
-        <!-- CERTIFICATES -->
-        <div class="sub-heading">Certificates</div>
-        {% for item in form.certificates %}
-        <a href="{{item.file}}">{{item.title}}</a>
-        {% endfor %}
     </div>
 </body>
 </html>

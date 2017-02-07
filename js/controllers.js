@@ -1925,8 +1925,15 @@ angular.module('er.controllers', [])
         }
     }
 
-    $scope.fakeSubmit = function (event) {
-        betaUploadsService.signup($scope.signup)
-        console.log($scope.signup);
+    $scope.sendForm = function (event) {
+        betaUploadsService.signup($scope.signup).
+		then(function (result) {
+            $scope.submitClass = 'success'
+            $scope.submitResult = 'Your request successfully sent'
+        }).catch(function (err) {
+        	$scope.submitClass = 'error'
+            $scope.submitResult = 'Failed to submit your request'
+        })
+        console.log($scope.signup)
     }
 })

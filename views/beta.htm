@@ -169,9 +169,13 @@
                                 Add more files
                             </a>
                         </div>
-
+                    <div class="input-group">
+                        <div ng-class="submitClass">
+                            {{submitResult}}
+                        </div>
+                    </div>
                     <div class="submit-block">
-                        <button class="action-button" ng-click="fakeSubmit()">Finish registration</button>
+                        <button class="action-button" ng-class="!signupBetaForm.$valid && 'disabled'" ng-click="sendForm()" ng-disabled="!signupBetaForm.$valid">Finish registration</button>
                     </div>
                 </div>
             </div>

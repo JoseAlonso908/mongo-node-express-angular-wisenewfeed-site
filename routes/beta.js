@@ -1,7 +1,9 @@
 const express = require('express'),
     mailcomposer = require('mailcomposer'),
     nunjucks = require('nunjucks'),
+    uuid = require('node-uuid'),
     multer = require('multer'),
+    pdf = require('html-pdf'),
     async = require('async'),
     path = require('path'),
     fs = require('fs')
@@ -100,19 +102,26 @@ router.post('/signup', (req, res) => {
     form.certificates = certificates
     form.additional = additional
     let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
-    var mail = mailcomposer({
-        from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
-        to: config.ADMIN_EMAILS.join(', '),
-        subject: `ER: New signup for beta request`,
-        text: 'ER: New signup for beta request',
-        html: htmlContent
-    });
-    mail.build((err, msg) => {
-        mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS,  msg.toString('ascii'), err => {
-            if (err) console.log(err)
-            res.json({ok: true})
+    const pdfName = uuid.v4() + '.pdf';
+    pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
+        if (err) return console.log(err);
+
+        var mail = mailcomposer({
+            from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
+            to: config.ADMIN_EMAILS.join(', '),
+            subject: `ER: New signup for beta request`,
+            text: `New signup request from ${form.name} ${form.email}`,
+            html: `<strong>New signup request from ${form.name} ${form.email}</strong>`,
+            attachments: [{path: resultPDF.filename}]
         })
-    })
+
+        mail.build((err, msg) => {
+            mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), err => {
+                if (err) console.log(err)
+                res.json({ok: true})
+            })
+        })
+    });
 
 })
 

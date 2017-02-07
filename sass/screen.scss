@@ -898,9 +898,11 @@ a.small-icon, button.small-icon {
 						order: 4;
 					}
 					.error-block {
-						color: $errorRed;
+						display: inline-block;
 						text-align: right;
+						color: $errorRed;
 						padding: 10px 0;
+						width: 100%;
 					}
 				}
 			}

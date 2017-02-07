@@ -20,18 +20,30 @@
                         <div class="input-group">
                             <label for="fullName">Full name</label>
                             <input ng-model="signup.name" type="text" name="name" id="fullName" ng-required="true">
+                            <p ng-show="signupBetaForm.name.$error.required && signupBetaForm.name.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                         <div class="input-group">
                             <label for="title">Title</label>
                             <input ng-model="signup.title" type="text" name="title" id="title" ng-required="true">
+                            <p ng-show="signupBetaForm.title.$error.required && signupBetaForm.title.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                         <div class="input-group">
                             <label for="company">Company</label>
                             <input ng-model="signup.company" type="text" name="company" id="company" ng-required="true">
+                            <p ng-show="signupBetaForm.company.$error.required && signupBetaForm.company.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                         <div class="input-group">
                             <label for="info">Info</label>
-                            <textarea ng-model="signup.info" id="info"></textarea>
+                            <textarea ng-model="signup.info" id="info" ng-required="true"></textarea>
+                            <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                     </div>
 
@@ -89,11 +101,17 @@
                         <div class="title">Contact information</div>
                         <div class="input-group">
                             <label>Phone</label>
-                            <input ng-model="signup.phone" type="tel" name="phone">
+                            <input ng-model="signup.phone" type="tel" name="phone" ng-required="true">
+                            <p ng-show="signupBetaForm.phone.$error.required && signupBetaForm.phone.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                         <div class="input-group">
                             <label>Email</label>
-                            <input ng-model="signup.email" type="email" name="email">
+                            <input ng-model="signup.email" type="email" name="email" ng-required="true">
+                            <p ng-show="signupBetaForm.email.$error.required && signupBetaForm.email.$touched" class="error-block">
+                                This field is required
+                            </p>
                         </div>
                         <div class="input-group">
                             <label>Facebook</label>

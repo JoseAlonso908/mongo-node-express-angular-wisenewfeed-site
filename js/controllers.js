@@ -1815,7 +1815,7 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController', function ($scope, certificatesService, identityService, downloadsService, $timeout) {
+.controller('betaController', function ($scope, betaUploadsService, $timeout) {
     $scope.errors = {}
     $scope.signup = {
         role: 'expert',
@@ -1824,6 +1824,7 @@ angular.module('er.controllers', [])
         experience: [{from: '', to: '', place: ''}],
 		additional: [{title: '', file: ''}]
     }
+
     $scope.attachCertificate = function () {
         var certificateFileInput = document.querySelector('input[type=file][name=certificate]:last-of-type')
         angular.element(certificateFileInput).on('change', function (e) {
@@ -1832,10 +1833,8 @@ angular.module('er.controllers', [])
             $scope.$apply(function () {
                 var file = e.target.files[0]
 
-                certificatesService.add(file).then(function (result) {
-                    identityService.get(true).then(function (user) {
-                        $scope.user.certificates = user.certificates
-                    })
+                betaUploadsService.addCert(file).then(function (result) {
+                    $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
                 }).catch(function (error) {
                     console.log(error);
                     alert('Error while uploading file. File size should be lower than 5 megabytes.')
@@ -1849,12 +1848,10 @@ angular.module('er.controllers', [])
     }
 
     $scope.removeCertificate = function (cert) {
-        certificatesService.remove(cert).then(function (result) {
-            identityService.get(true).then(function (user) {
-                $scope.user.certificates = user.certificates
-            })
+        betaUploadsService.removeCert(cert).then(function (result) {
+            console.log(result);
         }).catch(function (error) {
-
+            console.log(error);
         })
     }
 
@@ -1865,11 +1862,8 @@ angular.module('er.controllers', [])
 
             $scope.$apply(function () {
                 var file = e.target.files[0]
-
-                downloadsService.add(file).then(function (result) {
-                    identityService.get(true).then(function (user) {
-                        $scope.user.downloads = user.downloads
-                    })
+                betaUploadsService.addDownload(file).then(function (result) {
+                    $scope.signup.additional[$scope.signup.additional.length -1].file = result.data.file
                 }).catch(function (error) {
                     console.log(err);
                     alert('Error while uploading file. File size should be lower than 5 megabytes.')
@@ -1884,12 +1878,11 @@ angular.module('er.controllers', [])
     }
 
     $scope.removeDownload = function (file) {
-        downloadsService.remove(file).then(function (result) {
-            identityService.get(true).then(function (user) {
-                $scope.user.downloads = user.downloads
-            })
+        betaUploadsService.removeDownload(file).then(function (result) {
+        //	TODO: handle
+            console.log(result);
         }).catch(function (error) {
-
+            console.log(error);
         })
     }
 
@@ -1933,6 +1926,7 @@ angular.module('er.controllers', [])
     }
 
     $scope.fakeSubmit = function (event) {
+        betaUploadsService.signup($scope.signup)
         console.log($scope.signup);
     }
 })

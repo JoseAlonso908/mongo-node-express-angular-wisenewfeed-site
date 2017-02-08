@@ -11,7 +11,10 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'article',
 		},
-		images		: [String],
+		images		: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'image',
+		}],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
@@ -21,8 +24,6 @@ var Model = function(mongoose) {
 	var Model = mongoose.model('article', schema);
 
 	this.postProcessList = (articles, user, callback) => {
-		console.log('incoming', articles.length)
-
 		articles = articles.map((a) => {
 			if (typeof a.toObject === 'function') return a.toObject()
 
@@ -71,8 +72,6 @@ var Model = function(mongoose) {
 						return a
 					})
 
-					console.log('hidden', articles.length)
-
 					next(null, articles)
 				})
 			},
@@ -93,8 +92,6 @@ var Model = function(mongoose) {
 						return a
 					})
 
-					console.log('muted', articles.length)
-
 					next(null, articles)
 				})
 			},
@@ -114,8 +111,6 @@ var Model = function(mongoose) {
 
 						return a
 					})
-
-					console.log('blocked', articles.length)
 
 					next(null, articles)
 				})
@@ -350,6 +345,14 @@ var Model = function(mongoose) {
 				},
 				{
 					$lookup: {
+						from: 'images',
+						localField: 'images',
+						foreignField: '_id',
+						as: 'images',
+					}
+				},
+				{
+					$lookup: {
 						from: 'users',
 						localField: 'sharedFrom.author',
 						foreignField: '_id',
@@ -423,8 +426,6 @@ var Model = function(mongoose) {
 			}
 			if (country) Object.assign(query, {country})
 
-			console.log(query)
-
 			start = Number(start)
 			limit = Number(limit)
 
@@ -465,6 +466,14 @@ var Model = function(mongoose) {
 				},
 				{
 					$lookup: {
+						from: 'images',
+						localField: 'images',
+						foreignField: '_id',
+						as: 'images',
+					}
+				},
+				{
+					$lookup: {
 						from: 'users',
 						localField: 'sharedFrom.author',
 						foreignField: '_id',
@@ -483,9 +492,6 @@ var Model = function(mongoose) {
 			aggregationOptions = aggregationOptions.concat([{$skip: start}, {$limit: limit}])
 
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
-				console.log(err)
-				console.log(articles)
-
 				if (filter == 'photos') {
 					let images = []
 					for (let a of articles) {images = images.concat(a.images)}
@@ -501,7 +507,8 @@ var Model = function(mongoose) {
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
-				}}
+				}},
+				{path: 'images'},
 			]).lean().exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
 			})
@@ -517,7 +524,8 @@ var Model = function(mongoose) {
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
-				}}
+				}},
+				{path: 'images'},
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
 			})
@@ -566,14 +574,12 @@ var Model = function(mongoose) {
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
-			console.log('query')
-			console.log(query)
-			console.log(category)
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
-				}}
+				}},
+				{path: 'images'},
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
 				this.postProcessList(articles, viewer, callback)
 			})

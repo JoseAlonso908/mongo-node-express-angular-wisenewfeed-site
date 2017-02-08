@@ -542,157 +542,162 @@ a.small-icon, button.small-icon {
 			a {
 				padding: 0 35px;
 			}
+		}
+	}
 
-			.menu-buttons {
-				$bg: #cad4db;
+	.menu-buttons {
+		$bg: #cad4db;
 
-				display: inline-block; position: relative;
-				height: 26px;
-				padding: 0 13px;
-				background-color: $bg;
-				border-radius: 13px;
-				color: #ffffff;
-				font-size: 13px;
-				line-height: 26px;
-				font-weight: 900;
-				text-transform: uppercase;
-				box-shadow: inset 0 2px 3px 0 rgba($middleGrey, .2);
-				text-shadow: 0 1px 1px rgba($middleGrey, .5);
-				@include transition(background-color .1s);
-				cursor: pointer;
+		display: inline-block; position: relative;
+		height: 26px;
+		padding: 0 13px;
+		background-color: $bg;
+		border-radius: 13px;
+		color: #ffffff;
+		font-size: 13px;
+		line-height: 26px;
+		font-weight: 900;
+		text-transform: uppercase;
+		box-shadow: inset 0 2px 3px 0 rgba($middleGrey, .2);
+		text-shadow: 0 1px 1px rgba($middleGrey, .5);
+		@include transition(background-color .1s);
+		cursor: pointer;
 
-				&:hover, &.active {
-					opacity: 1;
-					background-color: darken($bg, 7%);
-				}
+		&:hover, &.active {
+			opacity: 1;
+			background-color: darken($bg, 7%);
+		}
 
-				&.dropdown {
-					@include display-flex;
-					width: 155px;
-					padding-right: 25px;
-					@include flex-wrap(nowrap);
-					text-transform: none;
+		&.dropdown {
+			@include display-flex;
+			width: 155px;
+			padding-right: 25px;
+			@include flex-wrap(nowrap);
+			text-transform: none;
 
-					.title {
-						margin-right: 4px;
-						font-weight: 400;
-					}
-
-					// .option {
-					// 	font-weight: 900;
-					// }
-
-					.option {
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-					}
-
-					&:after, &::after {
-						@extend .material-icons-pseudo-class;
-						display: inline-block; position: absolute;
-						right: 7px;
-						margin-top: 1px;
-						content: 'keyboard_arrow_down';
-						font-family: 'Material Icons';
-					}
-				}
+			.title {
+				margin-right: 4px;
+				font-weight: 400;
 			}
 
-			.dropdown-wrapper {
+			// .option {
+			// 	font-weight: 900;
+			// }
+
+			.option {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			&:after, &::after {
+				@extend .material-icons-pseudo-class;
+				display: inline-block; position: absolute;
+				right: 7px;
+				margin-top: 1px;
+				content: 'keyboard_arrow_down';
+				font-family: 'Material Icons';
+			}
+		}
+	}
+
+	.dropdown-wrapper {
+		position: relative;
+	}
+
+	.dropdown-list, .sublist-wrapper {
+		display: block; position: absolute;
+		min-width: 240px;
+		max-height: 400px;
+		padding: 15px 0;
+		z-index: 3;
+		background-color: #ffffff;
+		border-radius: 4px;
+		box-shadow: 0 5px 8px 0 rgba(#000000, 0.17);
+		opacity: 0;
+		pointer-events: none;
+		$aTime: .3s;
+		@include transition(margin-top $aTime, opacity $aTime);
+
+		&.overflow {
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+
+		&.active {
+			margin-top: 8px;
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		li {
+			height: 36px;
+			padding: 0 23px;
+			box-sizing: border-box;
+			font-size: 14px;
+			color: $soDark;
+			line-height: 36px;
+			cursor: pointer;
+			white-space: nowrap;
+			@include transition(font-weight .1s, background-color .1s);
+
+			&.nested {
 				position: relative;
+
+				&:after, &::after {
+					@extend .material-icons-pseudo-class;
+					position: absolute;
+					right: 6px;
+					font-family: 'Material Icons';
+					font-size: 20px;
+					content: 'keyboard_arrow_right';
+				}
 			}
 
-			.dropdown-list, .sublist-wrapper {
-				display: block; position: absolute;
-				min-width: 240px;
-				max-height: 400px;
-				padding: 15px 0;
-				z-index: 3;
-				background-color: #ffffff;
-				border-radius: 4px;
-				box-shadow: 0 5px 8px 0 rgba(#000000, 0.17);
-				opacity: 0;
-				pointer-events: none;
-				$aTime: .3s;
-				@include transition(margin-top $aTime, opacity $aTime);
+			&:hover, &.active {
+				background-color: #f2f3f4;
+			}
 
-				&.active {
-					margin-top: 8px;
+			&:hover {
+				.sublist-wrapper {
+					display: block;
 					opacity: 1;
 					pointer-events: auto;
 				}
+			}
 
-				li {
-					height: 36px;
-					padding: 0 23px;
-					box-sizing: border-box;
-					font-size: 14px;
-					color: $soDark;
-					line-height: 36px;
-					cursor: pointer;
-					white-space: nowrap;
-					@include transition(font-weight .1s, background-color .1s);
+			&.active {
+				font-weight: 900;
+			}
 
-					&.nested {
-						position: relative;
+			.sublist-wrapper {
+				display: none;
+				top: 0;
+				margin-left: 217px;
+				pointer-events: none;
+				overflow-x: hidden;
+				overflow-y: auto;
 
-						&:after, &::after {
-							@extend .material-icons-pseudo-class;
-							position: absolute;
-							right: 6px;
-							font-family: 'Material Icons';
-							font-size: 20px;
-							content: 'keyboard_arrow_right';
-						}
-					}
+				.sublist {
+					li {
+						font-weight: 400;
 
-					&:hover, &.active {
-						background-color: #f2f3f4;
-					}
+						&.active {
+							background-color: #ffffff;
 
-					&:hover {
-						.sublist-wrapper {
-							display: block;
-							opacity: 1;
-							pointer-events: auto;
-						}
-					}
-
-					&.active {
-						font-weight: 900;
-					}
-
-					.sublist-wrapper {
-						display: none;
-						top: 0;
-						margin-left: 217px;
-						pointer-events: none;
-						overflow-x: hidden;
-						overflow-y: auto;
-
-						.sublist {
-							li {
-								font-weight: 400;
-
-								&.active {
-									background-color: #ffffff;
-
-									&:after, &::after {
-										@extend .material-icons-pseudo-class;
-										position: absolute;
-										right: 23px;
-										content: 'check';
-										font-family: 'Material Icons';
-										font-size: 16px;
-										color: $soDark;
-									}
-								}
-
-								&:hover {
-									background-color: #f2f3f4;
-								}
+							&:after, &::after {
+								@extend .material-icons-pseudo-class;
+								position: absolute;
+								right: 23px;
+								content: 'check';
+								font-family: 'Material Icons';
+								font-size: 16px;
+								color: $soDark;
 							}
+						}
+
+						&:hover {
+							background-color: #f2f3f4;
 						}
 					}
 				}
@@ -1574,6 +1579,14 @@ a.small-icon, button.small-icon {
 						float: left;
 					}
 
+					.small-loader {
+						display: block; position: relative;
+						width: 16px; height: 16px;
+						margin: 10px -22px 0 6px;
+						float: left;
+						background: url('../images/small-loader.gif') no-repeat center;
+					}
+
 					select {
 						@include appearance(none);
 
@@ -2078,6 +2091,17 @@ a.small-icon, button.small-icon {
 							line-height: 16px;
 						}
 					}
+				}
+			}
+
+			.friends-filter {
+				@include display-flex;
+				@include justify-content(flex-start);
+				@include flex-wrap(wrap);
+				margin-bottom: 20px;
+
+				dropdown {
+					margin-right: 15px;
 				}
 			}
 
@@ -4667,6 +4691,64 @@ a.small-icon, button.small-icon {
 
 		&.placeholder {
 			height: 0;
+		}
+	}
+}
+
+[lightbox] {
+	cursor: pointer;
+}
+
+.lightbox {
+	@include display-flex;
+	@include justify-content(center);
+	@include align-items(center);
+	position: fixed;
+	width: 100%; height: 100%;
+	top: 0; left: 0;
+	background: rgba(#000000, .8);
+	z-index: 101;
+
+	.wrapper {
+		@include display-flex;
+		width: 80%; height: 80%;
+		max-width: 1000px;
+
+		.image, .info {
+			@include box-sizing(border-box);
+		}
+
+		.image {
+			@include display-flex;
+			@include justify-content(center);
+			@include align-items(center);
+			width: calc(100% - 250px);
+			background-color: #000000;
+
+			img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		}
+
+		.info {
+			width: 250px;
+			padding: 10px;
+			background-color: #ffffff;
+
+			.cycle {
+				@include display-flex;
+				@include justify-content(space-between);
+
+				a {
+					color: $activeBlue;
+
+					&.disabled {
+						opacity: .5;
+						pointer-events: none;
+					}
+				}
+			}
 		}
 	}
 }

@@ -3,8 +3,8 @@
 		<div class="title">{{title}}:</div>
 		<div class="option">{{selected.title}}</div>
 	</div>
-	<ul class="dropdown-list floating">
-		<li ng-repeat="item in list" ng-click="(!!(item.sub)) ? void() : choose(item)" ng-class="{nested: !!(item.sub), active: (!!(item.sub)) ? isActiveParentItem(item) : isActiveItem(item)}">
+	<ul class="dropdown-list floating" ng-class="{overflow: overflow}">
+		<li ng-repeat="item in list" ng-click="(!!(item.sub)) ? void() : choose(item)" class="{{::(!!item.sub) ? 'nested' : ''}}" ng-class="{active: (!!(item.sub)) ? isActiveParentItem(item) : isActiveItem(item)}">
 			{{item.title}} {{(item.additional) ? '(' + item.additional + ')' : ''}}
 			<div class="sublist-wrapper" ng-show="item.sub">
 				<ul class="sublist">

@@ -2,7 +2,7 @@
 	<div id="top-bar-background">
 		<topbar user="user"></topbar>
 	</div>
-	
+
 	<div class="content">
 		<div class="left">
 			<div class="settings-list" ng-show="user">
@@ -45,16 +45,36 @@
 
 					<div class="settings-field-block">
 						<label>Country</label>
-						<select ng-model="user.country" name="country">
+						<select ng-model="user.country" ng-change="countryChosen()" ng-model-options="{debounce: 250}" name="country">
 							<option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
 						</select>
 						<div class="clear"></div>
 					</div>
 
 					<div class="settings-field-block">
+						<label>City</label>
+						<div class="small-loader" ng-show="loadingCities"></div>
+						<select ng-model="user.city" name="city">
+							<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
 						<label>Field</label>
-						<select ng-model="user.field" name="field">
-							<option ng-repeat="field in fields" value="{{field.title}}">{{field.title}}</option>
+						<select ng-model="user.field" name="field" ng-options="field.title as field.title for field in fields">
+							<option value="">Field</option>
+							<!-- <option ng-repeat="field in fields" value="{{field.title}}">{{field.title}}</option> -->
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Gender</label>
+						<select name="language" ng-model="user.gender">
+							<option value="">Not specified</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
 						</select>
 						<div class="clear"></div>
 					</div>
@@ -132,7 +152,7 @@
 						<label for="notifyjournalist" class="label">Notify about Journalist</label>
 					</div>
 
-					<div class="divider"></div>				
+					<div class="divider"></div>
 
 					<div class="checkbox-wrapper">
 						<input type="checkbox" ng-model="user.notifications.reacted" id="notifyreacted" name="notifyreacted">
@@ -243,7 +263,7 @@
 			</div>
 		</div>
 		<div class="right">
-			
+
 		</div>
 	</div>
 </div>

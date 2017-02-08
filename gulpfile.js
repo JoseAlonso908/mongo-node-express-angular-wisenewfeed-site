@@ -28,12 +28,12 @@ gulp.task('browserify', () => {
 	gulp.src('./js/app.js')
 	.pipe(browserify({
 		insertGlobals: true,
-		debug: true,
+		debug: false,
 	}))
 	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('angular.js', {
 		outSourceMap: true,
-		mangle: true
+		mangle: false
 	}).on('error', gulpUtil.log))
 	.pipe(plumber())
 	.pipe(gulp.dest('./assets/scripts'))
@@ -49,7 +49,7 @@ gulp.task('js', () => {
 	.pipe(ngAnnotate().on('error', gulpUtil.log))
 	.pipe(uglify('app.js', {
 		outSourceMap: true,
-		mangle: true
+		mangle: false
 	}).on('error', gulpUtil.log))
 	.pipe(plumber())
 	.pipe(gulp.dest('./assets/scripts'))
@@ -57,7 +57,7 @@ gulp.task('js', () => {
 
 gulp.task('js-watch', (done) => {
 	runSequence('js', 'browserify', () => {
-		browserSync.reload()
+		// browserSync.reload()
 		done()
 	})
 })
@@ -72,12 +72,12 @@ gulp.task('html', () => {
 })
 
 gulp.task('serve', () => {
-	browserSync.init({
-		proxy: {
-			target: 'http://localhost:8006',
-			ws: true,
-		}
-	})
+	// browserSync.init({
+	// 	proxy: {
+	// 		target: 'http://localhost:8006',
+	// 		ws: true,
+	// 	}
+	// })
 
 	gulp.watch('./sass/*.scss', ['css'])
 	gulp.watch(['./js/*.js', '!./js/app.js'], ['js-watch'])

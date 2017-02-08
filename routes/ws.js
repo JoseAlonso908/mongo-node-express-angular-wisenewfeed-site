@@ -10,7 +10,7 @@ module.exports = (io) => {
 		let recipientSocketId = online[messageObject.to._id.toString()]
 
 		if (recipientSocketId) {
-			console.log(`Sending message to ${messageObject.to.name} (${messageObject.to._id}) from ${messageObject.from.name} (${messageObject.from._id})`)
+			// console.log(`Sending message to ${messageObject.to.name} (${messageObject.to._id}) from ${messageObject.from.name} (${messageObject.from._id})`)
 			io.to(recipientSocketId).emit('message', messageObject)
 		}
 	}
@@ -20,14 +20,14 @@ module.exports = (io) => {
 	io.on('connection', (socket) => {
 		online[socket.handshake.query.uid] = socket.id
 
-		console.log(`New connection: ${socket.handshake.query.uid}`)
+		// console.log(`New connection: ${socket.handshake.query.uid}`)
 
 		socket.on('disconnect', () => {
 			for (let userId in online) {
 				let socketId = online[userId]
 
 				if (socketId == socket.id) {
-					console.log(`Disconnection: ${userId}`)
+					// console.log(`Disconnection: ${userId}`)
 					WSEmitter.emit('disconnect', userId)
 					delete online[userId]
 				}

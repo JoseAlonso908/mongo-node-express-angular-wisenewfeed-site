@@ -128,7 +128,78 @@ var Model = function (mongoose) {
 
                 callback(err, friendsIds)
             })
-        }
+        },
+        friendsDetailedPaged: (user, skip, limit, filters, callback) => {
+            user = MOI(user)
+
+            skip = Number(skip || 0)
+            limit = Number(limit || 1000)
+
+            let prefixFilters = (prefix, filters) => {
+                let result = {}
+
+                for (let param in filters) {
+                    let value = filters[param]
+                    if (value) result[prefix + '.' + param] = value
+                }
+
+                return result
+            }
+
+            // filters['_id'] = user
+
+            let userMatchingQuery = prefixFilters('user', filters),
+                friendMatchingQuery = prefixFilters('friend', filters)
+
+            userMatchingQuery['friend._id'] = user
+            friendMatchingQuery['user._id'] = user
+
+            let aggregationOptions = [
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user',
+                        foreignField: '_id',
+                        as: 'user',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'friend',
+                        foreignField: '_id',
+                        as: 'friend',
+                    },
+                },
+                {
+                    $match: {
+                        $or: [userMatchingQuery, friendMatchingQuery]
+                    }
+                },
+                {
+                    $unwind: "$user",
+                },
+                {
+                    $unwind: "$friend",
+                },
+                {$skip: skip},
+                {$limit: limit},
+            ]
+
+            Model.aggregate(aggregationOptions).exec((err, friendships) => {
+                if (err) return callback(err)
+
+                let friendsIds = friendships.map((friendship) => {
+                    if (friendship.user._id.toString() == user.toString()) {
+                        return friendship.friend
+                    } else {
+                        return friendship.user
+                    }
+                })
+
+                callback(err, friendsIds)
+            })
+        },
     }
 }
 

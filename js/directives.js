@@ -273,6 +273,7 @@ angular.module('er.directives', [])
 			list: '=',
 			selected: '=',
 			change: '=',
+			overflow: '@'
 		},
 		link: function ($scope, element, attr) {
 			var rootElement = angular.element(element)[0]
@@ -721,8 +722,6 @@ angular.module('er.directives', [])
 					start += feed.length
 				}
 
-				console.log($scope.type)
-
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {
 						setFeed(feed)
@@ -738,8 +737,6 @@ angular.module('er.directives', [])
 					if ($scope.user) feedAttributes['user'] = $scope.user._id
 					feedAttributes['start'] = start
 					feedAttributes['limit'] = limit
-
-					console.log(feedType)
 
 					feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
 						// $scope.feedLoading = false
@@ -1567,52 +1564,48 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('lightbox', function () {
+.directive('lightbox', function ($templateRequest, $compile, $timeout) {
 	return {
 		restrict: 'A',
 		scope: {
-			ngHref: '=',
+			image: '=',
+			post: '=',
 		},
 		link: function ($scope, element, attr) {
-			var imageUrl = window.location.origin + '/' + $scope.ngHref
-			var body = angular.element(document.body)
+			element.on('click', function () {
+				$scope.next = element.next()[0]
+				$scope.prev = element.prev()[0]
 
-			var small = false
+				$templateRequest('assets/views/directives/lightbox.htm').then(function (html) {
+					var template = angular.element(html)
+					angular.element(document.body).append(template)
 
-			var i = new Image()
-			i.src = imageUrl
-			i.onload = function () {
-				if (i.width < window.innerWidth && i.height < window.innerHeight) {
-					small = true
-				}
-			}
+					$compile(template)($scope)
 
-			element.on('click', function (e) {
-				e.preventDefault()
-				e.stopImmediatePropagation()
+					template.find('.wrapper').on('click', function (e) {
+						e.stopImmediatePropagation()
+					})
 
-				var backdrop = angular.element('<div class="backdrop"></div>'),
-					image = angular.element('<div class="image"></div>')
+					template.on('click', function () {
+						template.remove()
+					})
 
-				if (small) {
-					image.addClass('small')
-				} else {
-					image.removeClass('small')
-				}
+					if ($scope.next) {
+						$scope.showNext = function () {
+							template.remove()
+							// $timeout(function () {
+								angular.element($scope.next).triggerHandler('click')
+							// })
+						}
+					}
 
-				image.css('backgroundImage', 'url(' + imageUrl + ')')
-
-				backdrop.append(image)
-				body.append(backdrop)
-
-				var closeLightbox = function (e) {
-					backdrop.remove()
-				}
-
-				backdrop.on('click', closeLightbox)
-				body.on('keydown', function (e) {
-					if (e.keyCode == 27) {
-						closeLightbox()
+					if ($scope.prev) {
+						$scope.showPrev = function () {
+							template.remove()
+							// $timeout(function () {
+								angular.element($scope.prev).triggerHandler('click')
+							// })
+						}
 					}
 				})
 			})
@@ -1917,8 +1910,6 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope) {
 			$scope.loaded = false
-
-			console.log($scope.profile)
 
 			identityService.isOnline($scope.profile._id).then(function (flag) {
 				$scope.isOnline = flag

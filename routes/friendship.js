@@ -81,4 +81,15 @@ router.get('/pending', (req, res) => {
     })
 })
 
+router.get('/list', (req, res) => {
+    let {skip, limit, country, city, gender} = req.query
+
+    let filters = {country, city, gender}
+
+    models.Friendship.friendsDetailedPaged(req.user._id, skip, limit, filters, (err, result) => {
+        if (err) return res.status(400).send(err)
+        res.send(result)
+    })
+})
+
 module.exports = router

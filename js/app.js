@@ -40,6 +40,10 @@ angular.module('er', [
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'profileFeedController',
 			})
+            .when('/friends', {
+                templateUrl: 'assets/views/friends.htm',
+                controller: 'friendsController',
+            })
 			.when('/profilepeople/:id/:type', {
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'profilePeopleController',

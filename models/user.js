@@ -19,6 +19,8 @@ var Model = function(mongoose) {
 		password		: {type: String, select: false},
 		phone			: String,
 		country			: String,
+		city 			: String,
+		gender			: String,
 		position		: String,
 		company 		: String,
 		field			: String,
@@ -295,11 +297,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (_id, name, email, phone, country, field, language, callback) => {
+		updateSettings: (_id, name, email, phone, country, city, gender, field, language, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, field, language})
+				Object.assign(user, {name, email, phone, country, city, gender, field, language})
 				user.save(callback)
 			})
 		},
@@ -371,6 +373,12 @@ var Model = function(mongoose) {
 				(cb) => {
 					models.Follow.followersByFollowing(_id, null, null, null, (err, followers) => {
 						result.followers = followers.length
+						cb()
+					})
+				},
+				(cb) => {
+					models.Friendship.friends(_id, (err, friends) => {
+						result.friends = friends.length
 						cb()
 					})
 				},

@@ -142,7 +142,7 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.countries = []
-	countriesListService().then(function (list) {
+	countriesListService.countries().then(function (list) {
 		$scope.countries = list
 	})
 })
@@ -488,10 +488,58 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('profilePeopleController', function ($rootScope, $routeParams, $scope, identityService, followService, friendshipService) {
+.controller('profilePeopleController', function ($rootScope, $routeParams, $scope, identityService, followService,
+	friendshipService, groupedCountriesService, countriesListService) {
+
 	$scope.type = $routeParams.type
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
+
+	$scope.country
+	$scope.setCountry = function (item) {
+		$scope.country = item
+		setCitiesList(item)
+		loadFriends()
+	}
+
+	groupedCountriesService.get().then(function (result) {
+		$scope.countries = result
+		$scope.setCountry(result[0])
+	})
+
+	$scope.city
+	$scope.setCity = function (item) {
+		$scope.city = item
+		loadFriends()
+	}
+
+	var setCitiesList = function (country) {
+		countriesListService.cities(country.title).then(function (cities) {
+			cities = cities.map(function (city, index) {
+				return {id: (index + 1), title: city}
+			})
+
+			if (cities.length > 0) {
+				cities.unshift({id: 0, title: 'All'})
+			}
+
+			$scope.cities = cities
+			$scope.setCity(cities[0])
+		})
+	}
+
+	$scope.setGender = function (item) {
+		$scope.gender = item
+		loadFriends()
+	}
+
+	$scope.genders = [
+		{id: '', title: 'Any'},
+		{id: 'male', title: 'Male'},
+		{id: 'female', title: 'Female'},
+	]
+
+	$scope.gender = $scope.genders[0]
 
 	var loadProfile = function (callback) {
 		identityService.getOther($scope.id).then(function (profile) {
@@ -536,19 +584,37 @@ angular.module('er.controllers', [])
 		})
 	}
 
-	var loadFollowsPeople = function (cb) {
-		followService[$scope.type]($scope.id).then(function (people) {
-			$scope.people = people
+	var loadFriends = function () {
+		console.log($scope.country)
+		console.log($scope.city)
+		console.log($scope.gender)
 
-			if ($scope.type == 'following') {
-				$scope.people = $scope.people.map(function (person) {
-					person.isFollowing = true
-					return person
-				})
-			}
-
-			cb()
+		friendshipService.list($scope.id, {
+			country: ($scope.country && $scope.country.id != 0) ? $scope.country.title : undefined,
+			city: ($scope.city && $scope.city.id != 0) ? $scope.city.title : undefined,
+			gender: ($scope.gender && $scope.gender.id != 0) ? $scope.gender.id : undefined,
+		}).then(function (friends) {
+			$scope.people = friends
 		})
+	}
+
+	var loadFollowsPeople = function (cb) {
+		if ($scope.type == 'friends') {
+			loadFriends()
+		} else {
+			followService[$scope.type]($scope.id).then(function (people) {
+				$scope.people = people
+
+				if ($scope.type == 'following') {
+					$scope.people = $scope.people.map(function (person) {
+						person.isFollowing = true
+						return person
+					})
+				}
+
+				cb()
+			})
+		}
 	}
 
 	async.parallel([
@@ -891,8 +957,9 @@ angular.module('er.controllers', [])
 				name: e.target.name.value,
 				email: e.target.email.value,
 				phone: e.target.phone.value,
-				country: e.target.country.value,
-				field: e.target.field.value,
+				country: $scope.user.country,
+				city: $scope.user.city,
+				field: $scope.user.field,
 				language: e.target.language.value,
 			}
 
@@ -977,8 +1044,18 @@ angular.module('er.controllers', [])
 		},
 	}
 
-	async.parallel([
-		function () {
+	$scope.cities = []
+
+	$scope.countryChosen = function () {
+		$scope.loadingCities = true
+		countriesListService.cities($scope.user.country).then(function (list) {
+			$scope.cities = list
+			$scope.loadingCities = false
+		})
+	}
+
+	async.series([
+		function (next) {
 			identityService.get().then(function (user) {
 				$scope.user = user
 
@@ -989,22 +1066,31 @@ angular.module('er.controllers', [])
 				if (!$scope.user.phone) {
 					$scope.phoneerror = 'You phone number is required to use Expert Reaction.'
 				}
+
+				next()
 			})
 		},
-		function () {
-			countriesListService().then(function (list) {
+		function (next) {
+			countriesListService.countries().then(function (list) {
 				$scope.countries = list.map(function (item) {
 					return item.country
 				})
+
+				console.log($scope.user.country)
+				$scope.countryChosen($scope.user.country)
+
+				next()
 			})
 		},
-		function () {
+		function (next) {
 			fieldsListService.get().then(function (list) {
 				$scope.fields = list
+
+				next()
 			})
 		},
 	], function () {
-		$scope.$apply()
+		// $scope.$apply()
 	})
 })
 .controller('questionsController', function ($routeParams, $rootScope, $scope, $location, $anchorScroll, $timeout, identityService, questionsService) {
@@ -1814,4 +1900,14 @@ angular.module('er.controllers', [])
 			loadProfile(cb)
 		},
 	])
+})
+.controller('friendsController', function ($scope, identityService, friendshipService) {
+	identityService.get().then(function (user) {
+		$scope.user = user
+		$scope.profile = user
+
+		friendshipService.list(user._id).then(function (friends) {
+			$scope.friends = friends
+		})
+	})
 })

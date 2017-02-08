@@ -1,4 +1,4 @@
-<div class="stats">
+<div class="stats" ng-if="profile">
 	<a ng-href="{{(profile.reactions.likes > 0) ? '#!/profilefeed/' + profile._id + '/liked' : 'javascript:void(0);'}}" ng-class="{active: active == 'liked'}" class="stat">
 		<i class="material-icons">thumb_up</i>
 		<div class="value">{{profile.reactions.likes || 0}}</div>
@@ -19,7 +19,12 @@
 		<div class="value">{{profile.reactions.following}}</div>
 		<div class="title">Following</div>
 	</a>
-	<a ng-href="{{(profile.reactions.followers > 0) ? '#!/profilepeople/' + profile._id + '/followers' : 'javascript:void(0);'}}" ng-class="{active: active == 'followers'}" class="stat">
+	<a ng-if="profile.role == 'User'" ng-href="{{(profile.reactions.friends > 0) ? '#!/profilepeople/' + profile._id + '/friends' : 'javascript:void(0);'}}" ng-class="{active: active == 'friends'}" class="stat">
+		<i class="material-icons">people</i>
+		<div class="value">{{profile.reactions.friends}}</div>
+		<div class="title">Friends</div>
+	</a>
+	<a ng-if="profile.role != 'User'" ng-href="{{(profile.reactions.followers > 0) ? '#!/profilepeople/' + profile._id + '/followers' : 'javascript:void(0);'}}" ng-class="{active: active == 'followers'}" class="stat">
 		<i class="material-icons">people</i>
 		<div class="value">{{profile.reactions.followers}}</div>
 		<div class="title">Followers</div>

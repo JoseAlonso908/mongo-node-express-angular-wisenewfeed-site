@@ -52,7 +52,7 @@
 			</div>
 
 			<div class="images" ng-hide="editing">
-				<a ng-href="image" lightbox class="image" ng-repeat="image in post.images" style="background-image: url({{image}})"></a>
+				<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
 			</div>
 
 			<div class="shared" ng-if="!!post.sharedFrom">

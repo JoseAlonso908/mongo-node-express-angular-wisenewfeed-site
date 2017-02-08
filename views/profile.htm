@@ -16,6 +16,12 @@
 			<feed id="profile._id" type="type" user="user" ng-if="profile"></feed>
 		</div>
 		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
+			<div ng-if="type == 'friends'" class="friends-filter">
+				<dropdown title="Country" list="countries" ng-if="countries.length > 0" selected="country" change="setCountry"></dropdown>
+				<dropdown overflow="true" title="City" list="cities" ng-if="cities.length > 0" selected="city" change="setCity"></dropdown>
+				<dropdown title="Gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown>
+			</div>
+
 			<div class="people">
 				<person ng-show="person" person="person" ng-repeat="person in people"></person>
 				<div class="flex-people-placeholder"></div>

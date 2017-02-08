@@ -139,15 +139,14 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
-.factory('countriesListService', function ($http, $q) {
-	return function () {
-		var d = $q.defer()
-
-		$http.get('/static/countries').then(function (response) {
-			d.resolve(response.data)
-		})
-
-		return d.promise
+.factory('countriesListService', function ($http, $cookies) {
+	return {
+		countries: function () {
+			return __s($http, $cookies, 'get', '/static/countries')
+		},
+		cities: function (country) {
+			return __s($http, $cookies, 'get', '/static/cities', {country: country})
+		},
 	}
 })
 .factory('fieldsListService', function ($http, $cookies) {
@@ -481,8 +480,6 @@ angular.module('er.services', [])
 			return __s($http, $cookies, 'get', '/article/my')
 		},
 		feed: function (params) {
-			var params = {}
-
 			return __s($http, $cookies, 'get', '/article/feed?r=' + Math.random(), params)
 		},
 		reacted: function (user, type, start, limit) {
@@ -1136,6 +1133,11 @@ angular.module('er.services', [])
                 }, function (data, status) {
                     return data
                 })
-        }
+        },
+		list: function (id, filters) {
+			if (!filters) filters = {}
+			filters['id'] = id
+			return __s($http, $cookies, 'get', '/friendship/list', filters)
+		}
 	}
 })

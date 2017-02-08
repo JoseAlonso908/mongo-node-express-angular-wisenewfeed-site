@@ -101,7 +101,7 @@
 		<div class="value">{{profile.reactions.following}}</div>
 		<div class="title">Following</div>
 	</a>
-	<a ng-href="{{(profile.reactions.followers > 0) ? '#!/profilepeople/' + profile._id + '/followers' : 'javascript:void(0);'}}" ng-class="{active: active == 'followers'}" class="stat">
+	<a ng-if="profile.role != 'User'" ng-href="{{(profile.reactions.followers > 0) ? '#!/profilepeople/' + profile._id + '/followers' : 'javascript:void(0);'}}" ng-class="{active: active == 'followers'}" class="stat">
 		<i class="material-icons">people</i>
 		<div class="value">{{profile.reactions.followers}}</div>
 		<div class="title">Followers</div>

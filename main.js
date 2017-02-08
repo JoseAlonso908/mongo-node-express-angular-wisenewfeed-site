@@ -118,6 +118,13 @@ app.get('/static/countries', (req, res) => {
 	res.send(countryPhoneCodeList)
 })
 
+app.get('/static/cities', (req, res) => {
+	const cc = require('countries-cities')
+	let cities = cc.getCities(req.query.country) || []
+
+	res.send(cities)
+})
+
 global.getCategories = () => {
 	return [
 		{id: 0, title: 'All', tag: '', count: 0},

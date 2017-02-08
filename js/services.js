@@ -1141,3 +1141,83 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('betaUploadsService', function ($http, $cookies) {
+    return {
+        addCert: function (file) {
+            return new Promise(function (resolve, reject) {
+                var fd = new FormData()
+                fd.append('file', file)
+
+                $http({
+                    method: 'POST',
+                    url: '/beta/addcertificate',
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    data: fd,
+                }).then(function (data) {
+                    resolve(data)
+                }).catch(function (data, status) {
+                    reject(data)
+                })
+            })
+        },
+        removeCert: function (cert) {
+            return new Promise(function (resolve, reject) {
+                $http({
+                    method: 'POST',
+                    url: '/beta/removecertificate',
+                    data: {
+                        filename: cert.filename
+                    },
+                }).then(resolve).catch(function (data, status) {
+                    reject(data)
+                })
+            })
+        },
+        addDownload: function (file) {
+            return new Promise(function (resolve, reject) {
+                var fd = new FormData()
+                fd.append('file', file)
+
+                $http({
+                    method: 'POST',
+                    url: '/beta/adddownload',
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    data: fd,
+                }).then(function (data) {
+                    resolve(data)
+                }).catch(function (data, status) {
+                    reject(data)
+                })
+            })
+        },
+        removeDownload: function (file) {
+            return new Promise(function (resolve, reject) {
+                $http({
+                    method: 'POST',
+                    url: '/beta/removedownload',
+                    data: {
+                        filename: file.filename
+                    },
+                }).then(resolve).catch(function (data, status) {
+                    reject(data)
+                })
+            })
+        },
+		signup: function (signup) {
+            return new Promise(function (resolve, reject) {
+                $http({
+                    method: 'POST',
+                    url: '/beta/signup',
+                    data: {form: signup},
+                }).then(resolve).catch(function (data, status) {
+                    reject(data)
+                })
+            })
+
+        }
+    }
+})

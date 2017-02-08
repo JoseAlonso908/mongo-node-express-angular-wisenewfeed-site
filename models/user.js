@@ -26,7 +26,6 @@ var Model = function(mongoose) {
 		field			: String,
 		role 			: String,
 		title 			: String,
-		company			: String,
 		contact 		: {
 			email: String,
 			phone: String,

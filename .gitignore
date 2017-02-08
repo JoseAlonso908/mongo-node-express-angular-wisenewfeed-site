@@ -3,7 +3,7 @@ bower_components/
 .sass-cache/
 assets/.sass-cache/
 token
-uploads/
+
 temp/
 .idea/
 /npm-debug.log.*

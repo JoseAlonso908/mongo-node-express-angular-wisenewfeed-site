@@ -6,6 +6,7 @@ const 	express = require('express'),
 
 const config = require('./../config')
 
+//TODO: possibly wrong tmp dir used (not in project folder)...
 let tempUploads = multer({
 	dest: '../temp/',
 	limits: {

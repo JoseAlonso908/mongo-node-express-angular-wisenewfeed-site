@@ -13,6 +13,7 @@ $iconGrey: #b0bec8;
 $middleGrey: #82898f;
 $soDark: #535659;
 $soLight: #f1f5f7;
+$errorRed: #aa180e;
 
 @import "loader";
 
@@ -715,6 +716,9 @@ a.small-icon, button.small-icon {
 		// @include flex-wrap(wrap);
 		padding-bottom: 20px;
 
+		&.centered {
+			@include justify-content(center);
+		}
 		&.chat-content {
 			height: calc(100% - 125px);
 		}
@@ -727,6 +731,224 @@ a.small-icon, button.small-icon {
 			font-size: 14px;
 			text-align: center;
 			color: $soDark;
+		}
+
+		//Signup for beta page
+		.single-column {
+			background-color: white;
+			width: 80%;
+			max-width: 760px;
+			@include display-flex;
+			@include flex-flow(row wrap);
+
+			.role-heading {
+				width: 100%;
+				display: block;
+				list-style-type: none;
+				li {
+					width: 50%;
+					float: left;
+					text-align: center;
+					line-height: 50px;
+					font-weight: bold;
+					cursor: pointer;
+					border-bottom: 3px solid #e6e6e6;
+					color: $iconGrey;
+					&.active, &:hover{
+						border-bottom: 3px solid $activeBlue;
+						color: $activeBlue;
+					}
+				}
+			}
+
+			.form-container {
+				width: 100%;
+				float: left;
+			}
+
+			.group {
+				$sidePadding: 40px;
+				padding-bottom: 35px;
+				padding-right: $sidePadding;
+				padding-left: $sidePadding;
+				border-bottom: 1px solid $soLight;
+
+				&:last-child {
+					border-bottom: none;
+				}
+
+				.title {
+					text-align: center;
+					font-weight: bold;
+					font-size: 16px;
+					padding: 35px 0;
+
+				}
+				.experience .input-group{
+					margin-bottom: 16px;
+				}
+
+				.input-group {
+					display: inline-block;
+					font-size: 14px;
+					width: 100%;
+					&:not(:last-child) {
+						margin-bottom: 16px;
+					}
+					&.with-file-upload {
+						display: flex;
+						flex-flow: row wrap;
+						input {
+							/* 100%- (label width + padding) - fileUploadBtn width*/
+							width: calc(100% - 140px - 140px);
+						}
+					}
+					label {
+						display: inline-block;
+						color: $middleGrey;
+						text-align: right;
+						padding-right: 20px;
+						line-height: 35px;
+						width: 120px;
+						float: left;
+					}
+
+					input, textarea {
+						width: calc(100% - 140px);
+						border: 1px solid #e6e9ec;
+						box-sizing: border-box;
+						display: inline-block;
+						background: #ffffff;
+						border-radius: 3px;
+						line-height: 35px;
+						font-size: 12px;
+						padding: 0 10px;
+						color: $soDark;
+						float: right;
+						@include transition(border-color .1s);
+
+						&:focus {
+							border-color: $activeBlue;
+						}
+
+						&.error {
+							border-color: red;
+						}
+
+						&.half {
+							/* 50% - ( LabelWidth/2) + paddingBetweenInputs )
+							So we have 50% - ((120+20)/2) + 10)
+							*/
+							width: calc(50% - 80px);
+							&:not(:last-child) {
+								margin-left: 20px;
+							}
+						}
+						&.hidden-file-input {
+							display: none;
+						}
+					}
+
+					textarea {
+						padding: 10px;
+						resize: none;
+						height: 150px;
+						line-height: 15px;
+					}
+
+					.add-more {
+						font-weight: bold;
+						float: right;
+					}
+
+					.attach-file {
+						@include transition(background-color .2s);
+						@include justify-content(center);
+						@include align-items(center);
+						@include display-flex;
+						order: 3;
+						cursor: pointer;
+						margin-left: 20px;
+						border-radius: 18px;
+						width: 120px; height: 36px;
+						background-color: rgba($activeBlue, .15);
+
+						&:hover {
+							background-color: rgba($activeBlue, .25);
+						}
+
+						i {
+							margin-right: 5px;
+							font-size: 20px;
+						}
+
+						i, .title {
+							display: inline-block;
+							color: $activeBlue;
+						}
+
+						.title {
+							margin-bottom: 0;
+							font-size: 13px;
+							font-weight: 900;
+						}
+					}
+					.failed {
+						text-align: center;
+						color: $errorRed;
+					}
+					.success {
+						text-align: center;
+						color: $activeBlue;
+					}
+					.notice {
+						padding-left: 140px;
+						color: $middleGrey;
+						margin-top: 5px;
+						font-size: 11px;
+						width: 100%;
+						order: 4;
+					}
+					.error-block {
+						display: inline-block;
+						text-align: right;
+						color: $errorRed;
+						padding: 10px 0;
+						width: 100%;
+					}
+				}
+			}
+
+			.submit-block {
+				@include justify-content(center);
+				@include display-flex;
+			}
+
+			.action-button {
+				@include transition(background-color .2s);
+				@include justify-content(space-between);
+				@include display-flex;
+				border-radius: 16px;
+				margin-right: 12px;
+				line-height: 32px;
+				font-weight: 900;
+				padding: 0 12px;
+				font-size: 13px;
+				cursor: pointer;
+				color: #ffffff;
+				height: 32px;
+				border: none;
+
+				background-color: $activeBlue;
+				&:hover {
+					background-color: darken($activeBlue, 5%);
+				}
+				&.disabled {
+					background-color: #7e868e;
+					cursor: pointer;
+					pointer-events: none;
+				}
+			}
 		}
 
 		.card {

@@ -67,7 +67,6 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
     })
 
 
-<<<<<<< HEAD
 	async.waterfall([
 		(next) => {
 			models.Image.createBunch(req.user._id, filenames, next)
@@ -86,8 +85,6 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		if (err) res.status(400).send(err)
 		else res.send({ok: true})
 	})
-=======
->>>>>>> origin/ER3-62-article-fmt
 })
 
 router.post('/edit', tempUploads.array('files', 5), (req, res) => {

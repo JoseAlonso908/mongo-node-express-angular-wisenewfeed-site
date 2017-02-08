@@ -9,7 +9,7 @@ angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
 	'angularMoment', require('satellizer'), require('angular-socialshare'),
 	// 'ngScrollbar',
-	 'btford.modal',
+	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$logProvider',
 	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $logProvider) {

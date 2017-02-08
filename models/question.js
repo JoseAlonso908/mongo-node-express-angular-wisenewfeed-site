@@ -72,7 +72,7 @@ var Model = function(mongoose) {
 			recipient = MOI(recipient)
 			let query = Model.find({recipient, type}).populate('author').lean().sort({createdAt: 'asc'})
 			if (skip) query.skip(Number(skip))
-			if (limit) query.skip(Number(limit))
+			if (limit) query.limit(Number(limit))
 			query.exec(callback)
 		},
 

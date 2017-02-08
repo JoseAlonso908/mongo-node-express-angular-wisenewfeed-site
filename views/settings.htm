@@ -25,6 +25,11 @@
 					<div class="divider"></div>
 
 					<div class="settings-field-block">
+						<label>Nickname</label>
+						<input type="text" name="nickname" ng-model="user.nickname" minlength="6" required ng-pattern="/^(?![0-9])[a-zA-Z0-9]+$/">
+						<div class="clear"></div>
+					</div>
+					<div class="settings-field-block">
 						<label>Full name</label><input type="text" name="name" ng-model="user.name" minlength="6" required>
 						<div class="clear"></div>
 					</div>

@@ -14,6 +14,7 @@ var Model = function(mongoose) {
 		avatar			: {type: String, default: '/assets/images/avatar_placeholder.png'},
 		wallpaper		: String,
 		name			: String,
+        nickname		: String,
 		intro			: String,
 		email			: String,
 		password		: {type: String, select: false},
@@ -296,11 +297,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (_id, name, email, phone, country, city, gender, field, language, callback) => {
+		updateSettings: (_id, name, email, phone, country, city, gender, field, language, nickname, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, city, gender, field, language})
+				Object.assign(user, {name, email, phone, country, city, gender, field, language, nickname})
 				user.save(callback)
 			})
 		},

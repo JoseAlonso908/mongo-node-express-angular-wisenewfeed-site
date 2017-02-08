@@ -7,4 +7,6 @@ token
 temp/
 .idea/
 /npm-debug.log.*
-assets/
+assets/scripts/
+assets/views/
+assets/css/

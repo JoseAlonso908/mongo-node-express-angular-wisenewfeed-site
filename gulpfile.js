@@ -80,6 +80,7 @@ gulp.task('serve', () => {
 	// })
 
 	gulp.watch('./sass/*.scss', ['css'])
+	gulp.watch('./js/app.js', ['browserify-watch'])
 	gulp.watch(['./js/*.js', '!./js/app.js'], ['js-watch'])
 	gulp.watch(['./views/**/*.htm', './views/**/*.html'], ['html']).on('change', browserSync.reload)
 })

@@ -5,6 +5,8 @@ require('angular-modal')
 window.numeral = require('numeral')
 window.async = require('async')
 
+require('angular-chosen-localytics') 
+
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
 	'angularMoment', require('satellizer'), require('angular-socialshare'),

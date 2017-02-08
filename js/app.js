@@ -1,6 +1,7 @@
  var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
+require('angular-chosen-localytics')
 
 window.numeral = require('numeral')
 window.async = require('async')

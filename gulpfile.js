@@ -84,6 +84,10 @@ gulp.task('serve', () => {
 	gulp.watch(['./views/**/*.htm', './views/**/*.html'], ['html']).on('change', browserSync.reload)
 })
 
+gulp.task('build', () => {
+	runSequence('css', 'browserify', 'js', 'html')
+})
+
 gulp.task('default', ['serve'], () => {
 	gulp.start(['css', 'browserify', 'js', 'html'])
 })

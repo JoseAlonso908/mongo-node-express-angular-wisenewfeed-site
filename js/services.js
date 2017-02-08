@@ -501,7 +501,7 @@ angular.module('er.services', [])
 					'Authorization': $cookies.get('token'),
 				}
 
-				if (files.length > 0) {
+				if (files && files.length > 0) {
 					var fd = new FormData()
 					fd.append('text', text)
 

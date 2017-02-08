@@ -1940,3 +1940,12 @@ angular.module('er.directives', [])
 		}
 	}
 })
+.directive('linkpreview', function (identityService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/link-preview.htm',
+		scope: {
+			meta: '=',
+		}
+	}
+})

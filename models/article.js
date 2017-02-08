@@ -1,4 +1,5 @@
-const async = require('async')
+const async = require('async'),
+    metascraper = require('metascraper')
 
 var Model = function(mongoose) {
 	var schema = new mongoose.Schema({
@@ -16,6 +17,7 @@ var Model = function(mongoose) {
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
 		category	: String,
+		meta		: mongoose.Schema.Types.Mixed
 	})
 
 	var Model = mongoose.model('article', schema);
@@ -234,7 +236,8 @@ var Model = function(mongoose) {
 			})
 		},
 
-		create: (author, country, category, text, images, allowhtml, callback) => {
+		create: (data, callback) => {
+			let {author, country, category, text, images, allowhtml, meta} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -250,7 +253,7 @@ var Model = function(mongoose) {
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, text, country, category,
+				author, images, text, country, category, meta
 			})
 			article.save(callback)
 		},
@@ -782,6 +785,32 @@ var Model = function(mongoose) {
 				})
 			})
 		},
+        /* Get first link meta tags */
+        getFirstLinkMeta: text => {
+            return new Promise((resolve, reject) => {
+                if (!text) return reject('No text provided')
+                const urlRegex = /(https?:\/\/[^\s]+)/g
+                let parsedResults = text.match(urlRegex)
+				let parsedMeta = undefined
+                if (parsedResults.length > 0) {
+                	/* Fake error used to break async.each on first url with meta info*/
+                    async.eachSeries(parsedResults, (url, cb) => {
+                        metascraper.scrapeUrl(url).then((meta) => {
+                        	let withMeta = null
+                            if (meta.title && meta.description) {
+								withMeta = true
+                                parsedMeta = meta
+                            }
+                            cb(withMeta)
+                        })
+                    }, (err, meta) => {
+                    	return resolve(parsedMeta)
+                    })
+                } else {
+                    return resolve()
+                }
+            })
+        }
 	}
 }
 

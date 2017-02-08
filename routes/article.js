@@ -39,12 +39,34 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			filenames.push(path.join('uploads', 'posts', newFilename))
 		}
 	}
+    models.Article.getFirstLinkMeta(text).then((meta) => {
+        console.log(meta);
+        console.log('meta selected');
+        models.Article.create({
+            author: req.user._id,
+            country: req.user.country,
+            category: req.user.field,
+            text: text,
+            images: filenames,
+            allowhtml: false,
+			meta
+        }, (err, article) => {
+            models.ExperienceLog.award(
+                req.user._id,
+                config.EXP_REWARDS.POST.create,
+                article._id,
+                null,
+                'create',
+                (err, result) => {
+                    res.send({ok: true})
+                })
+        })
+    }).catch(err => {
+        console.log(err);
+        res.send({ok: false})
+    })
 
-	models.Article.create(req.user._id, req.user.country, req.user.field, text, filenames, false, (err, article) => {
-		models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
-			res.send({ok: true})
-		})
-	})
+
 })
 
 router.post('/edit', tempUploads.array('files', 5), (req, res) => {

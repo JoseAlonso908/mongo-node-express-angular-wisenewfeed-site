@@ -20,7 +20,7 @@
 			<div class="role">{{person.role}}</div>
 		</div>
 
-		<div class="tagname">@what</div>
+		<div class="tagname" ng-if="person.nickname">@{{person.nickname}}</div>
 
 		<div class="intro">{{person.intro}}</div>
 	</div>

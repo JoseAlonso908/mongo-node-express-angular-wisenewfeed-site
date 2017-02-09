@@ -10,6 +10,10 @@
 				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.categories track by $index">{{tag}}</a>
 			</div>
 			<div class="divider" ng-show="results.categories.length > 0"></div>
+			<div class="categories results">
+				<a ng-href="#!/person/{{user._id}}" ng-repeat="user in results.nicknames track by $index">@{{user.nickname}}</a>
+			</div>
+			<div class="divider" ng-show="results.nicknames.length > 0"></div>
 			<div class="tags results">
 				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.tags track by $index">{{tag}}</a>
 			</div>

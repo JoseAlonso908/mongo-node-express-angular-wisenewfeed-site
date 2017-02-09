@@ -411,7 +411,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		search: (user, q, role, skip = 0, limit = 5, callback) => {
+		search: (user, q, role, skip = 0, limit = 5, nicknameSearch = false, callback) => {
 			skip = Number(skip)
 			limit = Number(limit)
 
@@ -421,10 +421,11 @@ var Model = function(mongoose) {
 			if (role) roleQuery = role
 
 			let query = {
-				name: new RegExp(q, 'gi'),
 				role: roleQuery,
 			}
 
+			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
+			else query.name = new RegExp(q, 'gi')
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
 				var blockedIds = blockeds.map((b) => b._id)
 				blockedIds.push(user)

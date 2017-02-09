@@ -12,6 +12,10 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'article',
 		},
+        sharedIn: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'article',
+        }],
 		images		: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'image',
@@ -285,14 +289,30 @@ var Model = function(mongoose) {
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
 
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
-				let article = new Model()
-				Object.assign(article, {
-					author,
-					sharedFrom: sharedFrom._id,
-					country: sharedFrom.country,
-					category: sharedFrom.category,
-				})
-				article.save(callback)
+				async.waterfall([
+					next => {
+                        console.log('FIRST');
+                        let article = new Model()
+                        Object.assign(article, {
+                            author,
+                            sharedFrom: sharedFrom._id,
+                            country: sharedFrom.country,
+                            category: sharedFrom.category,
+                        })
+                        article.save((err, savedArticle) => {
+                            next(err, savedArticle)
+                        })
+                    },
+                    (repost, next) => {
+                        console.log(repost._id);
+                        if (!repost) return next()
+                        sharedFrom.sharedIn.push(repost._id)
+                        sharedFrom.save((err, result) => {
+                            console.log('Should be pushed');
+                            next(err, repost)
+                        })
+                    }
+				], callback)
 			})
 		},
 
@@ -300,7 +320,14 @@ var Model = function(mongoose) {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
 
-			Model.remove({author, sharedFrom}, callback)
+			async.waterfall([
+                next => {
+                    Model.findOneAndRemove({author, sharedFrom}, next)
+                },
+                (post, next) => {
+                    Model.update({ _id: sharedFrom }, { $pull: { 'sharedIn': post._id }}, next)
+                }
+            ], callback)
 		},
 
 		remove: (author, _id, callback) => {

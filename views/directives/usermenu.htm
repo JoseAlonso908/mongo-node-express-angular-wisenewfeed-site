@@ -7,6 +7,7 @@
 	<a href="javascript:void(0);" ng-if="user.role == 'User'">Upgrade to Expert</a>
 	<a href="javascript:void(0);" ng-if="user.role == 'User'">Upgrade to Journalist</a>
 	<a ng-href="#!/friendsfeed" ng-if="user.role == 'User'">Friend Zone</a>
+	<a ng-href="#!/photos/{{user._id}}">Photos</a>
 	<div class="divider"></div>
 	<a ng-href="#!/settings">Settings</a>
 	<a href="javascript:void(0);" ng-click="logout()">Logout</a>

@@ -211,10 +211,10 @@ router.post('/profile/edit/removedownload', (req, res) => {
 
 router.post('/profile/edit/settings', (req, res) => {
 	let user = req.user
-	let {name, email, phone, country, city, gender, field, language} = req.body
+	let {nickname, name, email, phone, country, city, gender, field, language} = req.body
 
 	if (user) {
-		models.User.updateSettings(user._id, name, email, phone, country, city, gender, field, language, () => {
+		models.User.updateSettings(user._id, name, email, phone, country, city, gender, field, language, nickname, () => {
 			res.send({ok: true})
 		})
 	} else res.status(400).send({message: 'Invalid token'})
@@ -395,6 +395,13 @@ router.get('/multisearch', (req, res) => {
 
 			models.Article.searchForTags(user, '$', _q, 5, next)
 		},
+        nicknames: (next) => {
+            let _q = q
+            if (_q[0] == '@') _q = _q.substr(1)
+            else return next()
+
+            models.User.search(user, _q, null, 0, 5, true, next)
+        },
 		tags: (next) => {
 			let _q = q
 
@@ -404,7 +411,7 @@ router.get('/multisearch', (req, res) => {
 			models.Article.searchForTags(user, '#', _q, 5, next)
 		},
 		users: (next) => {
-			models.User.search(user, q, null, 0, 5, next)
+			models.User.search(user, q, null, 0, 5, false, next)
 		},
 	}, (err, results) => {
 		if (err) res.status(400).send(err)
@@ -415,7 +422,7 @@ router.get('/multisearch', (req, res) => {
 router.get('/searchusers', (req, res) => {
 	let {q, role, start, limit} = req.query
 
-	models.User.search(req.user._id, q, role, start, limit, (err, results) => {
+	models.User.search(req.user._id, q, role, start, limit, false, (err, results) => {
 		if (err) res.status(400).send(err)
 		else res.send(results)
 	})

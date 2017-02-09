@@ -955,6 +955,7 @@ angular.module('er.controllers', [])
 
 			var form = {
 				name: e.target.name.value,
+                nickname: e.target.nickname.value,
 				email: e.target.email.value,
 				phone: e.target.phone.value,
 				country: $scope.user.country,

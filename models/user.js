@@ -14,6 +14,7 @@ var Model = function(mongoose) {
 		avatar			: {type: String, default: '/assets/images/avatar_placeholder.png'},
 		wallpaper		: String,
 		name			: String,
+        nickname		: String,
 		intro			: String,
 		email			: String,
 		password		: {type: String, select: false},
@@ -296,11 +297,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (_id, name, email, phone, country, city, gender, field, language, callback) => {
+		updateSettings: (_id, name, email, phone, country, city, gender, field, language, nickname, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, city, gender, field, language})
+				Object.assign(user, {name, email, phone, country, city, gender, field, language, nickname})
 				user.save(callback)
 			})
 		},
@@ -410,7 +411,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		search: (user, q, role, skip = 0, limit = 5, callback) => {
+		search: (user, q, role, skip = 0, limit = 5, nicknameSearch = false, callback) => {
 			skip = Number(skip)
 			limit = Number(limit)
 
@@ -420,10 +421,11 @@ var Model = function(mongoose) {
 			if (role) roleQuery = role
 
 			let query = {
-				name: new RegExp(q, 'gi'),
 				role: roleQuery,
 			}
 
+			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
+			else query.name = new RegExp(q, 'gi')
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
 				var blockedIds = blockeds.map((b) => b._id)
 				blockedIds.push(user)

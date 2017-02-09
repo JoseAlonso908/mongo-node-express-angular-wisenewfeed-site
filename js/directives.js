@@ -808,6 +808,23 @@ angular.module('er.directives', [])
 
 				$scope.editing = mode
 			}
+			/*TODO: DUPLICATED IN  postreactions directive */
+            var initReactions = function () {
+                reactionsService.get($scope.post._id).then(function (reactionInfo) {
+                    $scope.post.youdid = reactionInfo.youdid
+                    $scope.post.reactions = reactionInfo.reactions
+                }, function (error) {
+                    console.error(error)
+                })
+            }
+
+            initReactions()
+
+			/*TODO: DUPLICATED IN  postreactions directive */
+            $rootScope.$on('reloadreactions', function (event, postId) {
+                if (postId != $scope.post._id) return
+                initReactions()
+            })
 
 			$scope.updatePost = function (post) {
 				$scope.loading = true
@@ -1004,38 +1021,56 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.reactions = {
-				expert: {
-					likes: 0,
-					dislikes: 0,
-					shares: 0,
-				},
-				journalist: {
-					likes: 0,
-					dislikes: 0,
-					shares: 0,
-				},
-				user: {
-					likes: 0,
-					dislikes: 0,
-					shares: 0,
-				},
-			}
-
+                expert: {
+                    likes: 0,
+                    dislikes: 0,
+                    shares: 0,
+                    smarts: 0,
+                    worthys: 0
+                },
+                journalist: {
+                    likes: 0,
+                    dislikes: 0,
+                    shares: 0,
+                    smarts: 0,
+                    worthys: 0
+                },
+                user: {
+                    likes: 0,
+                    dislikes: 0,
+                    shares: 0,
+                    smarts: 0,
+                    worthys: 0
+                },
+                total: {
+                    likes: 0,
+                    dislikes: 0,
+                    shares: 0,
+                    smarts: 0,
+                    worthys: 0
+                }
+            }
 			var init = function () {
 				reactionsService.get($scope.post._id).then(function (reactionInfo) {
 					$scope.post.youdid = reactionInfo.youdid
-
+					$scope.post.reactions = reactionInfo.reactions
 					var reactions = reactionInfo.reactions
 
 					reactions.expert.likes = numeral(reactions.expert.likes).format('0a').toUpperCase()
 					reactions.expert.dislikes = numeral(reactions.expert.dislikes).format('0a').toUpperCase()
 					reactions.expert.shares = numeral(reactions.expert.shares).format('0a').toUpperCase()
+					reactions.expert.smarts = numeral(reactions.expert.smarts).format('0a').toUpperCase()
+					reactions.expert.worthys = numeral(reactions.expert.worthys).format('0a').toUpperCase()
 					reactions.journalist.likes = numeral(reactions.journalist.likes).format('0a').toUpperCase()
 					reactions.journalist.dislikes = numeral(reactions.journalist.dislikes).format('0a').toUpperCase()
 					reactions.journalist.shares = numeral(reactions.journalist.shares).format('0a').toUpperCase()
-					reactions.user.likes = numeral(reactions.user.likes).format('0a').toUpperCase()
+                    reactions.journalist.smarts = numeral(reactions.journalist.smarts).format('0a').toUpperCase()
+                    reactions.journalist.worthys = numeral(reactions.journalist.worthys).format('0a').toUpperCase()
+                    reactions.user.likes = numeral(reactions.user.likes).format('0a').toUpperCase()
 					reactions.user.dislikes = numeral(reactions.user.dislikes).format('0a').toUpperCase()
 					reactions.user.shares = numeral(reactions.user.shares).format('0a').toUpperCase()
+                    reactions.user.smarts = numeral(reactions.user.smarts).format('0a').toUpperCase()
+                    reactions.user.worthys = numeral(reactions.user.worthys).format('0a').toUpperCase()
 
 					$scope.reactions = reactions
 					$scope.$apply()

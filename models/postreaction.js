@@ -13,7 +13,7 @@ var Model = function(mongoose) {
 		},
 		type		: {
 			type: String,
-			enum: ['like', 'dislike', 'share'],
+			enum: ['like', 'dislike', 'share', 'smart', 'worthy'],
 		},
 		createdAt	: {type: Date, default: Date.now},
 	})
@@ -77,29 +77,45 @@ var Model = function(mongoose) {
 
 		getByPostIds: (user, postIds, callback) => {
 			let result = {}
+			/* Yes, worthyS ... */
 			for (let id of postIds) {
 				result[id] = {
 					youdid: {
 						like: false,
 						dislike: false,
 						share: false,
+                        smart: false,
+                        worthy: false
 					},
 					reactions: {
 						expert: {
 							likes: 0,
 							dislikes: 0,
 							shares: 0,
+							smarts: 0,
+							worthys: 0
 						},
 						journalist: {
 							likes: 0,
 							dislikes: 0,
 							shares: 0,
+                            smarts: 0,
+                            worthys: 0
 						},
 						user: {
 							likes: 0,
 							dislikes: 0,
 							shares: 0,
+                            smarts: 0,
+                            worthys: 0
 						},
+                        total: {
+                            likes: 0,
+                            dislikes: 0,
+                            shares: 0,
+                            smarts: 0,
+                            worthys: 0
+                        }
 					},
 				}
 			}
@@ -116,7 +132,8 @@ var Model = function(mongoose) {
 					}
 
 					result[r.post.toString()].reactions[r.author.role][`${r.type}s`]++
-				}
+					result[r.post.toString()].reactions.total[`${r.type}s`]++
+					}
 
 				callback(err, result)
 			})
@@ -142,24 +159,39 @@ var Model = function(mongoose) {
 						like: false,
 						dislike: false,
 						share: false,
+                        smart: false,
+                        worthy: false
 					},
 					reactions: {
-						expert: {
-							likes: 0,
+                        expert: {
+                            likes: 0,
+                            dislikes: 0,
+                            shares: 0,
+                            smarts: 0,
+                            worthys: 0
+                        },
+                        journalist: {
+                            likes: 0,
+                            dislikes: 0,
+                            shares: 0,
+                            smarts: 0,
+                            worthys: 0
+                        },
+                        user: {
+                            likes: 0,
+                            dislikes: 0,
+                            shares: 0,
+                            smarts: 0,
+                            worthys: 0
+                        },
+						total: {
+                        	likes: 0,
 							dislikes: 0,
 							shares: 0,
-						},
-						journalist: {
-							likes: 0,
-							dislikes: 0,
-							shares: 0,
-						},
-						user: {
-							likes: 0,
-							dislikes: 0,
-							shares: 0,
-						},
-					},
+							smarts: 0,
+							worthys: 0
+						}
+                    },
 				}
 
 				for (let r of reactions) {
@@ -168,6 +200,7 @@ var Model = function(mongoose) {
 					}
 
 					result.reactions[r.author.role][`${r.type}s`]++
+					result.reactions.total[`${r.type}s`]++
 				}
 
 				callback(err, result)

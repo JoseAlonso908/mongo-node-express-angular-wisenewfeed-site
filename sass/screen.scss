@@ -1369,6 +1369,9 @@ a.small-icon, button.small-icon {
 						}
 					}
 
+					.share-button {
+						float: right;
+					}
 					.comments-count {
 						@include display-flex;
 						@include justify-content(space-between);

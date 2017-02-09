@@ -85,29 +85,34 @@
 		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
 	</div>
 	<linkpreview meta="post.meta"></linkpreview>
-	<postreactions post="post"></postreactions>
-
-	<div class="divider"></div>
+	<div class="divider" ></div>
 
 	<div class="actions" ng-if="user">
 		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
 			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
+			<span class="title" ng-if="post.reactions.total.likes > 0"> {{post.reactions.total.likes}}</span>
 		</button>
-		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
-			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
+		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
+			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Smart</span>
+			<span class="title" ng-if="post.reactions.total.smarts > 0"> {{post.reactions.total.smarts}}</span>
 		</button>
-		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && post.author.role != 'User'"
-				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}">
-			<i class="material-icons">share</i>
-			<span class="title">Share {{post.sharedIn.length > 0 ? post.sharedIn.length : ''}}</span>
+		<button ng-click="react(post, 'worthy', post.youdid.worthy)" ng-class="{active: post.youdid.worthy}">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i><span class="title">Worthy</span>
+			<span class="title" ng-if="post.reactions.total.worthys > 0"> {{post.reactions.total.worthys}}</span>
 		</button>
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>
 			<div class="number">{{::commentsCount || 0}}</div>
 		</div>
+		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && post.author.role != 'User'"
+				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}" class="share-button">
+			<i class="fa fa-share-square-o" aria-hidden="true"></i>
+			<span class="title">Share</span>
+			<span class="title" ng-if="post.reactions.total.shares > 0"> {{post.reactions.total.shares}}</span>
+		</button>
 	</div>
-	<div class="divider"></div>
+	<div class="divider" ng-if="user"></div>
 
 	<div class="actions">
 		<button socialshare

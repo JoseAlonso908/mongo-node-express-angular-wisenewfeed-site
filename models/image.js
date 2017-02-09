@@ -8,6 +8,7 @@ var model = function (mongoose) {
 			ref: 'user',
 		},
 		filename	: String,
+		privacy		: {type: String, default: 'public'},
 	})
 
 	var Model = mongoose.model('image', schema)
@@ -42,7 +43,7 @@ var model = function (mongoose) {
 
 		imagesOfUser: (author, callback) => {
 			author = MOI(author)
-			model.find({author}).lean().exec(callback)
+			Model.find({author}).populate('author').lean().exec(callback)
 		},
 	}
 }

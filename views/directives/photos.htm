@@ -1,5 +1,5 @@
 <div class="images-list" ng-if="images">
-	<a ng-href="image" lightbox class="image" style="background-image: url('{{image}}')" ng-repeat="image in images"></a>
+	<a image="image" lightbox class="image" style="background-image: url('{{image.filename}}')" ng-repeat="image in images"></a>
 	<div class="image placeholder"></div>
 	<div class="image placeholder"></div>
 	<div class="image placeholder"></div>

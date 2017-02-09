@@ -23,6 +23,15 @@ var Model = function(mongoose) {
 		meta		: mongoose.Schema.Types.Mixed
 	})
 
+	// schema.post('init', (post, callback) => {
+	// 	post.populate({path: 'images', populate: {
+	// 		path: 'author',
+	// 	}})
+	// 	console.log(post)
+	// 	// console.log(callback)
+	// 	callback()
+	// })
+
 	var Model = mongoose.model('article', schema);
 
 	this.postProcessList = (articles, user, callback) => {
@@ -528,7 +537,9 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
-				{path: 'images'},
+				{path: 'images', populate: {
+					path: 'author',
+				}},
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
 			})

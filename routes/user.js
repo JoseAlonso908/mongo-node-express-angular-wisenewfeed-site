@@ -374,7 +374,7 @@ router.post('/report', (req, res) => {
 router.get('/images', (req, res) => {
 	let {user} = req.query
 
-	models.Article.getImagesByUser(user, (err, result) => {
+	models.Image.imagesOfUser(user, (err, result) => {
 		if (err) res.status(400).send(err)
 		else res.send(result)
 	})

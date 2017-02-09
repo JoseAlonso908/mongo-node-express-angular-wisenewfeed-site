@@ -626,12 +626,14 @@ angular.module('er.directives', [])
 			$scope.lastCountry
 			$scope.filter
 
+			$scope.feedDone = false
+
 			$rootScope.$on('reloadfeed', function () {
 				init()
 			})
 
 			angular.element(window).on('scroll', function (e) {
-				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading) {
+				if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 30 && !$scope.feedLoading && !$scope.feedDone) {
 					init({addmore: true})
 				}
 			})
@@ -710,6 +712,10 @@ angular.module('er.directives', [])
 
 				var setFeed = function (feed) {
 					$scope.feedLoading = false
+
+					if (feed.length == 0) {
+						$scope.feedDone = true
+					}
 
 					if (start > 0 || options.addmore) {
 						for (var i in feed) {
@@ -1590,7 +1596,7 @@ angular.module('er.directives', [])
 						template.remove()
 					})
 
-					if ($scope.next) {
+					if ($scope.next && $scope.next.attributes.lightbox) {
 						$scope.showNext = function () {
 							template.remove()
 							// $timeout(function () {
@@ -1599,7 +1605,7 @@ angular.module('er.directives', [])
 						}
 					}
 
-					if ($scope.prev) {
+					if ($scope.prev && $scope.prev.attributes.lightbox) {
 						$scope.showPrev = function () {
 							template.remove()
 							// $timeout(function () {
@@ -1927,7 +1933,7 @@ angular.module('er.directives', [])
 			images: '=',
 		},
 		link: function ($scope) {
-
+			console.log($scope.images)
 		}
 	}
 })

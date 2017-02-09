@@ -3427,7 +3427,6 @@ a.small-icon, button.small-icon {
 
 			.link-preview {
 				width: 100%;
-				max-width: 480px;
 				box-shadow: 0 0 0 1.5px rgba(0, 0, 0, .1) inset, 0 1px 1px rgba(0, 0, 0, .05);
 
 				img	{
@@ -4962,6 +4961,7 @@ a.small-icon, button.small-icon {
 		background-position: center;
 		background-repeat: no-repeat;
 		background-color: #ffffff;
+		background-size: contain;
 		box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
 
 		&.placeholder {
@@ -5010,6 +5010,24 @@ a.small-icon, button.small-icon {
 			width: 250px;
 			padding: 10px;
 			background-color: #ffffff;
+
+			.author {
+				@include display-flex;
+				height: 64px;
+
+				avatar {
+					width: 50px;
+				}
+
+				.name {
+					padding-top: 5px;
+					font-size: 14px;
+					font-weight: bold;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+				}
+			}
 
 			.cycle {
 				@include display-flex;

@@ -58,6 +58,12 @@ router.post('/send', tempUploads.array('files', 5), (req, res) => {
 		}
 	}
 
+	// Strip link from messages
+	if (req.user.role == 'user') {
+		text = text.substr(0, 140)
+		text = text.replace(/http[s]?:\/\/[a-z0-9\.]+/gi, '(link removed)')
+	}
+
 	models.Message.send(req.user._id, to, text, filenames, (err, result) => {
 		if (err) return res.status(400).send(err)
 		else {

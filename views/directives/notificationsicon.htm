@@ -30,6 +30,11 @@
 				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">your post</a>
 				<a ng-href="#!/article/{{n.comment.post._id}}/{{n.comment._id}}" ng-show="n.comment != undefined">your comment</a>
 			</div>
+			<div class="action" ng-if="'friendshipnew' === n.type">
+				<span ng-switch="n.type">
+					Sent you a friendship request
+				</span>
+			</div>
 
 			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">

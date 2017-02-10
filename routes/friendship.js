@@ -37,7 +37,14 @@ router.post('/add', (req, res) => {
         },
         (result, cb) => {
             models.Friendship.add(id, req.user._id, (err, result) => {
-                cb(err)
+                cb(err, result)
+            })
+        },
+        (result, cb) => {
+            models.Notification.create(id, req.user._id, null, null, 'friendshipnew', (err, res) => {
+                console.log(err);
+                console.log(res);
+                cb(null)
             })
         }
     ], (err, result) => {

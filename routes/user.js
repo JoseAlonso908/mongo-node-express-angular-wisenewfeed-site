@@ -395,6 +395,12 @@ router.get('/multisearch', (req, res) => {
 
 			models.Article.searchForTags(user, '$', _q, 5, next)
 		},
+		countries: (next) => {
+            let _q = q
+            if (_q[0] == '!') _q = _q.substr(1)
+            else return next()
+            models.Article.searchForTags(user, '!', _q, 5, next)
+		},
         nicknames: (next) => {
             let _q = q
             if (_q[0] == '@') _q = _q.substr(1)

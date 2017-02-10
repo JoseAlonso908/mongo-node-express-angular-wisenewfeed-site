@@ -19,6 +19,7 @@ global.mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
 
+app.disable('x-powered-by')
 app.use(compression())
 app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 	setHeaders: function (res, path, stat) {

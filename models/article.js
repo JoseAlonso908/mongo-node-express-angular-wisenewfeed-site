@@ -429,6 +429,8 @@ var Model = function(mongoose) {
 		searchForTags: (viewer, tagchar, q, limit, callback) => {
 			if (tagchar == '$') {
 				tagchar = '\\$'
+			} else if (tagchar == '!') {
+				tagchar = '\\!'
 			}
 
 			let r = new RegExp(`${tagchar}[a-z]*[a-z0-9]*${q}[a-z0-9]*`, 'gi')
@@ -619,7 +621,8 @@ var Model = function(mongoose) {
 			}
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			if (country) Object.assign(query, {country})
+			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			// if (country) Object.assign(query, {country})
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
@@ -859,6 +862,15 @@ var Model = function(mongoose) {
                     return resolve()
                 }
             })
+        },
+		/*
+		Helper for transforming countries names like "United Arab Emirates"
+		to tags like !unitedarabemirates
+		*/
+		transformToTag: country => {
+            if (!country) return country
+            country = country.replace(/\s/g, '')
+            return country.toLowerCase()
         }
 	}
 }

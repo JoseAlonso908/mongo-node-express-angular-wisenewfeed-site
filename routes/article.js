@@ -185,8 +185,8 @@ router.get('/feed', (req, res) => {
 	}
 
 	let shares = []
-
-	async.waterfall([
+    country = models.Article.transformToTag(country)
+    async.waterfall([
 		(cb) => {
 			// Add users who you're following
 			models.Follow.followingByFollower(userId, null, null, null, (err, following) => {

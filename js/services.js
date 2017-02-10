@@ -309,7 +309,7 @@ angular.module('er.services', [])
 			return __s($http, $cookies, 'get', '/user/images', {user: user})
 		},
 		multisearch: function (q) {
-			return __s($http, $cookies, 'get', '/user/multisearch', {q: q})
+			return __s($http, $cookies, 'get', '/user/multisearch', {q: encodeURIComponent(q)})
 		},
 		searchusers: function (q, role, start, limit) {
 			return __s($http, $cookies, 'get', '/user/searchusers', {q: q, role: role, start: start, limit: limit})

@@ -7,6 +7,11 @@
 			<div class="loader" ng-show="loading"></div>
 
 			<div class="categories results">
+				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.countries track by $index">{{tag}}</a>
+			</div>
+			<div class="divider" ng-show="results.countries.length > 0"></div>
+
+			<div class="categories results">
 				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.categories track by $index">{{tag}}</a>
 			</div>
 			<div class="divider" ng-show="results.categories.length > 0"></div>

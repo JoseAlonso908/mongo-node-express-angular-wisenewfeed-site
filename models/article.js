@@ -27,15 +27,6 @@ var Model = function(mongoose) {
 		meta		: mongoose.Schema.Types.Mixed
 	})
 
-	// schema.post('init', (post, callback) => {
-	// 	post.populate({path: 'images', populate: {
-	// 		path: 'author',
-	// 	}})
-	// 	console.log(post)
-	// 	// console.log(callback)
-	// 	callback()
-	// })
-
 	var Model = mongoose.model('article', schema);
 
 	this.postProcessList = (articles, user, callback) => {
@@ -384,14 +375,6 @@ var Model = function(mongoose) {
 				},
 				{
 					$lookup: {
-						from: 'images',
-						localField: 'images',
-						foreignField: '_id',
-						as: 'images',
-					}
-				},
-				{
-					$lookup: {
 						from: 'users',
 						localField: 'sharedFrom.author',
 						foreignField: '_id',
@@ -404,13 +387,35 @@ var Model = function(mongoose) {
 						preserveNullAndEmptyArrays: true
 					}
 				},
+				{
+					$unwind: "$images",
+				},
+				{
+					$lookup: {
+						from: 'images',
+						localField: 'images',
+						foreignField: '_id',
+						as: 'images',
+					}
+				},
+				{
+					$unwind: {
+						path: '$images',
+						preserveNullAndEmptyArrays: true,
+					}
+				},
 			]
 
 			aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
 			if (start) aggregationOptions.push({$skip: start})
 			if (limit) aggregationOptions.push({$limit: limit})
 
+			console.log(aggregationOptions)
+
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
+				console.log(err)
+				console.log(articles)
+
 				if (filter == 'photos') {
 					let images = []
 					for (let a of articles) {images = images.concat(a.images)}
@@ -836,7 +841,7 @@ var Model = function(mongoose) {
                 const urlRegex = /(https?:\/\/[^\s]+)/g
                 let parsedResults = text.match(urlRegex)
 				let parsedMeta = undefined
-                if (parsedResults.length > 0) {
+                if (parsedResults && parsedResults.length > 0) {
                 	/* Fake error used to break async.each on first url with meta info*/
                     async.eachSeries(parsedResults, (url, cb) => {
                         metascraper.scrapeUrl(url).then((meta) => {

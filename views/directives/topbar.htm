@@ -10,7 +10,7 @@
 
 	<followersicon ng-if="user && user.role != 'User'" user="user"></followersicon>
 	<messagesicon ng-if="user" user="user"></messagesicon>
-	<notificationsicon ng-if="user && user.role != 'User'" user="user"></notificationsicon>
+	<notificationsicon ng-if="user" user="user"></notificationsicon>
 
 	<div id="user-block" ng-cloak ng-if="$parent.user">
 		<div class="avatar-wrapper" ng-click="$parent.openUserMenu($event)">

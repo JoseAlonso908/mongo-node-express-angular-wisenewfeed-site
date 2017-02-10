@@ -39,44 +39,30 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			filenames.push(path.join('uploads', 'posts', newFilename))
 		}
 	}
-    models.Article.getFirstLinkMeta(text).then((meta) => {
-        console.log(meta);
-        console.log('meta selected');
-        models.Article.create({
-            author: req.user._id,
-            country: req.user.country,
-            category: req.user.field,
-            text: text,
-            images: filenames,
-            allowhtml: false,
-			meta
-        }, (err, article) => {
-            models.ExperienceLog.award(
-                req.user._id,
-                config.EXP_REWARDS.POST.create,
-                article._id,
-                null,
-                'create',
-                (err, result) => {
-                    res.send({ok: true})
-                })
-        })
-    }).catch(err => {
-        console.log(err);
-        res.send({ok: false})
-    })
-
 
 	async.waterfall([
 		(next) => {
 			models.Image.createBunch(req.user._id, filenames, next)
 		},
 		(images, next) => {
-			models.Article.create(req.user._id, req.user.country, req.user.field, text, images, false, (err, article) => {
-				next(err, article)
-			})
+			models.Article.getFirstLinkMeta(text).then((meta) => {
+		        next(null, meta, images)
+		    }).catch(next)
 		},
-		(article, next, n2) => {
+		(meta, images, next) => {
+			models.Article.create({
+	            author: req.user._id,
+	            country: req.user.country,
+	            category: req.user.field,
+	            text: text,
+	            images,
+	            allowhtml: false,
+				meta
+	        }, (err, article) => {
+	        	next(err, article)
+	        })
+		},
+		(article, next) => {
 			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
 				next()
 			})

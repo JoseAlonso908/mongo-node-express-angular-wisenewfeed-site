@@ -982,11 +982,16 @@ angular.module('er.directives', [])
 				} else if (type == 'dislike' && $scope.post.youdid.like) {
 					$scope.post.youdid.like = false
 				}
+
+				// console.log($scope.post.sharedIn)
+
                 /** SHIT_START
 				 * TODO: Should be something normal instead of this hack
 				 * sharedIn array contains articles IDs.
 				 * To update counter according to expected result I`ll change array size
 				 * */
+				if (!$scope.post.sharedIn) $scope.post.sharedIn = []
+					
                 if (type == 'share' && unreact) {
                     $scope.post.sharedIn.pop()
                 } else if (type == 'share' && !unreact) {
@@ -1104,6 +1109,8 @@ angular.module('er.directives', [])
 				init()
 			})
 
+			$scope.ordering = '+createdAt'
+
 			$scope.setEditingMode = function (comment, mode) {
 				mode = (typeof mode !== 'undefined') ? mode : true
 
@@ -1129,10 +1136,6 @@ angular.module('er.directives', [])
 
 			$scope.remove = function (comment) {
 				commentService.remove(comment._id).then(function (result) {
-					console.log(result)
-					console.log(result.ok)
-					console.log(result.n)
-
 					if (result.ok == 1 && result.n == 1) {
 						comment.removed = true
 					}
@@ -1154,6 +1157,7 @@ angular.module('er.directives', [])
 					}
 
 					$scope.comments = comments
+					console.log(comments)
 					$scope.$parent.commentsCount = $scope.comments.length
 					$scope.post.comments = comments
 					$scope.$apply()
@@ -1182,6 +1186,9 @@ angular.module('er.directives', [])
 
 					// reactions.likes = numeral(reactions.likes).format('0a').toUpperCase()
 					// reactions.dislikes = numeral(reactions.dislikes).format('0a').toUpperCase()
+
+					$scope.comment.likes = reactions.likes
+					$scope.comment.dislikes = reactions.dislikes
 
 					$scope.reactions = reactions
 					$scope.$apply()
@@ -1981,7 +1988,30 @@ angular.module('er.directives', [])
 			images: '=',
 		},
 		link: function ($scope) {
+			$scope.images = $scope.images.map(function (image) {
+				image.privacy = image.privacy || 'public'
+				image.originalPrivacy = image.privacy
+				return image
+			})
+
 			console.log($scope.images)
+
+			$scope.remove = function (image) {
+				identityService.removeImage(image._id).then(function (result) {
+					if (result.n == 1) {
+						$scope.images = $scope.images.filter(function (item) {
+							return !(image._id == item._id)
+						})
+					}
+				})
+			}
+
+			$scope.privacyOptions = ['public', 'private']
+			$scope.setPrivacy = function (image) {
+				identityService.setImagePrivacy(image._id, image.privacy).catch(function (result) {
+					image.privacy = image.originalPrivacy
+				})
+			}
 		}
 	}
 })

@@ -495,51 +495,53 @@ angular.module('er.controllers', [])
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
 
-	$scope.country
-	$scope.setCountry = function (item) {
-		$scope.country = item
-		setCitiesList(item)
-		loadFriends()
-	}
+	if ($scope.type == 'friends') {
+		$scope.country
+		$scope.setCountry = function (item) {
+			$scope.country = item
+			setCitiesList(item)
+			loadFriends()
+		}
 
-	groupedCountriesService.get().then(function (result) {
-		$scope.countries = result
-		$scope.setCountry(result[0])
-	})
-
-	$scope.city
-	$scope.setCity = function (item) {
-		$scope.city = item
-		loadFriends()
-	}
-
-	var setCitiesList = function (country) {
-		countriesListService.cities(country.title).then(function (cities) {
-			cities = cities.map(function (city, index) {
-				return {id: (index + 1), title: city}
-			})
-
-			if (cities.length > 0) {
-				cities.unshift({id: 0, title: 'All'})
-			}
-
-			$scope.cities = cities
-			$scope.setCity(cities[0])
+		groupedCountriesService.get().then(function (result) {
+			$scope.countries = result
+			$scope.setCountry(result[0])
 		})
+
+		$scope.city
+		$scope.setCity = function (item) {
+			$scope.city = item
+			loadFriends()
+		}
+
+		var setCitiesList = function (country) {
+			countriesListService.cities(country.title).then(function (cities) {
+				cities = cities.map(function (city, index) {
+					return {id: (index + 1), title: city}
+				})
+
+				if (cities.length > 0) {
+					cities.unshift({id: 0, title: 'All'})
+				}
+
+				$scope.cities = cities
+				$scope.setCity(cities[0])
+			})
+		}
+
+		$scope.setGender = function (item) {
+			$scope.gender = item
+			loadFriends()
+		}
+
+		$scope.genders = [
+			{id: '', title: 'Any'},
+			{id: 'male', title: 'Male'},
+			{id: 'female', title: 'Female'},
+		]
+
+		$scope.gender = $scope.genders[0]
 	}
-
-	$scope.setGender = function (item) {
-		$scope.gender = item
-		loadFriends()
-	}
-
-	$scope.genders = [
-		{id: '', title: 'Any'},
-		{id: 'male', title: 'Male'},
-		{id: 'female', title: 'Female'},
-	]
-
-	$scope.gender = $scope.genders[0]
 
 	var loadProfile = function (callback) {
 		identityService.getOther($scope.id).then(function (profile) {
@@ -585,10 +587,6 @@ angular.module('er.controllers', [])
 	}
 
 	var loadFriends = function () {
-		console.log($scope.country)
-		console.log($scope.city)
-		console.log($scope.gender)
-
 		friendshipService.list($scope.id, {
 			country: ($scope.country && $scope.country.id != 0) ? $scope.country.title : undefined,
 			city: ($scope.city && $scope.city.id != 0) ? $scope.city.title : undefined,
@@ -1873,6 +1871,16 @@ angular.module('er.controllers', [])
 	$scope.init()
 })
 .controller('profilePhotosController', function ($scope, $routeParams, identityService) {
+	var loadImages = function (callback) {
+		$scope.images = undefined
+		
+		identityService.images($routeParams.id).then(function (images) {
+			$scope.images = images
+			
+			if (typeof callback == 'function') callback()
+		})
+	}
+
 	var loadProfile = function (callback) {
 		async.parallel([
 			function (next) {
@@ -1881,13 +1889,55 @@ angular.module('er.controllers', [])
 					next()
 				})
 			},
-			function (next) {
-				identityService.images($routeParams.id).then(function (images) {
-					$scope.images = images
-					next()
-				})
-			},
+			loadImages,
 		], callback)
+	}
+
+	$scope.files = []
+
+	var fileFileInput = document.querySelector('input[name=image]')
+	angular.element(fileFileInput).on('change', function (e) {
+		e.stopImmediatePropagation()
+
+		var reader = new FileReader()
+		var file = e.target.files[0]
+
+		if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+			return
+		}
+
+		reader.addEventListener('load', function () {
+			$scope.$apply(function () {
+				$scope.file = {
+					base64: reader.result,
+					fileObject: file
+				}
+
+				var progress = function (e) {
+					console.log(e)
+				}
+
+				identityService.addImages([$scope.file.fileObject], progress).then(function (result) {
+					$scope.file = {}
+					$scope.loading = false
+
+					loadImages()
+				}).catch(function (error) {
+					console.error(error)
+					$scope.loading = false
+				})
+
+				// Reset form to clean file input. This will
+				// let us upload the same file
+				angular.element(e.target).parent()[0].reset()
+			})
+		})
+
+		reader.readAsDataURL(file)
+	})
+
+	$scope.upload = function () {
+		
 	}
 
 	async.parallel([

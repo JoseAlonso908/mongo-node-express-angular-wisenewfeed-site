@@ -12,7 +12,12 @@
 			<profileinfo ng-if="profile" profile="profile"></profileinfo>
 		</div>
 		<div class="middle wide">
-			<photos images="images"></photos>
+			<form class="upload-images">
+				<div class="title">Upload images</div>
+				<input type="file" name="image">
+			</form>
+
+			<photos ng-if="images" images="images"></photos>
 		</div>
 	</div>
 </div>

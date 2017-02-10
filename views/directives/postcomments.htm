@@ -3,7 +3,14 @@
 		{{($parent.showmore ? 'Show less' : 'Show more')}}
 	</a>
 
-	<div ng-class="{highlighted: comment.highlighted}" ng-hide="comment.removed" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments track by $index">
+	<div class="ordering" ng-show="showmore || nocollapse">
+		<div class="title">Sort</div>
+
+		<a href="javascript:void(0);" ng-click="ordering = '+createdAt'" ng-class="{active: ordering == '+createdAt'}">By date</a>
+		<a href="javascript:void(0);" ng-click="ordering = '-likes'" ng-class="{active: ordering == '-likes'}">By rating</a>
+	</div>
+
+	<div ng-class="{highlighted: comment.highlighted}" ng-hide="comment.removed" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments | orderBy:ordering">
 		<a name="c{{comment._id}}"></a>
 
 		<div class="comment-actions-wrapper" ng-hide="comment.editing">
@@ -18,8 +25,7 @@
 
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
-			<span ng-if="comment.author.role.toLowerCase() == 'user'" class="name dark-bold">{{comment.author.name}}</span>
-			<a ng-if="comment.author.role.toLowerCase() != 'user'" ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
+			<a ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
 
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>

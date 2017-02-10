@@ -192,10 +192,9 @@ angular.module('er.services', [])
 					title: title,
 				},
 			})
-			.success(function (data) {
+			.then(function (data) {
 				resolve(data)
-			})
-			.error(function (data, status) {
+			}, function (data, status) {
 				reject(data)
 			})
 		})
@@ -324,6 +323,35 @@ angular.module('er.services', [])
 		images: function (user) {
 			return __s($http, $cookies, 'get', '/user/images', {user: user})
 		},
+		addImages: function (files, progress) {
+			return new Promise(function (resolve, reject) {
+				var headers = {
+					'Authorization': $cookies.get('token'),
+				}
+
+				var fd = new FormData()
+
+				for (var i in files) {
+					fd.append('files', files[i])
+				}
+
+				headers['Content-Type'] = undefined
+
+				$http({
+					method: 'POST',
+					url: '/image/add',
+					headers: headers,
+					uploadEventHandlers: {progress: progress},
+					data: fd,
+				}).then(resolve, reject)
+			})
+		},
+		removeImage: function (id) {
+			return __s($http, $cookies, 'delete', '/image/remove', {id: id})
+		},
+		setImagePrivacy: function (id, privacy) {
+			return __s($http, $cookies, 'post', '/image/setprivacy', {id: id, privacy: privacy})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -341,10 +369,9 @@ angular.module('er.services', [])
 				},
 				data: fd,
 			})
-			.success(function (data) {
+			.then(function (data) {
 				resolve(data)
-			})
-			.error(function (data, status) {
+			}, function (data, status) {
 				reject(data)
 			})
 		})
@@ -365,10 +392,9 @@ angular.module('er.services', [])
 				},
 				data: fd,
 			})
-			.success(function (data) {
+			.then(function (data) {
 				resolve(data)
-			})
-			.error(function (data, status) {
+			}, function (data, status) {
 				reject(data)
 			})
 		})
@@ -390,10 +416,9 @@ angular.module('er.services', [])
 					},
 					data: fd,
 				})
-				.success(function (data) {
+				.then(function (data) {
 					resolve(data)
-				})
-				.error(function (data, status) {
+				}, function (data, status) {
 					reject(data)
 				})
 			})
@@ -408,8 +433,7 @@ angular.module('er.services', [])
 						token: $cookies.get('token')
 					},
 				})
-				.success(resolve)
-				.error(function (data, status) {
+				.then(resolve, function (data, status) {
 					reject(data)
 				})
 			})
@@ -432,10 +456,9 @@ angular.module('er.services', [])
 					},
 					data: fd,
 				})
-				.success(function (data) {
+				.then(function (data) {
 					resolve(data)
-				})
-				.error(function (data, status) {
+				}, function (data, status) {
 					reject(data)
 				})
 			})
@@ -450,8 +473,7 @@ angular.module('er.services', [])
 						token: $cookies.get('token')
 					},
 				})
-				.success(resolve)
-				.error(function (data, status) {
+				.then(resolve, function (data, status) {
 					reject(data)
 				})
 			})
@@ -524,8 +546,7 @@ angular.module('er.services', [])
 					},
 					data: fd,
 				})
-				.success(resolve)
-				.error(reject)
+				.then(resolve, reject)
 			})
 		},
 		update: function (postId, text, files) {
@@ -557,8 +578,7 @@ angular.module('er.services', [])
 					headers: headers,
 					data: fd,
 				})
-				.success(resolve)
-				.error(reject)
+				.then(resolve, reject)
 			})
 		},
 		remove: function (postId) {
@@ -699,8 +719,7 @@ angular.module('er.services', [])
 					headers: headers,
 					data: fd,
 				})
-				.success(resolve)
-				.error(reject)
+				.then(resolve, reject)
 			})
 		},
 		remove: function (commentId) {

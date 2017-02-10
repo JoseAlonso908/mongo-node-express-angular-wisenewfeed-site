@@ -187,6 +187,7 @@ global.ws = require('./routes/ws')(io)
 
 app.use(require('./routes/general'))
 app.use('/user', require('./routes/user'))
+app.use('/image', require('./routes/image'))
 app.use('/article', require('./routes/article'))
 app.use('/follow', require('./routes/follow'))
 app.use('/friendship', require('./routes/friendship'))

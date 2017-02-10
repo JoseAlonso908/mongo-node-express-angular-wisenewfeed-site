@@ -128,18 +128,30 @@ app.get('/static/cities', (req, res) => {
 global.getCategories = () => {
 	return [
 		{id: 0, title: 'All', tag: '', count: 0},
-		{id: 1, title: 'World News', tag: 'worldnews', count: 0},
-		{id: 2, title: 'Canada News', tag: 'canadanews', count: 0},
-		{id: 3, title: 'Buzz News', tag: 'buzznews', count: 0},
-		{id: 4, title: 'Science', tag: 'science', count: 0},
-		{id: 5, title: 'Business', tag: 'business', count: 0},
-		{id: 6, title: 'Health', tag: 'health', count: 0},
-		{id: 7, title: 'Technology', tag: 'technology', count: 0},
-		{id: 8, title: 'Sport', tag: 'sport', count: 0},
-		{id: 9, title: 'Entertainment', tag: 'entertainment', count: 0},
-		{id: 10, title: 'Lesson learned', tag: 'lessonlearned', count: 0},
+		{id: 1, title: 'News', tag: 'news', count: 0},
+		{id: 2, title: 'Local News', tag: 'localnews', count: 0},
+		{id: 3, title: 'Health', tag: 'health', count: 0},
+		{id: 4, title: 'Entertainment', tag: 'entertainment', count: 0},
+		{id: 5, title: 'Tech', tag: 'tech', count: 0},
+		{id: 6, title: 'Lifestyle', tag: 'lifestyle', count: 0},
+		{id: 7, title: 'Sports', tag: 'sports', count: 0},
+		{id: 8, title: 'Buzz', tag: 'buzz', count: 0},
+		{id: 9, title: 'Personal development', tag: 'personaldevelopment', count: 0},
+		{id: 10, title: 'People', tag: 'people', count: 0},
+		{id: 11, title: 'Culture', tag: 'culture', count: 0},
+		{id: 12, title: 'Media', tag: 'media', count: 0},
+		{id: 13, title: 'Arts and design', tag: 'artsanddesign', count: 0},
+		{id: 14, title: 'History', tag: 'history', count: 0},
+		{id: 15, title: 'Fashion', tag: 'fashion', count: 0},
+		{id: 16, title: 'Literature', tag: 'literature', count: 0},
+		{id: 17, title: 'Laws', tag: 'laws', count: 0},
+		{id: 18, title: 'Real Estate', tag: 'realestate', count: 0},
+		{id: 19, title: 'Religion', tag: 'religion', count: 0},
+		{id: 20, title: 'Lesson learned', tag: 'lessonlearned', count: 0},
+		{id: 21, title: 'Other', tag: 'other', count: 0},
 	]
 }
+
 
 // TODO: move this to cron
 app.get('/static/categories', (req, res) => {

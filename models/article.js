@@ -20,13 +20,16 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'image',
 		}],
+        countries 	: [{
+            type: mongoose.Schema.Types.String
+        }],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
 		category	: String,
 		meta		: mongoose.Schema.Types.Mixed
 	})
-
+    schema.index({countries: 1})
 	var Model = mongoose.model('article', schema);
 
 	this.postProcessList = (articles, user, callback) => {
@@ -213,6 +216,27 @@ var Model = function(mongoose) {
 		return filterAggregationParams
 	}
 
+    /**
+     * Get countries tags array without tag symbol
+     * param: String text - article body
+     * returns: Array with strings
+     * */
+    this.extractCountries = text => {
+        const regex = /(<br>|<q>|<\/q>|^|\s|&nbsp;)!([a-z]+[a-z0-9]+)/gmi
+        let countriesFound = new Set()
+        let m
+        while ((m = regex.exec(text)) !== null) {
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++
+            }
+            // If result is not empty and unique
+            if (m[2] && m[2].length > 0) {
+                countriesFound.add(m[2])
+            }
+        }
+        return Array.from(countriesFound)
+    }
+
 	return {
 		Model,
 
@@ -249,10 +273,12 @@ var Model = function(mongoose) {
 			}
 
 			text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
+            //TODO: Should we add author`s country to this array ?
+            const countries = this.extractCountries(text)
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, text, country, category, meta
+				author, images, text, country, category, meta, countries
 			})
 			article.save(callback)
 		},
@@ -269,8 +295,9 @@ var Model = function(mongoose) {
 				text = buf.join('')
 
 				text = text.replace(/(\n|\r\n|\n\r)/g, '<br>')
+                const countries = this.extractCountries(text)
 
-				Object.assign(post, {text})
+                Object.assign(post, {text, countries})
 				post.save(callback)
 			})
 		},
@@ -837,7 +864,12 @@ var Model = function(mongoose) {
 				})
 			})
 		},
-        /* Get first link meta tags */
+
+        /**
+		 *  Get first link meta tags
+		 *  params: String text of article
+		 *  returns: Object
+		 **/
         getFirstLinkMeta: text => {
             return new Promise((resolve, reject) => {
                 if (!text) return reject('No text provided')
@@ -863,14 +895,34 @@ var Model = function(mongoose) {
                 }
             })
         },
-		/*
-		Helper for transforming countries names like "United Arab Emirates"
-		to tags like !unitedarabemirates
-		*/
+
+		/**
+		 * Helper for transforming countries names like "United Arab Emirates"
+		 * to tags like !unitedarabemirates
+		 **/
 		transformToTag: country => {
             if (!country) return country
             country = country.replace(/\s/g, '')
             return country.toLowerCase()
+        },
+
+		/**
+		 * Get count of posts tagged by each country
+		 * returns Array
+		 * */
+        postsCountPerCountry: () => {
+            return new Promise((resolve, reject) => {
+                Model.aggregate([
+                    {$project: {_id: 0, countries: 1}},
+                    {$unwind: "$countries"},
+                    {$group: {_id: "$countries", count: {$sum: 1}}},
+                    {$project: {_id: 0, country: "$_id", count: 1}},
+                    {$sort: {tags: -1}}
+                ]).exec((err, result) => {
+                    if (err) return reject(err)
+                    resolve(result)
+                })
+            })
         }
 	}
 }

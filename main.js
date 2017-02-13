@@ -13,6 +13,7 @@ const
 	// multer = require('multer'),
 	request = require('request'),
 	countriesList = require('countries-list'),
+	_ = require('lodash'),
 	Mailgun = require('mailgun').Mailgun
 
 global.mailgun = new Mailgun(config.MAILGUN.APIKEY)
@@ -52,54 +53,54 @@ let getCountries = () => {
 }
 
 app.get('/static/countries/grouped', (req, res) => {
-	let {category} = req.query
+    let result = []
+    let countriesList = getCountries()
 
-	let result = []
+    for (let continentCode in countriesList.continents) {
+        let continent = countriesList.continents[continentCode]
 
-	let countriesList = getCountries()
+        result.push({
+            id: continentCode,
+            title: continent,
+            sub: [],
+        })
+    }
 
-	for (let continentCode in countriesList.continents) {
-		let continent = countriesList.continents[continentCode]
+    models.Article.postsCountPerCountry().then(counted => {
+        const indexedByCountry = _.keyBy(counted, 'country')
+        for (let countryCode in countriesList.countries) {
+            let country = countriesList.countries[countryCode]
+            if (!country.count) country.count = 0
 
-		result.push({
-			id: continentCode,
-			title: continent,
-			sub: [],
-		})
-	}
+            let transformedName = models.Article.transformToTag(country.name)
+            if (indexedByCountry.hasOwnProperty(transformedName)) {
+                country.count = indexedByCountry[transformedName].count
+            }
 
-	models.Article.getByUsers([], null, [], category, null, null, null, (err, articles) => {
-		for (let countryCode in countriesList.countries) {
-			let country = countriesList.countries[countryCode]
-			if (!country.count) country.count = 0
 
-			for (let article of articles) {
-				if (country.name == article.country) {
-					country.count++
-				}
-			}
+            for (let continent of result) {
+                continent.count = 0
 
-			for (let continent of result) {
-				continent.count = 0
+                if (continent.id == country.continent) {
+                    continent.sub.push({
+                        id: countryCode,
+                        title: country.name,
+                        count: country.count,
+                    })
+                }
+            }
+        }
+        result.unshift({
+            id: 0,
+            title: 'All',
+            count: 0,
+        })
+        res.send(result)
 
-				if (continent.id == country.continent) {
-					continent.sub.push({
-						id: countryCode,
-						title: country.name,
-						count: country.count,
-					})
-				}
-			}
-		}
-
-		result.unshift({
-			id: 0,
-			title: 'All',
-			count: articles.length,
-		})
-
-		res.send(result)
-	})
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({ok: false})
+    })
 })
 
 app.get('/static/countries', (req, res) => {

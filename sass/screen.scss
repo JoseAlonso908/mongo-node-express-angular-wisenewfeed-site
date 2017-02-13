@@ -14,6 +14,9 @@ $middleGrey: #82898f;
 $soDark: #535659;
 $soLight: #f1f5f7;
 $errorRed: #aa180e;
+$progressColor-bad: #8a1f08;
+$progressColor-avg: #b3cb23;
+$progressColor-good: #4f9b14;
 
 @import "loader";
 
@@ -742,6 +745,57 @@ a.small-icon, button.small-icon {
 			font-size: 14px;
 			text-align: center;
 			color: $soDark;
+		}
+
+		.likes-row-wrapper {
+			position: relative;
+			width: 100%; height: 7px;
+			margin: 30px 17px 0 0;
+			background-color: #e8ebef;
+			border-radius: 3px;
+
+			.likes-value {
+				position: absolute;
+				margin-top: -15px;
+				font-size: 12px;
+				font-weight: 500;
+			}
+
+			.likes-row {
+				height: 7px;
+				border-radius: 3px;
+			}
+
+			&.not-active {
+				display: none;
+			}
+
+			&.bad {
+				.likes-value {
+					color: $progressColor-bad;
+				}
+				.likes-row {
+					background-color: $progressColor-bad;
+				}
+			}
+
+			&.avg {
+				.likes-value {
+					color: $progressColor-avg;
+				}
+				.likes-row {
+					background-color: $progressColor-avg;
+				}
+			}
+
+			&.good {
+				.likes-value {
+					color: $progressColor-good;
+				}
+				.likes-row {
+					background-color: $progressColor-good;
+				}
+			}
 		}
 
 		//Signup for beta page

@@ -794,9 +794,29 @@ angular.module('er.directives', [])
 			followService.isFollowing($scope.post.author._id).then(function (result) {
 				$scope.post.author.isFollowing = result
 			})
+
 			$scope.getURL = function (id) {
 				return $window.location.origin + '/#!/article/' + id
             }
+
+            $scope.likesClass = function(reactions) {
+				if (!reactions || !reactions.total) return ''
+                var className = ''
+				if (reactions.total.likes == 0 && reactions.total.dislikes == 0) className = 'not-active'
+                if (reactions.likes_percentage >= 0 && reactions.likes_percentage <= 25) className += ' bad'
+				else if (reactions.likes_percentage > 25 && reactions.likes_percentage <= 50) className += ' avg'
+				else if (reactions.likes_percentage > 50) className += ' good'
+                return className
+            }
+
+            $scope.likesDescription = function (percent) {
+                var label = ''
+                if (percent >= 0 && percent <= 25) label = 'Bad'
+                else if (percent > 25 && percent <= 50) label = 'Average'
+                else if (percent > 50) label = 'Good'
+                return label
+            }
+
 			$scope.setEditingMode = function (post, mode) {
 				mode = (typeof mode !== 'undefined') ? mode : true
 
@@ -813,6 +833,11 @@ angular.module('er.directives', [])
                 reactionsService.get($scope.post._id).then(function (reactionInfo) {
                     $scope.post.youdid = reactionInfo.youdid
                     $scope.post.reactions = reactionInfo.reactions
+                    var likes = reactionInfo.reactions.total.likes
+                    var dislikes = reactionInfo.reactions.total.dislikes
+                    var likes_percentage = parseInt((likes / (likes + dislikes)) * 100)
+                    if (likes_percentage !== likes_percentage) likes_percentage = 0
+                    $scope.post.reactions.likes_percentage = likes_percentage
                 }, function (error) {
                     console.error(error)
                 })
@@ -991,7 +1016,7 @@ angular.module('er.directives', [])
 				 * To update counter according to expected result I`ll change array size
 				 * */
 				if (!$scope.post.sharedIn) $scope.post.sharedIn = []
-					
+
                 if (type == 'share' && unreact) {
                     $scope.post.sharedIn.pop()
                 } else if (type == 'share' && !unreact) {

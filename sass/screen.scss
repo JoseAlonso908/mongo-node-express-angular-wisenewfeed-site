@@ -608,12 +608,13 @@ a.small-icon, button.small-icon {
 	}
 
 	#filters-wrapper {
-		width: 100%; height: 46px;
+		width: 100%;
+		padding-bottom: 20px;
 
 		.filters {
 			@include display-flex; position: relative;
 			@include justify-content(space-between);
-			max-width: 1180px; height: 70px;
+			max-width: 1180px;
 			width: 100%;
 			margin: 0 auto 0;
 

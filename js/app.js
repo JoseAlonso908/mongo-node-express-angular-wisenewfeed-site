@@ -12,8 +12,10 @@ angular.module('er', [
 	// 'ngScrollbar',
 	'localytics.directives', 'btford.modal',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
-.config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$logProvider',
-	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $logProvider) {
+.config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$httpProvider',
+	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $httpProvider) {
+        $httpProvider.useApplyAsync(true)
+
 		$compileProvider.debugInfoEnabled(true)
 		$compileProvider.aHrefSanitizationWhitelist(/^\s*(http|https|javascript):/)
 

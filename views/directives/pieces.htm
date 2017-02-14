@@ -12,3 +12,8 @@
 	<div class="title"><span class="so-bold">Recent</span> $Category</div>
 	<a ng-href="#!/tagsearch/{{cat.title}}" class="item" ng-repeat="cat in pieces.categories">{{cat.title}}</a>
 </div>
+
+<div class="recent-list" ng-if="pieces.countries.length > 0">
+	<div class="title"><span class="so-bold">Recent</span> !Country</div>
+	<a ng-href="#!/tagsearch/{{country.title}}" class="item" ng-repeat="country in pieces.countries">{{country.title}}</a>
+</div>

@@ -6,7 +6,7 @@ var Model = function(mongoose) {
 		title		: String,
 		type		: {
 			type: String,
-			enum: ['tags', 'people', 'categories'],
+			enum: ['tags', 'people', 'categories', 'countries'],
 		},
 		amount		: Number,
 		createdAt	: {type: Date, default: Date.now},
@@ -24,33 +24,51 @@ var Model = function(mongoose) {
 		},
 
 		getTopGrouped: (callback) => {
-			let result = {
-				tags: [],
-				people: [],
-				categories: [],
+			let result = {}
+
+			async.each(['tags', 'people', 'categories', 'countries'], (type, next) => {
+				Model.find({type}).sort({amount: 'desc'}).limit(10).exec((err, items) => {
+					result[type] = items
+					next()
+				})
+            }, (err) => {
+				callback(err, result)
+			})
+		},
+
+		search: (query, callback) => {
+            const RESULTS_LIMIT = 10
+
+			let countries = require('countries-list').countries
+			let countriesTags = []
+
+			for (let code in countries) {
+				let country = countries[code]
+				country = country.name.replace(/\s/g, '')
+                countriesTags.push(`!${country.toLowerCase()}`)
 			}
 
-			async.series([
-				(callback) => {
-					Model.find({type: 'tags'}).sort({amount: 'desc'}).limit(10).exec((err, tags) => {
-						result.tags = tags
-						callback()
-					})
-				},
-				(callback) => {
-					Model.find({type: 'people'}).sort({amount: 'desc'}).limit(10).exec((err, people) => {
-						result.people = people
-						callback()
-					})
-				},
-				(callback) => {
-					Model.find({type: 'categories'}).sort({amount: 'desc'}).limit(10).exec((err, categories) => {
-						result.categories = categories
-						callback()
-					})
-				},
-			], () => {
-				callback(result)
+			let filteredCountriesTags = []
+
+			let countryRegexp = (new RegExp(query, 'gi'))
+			filteredCountriesTags = countriesTags.filter((country) => {
+				return countryRegexp.test(country)
+			})
+
+			if (query[0] == '$') query = '\\' + query
+			Model.find({title: new RegExp(query, 'gi')}).limit(RESULTS_LIMIT).exec((err, results) => {
+				if (err) callback(err)
+				else {
+					results = results.map((i) => {
+						return i.title
+					}).concat(filteredCountriesTags)
+
+					results = results.filter((item, key) => {
+						return results.indexOf(item) == key
+					}).slice(0, RESULTS_LIMIT)
+
+					callback(null, results)
+                }
 			})
 		},
 	}

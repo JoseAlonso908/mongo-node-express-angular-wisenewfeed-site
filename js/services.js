@@ -352,6 +352,64 @@ angular.module('er.services', [])
 		setImagePrivacy: function (id, privacy) {
 			return __s($http, $cookies, 'post', '/image/setprivacy', {id: id, privacy: privacy})
 		},
+		reactionsQueue: [],
+		getImageReaction: function (imageId) {
+			var externalResolve, externalReject
+			var promise = new Promise(function (resolve, reject) {
+				externalResolve = resolve
+				externalReject = reject
+			}).then(function (result) {
+				return result
+			}, function (data, status) {
+				return data
+			})
+
+			this.reactionsQueue.push({
+				imageId: imageId,
+				promise: promise,
+				resolve: externalResolve,
+				reject: externalReject,
+			})
+
+			$timeout.cancel(this.timer)
+
+			this.timer = $timeout(function (service) {
+				var imageIds = []
+
+				for (var i in service.reactionsQueue) {
+					var item = service.reactionsQueue[i]
+					imageIds.push(item.imageId)
+				}
+
+				return __s($http, $cookies, 'get', '/image/reactions/few', {imageIds: imageIds.join(',')})
+					.then(function (reactions) {
+						for (var imageId in reactions) {
+							var rs = reactions[imageId]
+
+							for (var j in service.reactionsQueue) {
+								if (service.reactionsQueue[j].imageId == imageId) {
+									service.reactionsQueue[j].resolve(rs)
+								}
+							}
+						}
+					}, function (data, status) {
+						return data
+					})
+
+				$timeout.cancel(service.timer)
+			}, this.delay, false, this)
+
+			return promise
+		},
+		getImmediateImageReaction: function (imageId) {
+			return __s($http, $cookies, 'get', '/image/reactions', {image: imageId})
+		},
+		reactImage: function (imageId, type) {
+			return __s($http, $cookies, 'post', '/image/react', {image: imageId, type: type})
+		},
+		unreactImage: function (imageId, type) {
+			return __s($http, $cookies, 'delete', '/image/react', {image: imageId, type: type})
+		},
 	}
 })
 .factory('uploadAvatarService', function ($http, $cookies) {
@@ -872,6 +930,10 @@ angular.module('er.services', [])
 		get: function () {
 			return __s($http, $cookies, 'get', '/article/pieces')
 		},
+
+		search: function (query) {
+			return __s($http, $cookies, 'get', '/article/pieces/search', {query: query})
+		},
 	}
 })
 .factory('commentReactionsService', function ($http, $cookies, $timeout) {
@@ -1085,74 +1147,74 @@ angular.module('er.services', [])
 })
 .factory('friendshipService', function ($http, $q, $cookies) {
 	return {
-		add: function (id, phone) {
-            var d = $q.defer()
+		add: function (id, phone, type) {
+			var d = $q.defer()
 
-            $http.post('/friendship/add', {id: id, phone: phone}).then(function (response) {
-                d.resolve(response.data)
-            }, function (error) {
-                d.reject(error.data.message)
-            })
+			$http.post('/friendship/add', {id: id, phone: phone, type: type}).then(function (response) {
+				d.resolve(response.data)
+			}, function (error) {
+				d.reject(error.data.message)
+			})
 
-            return d.promise
-        },
+			return d.promise
+		},
 		/* Remove by USER ID*/
 		remove: function (id) {
-            var d = $q.defer()
+			var d = $q.defer()
 
-            $http.post('/friendship/remove', {id: id}).then(function (response) {
-                d.resolve(response.data)
-            }, function (error) {
-                d.reject(error.data.message)
-            })
+			$http.post('/friendship/remove', {id: id}).then(function (response) {
+				d.resolve(response.data)
+			}, function (error) {
+				d.reject(error.data.message)
+			})
 
-            return d.promise
-        },
+			return d.promise
+		},
 		/* List of pending requests */
 		pending: function () {
-            console.log('pending requests called');
-            var d = $q.defer()
+			console.log('pending requests called');
+			var d = $q.defer()
 
-            $http.get('/friendship/pending', {limit: 3}).then(function (response) {
-                d.resolve(response.data)
-            }, function (error) {
-                d.reject(error.data.message)
-            })
+			$http.get('/friendship/pending', {limit: 3}).then(function (response) {
+				d.resolve(response.data)
+			}, function (error) {
+				d.reject(error.data.message)
+			})
 
-            return d.promise
-        },
+			return d.promise
+		},
 		/* Accept friendship request */
-        accept: function (id) {
-            var d = $q.defer()
+		accept: function (id) {
+			var d = $q.defer()
 
-            $http.post('/friendship/accept', {id: id}).then(function (response) {
-                d.resolve(response.data)
-            }, function (error) {
-                d.reject(error.data.message)
-            })
+			$http.post('/friendship/accept', {id: id}).then(function (response) {
+				d.resolve(response.data)
+			}, function (error) {
+				d.reject(error.data.message)
+			})
 
-            return d.promise
-        },
+			return d.promise
+		},
 		/* Remove request by friendship request id*/
 		decline: function (id) {
-            var d = $q.defer()
+			var d = $q.defer()
 
-            $http.post('/friendship/decline', {id: id}).then(function (response) {
-                d.resolve(response.data)
-            }, function (error) {
-                d.reject(error.data.message)
-            })
+			$http.post('/friendship/decline', {id: id}).then(function (response) {
+				d.resolve(response.data)
+			}, function (error) {
+				d.reject(error.data.message)
+			})
 
-            return d.promise
-        },
-        isFriend: function (id) {
-            return __s($http, $cookies, 'get', '/friendship/isFriend', {id: id})
-                .then(function (result) {
-                    return result
-                }, function (data, status) {
-                    return data
-                })
-        },
+			return d.promise
+		},
+		isFriend: function (id) {
+			return __s($http, $cookies, 'get', '/friendship/isFriend', {id: id})
+				.then(function (result) {
+					return result
+				}, function (data, status) {
+					return data
+				})
+		},
 		list: function (id, filters) {
 			if (!filters) filters = {}
 			filters['id'] = id
@@ -1161,82 +1223,82 @@ angular.module('er.services', [])
 	}
 })
 .factory('betaUploadsService', function ($http, $cookies) {
-    return {
-        addCert: function (file) {
-            return new Promise(function (resolve, reject) {
-                var fd = new FormData()
-                fd.append('file', file)
+	return {
+		addCert: function (file) {
+			return new Promise(function (resolve, reject) {
+				var fd = new FormData()
+				fd.append('file', file)
 
-                $http({
-                    method: 'POST',
-                    url: '/beta/addcertificate',
-                    headers: {
-                        'Content-Type': undefined
-                    },
-                    data: fd,
-                }).then(function (data) {
-                    resolve(data)
-                }).catch(function (data, status) {
-                    reject(data)
-                })
-            })
-        },
-        removeCert: function (cert) {
-            return new Promise(function (resolve, reject) {
-                $http({
-                    method: 'POST',
-                    url: '/beta/removecertificate',
-                    data: {
-                        filename: cert.filename
-                    },
-                }).then(resolve).catch(function (data, status) {
-                    reject(data)
-                })
-            })
-        },
-        addDownload: function (file) {
-            return new Promise(function (resolve, reject) {
-                var fd = new FormData()
-                fd.append('file', file)
+				$http({
+					method: 'POST',
+					url: '/beta/addcertificate',
+					headers: {
+						'Content-Type': undefined
+					},
+					data: fd,
+				}).then(function (data) {
+					resolve(data)
+				}).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		removeCert: function (cert) {
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/beta/removecertificate',
+					data: {
+						filename: cert.filename
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		addDownload: function (file) {
+			return new Promise(function (resolve, reject) {
+				var fd = new FormData()
+				fd.append('file', file)
 
-                $http({
-                    method: 'POST',
-                    url: '/beta/adddownload',
-                    headers: {
-                        'Content-Type': undefined
-                    },
-                    data: fd,
-                }).then(function (data) {
-                    resolve(data)
-                }).catch(function (data, status) {
-                    reject(data)
-                })
-            })
-        },
-        removeDownload: function (file) {
-            return new Promise(function (resolve, reject) {
-                $http({
-                    method: 'POST',
-                    url: '/beta/removedownload',
-                    data: {
-                        filename: file.filename
-                    },
-                }).then(resolve).catch(function (data, status) {
-                    reject(data)
-                })
-            })
-        },
+				$http({
+					method: 'POST',
+					url: '/beta/adddownload',
+					headers: {
+						'Content-Type': undefined
+					},
+					data: fd,
+				}).then(function (data) {
+					resolve(data)
+				}).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		removeDownload: function (file) {
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/beta/removedownload',
+					data: {
+						filename: file.filename
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
 		signup: function (signup) {
-            return new Promise(function (resolve, reject) {
-                $http({
-                    method: 'POST',
-                    url: '/beta/signup',
-                    data: {form: signup},
-                }).then(resolve).catch(function (data, status) {
-                    reject(data)
-                })
-            })
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/beta/signup',
+					data: {form: signup},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
 
-        }
-    }
+		}
+	}
 })

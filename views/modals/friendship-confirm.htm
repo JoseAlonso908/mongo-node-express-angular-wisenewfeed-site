@@ -7,6 +7,8 @@
         <div class="small-loader" ng-if="loading"></div>
         <input type="text" ng-change="$parent.phoneError = false" ng-class="{error: $parent.phoneError}" ng-model="$parent.phone" placeholder="Phone">
 
+        <select ng-model="$parent.type" ng-options="type for type in types"></select>
+
         <div class="footer">
             <!--TODO: MAKE SURE THAT CONFIRM IS FROM RIGHT SIDE -->
             <button ng-click="$parent.confirm()" class="confirm">Confirm</button>

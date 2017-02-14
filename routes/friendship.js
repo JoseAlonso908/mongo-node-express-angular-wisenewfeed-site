@@ -27,7 +27,7 @@ router.get('/isFriend', (req, res) => {
 })
 
 router.post('/add', (req, res) => {
-    let {id, phone} = req.body
+    let {id, phone, type} = req.body
     async.waterfall([
         cb => {
             models.User.findOne({$and: [{_id: id}, {phone}]}, (err, result) => {
@@ -36,7 +36,7 @@ router.post('/add', (req, res) => {
             })
         },
         (result, cb) => {
-            models.Friendship.add(id, req.user._id, (err, result) => {
+            models.Friendship.add(id, req.user._id, type, (err, result) => {
                 cb(err, result)
             })
         },
@@ -64,7 +64,6 @@ router.post('/remove', (req, res) => {
 router.post('/accept', (req, res) => {
     let {id} = req.body
     models.Friendship.accept(id, req.user._id, (err, result) => {
-        console.log('Error: %s, result: %s', err, result)
         if (err) return res.status(400).send(err)
         res.send({requested: true, accepted: true})
     })
@@ -73,7 +72,6 @@ router.post('/accept', (req, res) => {
 router.post('/decline', (req, res) => {
     let {id} = req.body
     models.Friendship.remove(id, req.user._id, (err, result) => {
-        console.log('Error: %s, result: %s', err, result);
         if (err) return res.status(400).send(err)
         res.send({ok: true})
     })
@@ -82,7 +80,6 @@ router.post('/decline', (req, res) => {
 router.get('/pending', (req, res) => {
     let {skip, limit} = req.query
     models.Friendship.pending(req.user._id, skip, limit, (err, result) => {
-        console.log('Error: %s, result: %s', err, result);
         if (err) return res.status(400).send(err)
         res.send(result)
     })

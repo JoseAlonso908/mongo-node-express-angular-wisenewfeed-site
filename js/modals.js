@@ -213,20 +213,23 @@ angular.module('er.modals', [])
     })
 })
 .controller('friendshipConfirmModalController', function ($scope, $parent, userID, friendshipConfirmModal, friendshipService) {
+    $scope.types = ['Family', 'Close friend', 'Friend']
+    $scope.type = 'Friend'
+
     $scope.close = friendshipConfirmModal.deactivate
 	$scope.validatePhone = function (input) {
 		var phoneRegex = /^\+([0-9]{8,15})$/
 		return phoneRegex.test(input)
     }
     $scope.confirm = function () {
-        $scope.phoneError = false
+    	$scope.phoneError = false
         if (!$scope.phone || !$scope.validatePhone($scope.phone)) {
 			$scope.error = 'Invalid phone number format'
             return $scope.phoneError = true
 		}
 
         $scope.loading = true
-        friendshipService.add(userID, $scope.phone).then(function (data) {
+        friendshipService.add(userID, $scope.phone, $scope.type).then(function (data) {
             $parent.profile.friendship = data
             $scope.loading = false
             $scope.added = true

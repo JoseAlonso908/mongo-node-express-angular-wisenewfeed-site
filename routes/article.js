@@ -146,7 +146,7 @@ router.get('/my', (req, res) => {
 router.get('/byuser', (req, res) => {
 	let {user, start, limit} = req.query
 
-	models.Article.getByUser(user, start, limit, (err, articles) => {
+	models.Article.getByUser(user, req.user._id, start, limit, (err, articles) => {
 		res.send(articles)
 	})
 })
@@ -572,7 +572,15 @@ router.delete('/comment/react', (req, res) => {
 })
 
 router.get('/pieces', (req, res) => {
-	models.Piece.getTopGrouped((result) => {
+	models.Piece.getTopGrouped((err, result) => {
+		res.send(result)
+	})
+})
+
+router.get('/pieces/search', (req, res) => {
+	let {query} = req.query
+
+	models.Piece.search(query, (err, result) => {
 		res.send(result)
 	})
 })

@@ -1,3 +1,8 @@
+process.on('unhandledRejection', (reason, promise) => {
+	console.log(reason)
+	console.log(promise)
+})
+
 const config = require('./../config')
 const env = 'development'
 
@@ -21,16 +26,25 @@ let pieces = {
 		type: 'categories',
 		list: {}
 	},
+
+	'!': {
+        type: 'countries',
+        list: {},
+    },
 }
 
-models.Article.getAll(null, null, null, null, null, null, (err, articles) => {
+let Regexp = /(<br>|<q>|<\/q>|^|\s|&nbsp;)(#[a-z]+[a-z0-9]*|@[a-z]+[a-z0-9]*|\$[a-z]+[a-z0-9]*|![a-z]+[a-z0-9]*)/gmi
+
+models.Article.getAllLean((err, articles) => {
 	for (let article of articles) {
 		if (!article.text) continue
 
-		let aPieces = article.text.match(/(^|\s)(\#[a-z]+[a-z0-9]*|\@[a-z]+[a-z0-9]*|\$[a-z]+[a-z0-9]*)/gi)
+		let aPieces = article.text.match(Regexp)
 		if (!aPieces) continue
 
 		for (let aPiece of aPieces) {
+			aPiece = aPiece.replace(Regexp, '$2')
+
 			aPiece = aPiece.trim()
 
 			let typeChar = aPiece[0]
@@ -44,6 +58,7 @@ models.Article.getAll(null, null, null, null, null, null, (err, articles) => {
 	}
 
 	let insertionItems = []
+
 	for (let typeChar in pieces) {
 		let group = pieces[typeChar]
 

@@ -417,6 +417,69 @@ a.small-icon, button.small-icon {
 	}
 }
 
+.aclist {
+	display: none;
+	position: absolute;
+	background-color: #ffffff;
+	width: 150px;
+	max-height: 100px;
+	margin: 0 0 0 4px;
+	border: 1px solid $soLight;
+	box-shadow: 0 3px 6px 0 rgba($middleGrey, .3);
+
+	&.visible {
+		display: block;
+	}
+
+	.item {
+		$height: 20px;
+
+		@include display-flex;
+		width: 100%; height: $height;
+		padding: 0 4px;
+		line-height: $height;
+		font-size: 13px;
+		cursor: pointer;
+
+		@include box-sizing(border-box);
+
+		&.active {
+			background-color: $soLight;
+
+			.checked {
+				opacity: 1;
+			}
+		}
+
+		&:hover {
+			background-color: $activeBlue;
+
+			.title, .checked i {
+				color: #ffffff;
+			}
+		}
+
+		.title {
+			width: calc(100% - 20px);
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.checked {
+			opacity: 0;
+			width: 20px;
+
+			i {
+				text-align: center;
+				line-height: $height;
+				color: $soDark;
+				font-size: 16px;
+			}
+		}
+	}
+}
+
 #wrapper {
 	width: 100%; height: 100%;
 	margin: 0 auto 0;
@@ -1220,7 +1283,7 @@ a.small-icon, button.small-icon {
 								margin: 1px;
 								background-position: center;
 								background-repeat: no-repeat;
-								background-size: inherit;
+								background-size: cover;
 								border-radius: 2px;
 
 								&:hover {
@@ -4418,7 +4481,7 @@ a.small-icon, button.small-icon {
 			border-top: 1px solid #f0f2f4;
 		}
 
-		input[type=text] {
+		input[type=text], select {
 			display: inline-block;
 			width: 100%; height: 36px;
 			margin-bottom: 16px;
@@ -5121,6 +5184,55 @@ a.small-icon, button.small-icon {
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					overflow: hidden;
+				}
+			}
+
+			.reactions {
+				@include display-flex;
+				@include justify-content(space-between);
+				$height: 32px;
+				margin-bottom: 20px;
+
+
+				button {
+					@include display-flex;
+					@include justify-content(space-between);
+					height: $height;
+					padding: 0 12px;
+					border-radius: 16px;
+					font-size: 13px;
+					font-weight: 900;
+					color: $iconGrey;
+					line-height: $height;
+					cursor: pointer;
+					border: none;
+					background: transparent;
+
+					@include transition(background-color .2s);
+
+					&.active {
+						color: $activeBlue;
+						background-color: rgba($activeBlue, .15);
+					}
+
+					&:hover {
+						background-color: darken(rgba($activeBlue, .15), 5%);
+					}
+
+					i, .title {
+						display: block;
+						height: $height;
+						line-height: $height;
+					}
+
+					i {
+						margin-right: 10px;
+						font-size: 16px;
+					}
+
+					.title {
+						font-size: 13px;
+					}
 				}
 			}
 

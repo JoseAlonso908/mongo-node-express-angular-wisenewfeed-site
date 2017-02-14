@@ -72,4 +72,38 @@ router.post('/setprivacy', (req, res) => {
 	})
 })
 
+router.get('/reactions', (req, res) => {
+	let {image} = req.query
+
+	models.ImageReaction.getByImage(req.user._id, image, (err, reactions) => {
+		res.send(reactions)
+	})
+})
+
+router.get('/reactions/few', (req, res) => {
+	let {imageIds} = req.query,
+		imageIdsArray = imageIds.split(',')
+
+	models.ImageReaction.getByImageIds(req.user._id, imageIdsArray, (err, reactions) => {
+		res.send(reactions)
+	})
+})
+
+router.post('/react', (req, res) => {
+    let {image, type} = req.body
+
+	models.ImageReaction.react(req.user._id, image, type, (err, result) => {
+		if (err) res.status(400).send(err)
+		else res.send({ok: true})
+	})
+})
+
+router.delete('/react', (req, res) => {
+    let {image, type} = req.query
+
+    models.ImageReaction.unreact(req.user._id, image, type, (err, result) => {
+		res.send({ok: true})
+    })
+})
+
 module.exports = router

@@ -15,15 +15,19 @@ var Model = function (mongoose) {
             type: mongoose.Schema.Types.Boolean,
             default: false
         },
+        type: {
+            type: String,
+            default: 'Friend',
+        },
         createdAt: {type: Date, default: Date.now}
     })
 
     var Model = mongoose.model('friendship', schema);
 
     return {
-        add: (friend, user, callback) => {
-            if (typeof friend !== 'object') friend = mongoose.Types.ObjectId(friend)
-            if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
+        add: (friend, user, type, callback) => {
+            friend = MOI(friend)
+            user = MOI(user)
 
             if (friend.toString() == user.toString()) {
                 return callback()
@@ -35,7 +39,7 @@ var Model = function (mongoose) {
                 else {
                     let friendship = new Model()
                     Object.assign(friendship, {
-                        friend, user
+                        friend, user, type
                     })
                     friendship.save(callback)
                 }
@@ -102,7 +106,8 @@ var Model = function (mongoose) {
                     requested: !!friendship,
                     accepted: friendship ? friendship.accepted : false,
                     isInitiator: (friendship && friendship.user.toString() === user.toString()),
-                    requestID: friendship ? friendship._id : null
+                    requestID: friendship ? friendship._id : null,
+                    type: friendship ? friendship.type : 'Friend',
                 })
             })
         },

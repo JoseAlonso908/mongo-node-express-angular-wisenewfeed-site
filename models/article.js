@@ -44,6 +44,23 @@ var Model = function(mongoose) {
 		})
 
 		async.waterfall([
+			// Remove images based to their privacy
+			(next) => {
+				async.map(articles, (a, nextArticle) => {
+                    if (!a.images || a.images.length == 0) {
+                    	return nextArticle(null, a)
+                    }
+
+                    models.Image.retainImagesPrivacy(a.images, a.author, user, (err, images) => {
+                    	a.images = images
+                        nextArticle(null, a)
+					})
+				}, (err, result) => {
+					articles = result
+                    next()
+				})
+			},
+
 			(next) => {
 				async.mapSeries(articles, (a, mapNext) => {
 					models.User.setXpInfo(a.author, (err, user) => {
@@ -437,12 +454,7 @@ var Model = function(mongoose) {
 			if (start) aggregationOptions.push({$skip: start})
 			if (limit) aggregationOptions.push({$limit: limit})
 
-			console.log(aggregationOptions)
-
 			Model.aggregate.apply(Model, aggregationOptions).exec((err, articles) => {
-				console.log(err)
-				console.log(articles)
-
 				if (filter == 'photos') {
 					let images = []
 					for (let a of articles) {images = images.concat(a.images)}
@@ -587,7 +599,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getByUser: (author, start = 0, limit = 100, callback) => {
+		getByUser: (author, viewer, start = 0, limit = 100, callback) => {
 			author = MOI(author)
 
 			start = Number(start)
@@ -602,7 +614,7 @@ var Model = function(mongoose) {
 					path: 'author',
 				}},
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
-				this.postProcessList(articles, null, callback)
+				this.postProcessList(articles, viewer, callback)
 			})
 		},
 

@@ -12,7 +12,7 @@ angular.module('er.directives', [])
 				// remove all tags markers (we'll put them back later)
 				text = text.replace(/<tag>([\s\S]*?)<\/tag>/gmi, "$1")
 
-				text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
+				text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$|!)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
 					return space + '<tag>' + tag + '</tag>'
 				})
 
@@ -376,7 +376,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('onyourmind', function ($rootScope, $timeout, postService) {
+.directive('onyourmind', function ($rootScope, $timeout, postService, $compile, piecesService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/onyourmind.htm',
@@ -454,10 +454,107 @@ angular.module('er.directives', [])
 				})
 			}
 
-			var ce = element[0].querySelector('[contenteditable]')
+            var ce = element[0].querySelector('[contenteditable]')
+
+			$scope.acDo = function (item) {
+				$scope.acFocusedNode.textContent = item
+
+				var selection = rangy.getSelection()
+				selection.removeAllRanges()
+
+				var range = rangy.createRange()
+				range.selectNode($scope.acFocusedNode)
+				range.collapse()
+
+				selection.setSingleRange(range)
+
+				console.log('refocused 3')
+
+				$scope.acFocusedNode = null
+				$scope.acVisible = false
+				$scope.acList = []
+			}
+
+			angular.element(ce).on('keydown', function (e) {
+                if (!$scope.acVisible || $scope.acList.length == 0) return
+
+                if ([9, 13, 38, 40].indexOf(e.keyCode) !== -1) {
+					switch (e.keyCode) {
+						case 9:
+						case 13:
+                        	angular.element(document.querySelector('.aclist')).find('.item.active').triggerHandler('click');
+							break
+						case 38:
+							if ($scope.acActive > 0) {
+								$scope.acActive--
+							} else {
+								$scope.acActive = $scope.acList.length - 1
+							}
+							break
+						case 40:
+                            if ($scope.acActive < $scope.acList.length - 1) {
+                                $scope.acActive++
+                            } else {
+                                $scope.acActive = 0
+                            }
+							break
+					}
+
+					e.preventDefault()
+				}
+			})
+
+			$scope.autocomplete = function (e) {
+                if ([9, 13, 38, 40].indexOf(e.keyCode) !== -1) return
+
+				var savedSelection = rangy.saveSelection(ce)
+				var bookmark = angular.element(document.querySelector('#' + savedSelection.rangeInfos[0].markerId))
+				bookmark.css('display', '')
+				var pxOffset = bookmark.offset()
+                rangy.removeMarkers(savedSelection)
+
+				var selection = rangy.getSelection(ce)
+
+				var focus = {
+					node: selection.nativeSelection.focusNode,
+					offset: selection.nativeSelection.focusOffset - 1,
+				}
+
+				if (focus.node.parentElement.tagName !== 'TAG' || !selection.isCollapsed) {
+                    $scope.acVisible = false
+					return
+				}
+
+				$scope.acVisible = true
+
+                piecesService.search(focus.node.textContent).then(function (result) {
+                	$scope.acList = result
+					$scope.acActive = 0
+				})
+
+
+				$scope.acPosition = pxOffset
+				$scope.acFocusedNode = focus.node
+
+				if (!document.querySelector('.aclist')) {
+                	console.log('No ac list')
+                	var aclistElement = angular.element(
+                		'<div class="aclist" ng-class="{visible: (acVisible && acList.length > 0)}" ng-style="{top: acPosition.top + \'px\', left: acPosition.left +\'px\'}">' +
+							'<div class="item" ng-class="{active: acActive == $index}" ng-click="acDo(item)" ng-repeat="item in acList">' +
+								'<div class="title">{{item}}</div>' +
+								'<div class="checked"><i class="material-icons">check</i></div>' +
+							'</div>' +
+						'</div>'
+					)
+					aclistElement.appendTo(document.body)
+
+					$compile(aclistElement)($scope)
+				}
+			}
+
 			$scope.$watch(function () {
 				return $scope.text
-			}, function (newValue, oldValue) {
+			}, function (newValue) {
 				if (!newValue) return
 
 				var text = newValue.trim(),
@@ -1157,7 +1254,6 @@ angular.module('er.directives', [])
 					}
 
 					$scope.comments = comments
-					console.log(comments)
 					$scope.$parent.commentsCount = $scope.comments.length
 					$scope.post.comments = comments
 					$scope.$apply()
@@ -1415,7 +1511,7 @@ angular.module('er.directives', [])
 			$scope.like = function (question) {
 				questionsService.like(question._id).then(function (data) {
 					question.liked = true
-					question.likes = data.count
+					question.likes = data.count;
 
 					$rootScope.$emit('updateQuestionsCounters')
 				})
@@ -1429,13 +1525,13 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/familiar-experts.htm',
 		link: function ($scope, element, attr) {
 			$scope.init = function () {
-				$scope.users = []
-				$scope.familiarExpertsLoading = true
+				$scope.users = [];
+				$scope.familiarExpertsLoading = true;
 				familiarExpertsService.get().then(function (users) {
-					$scope.users = users
+					$scope.users = users;
 					$scope.familiarExpertsLoading = false
 				})
-			}
+			};
 
 			$scope.init()
 		}
@@ -1450,10 +1546,10 @@ angular.module('er.directives', [])
 		},
 		controller: function ($scope) {
             $scope.init = function () {
-                $scope.friendshipRequests = []
-                $scope.friendshipRequestsLoading = true
+                $scope.friendshipRequests = [];
+                $scope.friendshipRequestsLoading = true;
                 friendshipService.pending().then(function (friendshipRequests) {
-                    $scope.friendshipRequests = friendshipRequests
+                    $scope.friendshipRequests = friendshipRequests;
                     $scope.friendshipRequestsLoading = false
                 })
             }
@@ -1477,7 +1573,7 @@ angular.module('er.directives', [])
 			}
 
 			$scope.openUserMenu = function (e) {
-				e.stopPropagation()
+				e.stopPropagation();
 				$rootScope.$broadcast('open-user-menu')
 			}
 		}
@@ -1509,11 +1605,11 @@ angular.module('er.directives', [])
 					title: 'Photos',
 					filter: 'photos',
 				},
-			]
+			];
 
-			$scope.activeFilter = 'news'
+			$scope.activeFilter = 'news';
 			$scope.setFilter = function (filter) {
-				$scope.activeFilter = filter
+				$scope.activeFilter = filter;
 				$rootScope.$emit('feedFilter', filter)
 			}
 		},
@@ -1529,20 +1625,20 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			if (typeof $scope.onEdit === 'function') {
-				$scope.editing = true
+				$scope.editing = true;
 				$scope.chooseFile = function () {
-					var fileInput = element[0].querySelector('input[type=file]')
+					var fileInput = element[0].querySelector('input[type=file]');
 					angular.element(fileInput).on('change', function (e) {
-						e.stopImmediatePropagation()
+						e.stopImmediatePropagation();
 
 						$scope.$apply(function () {
-							var file = e.target.files[0]
+							var file = e.target.files[0];
 							$scope.onEdit(file)
 						})
-					})
+					});
 
 					$timeout(function () {
-						fileInput.click()
+						fileInput.click();
 						$timeout.cancel(this)
 					}, 0)
 				}
@@ -1550,34 +1646,34 @@ angular.module('er.directives', [])
 
 			var init = function () {
 				var canvas = angular.element(element).find('canvas')[0],
-					ctx = canvas.getContext('2d')
+					ctx = canvas.getContext('2d');
 
 				var width = angular.element(element)[0].children[0].offsetWidth,
-					height = angular.element(element)[0].children[0].offsetHeight
+					height = angular.element(element)[0].children[0].offsetHeight;
 
-				angular.element(element).find('canvas').attr('width', width)
-				angular.element(element).find('canvas').attr('height', height)
+				angular.element(element).find('canvas').attr('width', width);
+				angular.element(element).find('canvas').attr('height', height);
 
-				var borderWidth = 4
+				var borderWidth = 4;
 
-				var __start = Date.now()
-				var levelInfo = $scope.user.xpInfo
-				var __end = Date.now()
+				var __start = Date.now();
+				var levelInfo = $scope.user.xpInfo;
+				var __end = Date.now();
 
-				$scope.level = levelInfo.level
-				var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100
+				$scope.level = levelInfo.level;
+				var levelPercentage = ($scope.user.xp - levelInfo.prevLevelXp) / (levelInfo.nextLevelXp - levelInfo.prevLevelXp) * 100;
 
 				// Get user XP in radians
-				if (!$scope.user.xp) return
-				var radsXP = (levelPercentage / 100 * 2) + 1.5
+				if (!$scope.user.xp) return;
+				var radsXP = (levelPercentage / 100 * 2) + 1.5;
 
-				ctx.lineWidth = borderWidth
-				ctx.strokeStyle = '#43abe7'
-				ctx.beginPath()
-				ctx.arc(width / 2, height / 2, (width / 2) - (borderWidth / 2), 1.5 * Math.PI, radsXP * Math.PI, false)
+				ctx.lineWidth = borderWidth;
+				ctx.strokeStyle = '#43abe7';
+				ctx.beginPath();
+				ctx.arc(width / 2, height / 2, (width / 2) - (borderWidth / 2), 1.5 * Math.PI, radsXP * Math.PI, false);
 				ctx.stroke()
-			}
-			init()
+			};
+			init();
 
 			window.onresize = init
 		}
@@ -1593,39 +1689,39 @@ angular.module('er.directives', [])
 			viewTitle: '@',
 		},
 		link: function ($scope, element, attr) {
-			$scope.show = false
+			$scope.show = false;
 
-			var lastUserValue
+			var lastUserValue;
 
 			$scope.$watch('ngModel', function (newValue, oldValue) {
 				if (newValue && newValue.title != oldValue.title && oldValue.title != lastUserValue) {
-					$scope.filteredSuggestions = []
+					$scope.filteredSuggestions = [];
 
 					for (var i = 0; i < $scope.suggestions.length; i++) {
-						var item = $scope.suggestions[i]
+						var item = $scope.suggestions[i];
 
 						if (item.title.toLowerCase().indexOf(newValue.title.toLowerCase()) !== -1) {
 							$scope.filteredSuggestions.push(item)
 						}
 					}
 
-					$scope.filteredSuggestions = $scope.filteredSuggestions.slice(0, 7)
+					$scope.filteredSuggestions = $scope.filteredSuggestions.slice(0, 7);
 
 					$scope.show = true
 				} else {
 					$scope.show = false
 				}
-			}, true)
+			}, true);
 
 			$scope.setSuggestion = function (value) {
-				lastUserValue = $scope.ngModel.title
-				$scope.ngModel = value
+				lastUserValue = $scope.ngModel.title;
+				$scope.ngModel = value;
 				$scope.show = false
 			}
 		}
 	}
 })
-.directive('lightbox', function ($templateRequest, $compile, $timeout) {
+.directive('lightbox', function ($templateRequest, $compile, identityService) {
 	return {
 		restrict: 'A',
 		scope: {
@@ -1634,37 +1730,58 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			element.on('click', function () {
-				$scope.next = element.next()[0]
-				$scope.prev = element.prev()[0]
+				$scope.next = element.next()[0];
+				$scope.prev = element.prev()[0];
+
+				identityService.getImageReaction($scope.image._id).then(function (reactions) {
+					$scope.$apply(function() {
+						$scope.image.reactions = reactions.reactions;
+						$scope.image.youdid = reactions.youdid
+                    })
+				});
+
+				$scope.react = function (type) {
+					if ($scope.image.youdid[type]) {
+                        identityService.unreactImage($scope.image._id, type).then(function (result) {
+							$scope.image.youdid[type] = false;
+							$scope.image.reactions[type + 's']--
+                        })
+					} else {
+                        identityService.reactImage($scope.image._id, type).then(function (result) {
+                            $scope.image.youdid[type] = true;
+                            $scope.image.reactions[type + 's']++
+                        })
+					}
+				};
 
 				$templateRequest('assets/views/directives/lightbox.htm').then(function (html) {
-					var template = angular.element(html)
-					angular.element(document.body).append(template)
+					var template = angular.element(html);
+					angular.element(document.body).append(template);
 
-					$compile(template)($scope)
+					$compile(template)($scope);
 
 					template.find('.wrapper').on('click', function (e) {
 						e.stopImmediatePropagation()
-					})
+					});
 
 					template.on('click', function () {
 						template.remove()
-					})
+					});
 
 					if ($scope.next && $scope.next.attributes.lightbox) {
 						$scope.showNext = function () {
-							template.remove()
+							template.remove();
 							// $timeout(function () {
-								angular.element($scope.next).triggerHandler('click')
+								angular.element($scope.next).triggerHandler('click');
 							// })
 						}
 					}
 
 					if ($scope.prev && $scope.prev.attributes.lightbox) {
 						$scope.showPrev = function () {
-							template.remove()
+							template.remove();
 							// $timeout(function () {
-								angular.element($scope.prev).triggerHandler('click')
+								angular.element($scope.prev).triggerHandler('click');
 							// })
 						}
 					}
@@ -1704,10 +1821,10 @@ angular.module('er.directives', [])
 			user: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.count = $rootScope.badgeFollowers || 0
+			$scope.count = $rootScope.badgeFollowers || 0;
 
 			$scope.toggleFollow = function (person, $event) {
-				$event.stopImmediatePropagation()
+				$event.stopImmediatePropagation();
 
 				if (person.isFollowing) {
 					followService.unfollow(person._id).then(function (result) {
@@ -1718,30 +1835,30 @@ angular.module('er.directives', [])
 						person.isFollowing = result
 					})
 				}
-			}
+			};
 
 			angular.element(document.body).on('click', function () {
-				$scope.dropdownVisible = false
+				$scope.dropdownVisible = false;
 				$scope.$apply()
-			})
+			});
 
 			var updateFollowers = function () {
 				async.parallel([
 					function (cb) {
 						followService.followers($scope.user._id, 0, 10, ['createdAt', 'desc']).then(function (followers) {
 							followers = followers.map(function (person) {
-								person.role = person.role[0].toUpperCase() + person.role.substr(1)
+								person.role = person.role[0].toUpperCase() + person.role.substr(1);
 								return person
-							})
+							});
 
-							$scope.followers = followers
+							$scope.followers = followers;
 
 							cb()
 						})
 					},
 					function (cb) {
 						followService.unread().then(function (count) {
-							$scope.count = $rootScope.badgeFollowers = count
+							$scope.count = $rootScope.badgeFollowers = count;
 
 							cb()
 						})
@@ -1749,20 +1866,20 @@ angular.module('er.directives', [])
 				], function () {
 					// $scope.$apply()
 				})
-			}
+			};
 
 			$scope.showDropdown = function (e) {
 				e.stopImmediatePropagation();
 
 				$timeout(function () {
-					document.body.click()
-					$scope.dropdownVisible = !$scope.dropdownVisible
+					document.body.click();
+					$scope.dropdownVisible = !$scope.dropdownVisible;
 
 					followService.setReadForUser().then(function () {
 						$scope.count = $rootScope.badgeFollowers = 0
 					})
 				}, 10)
-			}
+			};
 
 			// $interval(updateFollowers, 3000)
 			updateFollowers()
@@ -1778,38 +1895,38 @@ angular.module('er.directives', [])
 		},
 		replace: false,
 		link: function ($scope, element, attr) {
-			$scope.notifications = []
-			$scope.count = $rootScope.badgeNotifications || 0
+			$scope.notifications = [];
+			$scope.count = $rootScope.badgeNotifications || 0;
 
 			angular.element(document.body).on('click', function () {
-				$scope.dropdownVisible = false
+				$scope.dropdownVisible = false;
 				$scope.$apply()
-			})
+			});
 
 			var updateNotifications = function (callback) {
 				notificationService.get().then(function (result) {
-					$scope.count = $rootScope.badgeNotifications = result.count
-					$scope.notifications = result.notifications
+					$scope.count = $rootScope.badgeNotifications = result.count;
+					$scope.notifications = result.notifications;
 
 					if (typeof callback === 'function') callback()
 				})
-			}
+			};
 
 			var refreshInterval = $interval(function () {
-				if ($scope.dropdownVisible) return
+				if ($scope.dropdownVisible) return;
 				updateNotifications()
-			}, 3000)
+			}, 3000);
 
 			element.on('$destroy', function () {
 				$interval.cancel(refreshInterval)
-			})
+			});
 
 			$scope.showDropdown = function (e) {
 				e.stopImmediatePropagation();
 
 				$timeout(function () {
-					document.body.click()
-					$scope.dropdownVisible = !$scope.dropdownVisible
+					document.body.click();
+					$scope.dropdownVisible = !$scope.dropdownVisible;
 
 					notificationService.setReadForUser().then(function () {
 						for (var i in $scope.notifications) {
@@ -1819,7 +1936,7 @@ angular.module('er.directives', [])
 						$scope.count = 0
 					})
 				}, 10)
-			}
+			};
 
 			updateNotifications()
 		}
@@ -1837,21 +1954,21 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.follow = function (profile) {
 				followService.follow(profile._id).then(function (result) {
-					$scope.profile.isFollowing = result
+					$scope.profile.isFollowing = result;
 					$rootScope.$emit('update-follow')
 				})
-			}
+			};
 
 			$scope.unfollow = function (profile) {
 				followService.unfollow(profile._id).then(function (result) {
-					$scope.profile.isFollowing = result
+					$scope.profile.isFollowing = result;
 					$rootScope.$emit('update-follow')
 				})
-			}
+			};
 
             $scope.addContact = function (userID) {
                 friendshipConfirmModal.activate({$parent: $scope, userID: userID})
-            }
+            };
 
             $scope.removeContact = function (userID) {
                 friendshipService.remove(userID).then(function (data) {
@@ -1859,12 +1976,12 @@ angular.module('er.directives', [])
                 }, function (error) {
                     console.log(error);
                 })
-            }
+            };
             $scope.acceptFriendship = function (requestID) {
                 friendshipService.accept(requestID).then(function (result) {
                     $scope.profile.friendship = result
                 })
-            }
+            };
 
             $scope.declineFriendship = function (requestID) {
                 friendshipService.decline(requestID).then(function (result) {
@@ -1896,41 +2013,41 @@ angular.module('er.directives', [])
 			q: '=',
 		},
 		link: function ($scope, element, attr) {
-			$scope.dropdownVisible = false
-			$scope.loading = false
+			$scope.dropdownVisible = false;
+			$scope.loading = false;
 
 			angular.element(document.body).on('click', function () {
-				$scope.dropdownVisible = false
+				$scope.dropdownVisible = false;
 				$scope.$apply()
-			})
+			});
 
 			$scope.multisearch = function () {
-				var q = $scope.q.trim()
+				var q = $scope.q.trim();
 
 				if (!q) {
-					$scope.dropdownVisible = false
+					$scope.dropdownVisible = false;
 					return
 				}
 
-				$scope.loading = true
+				$scope.loading = true;
 
 				identityService.multisearch($scope.q).then(function (results) {
 					results.users = results.users.map(function (user) {
-						user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-						user.role = user.role[0].toUpperCase() + user.role.substr(1)
+						user.avatar = user.avatar || '/assets/images/avatar_placeholder.png';
+						user.role = user.role[0].toUpperCase() + user.role.substr(1);
 						return user
-					})
+					});
 
-					$scope.results = results
+					$scope.results = results;
 
-					$scope.loading = false
+					$scope.loading = false;
 					$scope.dropdownVisible = true
 				})
-			}
+			};
 
 			element.find('form').on('submit', function (e) {
-				e.preventDefault()
-				$location.path('/tagsearch/' + $scope.q)
+				e.preventDefault();
+				$location.path('/tagsearch/' + $scope.q);
 				$scope.$apply()
 			})
 		},
@@ -1948,15 +2065,15 @@ angular.module('er.directives', [])
 				messagesService.unread().then(function (result) {
 					$scope.unreadcount = result.count
 				})
-			}
+			};
 
 			var refreshInterval = $interval(function () {
 				updateUnreadCounter()
-			}, 3000)
+			}, 3000);
 
 			element.on('$destroy', function () {
 				$interval.cancel(refreshInterval)
-			})
+			});
 
 			updateUnreadCounter()
 		}
@@ -1970,11 +2087,11 @@ angular.module('er.directives', [])
 			profile: '=',
 		},
 		link: function ($scope) {
-			$scope.loaded = false
+			$scope.loaded = false;
 
 			identityService.isOnline($scope.profile._id).then(function (flag) {
-				$scope.isOnline = flag
-				$scope.lastVisit = $scope.profile.lastVisit
+				$scope.isOnline = flag;
+				$scope.lastVisit = $scope.profile.lastVisit;
 				$scope.loaded = true
 			})
 		}
@@ -1989,12 +2106,12 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope) {
 			$scope.images = $scope.images.map(function (image) {
-				image.privacy = image.privacy || 'public'
-				image.originalPrivacy = image.privacy
+				image.privacy = image.privacy || 'Stranger';
+				image.originalPrivacy = image.privacy;
 				return image
-			})
+			});
 
-			console.log($scope.images)
+			console.log($scope.images);
 
 			$scope.remove = function (image) {
 				identityService.removeImage(image._id).then(function (result) {
@@ -2004,9 +2121,9 @@ angular.module('er.directives', [])
 						})
 					}
 				})
-			}
+			};
 
-			$scope.privacyOptions = ['public', 'private']
+			$scope.privacyOptions = ['Family', 'Close friend', 'Friend', 'Stranger'];
 			$scope.setPrivacy = function (image) {
 				identityService.setImagePrivacy(image._id, image.privacy).catch(function (result) {
 					image.privacy = image.originalPrivacy
@@ -2023,4 +2140,4 @@ angular.module('er.directives', [])
 			meta: '=',
 		}
 	}
-})
+});

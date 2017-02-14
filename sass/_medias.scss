@@ -515,7 +515,7 @@
 			.filters {
 				height: auto;
 
-				> dropdown, > a {
+				dropdown,  a {
 					margin-bottom: 15px;
 				}
 			}
@@ -758,13 +758,16 @@
 			.filters {
 				justify-content: flex-start;
 
-				> dropdown {
+				 dropdown {
 					width: 100%;
 					box-sizing: border-box;
 
 					.dropdown-wrapper {
 						width: 100%;
 
+						//.ngsb-wrap .ngsb-container {
+						//	overflow: auto;
+						//}
 						.dropdown {
 							width: 100% !important;
 							box-sizing: border-box;
@@ -773,7 +776,7 @@
 						.dropdown-list {
 							width: 100%;
 
-							> li.nested {
+							 li.nested {
 								height: auto;
 								min-height: 36px;
 								&:after {
@@ -789,7 +792,8 @@
 									margin-top: 49px;
 									margin-left: -23px;
 									box-shadow: 0 0px 12px 0 rgba(#000000, 0.17);
-
+									overflow-x: hidden;
+									overflow-y: auto;
 									.sublist {
 										position: relative;
 										width: 100%;

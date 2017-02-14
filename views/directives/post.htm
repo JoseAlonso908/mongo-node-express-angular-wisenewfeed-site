@@ -85,12 +85,21 @@
 		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
 	</div>
 	<linkpreview meta="post.meta"></linkpreview>
+	<div class="likes-row-wrapper" ng-class="likesClass(post.reactions)">
+		<div class="likes-value" ng-class="likesClass(post.reactions)">
+			{{post.reactions.likes_percentage}}% {{likesDescription(post.reactions.likes_percentage)}}
+		</div>
+		<div class="likes-row" style="width: {{post.reactions.likes_percentage}}%" ng-class="likesClass(post.reactions)"></div>
+	</div>
 	<div class="divider" ></div>
 
 	<div class="actions" ng-if="user">
 		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
 			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
 			<span class="title" ng-if="post.reactions.total.likes > 0"> {{post.reactions.total.likes}}</span>
+		</button>
+		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
+			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
 		</button>
 		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
 			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Smart</span>

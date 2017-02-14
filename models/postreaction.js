@@ -133,7 +133,7 @@ var Model = function(mongoose) {
 
 					result[r.post.toString()].reactions[r.author.role][`${r.type}s`]++
 					result[r.post.toString()].reactions.total[`${r.type}s`]++
-					}
+				}
 
 				callback(err, result)
 			})

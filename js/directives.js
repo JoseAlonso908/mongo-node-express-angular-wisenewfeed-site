@@ -48,8 +48,15 @@ angular.module('er.directives', [])
 			restrict: 'A',
 			replace: true,
 			transclude: true,
-			scope: { 'showYScrollbar': '=?isBarShown' },
+			scope: {
+				'showYScrollbar': '=?isBarShown',
+				'scrollbarHide': '=',
+			},
 			link: function (scope, element, attrs) {
+                if (scope.scrollbarHide == true) {
+                    return false
+                }
+
 				// That's bad!
 				if (window.innerWidth < 600 || (/ipad|iphone/i).test(navigator.userAgent)) return
 
@@ -249,11 +256,13 @@ angular.module('er.directives', [])
 						scope.$on(eventName, rebuild);
 					});
 
-					attrs.rebuildBottomOn.split(' ').forEach(function (eventName) {
-						scope.$on(eventName, function (e) {
-							rebuild(e, {rollToBottom: true})
-						})
-					});
+					if (!!attrs.rebuildBottomOn) {
+                        attrs.rebuildBottomOn.split(' ').forEach(function (eventName) {
+                            scope.$on(eventName, function (e) {
+                                rebuild(e, {rollToBottom: true})
+                            })
+                        });
+                    }
 				}
 				if (attrs.hasOwnProperty('rebuildOnResize')) {
 					win.on('resize', rebuild);
@@ -273,16 +282,20 @@ angular.module('er.directives', [])
 			list: '=',
 			selected: '=',
 			change: '=',
-			overflow: '@'
+			overflow: '@',
+			scrollOnSecond: '@'
 		},
 		link: function ($scope, element, attr) {
 			var rootElement = angular.element(element)[0]
 
-			var dropdownButton = angular.element(rootElement.querySelector('.dropdown')),
-				dropdownList = angular.element(rootElement.querySelector('.dropdown-list'))
+			if ($scope.scrollOnSecond == 'true') $scope.scrollOnSecond = true
+            else $scope.scrollOnSecond = false
+
+            var dropdownButton = angular.element(rootElement.querySelector('.dropdown')),
+				dropdownList = angular.element(rootElement.querySelector('.dropdown-list')),
 				dropdownLists = angular.element(document.querySelectorAll('.dropdown-list'))
 
-			angular.element(document.body).on('click', function (e) {
+            angular.element(document.body).on('click', function (e) {
 				dropdownList.removeClass('active')
 			})
 
@@ -292,8 +305,8 @@ angular.module('er.directives', [])
 			})
 
 			dropdownButton.on('click', function (e) {
-				e.stopImmediatePropagation()
-
+                $scope.$broadcast('rebuild-me')
+                e.stopImmediatePropagation()
 				$timeout(function () {
 					document.body.click()
 
@@ -301,7 +314,6 @@ angular.module('er.directives', [])
 					dropdownList.toggleClass('active')
 				}, 10)
 			})
-
 			$scope.isActiveParentItem = function (parentItem) {
 				for (var i in parentItem.sub) {
 					if (parentItem.sub[i].id === $scope.selected.id) return true

@@ -682,13 +682,15 @@ a.small-icon, button.small-icon {
 
 	.dropdown-wrapper {
 		position: relative;
+		.ngsb-wrap .ngsb-container {
+			overflow: initial;
+		}
 	}
 
 	.dropdown-list, .sublist-wrapper {
 		display: block; position: absolute;
 		min-width: 240px;
 		max-height: 400px;
-		padding: 15px 0;
 		z-index: 3;
 		background-color: #ffffff;
 		border-radius: 4px;
@@ -718,6 +720,7 @@ a.small-icon, button.small-icon {
 			line-height: 36px;
 			cursor: pointer;
 			white-space: nowrap;
+			list-style: none;
 			@include transition(font-weight .1s, background-color .1s);
 
 			&.nested {
@@ -739,7 +742,6 @@ a.small-icon, button.small-icon {
 
 			&:hover {
 				.sublist-wrapper {
-					display: block;
 					opacity: 1;
 					pointer-events: auto;
 				}
@@ -750,12 +752,12 @@ a.small-icon, button.small-icon {
 			}
 
 			.sublist-wrapper {
-				display: none;
 				top: 0;
 				margin-left: 217px;
+				opacity: 0;
 				pointer-events: none;
-				overflow-x: hidden;
-				overflow-y: auto;
+				//overflow-x: hidden;
+				//overflow-y: auto;
 
 				.sublist {
 					li {

@@ -150,7 +150,7 @@
 	<div class="divider" ng-if="user"></div>
 
 	<postcomments nocollapse="justone" post="post" user="user"></postcomments>
-	<div class="comment-box" ng-if="user">
+	<div class="comment-box" ng-if="user && !(user.role == 'User' && post.author.role != 'User')">
 		<avatar user="user"></avatar>
 		<textarea placeholder="Write a comment..." ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
 		<button ng-click="$parent.addComment(post)" class="send">

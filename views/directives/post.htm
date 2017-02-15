@@ -24,7 +24,6 @@
 				<div class="separator" ng-show="post.author.position">&bull;</div>
 				<div class="position small-light" ng-show="post.author.position">{{::post.author.position}}</div>
 				<div class="separator">&bull;</div>
-				<div class="country small-light">{{::post.author.country}}</div>
 			</div>
 
 			<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
@@ -65,7 +64,6 @@
 						<div class="separator" ng-show="post.sharedFrom.author.position">&bull;</div>
 						<div class="position small-light" ng-show="post.sharedFrom.author.position">{{::post.sharedFrom.author.position}}</div>
 						<div class="separator">&bull;</div>
-						<div class="country small-light">{{::post.sharedFrom.author.country}}</div>
 					</div>
 
 					<button ng-if="post.sharedFrom.author.isFollowing === false && post.sharedFrom.author._id != user._id && user && user.role != 'User'" ng-click="follow(post.sharedFrom)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>

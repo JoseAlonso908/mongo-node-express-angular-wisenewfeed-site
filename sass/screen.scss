@@ -20,15 +20,14 @@ $progressColor-good: #4f9b14;
 
 @import "loader";
 
-@font-face {
-    font-family: 'Liberation';
-    src: url('../fonts/LiberationSerif-Regular-webfont.eot');
-    src: url('../fonts/LiberationSerif-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/LiberationSerif-Regular-webfont.woff') format('woff'),
-         url('../fonts/LiberationSerif-Regular-webfont.ttf') format('truetype'),
-         url('../fonts/LiberationSerif-Regular-webfont.svg#liberation_serifregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+@import "liberation";
+
+b, strong {
+	font-weight: bold;
+}
+
+i, em {
+	font-style: italic;
 }
 
 .only-mobile {
@@ -1283,23 +1282,9 @@ a.small-icon, button.small-icon {
 
 						.text {
 							margin-bottom: 12px;
-							// padding-right: 40px;
-							color: #333333;
-							font-size: 16px;
-							line-height: 26px;
-							letter-spacing: .3px;
-							box-sizing: border-box;
-							font-family: Liberation, serif;
 
 							b {
-								font-weight: 700;
-							}
-
-							q {
-								display: block;
-								margin: 10px 0;
-								border-left: 2px solid #E7EBEE;
-								padding-left: 10px;
+								font-weight: bold;
 							}
 						}
 
@@ -5307,6 +5292,175 @@ a.small-icon, button.small-icon {
 				}
 			}
 		}
+	}
+}
+
+
+.feed-item,
+.write-post {
+	.text {
+		color: #333333;
+		font-size: 16px;
+		line-height: 26px;
+		letter-spacing: .3px;
+		box-sizing: border-box;
+		font-family: Liberation, serif;
+		background-color: #ffffff;
+
+		b {
+			font-weight: bold;
+		}
+
+		q, blockquote {
+			display: block;
+			margin: 10px 0;
+			border-left: 2px solid #E7EBEE;
+			padding-left: 10px;
+		}
+
+		ul {
+			margin-left: 25px;
+			list-style: disc;
+		}
+	}
+}
+
+.write-post {
+	width: 100%;
+
+	.headline {
+		.title {
+			padding: 6px 0;
+			font-size: 20px;
+		}
+
+		input {
+			width: 100%; height: 32px;
+			padding: 0 8px;
+			border: 1px solid $iconGrey;
+			background-color: #ffffff;
+			font-size: 16px;
+
+			@include box-sizing(border-box);
+		}
+	}
+
+	.content {
+		.controls {
+			@include display-flex;
+			@include justify-content(flex-start);
+			height: 20px;
+			margin: 20px 3px 4px;
+
+			i {
+				font-size: 18px;
+				color: #333333;
+			}
+			
+			.control {
+				width: 24px; height: 100%;
+				line-height: 20px;
+				cursor: pointer;
+				background: transparent;
+				border: none;
+
+				&.wide {
+					@include display-flex;
+					width: auto;
+
+					.title {
+						margin-right: 3px;
+						font-size: 14px;
+					}
+				}
+			}
+
+			.fonts-list {
+				position: absolute;
+				width: 130px;
+				margin-top: 20px;
+				background-color: #ffffff;
+				box-shadow: 0 1px 8px 0 rgba($middleGrey, .6);
+
+				> button {
+					width: 100%; height: 20px;
+					padding: 0 5px;
+					font-size: 14px;
+					line-height: 20px;
+					cursor: pointer;
+					background: transparent;
+					border: none;
+					text-align: left;
+
+					@include box-sizing(border-box);
+
+					&:hover {
+						background-color: $soLight;
+					}
+				}
+			}
+
+			.divider {
+				width: 0; height: 100%;
+				margin: 0 10px;
+				border-left: 1px solid $middleGrey;
+
+			}
+		}
+
+		.text {
+			width: 100%; height: 400px;
+			padding: 6px;
+			border: 1px solid $iconGrey;
+			overflow: auto;
+
+			tag {
+				color: $activeBlue;
+			}
+		}
+	}
+
+	.upload-files {
+		margin: 15px 0 0;
+
+		.file {
+			width: 170px; height: 170px;
+			margin: 0 5px;
+			float: left;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			border-radius: 3px;
+			overflow: hidden;
+
+			.remove {
+				position: absolute;
+				width: inherit; height: inherit;
+				background-color: rgba(0, 0, 0, .4);
+				color: #ffffff !important;
+				font-size: 24px;
+				text-align: center;
+				line-height: 180px;
+				opacity: 0;
+				border-radius: inherit;
+
+				@include transition(opacity .2s);
+			}
+
+			&:hover {
+				.remove {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	.create {
+		display: block;
+		margin-left: auto;
+		border-radius: 0;
+		color: #ffffff;
+		font-size: 16px;
 	}
 }
 

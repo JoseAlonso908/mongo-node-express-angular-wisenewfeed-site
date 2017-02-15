@@ -3,6 +3,9 @@ angular.module('er.directives', [])
 	return {
 		restrict: 'A',
 		require: 'ngModel',
+		scope: {
+			'htmlValue': '=',
+		},
 		link: function(scope, element, attrs, ngModel) {
 			function read() {
 				var selection = rangy.saveSelection()
@@ -20,10 +23,14 @@ angular.module('er.directives', [])
 				rangy.restoreSelection(selection)
 				rangy.removeMarkers(selection)
 
-				text = element.html()
+                text = element.html()
 
 				// turn <br> into newline character
 				text = text.replace(/<br\s?\/?>/gi, "\n")
+
+				// FIXME: I'll go to hell because of this shit
+                scope.$parent.textHtml = text
+
 				// fix divs
 				text = text.replace(/<div.*?>([\s\S]*?)<\/div>/gmi, "\n$1")
 				// remove all other tags
@@ -36,9 +43,7 @@ angular.module('er.directives', [])
 				element.html(ngModel.$viewValue || "")
 			}
 
-			element.bind("input", function() {
-				scope.$apply(read)
-			})
+			element.bind("input", read)
 		}
 	}
 })
@@ -393,9 +398,6 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/onyourmind.htm',
 		link: function ($scope, element, attr) {
-			$scope.files = []
-
-			// $scope.user = $scope.$parent.user
 			$scope.create = function () {
 				if ($scope.loading) return
 				$scope.loading = true
@@ -406,7 +408,7 @@ angular.module('er.directives', [])
 
 				var progress = function () {}
 
-				postService.create($scope.text, fileObjects, progress).then(function (result) {
+				postService.create('', $scope.text, fileObjects, progress).then(function (result) {
 					$scope.$parent.$apply(function () {
 						$scope.text = ''
 						$scope.files = []
@@ -421,6 +423,7 @@ angular.module('er.directives', [])
 				})
 			}
 
+            $scope.files = []
 			$scope.addImage = function () {
 				if ($scope.loading) return
 
@@ -488,7 +491,7 @@ angular.module('er.directives', [])
 			}
 
 			angular.element(ce).on('keydown', function (e) {
-                if (!$scope.acVisible || $scope.acList.length == 0) return
+                if (!$scope.acVisible || !$scope.acList || $scope.acList.length == 0) return
 
                 if ([9, 13, 38, 40].indexOf(e.keyCode) !== -1) {
 					switch (e.keyCode) {

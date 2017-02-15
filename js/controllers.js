@@ -2074,3 +2074,223 @@ angular.module('er.controllers', [])
         console.log($scope.signup)
     }
 })
+.controller('writeController', function ($scope, $timeout, $location, $rootScope, postService, $timeout, piecesService, $compile) {
+	$scope.fonts = [
+		'Liberation',
+		'Arial',
+		'Times',
+		'Roboto',
+		'Courier New',
+	]
+
+	$scope.command = function (command, value) {
+		$timeout(function () {
+			var attributes = [command, false]
+			if (value) attributes.push(value)
+
+			document.execCommand.apply(document, attributes)
+        })
+	}
+
+	$scope.fontListVisible = false
+	$scope.showFontList = function (e) {
+		e.preventDefault()
+		e.stopImmediatePropagation()
+
+        $scope.fontListVisible = true
+	}
+
+	angular.element('body').on('click', function (e) {
+		$scope.fontListVisible = false
+	})
+
+	angular.element('.font-list').on('click', function (e) {
+		e.stopImmediatePropagation()
+	})
+
+	$scope.setFont = function (e, font) {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+
+		$scope.command('fontName', font)
+        $scope.fontListVisible = false
+	}
+
+    $scope.create = function () {
+		// console.log($scope.title)
+		// console.log($scope.text)
+		// console.log($scope.textHtml)
+		// console.log($scope)
+		// return
+
+        if ($scope.loading) return
+        $scope.loading = true
+
+        var fileObjects = $scope.files.map(function (file) {
+            return file.fileObject
+        })
+
+        var progress = function () {}
+
+        postService.create($scope.title, $scope.textHtml, fileObjects, progress).then(function (result) {
+            $scope.$parent.$apply(function () {
+                $scope.text = ''
+                $scope.files = []
+
+                return $location.url('/')
+            })
+        }).catch(function (error) {
+            console.error(error)
+            $scope.loading = false
+        })
+    }
+
+    $scope.title = ''
+    $scope.text = ''
+	$scope.textHtml = ''
+    $scope.files = []
+
+    $scope.addImage = function () {
+        if ($scope.loading) return
+
+        var fileFileInput = document.querySelector('input[type=file]')
+        angular.element(fileFileInput).on('change', function (e) {
+            e.stopImmediatePropagation()
+
+            var reader = new FileReader()
+            var file = e.target.files[0]
+
+            if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+                return
+            }
+
+            reader.addEventListener('load', function () {
+                $scope.$apply(function () {
+                    $scope.files.push({
+                        base64: reader.result,
+                        fileObject: file
+                    })
+
+                    // Reset form to clean file input. This will
+                    // let us upload the same file
+                    angular.element(e.target).parent()[0].reset()
+                })
+            })
+
+            reader.readAsDataURL(file)
+        })
+
+        $timeout(function () {
+            fileFileInput.click()
+            $timeout.cancel(this)
+        }, 0)
+    }
+
+    $scope.removeUpload = function (index) {
+        if ($scope.loading) return
+
+        $scope.files = $scope.files.filter(function (file, fileIndex) {
+            if (index == fileIndex) return false
+            return true
+        })
+    }
+
+    var ce = document.querySelector('[contenteditable]')
+
+    $scope.acDo = function (item) {
+        $scope.acFocusedNode.textContent = item
+
+        var selection = rangy.getSelection()
+        selection.removeAllRanges()
+
+        var range = rangy.createRange()
+        range.selectNode($scope.acFocusedNode)
+        range.collapse()
+
+        selection.setSingleRange(range)
+
+        console.log('refocused 3')
+
+        $scope.acFocusedNode = null
+        $scope.acVisible = false
+        $scope.acList = []
+    }
+
+    angular.element(ce).on('keydown', function (e) {
+        if (!$scope.acVisible || $scope.acList.length == 0) return
+
+        if ([9, 13, 38, 40].indexOf(e.keyCode) !== -1) {
+            switch (e.keyCode) {
+                case 9:
+                case 13:
+                    angular.element(document.querySelector('.aclist')).find('.item.active').triggerHandler('click');
+                    break
+                case 38:
+                    if ($scope.acActive > 0) {
+                        $scope.acActive--
+                    } else {
+                        $scope.acActive = $scope.acList.length - 1
+                    }
+                    break
+                case 40:
+                    if ($scope.acActive < $scope.acList.length - 1) {
+                        $scope.acActive++
+                    } else {
+                        $scope.acActive = 0
+                    }
+                    break
+            }
+
+            e.preventDefault()
+        }
+    })
+
+    $scope.autocomplete = function (e) {
+        if ([9, 13, 38, 40].indexOf(e.keyCode) !== -1) return
+
+        var savedSelection = rangy.saveSelection(ce)
+        var bookmark = angular.element(document.querySelector('#' + savedSelection.rangeInfos[0].markerId))
+        bookmark.css('display', '')
+        var pxOffset = bookmark.offset()
+        rangy.removeMarkers(savedSelection)
+
+        var selection = rangy.getSelection(ce)
+
+        var focus = {
+            node: selection.nativeSelection.focusNode,
+            offset: selection.nativeSelection.focusOffset - 1,
+        }
+
+        if (focus.node.parentElement.tagName !== 'TAG' || !selection.isCollapsed) {
+            $scope.acVisible = false
+            return
+        }
+
+        $scope.acVisible = true
+
+        piecesService.search(focus.node.textContent).then(function (result) {
+            $scope.acList = result
+            $scope.acActive = 0
+        })
+
+
+        $scope.acPosition = pxOffset
+        $scope.acFocusedNode = focus.node
+
+        if (!document.querySelector('.aclist')) {
+            console.log('No ac list')
+            var aclistElement = angular.element(
+                '<div class="aclist" ng-class="{visible: (acVisible && acList.length > 0)}" ng-style="{top: acPosition.top + \'px\', left: acPosition.left +\'px\'}">' +
+                '<div class="item" ng-class="{active: acActive == $index}" ng-click="acDo(item)" ng-repeat="item in acList">' +
+                '<div class="title">{{item}}</div>' +
+                '<div class="checked"><i class="material-icons">check</i></div>' +
+                '</div>' +
+                '</div>'
+            )
+            aclistElement.appendTo(document.body)
+
+            $compile(aclistElement)($scope)
+        }
+    }
+})
+

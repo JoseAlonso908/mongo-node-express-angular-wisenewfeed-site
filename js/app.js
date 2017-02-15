@@ -1,7 +1,9 @@
- var angular = require('angular')
+var angular = require('angular')
 require('angular-moment')
 require('angular-modal')
 require('angular-chosen-localytics')
+window.rangy = require('rangy')
+require('rangy/lib/rangy-selectionsaverestore.js')
 
 window.numeral = require('numeral')
 window.async = require('async')
@@ -92,6 +94,10 @@ angular.module('er', [
 			.when('/photos/:id?', {
 				templateUrl: 'assets/views/profilephotos.htm',
 				controller: 'profilePhotosController',
+			})
+			.when('/write', {
+				templateUrl: 'assets/views/write.htm',
+				controller: 'writeController',
 			})
 
 

@@ -23,6 +23,7 @@ var Model = function(mongoose) {
         countries 	: [{
             type: mongoose.Schema.Types.String
         }],
+        title		: String,
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
@@ -277,7 +278,7 @@ var Model = function(mongoose) {
 		},
 
 		create: (data, callback) => {
-			let {author, country, category, text, images, allowhtml, meta} = data
+			let {author, country, category, title, text, images, allowhtml, meta} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -295,7 +296,7 @@ var Model = function(mongoose) {
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, text, country, category, meta, countries
+				author, images, title, text, country, category, meta, countries
 			})
 			article.save(callback)
 		},

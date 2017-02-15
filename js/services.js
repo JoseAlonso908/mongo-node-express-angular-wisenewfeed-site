@@ -572,7 +572,7 @@ angular.module('er.services', [])
 		get: function (id) {
 			return __s($http, $cookies, 'get', '/article/one', {id: id})
 		},
-		create: function (text, files) {
+		create: function (title, text, files) {
 			return new Promise(function (resolve, reject) {
 				var headers = {
 					'Authorization': $cookies.get('token'),
@@ -580,7 +580,8 @@ angular.module('er.services', [])
 
 				if (files && files.length > 0) {
 					var fd = new FormData()
-					fd.append('text', text)
+					fd.append('title', title)
+                    fd.append('text', text)
 
 					for (var i in files) {
 						fd.append('files', files[i])
@@ -589,7 +590,8 @@ angular.module('er.services', [])
 					headers['Content-Type'] = undefined
 				} else {
 					fd = {
-						text: text
+						title: text,
+						text: text,
 					}
 				}
 

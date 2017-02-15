@@ -1759,6 +1759,12 @@ a.small-icon, button.small-icon {
 					float: left;
 				}
 
+				div[contenteditable].ng-empty:before {
+					display: block;
+					content: 'Share an article, photo, or update';
+					color: $middleGrey;
+				}
+
 				textarea, div[contenteditable] {
 					width: calc(100% - 54px); height: 38px;
 					float: right;
@@ -1904,6 +1910,14 @@ a.small-icon, button.small-icon {
 							}
 						}
 					}
+				}
+
+				.write {
+					display: block;
+					margin: 10px 0 0 55px;
+					color: $soDark;
+					font-size: 14px;
+					font-weight: bold;
 				}
 			}
 

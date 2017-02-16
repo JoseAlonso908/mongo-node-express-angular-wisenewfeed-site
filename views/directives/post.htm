@@ -54,6 +54,12 @@
 				<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
 			</div>
 
+			<div class="shared" ng-if="post.sharedFrom === null">
+				<div class="content">
+					<div class="text">Post removed</div>
+				</div>
+			</div>
+
 			<div class="shared" ng-if="!!post.sharedFrom">
 				<div class="title">
 					<avatar user="post.sharedFrom.author"></avatar>

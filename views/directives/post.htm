@@ -100,6 +100,7 @@
 		</button>
 		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
 			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
+			<span class="title" ng-if="post.reactions.total.dislikes > 0"> {{post.reactions.total.dislikes}}</span>
 		</button>
 		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
 			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Smart</span>

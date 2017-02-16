@@ -3,11 +3,11 @@
 
     <div ng-show="user && profile">
         <div class="buttons narrow" ng-if="user._id != profile._id">
-            <a ng-show="!profile.isFollowing" class="follow" ng-click="follow(profile)">
+            <a ng-show="!profile.isFollowing" ng-if="profile.role != 'User'" class="follow" ng-click="follow(profile)">
                 <i class="material-icons">person_add</i>
                 <div class="title">Follow</div>
             </a>
-            <a ng-show="profile.isFollowing" class="follow" ng-click="unfollow(profile)">
+            <a ng-show="profile.isFollowing" ng-if="profile.role != 'User'" class="follow" ng-click="unfollow(profile)">
                 <i class="material-icons">person_outline</i>
                 <div class="title">Unfollow</div>
             </a>

@@ -7,7 +7,7 @@
 
 <div class="followers floating" ng-class="{active: dropdownVisible}"> 
 	<div class="follower" ng-repeat="f in followers">
-		<button ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
+		<button ng-if="f.role != 'User'" ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
 
 		<a ng-href="#!/person/{{f._id}}">
 			<avatar user="f"></avatar>

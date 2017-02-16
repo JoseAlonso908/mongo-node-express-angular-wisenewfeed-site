@@ -78,6 +78,7 @@
 						<a ng-href="image" lightbox class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
 					</div>
 				</div>
+				<linkpreview meta="post.sharedFrom.meta"></linkpreview>
 			</div>
 
 			<a ng-href="#!/article/{{post._id}}" class="collapsed-shade" ng-class="{visible: expandVisible}" ng-hide="editing"></a>

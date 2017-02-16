@@ -64,6 +64,8 @@ var Model = function(mongoose) {
 				notifications = notifications.filter((n) => {
 					let keepIt = true
 					if (!n.from) keepIt = false
+					if (['like', 'dislike', 'share', 'comment', 'follow'].indexOf(n.type) > -1 && !n.post && !n.comment) keepIt = false
+
 					return keepIt
 				})
 

@@ -12,12 +12,12 @@
                 <div class="title">Unfollow</div>
             </a>
 
-            <a ng-if="!profile.friendship.requested && user.role == 'User' && profile.role == 'User'" href="javascript:void(0);" ng-click="addContact(profile._id)"
+            <a ng-if="!profile.friendship.requested" href="javascript:void(0);" ng-click="addContact(profile._id)"
                class="add-contact">
                 <i class="material-icons">person_add</i>
                 <div class="title">Add to contacts</div>
             </a>
-            <a ng-if="profile.friendship.requested && (profile.friendship.isInitiator || profile.friendship.accepted) && user.role == 'User'"
+            <a ng-if="profile.friendship.requested && (profile.friendship.isInitiator || profile.friendship.accepted)"
                href="javascript:void(0);" ng-click="removeContact(profile._id)" class="add-contact">
                 <i class="material-icons">person_outline</i>
                 <div class="title" ng-show="profile.friendship.accepted">Remove contact</div>
@@ -25,12 +25,12 @@
                     Remove request
                 </div>
             </a>
-            <a ng-if="profile.friendship.requested && !profile.friendship.isInitiator && profile.friendship.requestID && !profile.friendship.accepted && user.role == 'User'"
+            <a ng-if="profile.friendship.requested && !profile.friendship.isInitiator && profile.friendship.requestID && !profile.friendship.accepted"
                href="javascript:void(0);" ng-click="acceptFriendship(profile.friendship.requestID)" class="add-contact">
                 <i class="material-icons">person_add</i>
                 <div class="title">Accept</div>
             </a>
-            <a ng-if="profile.friendship.requested && !profile.friendship.isInitiator && profile.friendship.requestID && !profile.friendship.accepted && user.role == 'User'"
+            <a ng-if="profile.friendship.requested && !profile.friendship.isInitiator && profile.friendship.requestID && !profile.friendship.accepted"
                href="javascript:void(0);" ng-click="declineFriendship(profile.friendship.requestID)" class="add-contact">
                 <i class="material-icons">person_outline</i>
                 <div class="title">Decline</div>

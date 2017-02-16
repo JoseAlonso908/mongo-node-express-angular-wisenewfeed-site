@@ -361,6 +361,7 @@ var Model = function(mongoose) {
                     Model.findOneAndRemove({author, sharedFrom}, next)
                 },
                 (post, next) => {
+             		if (!post || !post._id) next() /*TODO:  <--- Some shit is here */
                     Model.update({ _id: sharedFrom }, { $pull: { 'sharedIn': post._id }}, next)
                 }
             ], callback)

@@ -2481,6 +2481,11 @@ a.small-icon, button.small-icon {
 				}
 			}
 
+			.no-people {
+				color: $soDark;
+				text-align: center;
+			}
+
 			.friends-filter {
 				@include display-flex;
 				@include justify-content(flex-start);

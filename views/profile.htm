@@ -22,10 +22,13 @@
 				<dropdown title="Gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown>
 			</div>
 
-			<div class="people">
+			<div class="people" ng-if="people.length > 0">
 				<person person="person" ng-repeat="person in people"></person>
 				<div class="flex-people-placeholder"></div>
 				<div class="flex-people-placeholder"></div>
+			</div>
+			<div class="no-people" ng-if="people.length == 0">
+				Nothing to display
 			</div>
 		</div>
 		<div class="right" ng-if="feedType != 'people'">

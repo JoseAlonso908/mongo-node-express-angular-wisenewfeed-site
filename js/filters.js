@@ -62,22 +62,23 @@ angular.module('er.filters', [])
 	}
 })
 .filter('url', function ($sce) {
-	var protocol = '(?:(?:[a-z]+:)?(&#47;&#47;|//))';
-	var auth = '(?:\\S+(?::\\S*)?@)?';
-	var ip = '(?:[0-9]{,3}\.[0-9]{,3}\.[0-9]{,3}\.[0-9]{,3})';
-	var host = '(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)';
-	var domain = '(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*';
-	var tld = '(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?';
-	var port = '(?::\\d{2,5})?';
-	var path = '(?:[(&#47;/)?#][^\\s"]*)?';
-	var regex = '(^|\\s+|<br>)((?:' + protocol + '|www\\.)' + auth + '(?:localhost|' + ip + '|' + host + domain + tld + ')' + port + path + ')';
-
-	var urlRegex = new RegExp(regex, 'mig')
-
+	// TODO: info available at http://stackoverflow.com/questions/37684/how-to-replace-plain-urls-with-links/21925491#21925491
 	return function (input) {
-		input = input.toString()
-		input = input.replace(urlRegex, '<a target="_blank" href="$2">$2</a>')
-		return $sce.trustAsHtml(input)
+        var replacedText, replacePattern1, replacePattern2, replacePattern3;
+        input = input.toString()
+
+        //URLs starting with http://, https://, or ftp://
+        replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+        replacedText = input.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+        //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+        replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+        replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+        //Change email addresses to mailto:: links.
+        replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+        replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+		return $sce.trustAsHtml(replacedText)
 	}
 })
 .filter('cut', function () {

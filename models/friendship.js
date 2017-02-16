@@ -120,7 +120,12 @@ var Model = function (mongoose) {
         },
         friends: (user, callback) => {
             user = MOI(user)
-            Model.find({$or: [{user}, {friend: user}]}).lean().exec((err, friendships) => {
+            Model.find({
+                $and: [
+                    {$or: [{user}, {friend: user}]},
+                    {accepted: true}
+                ]
+            }).lean().exec((err, friendships) => {
                 if (err) return callback(err)
 
                 let friendsIds = friendships.map((friendship) => {
@@ -160,6 +165,11 @@ var Model = function (mongoose) {
             friendMatchingQuery['user._id'] = user
 
             let aggregationOptions = [
+                {
+                    $match: {
+                        accepted: true
+                    }
+                },
                 {
                     $lookup: {
                         from: 'users',

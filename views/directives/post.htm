@@ -112,7 +112,7 @@
 
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>
-			<div class="number">{{::commentsCount || 0}}</div>
+			<div class="number">{{commentsCount || 0}}</div>
 		</div>
 		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && post.author.role != 'User'"
 				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}" class="share-button">

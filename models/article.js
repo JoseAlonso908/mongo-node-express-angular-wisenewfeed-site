@@ -595,7 +595,9 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
-				{path: 'images'},
+				{path: 'images', populate: {
+                    path: 'author',
+                }},
 			]).lean().exec((err, articles) => {
 				this.postProcessList(articles, null, callback)
 			})
@@ -669,7 +671,9 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
-				{path: 'images'},
+				{path: 'images', populate: {
+                    path: 'author',
+                }},
 			]).sort({createdAt: 'desc'}).skip(start).limit(limit).exec((err, articles) => {
 				this.postProcessList(articles, viewer, callback)
 			})

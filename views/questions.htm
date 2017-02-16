@@ -49,8 +49,9 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="no-questions" ng-show="visibleQuestionsCount === 0">Nothing to display</div>
 						</div>
-						<div class="text" ng-show="visibleQuestionsCount === 0">Nothing to display</div>
 					</div>
 
 					<div class="question-box-wrapper" ng-if="user && profile" ng-hide="user._id == profile._id && !replyMode">

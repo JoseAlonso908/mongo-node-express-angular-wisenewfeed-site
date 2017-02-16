@@ -4956,10 +4956,11 @@ a.small-icon, button.small-icon {
 
 			.questions-list {
 				height: 520px;
-			}
 
-			> .text {
-				padding: 0 17px;
+				.no-questions {
+					padding: 0 17px;
+					text-align: center;
+				}
 			}
 		}
 

@@ -26,7 +26,10 @@
 
 					<div class="settings-field-block">
 						<label>Nickname</label>
-						<input type="text" name="nickname" ng-model="user.nickname" minlength="6" required ng-pattern="/^(?![0-9])[a-zA-Z0-9]+$/">
+						<input type="text" name="nickname" ng-model="user.nickname" minlength="2" maxlength="20" required ng-pattern="/^(?![0-9])[a-zA-Z0-9]+$/">
+						<div class="error-block" ng-show="(profileSettings.nickname.$error.required  || profileSettings.nickname.$error.pattern || profileSettings.nickname.$error.minlength) && profileSettings.nickname.$touched">
+							Nickname should not start with a numeric character, may not contain special characters and spaces
+						</div>
 						<div class="clear"></div>
 					</div>
 					<div class="settings-field-block">

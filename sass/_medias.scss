@@ -671,14 +671,12 @@
 							width: 80px;
 						}
 
+						.half {
+							width: calc(50% - 60px);
+						}
+
 						input, textarea {
 							width: calc(100% - 100px);
-							&.half {
-								/* 50% - ( LabelWidth/2) + paddingBetweenInputs )
-								So we have 50% - ((80+20)/2) + 10)
-								*/
-								width: calc(50% - 60px);
-							}
 						}
 						.notice {
 							padding-left: 0;
@@ -981,12 +979,17 @@
 						width: 100%;
 					}
 
+					.half {
+						width: 100%;
+						padding-bottom: 15px;
+						&:last-child {
+							margin-left: 0;
+							padding-bottom: 0;
+						}
+					}
+
 					input, textarea {
 						width: 100%;
-						&.half {
-							/* 50% - ( paddingBetweenInputs ) So we have 50% - 10  */
-							width: calc(50% - 10px);
-						}
 					}
 
 					.attach-file {

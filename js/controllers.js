@@ -1967,10 +1967,15 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController', function ($scope, betaUploadsService, $timeout) {
+.controller('betaController', function ($scope, $routeParams, betaUploadsService, $timeout) {
     $scope.errors = {}
+    var availableRoles = ['expert', 'journalist']
+	var selectedRole = 'expert'
+	if ($routeParams.role && availableRoles.indexOf($routeParams.role) > -1) {
+    	selectedRole = $routeParams.role
+	}
     $scope.signup = {
-        role: 'expert',
+        role: selectedRole,
         contacts: [],
         certificates: [{title: '', file: ''}],
         experience: [{from: '', to: '', place: ''}],

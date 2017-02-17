@@ -23,7 +23,7 @@ angular.module('er', [
 
 		$locationProvider.hashPrefix('!')
 		$routeProvider
-            .when('/beta', {
+            .when('/beta/:role?', {
                 templateUrl: 'assets/views/beta.htm',
                 controller: 'betaController'
             })

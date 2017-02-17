@@ -53,8 +53,15 @@
                         <div class="experience" ng-repeat="item in signup.experience">
                             <div class="input-group">
                                 <label>Date</label>
-                                <input ng-model="item.from" class="half" type="text" name="from" placeholder="From">
-                                <input ng-model="item.to" class="half" type="text" name="to" placeholder="To">
+                                <div class="date-input-wrapper half">
+                                    <input ng-model="item.from" type="text" name="from" placeholder="From">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div class="date-input-wrapper half">
+                                    <input ng-model="item.to" type="text" name="to" placeholder="To">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+
                             </div>
                             <div class="input-group">
                                 <label>Place</label>
@@ -83,7 +90,7 @@
                                 <i class="material-icons">attachment</i>
                                 <span class="title">Upload file</span>
                             </div>
-                            <div class="notice">Some unreadable text under input...</div>
+                            <div class="notice">Add title for uploaded file</div>
                         </div>
                         <div class="input-group">
                             <p ng-show="errors.certificateFillRequired" class="error-block">
@@ -158,7 +165,7 @@
                                 <i class="material-icons">attachment</i>
                                 <span class="title">Upload file</span>
                             </div>
-                            <div class="notice">Some unreadable text under input...</div>
+                            <div class="notice">Add title for uploaded file</div>
                         </div>
                         <div class="input-group">
                             <p ng-show="errors.additionalFillRequried" class="error-block">

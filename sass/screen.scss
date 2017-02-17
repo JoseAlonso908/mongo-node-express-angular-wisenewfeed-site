@@ -943,6 +943,34 @@ a.small-icon, button.small-icon {
 						float: left;
 					}
 
+					.date-input-wrapper {
+						width: calc(100% - 140px);
+						display: inline-block;
+						position: relative;
+
+						input {
+							padding-right: 18px;
+							width: 100%;
+						}
+
+						i {
+							position: absolute;
+							right: 10px;
+							top: 10px;
+							color: $middleGrey
+						}
+
+					}
+
+					.half {
+						/* 50% - ( LabelWidth/2) + paddingBetweenInputs )
+                           So we have 50% - ((120+20)/2) + 10)
+                        */
+						width: calc(50% - 80px);
+						&:last-child {
+							margin-left: 20px;
+						}
+					}
 					input, textarea {
 						width: calc(100% - 140px);
 						border: 1px solid #e6e9ec;

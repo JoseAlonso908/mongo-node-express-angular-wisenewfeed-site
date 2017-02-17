@@ -1264,7 +1264,9 @@ angular.module('er.directives', [])
 				$scope.loading = true
 
 				commentService.update(comment._id, comment.editingText, []).then(function (result) {
-					$scope.loading = false
+                    console.log(result)
+
+                    $scope.loading = false
 					comment.text = result.comment.text
 					$scope.setEditingMode(comment, false)
 					$scope.$apply()

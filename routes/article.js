@@ -581,7 +581,8 @@ router.get('/pieces', (req, res) => {
 router.get('/pieces/search', (req, res) => {
 	let {query} = req.query
 
-	models.Piece.search(query, (err, result) => {
+	models.Piece.sea
+	rch(query, (err, result) => {
 		res.send(result)
 	})
 })

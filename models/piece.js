@@ -37,7 +37,7 @@ var Model = function(mongoose) {
 		},
 
 		search: (query, callback) => {
-            const RESULTS_LIMIT = 10
+            const RESULTS_LIMIT = 5
 
 			let countries = require('countries-list').countries
 			let countriesTags = []

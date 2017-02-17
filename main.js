@@ -124,6 +124,8 @@ app.get('/static/cities', (req, res) => {
 	const cc = require('countries-cities')
 	let cities = cc.getCities(req.query.country) || []
 
+	cities = cities.sort()
+
 	res.send(cities)
 })
 

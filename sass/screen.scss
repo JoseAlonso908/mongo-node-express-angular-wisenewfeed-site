@@ -1987,6 +1987,14 @@ a.small-icon, button.small-icon {
 				.settings-field-block {
 					margin-bottom: 16px;
 
+					.error-block {
+						margin: 10px 0 0 136px;
+						font-size: 13px;
+						color: red;
+						display: inline-block;
+						width: 300px;
+					}
+
 					label {
 						display: block;
 						width: 112px;

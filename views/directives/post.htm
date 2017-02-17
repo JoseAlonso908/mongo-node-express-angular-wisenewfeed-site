@@ -132,22 +132,22 @@
 	<div class="actions">
 		<button socialshare
 				socialshare-provider="facebook"
-				socialshare-title="{{post.text | cut:true:30}}"
-				socialshare-description="{{post.text | cut:true:140}}"
+				socialshare-title="{{post.text | removehtml | cut:true:30}}"
+				socialshare-description="{{post.text | removehtml | cut:true:140}}"
 				socialshare-url="{{getURL(post._id)}}">
 			<i class="fa fa-facebook-f"></i> <span class="title">Share to Facebook</span>
 		</button>
 		<button socialshare
 				socialshare-provider="twitter"
-				socialshare-text="{{post.text | cut:true:60}}"
+				socialshare-text="{{post.text | removehtml | cut:true:60}}"
 				socialshare-hashtags="expertreaction"
 				socialshare-url="{{getURL(post._id)}}">
 			<i class="fa fa-twitter"></i> <span class="title">Share to Twitter</span>
 		</button>
 		<button socialshare
 				socialshare-provider="linkedin"
-				socialshare-text="{{post.text | cut:true:30}}"
-				socialshare-description="{{post.text | cut:true:140}}"
+				socialshare-text="{{post.text | removehtml | cut:true:30}}"
+				socialshare-description="{{post.text | removehtml | cut:true:140}}"
 				socialshare-source="{{getURL(post._id)}}">
 			<i class="fa fa-linkedin"></i><span class="title">Share to Linkedin</span>
 		</button>

@@ -48,40 +48,6 @@ router.post('/adddownload', tempUploads.single('file'), (req, res) => {
     res.send({ok: true, file: relativePath})
 })
 
-//TODO: THIS SHIT IS DANGEROUS
-// router.post('/removecertificate', tempUploads.single('file'), (req, res) => {
-//     let {filename} = req.body
-//
-//     if (filename) {
-//         try {
-//             fs.unlinkSync(path.join(__root, filename))
-//         } catch (e) {
-//             console.log(`Can't unlink file`)
-//             console.log(e)
-//         }
-//         res.send({ok: true})
-//     } else {
-//         res.status(400).send({message: 'Certificate not found'})
-//     }
-// })
-
-//TODO: THIS IS DANGEROUS
-// router.post('/removedownload', (req, res) => {
-//
-//     let {filename} = req.body
-//     if (filename) {
-//         try {
-//             fs.unlinkSync(path.join(__root, filename))
-//         } catch (e) {
-//             console.log(`Can't unlink file`)
-//             console.log(e)
-//         }
-//         res.send({ok: true})
-//     } else {
-//         res.status(400).send({message: 'Download not found'})
-//     }
-// })
-
 router.post('/signup', (req, res) => {
     let {form} = req.body
     console.log(form);

@@ -50,6 +50,7 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		    }).catch(next)
 		},
 		(meta, images, next) => {
+            if (text && req.user.role === 'user') text = text.replace(/\$lessonlearned/gi, '')
 			models.Article.create({
 	            author: req.user._id,
 	            country: req.user.country,

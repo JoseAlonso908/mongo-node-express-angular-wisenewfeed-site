@@ -1084,9 +1084,12 @@ angular.module('er.services', [])
 		reply: function (id, text) {
 			return __s($http, $cookies, 'post', '/questions/reply', {question: id, text: text})
 		},
-		like: function (id) {
-			return __s($http, $cookies, 'post', '/questions/like', {question: id})
+		react: function (id, type) {
+			return __s($http, $cookies, 'post', '/questions/react', {question: id, type: type})
 		},
+        unreact: function (id, type) {
+            return __s($http, $cookies, 'post', '/questions/unreact', {question: id, type: type})
+        },
 	}
 })
 .factory('messagesService', function ($http, $cookies) {

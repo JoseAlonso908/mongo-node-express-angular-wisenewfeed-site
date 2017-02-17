@@ -49,15 +49,15 @@ var Model = function(mongoose) {
 			Model.find(query).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec((err, questions) => {
 				async.mapSeries(questions, (q, next) => {
 					async.series({
-						likedByViewer: (done) => {
-							models.QuestionLike.isLikedByViewer(viewer, q._id, (err, flag) => {
-								q.liked = flag
+						reactedByViewer: (done) => {
+							models.QuestionReaction.reactionsByViewer(viewer, q._id, (err, flag) => {
+								q.youdid = flag
 								done()
 							})
 						},
 						likesCount: (done) => {
-							models.QuestionLike.getLikesCountForQuestion(q._id, (err, count) => {
-								q.likes = count
+							models.QuestionReaction.getReactionsCountForQuestion(q._id, (err, count) => {
+								q.reactions = count
 								done()
 							})
 						},

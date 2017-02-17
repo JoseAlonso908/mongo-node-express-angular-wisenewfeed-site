@@ -12,7 +12,7 @@ module.exports = (dsn, __root) => {
 		['User', 'Token', 'Article', 'Comment', 'PostReaction',
 		'CommentReaction', 'PhoneVerification', 'ResetPassword',
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
-		'QuestionLike', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
+		'QuestionReaction', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
 		'Report', 'ExperienceLog', 'Message', 'Friendship', 'Image',
 		'ImageReaction'],
 

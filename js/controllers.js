@@ -1176,14 +1176,29 @@ angular.module('er.controllers', [])
 		$scope.question.text = ''
 	}
 
-	$scope.like = function (question) {
-		questionsService.like(question._id).then(function (data) {
-			question.liked = true
-			question.likes = data.count
+	$scope.react = function (question, type) {
+		questionsService.react(question._id, type).then(function (data) {
+            question.youdid[type] = true
+			question.reactions.likes = data.counts.likes
+            question.reactions.dislikes = data.counts.dislikes
+            question.youdid.like = data.youdid.like
+            question.youdid.dislike = data.youdid.dislike
 
 			$rootScope.$emit('updateQuestionsCounters')
 		})
 	}
+
+    $scope.unreact = function (question, type) {
+        questionsService.unreact(question._id, type).then(function (data) {
+            question.youdid[type] = false
+            question.reactions.likes = data.counts.likes
+            question.reactions.dislikes = data.counts.dislikes
+			question.youdid.like = data.youdid.like
+            question.youdid.dislike = data.youdid.dislike
+
+            $rootScope.$emit('updateQuestionsCounters')
+        })
+    }
 
 	$scope.setReplyMode = function (question) {
 		$scope.replyMode = true

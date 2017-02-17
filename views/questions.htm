@@ -38,7 +38,10 @@
 								<div class="response" ng-show="question.type == 'replied' && question.response">{{::question.response}}</div>
 
 								<div class="footer">
-									<a href="javascript:void(0);" ng-disabled="question.liked" ng-click="(question.liked) ? void(0) : like(question)" class="likes"><i class="material-icons">thumb_up</i> <span>{{question.likes || 0}}</span></a>
+									<div class="reactions">
+										<a href="javascript:void(0);" ng-class="{active: question.youdid.like}" ng-click="(question.youdid.like) ? unreact(question, 'like') : react(question, 'like')" class="likes"><i class="material-icons">thumb_up</i> <span>{{question.reactions.likes || 0}}</span></a>
+										<a href="javascript:void(0);" ng-class="{active: question.youdid.dislike}" ng-click="(question.youdid.dislike) ? unreact(question, 'dislike') : react(question, 'dislike')" class="dislikes"><i class="material-icons">thumb_down</i> <span>{{question.reactions.dislikes || 0}}</span></a>
+									</div>
 
 									<div class="actions">
 										<a class="item" ng-click="cancel(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">remove_circle</i> <span>Cancel</span></a>

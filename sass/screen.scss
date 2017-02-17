@@ -5011,25 +5011,36 @@ a.small-icon, button.small-icon {
 				@include display-flex;
 				@include justify-content(space-between);
 
-				.likes {
+				.reactions {
 					@include display-flex;
-					height: 20px;
-					@include justify-content(space-around);
-					@include align-items(center);
-					color: $iconGrey;
 
-					i, span {
+					.likes, .dislikes {
+						@include display-flex;
+						height: 20px;
+						@include justify-content(space-around);
+						@include align-items(center);
+						margin-right: 10px;
 						color: $iconGrey;
-					}
 
-					i {
-						margin-right: 6px;
-						font-size: 15px;
-					}
+						&.active {
+							i, span {
+								color: $activeBlue;
+							}
+						}
 
-					span {
-						font-size: 13px;
-						font-weight: 900;
+						i, span {
+							color: $iconGrey;
+						}
+
+						i {
+							margin-right: 6px;
+							font-size: 15px;
+						}
+
+						span {
+							font-size: 13px;
+							font-weight: 900;
+						}
 					}
 				}
 
@@ -5281,19 +5292,24 @@ a.small-icon, button.small-icon {
 						background-color: darken(rgba($activeBlue, .15), 5%);
 					}
 
-					i, .title {
-						display: block;
-						height: $height;
-						line-height: $height;
-					}
+					.button-wrapper {
+						@include display-flex;
+						@include justify-content(space-between);
 
-					i {
-						margin-right: 10px;
-						font-size: 16px;
-					}
+						i, .title {
+							display: block;
+							height: $height;
+							line-height: $height;
+						}
 
-					.title {
-						font-size: 13px;
+						i {
+							margin-right: 10px;
+							font-size: 16px;
+						}
+
+						.title {
+							font-size: 13px;
+						}
 					}
 				}
 			}

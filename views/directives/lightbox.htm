@@ -11,12 +11,16 @@
 
 			<div class="reactions">
 				<button ng-click="react('like')" ng-class="{active: image.youdid.like}" class="like">
-					<i class="material-icons">thumb_up</i>
-					<span class="title">Like {{image.reactions.likes}}</span>
+					<div class="button-wrapper">
+						<i class="material-icons">thumb_up</i>
+						<span class="title">Like {{image.reactions.likes}}</span>
+					</div>
 				</button>
 				<button href="javascript:void(0);" ng-click="react('love')" ng-class="{active: image.youdid.love}" class="love">
-					<i class="material-icons">favorite</i>
-					<span class="title">Love {{image.reactions.loves}}</span>
+					<div class="button-wrapper">
+						<i class="material-icons">favorite</i>
+						<span class="title">Love {{image.reactions.loves}}</span>
+					</div>
 				</button>
 			</div>
 

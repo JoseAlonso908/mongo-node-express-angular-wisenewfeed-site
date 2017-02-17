@@ -84,13 +84,22 @@ router.post('/reply', (req, res) => {
 	})
 })
 
-router.post('/like', (req, res) => {
-	let {question} = req.body
+router.post('/react', (req, res) => {
+	let {question, type} = req.body
 
-	models.QuestionLike.like(question, req.user._id, (err, count) => {
+	models.QuestionReaction.react(question, type, req.user._id, (err, result) => {
 		if (err) res.status(400).send(err)
-		else res.send({count})
+		else res.send(result)
 	})
+})
+
+router.post('/unreact', (req, res) => {
+    let {question, type} = req.body
+
+    models.QuestionReaction.unreact(question, type, req.user._id, (err, result) => {
+        if (err) res.status(400).send(err)
+        else res.send(result)
+    })
 })
 
 module.exports = router

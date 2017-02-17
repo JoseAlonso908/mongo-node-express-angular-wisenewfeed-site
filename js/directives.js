@@ -933,6 +933,7 @@ angular.module('er.directives', [])
 				mode = (typeof mode !== 'undefined') ? mode : true
 
 				if (mode) {
+					if (!post.text) post.text = ''
 					post.editingText = post.text.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ')
 				} else {
 					post.editingText = null
@@ -1264,10 +1265,8 @@ angular.module('er.directives', [])
 				$scope.loading = true
 
 				commentService.update(comment._id, comment.editingText, []).then(function (result) {
-                    console.log(result)
-
                     $scope.loading = false
-					comment.text = result.comment.text
+					comment.text = result.data.comment.text
 					$scope.setEditingMode(comment, false)
 					$scope.$apply()
 				})

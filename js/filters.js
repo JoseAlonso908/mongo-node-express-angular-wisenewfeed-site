@@ -101,4 +101,14 @@ angular.module('er.filters', [])
 		}
 		return value + (tail || ' …')
 	};
+})
+.filter('removehtml', function () {
+	return function (input) {
+		if (!input) return ''
+        input = input.replace(/(<([^>]+)>)/gi,'')
+        input = input.replace(/[&]nbsp[;]/gi, ' ')
+        input = input.replace(/[<]br[^>]*[>]/gi,'')
+        console.log(input)
+        return input
+	}
 });

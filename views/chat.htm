@@ -85,7 +85,9 @@
 								<div class="mtext">{{::m.text}}</div>
 
 								<div class="images" ng-class="{empty: m.images.length == 0}">
-									<a ng-href="image" lightbox class="image" ng-repeat="image in m.images" style="background-image: url({{image}})"></a>
+									<div class="image-wrapper" ng-repeat="image in m.images">
+										<img src="{{image}}">
+									</div>
 								</div>
 							</div>
 						</div>

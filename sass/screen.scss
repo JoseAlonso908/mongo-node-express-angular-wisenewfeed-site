@@ -2970,7 +2970,12 @@ a.small-icon, button.small-icon {
 									&:not(.empty) {
 										margin-top: 10px;
 									}
-
+									.image-wrapper {
+										width: 100%;
+										img {
+											max-width: 100%;
+										}
+									}
 									.image {
 										// min-width: 150px;
 										flex: 2 1 0;

@@ -153,7 +153,7 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 			body: `Expert Reaction verification code: ${result.code}`
 		}, (err, message) => {
 			if (err) return res.status(err.status).send(err)
-			else return res.send(message)
+			else return res.send({ok: true})
 		})
 	})
 })

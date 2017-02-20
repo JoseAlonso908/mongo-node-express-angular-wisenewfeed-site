@@ -2095,8 +2095,14 @@ angular.module('er.controllers', [])
         console.log($scope.signup)
     }
 })
-.controller('writeController', function ($scope, $timeout, $location, $rootScope, postService, $timeout, piecesService, $compile) {
-	$scope.fonts = [
+.controller('writeController', function ($scope, $timeout, $location, $rootScope, postService, piecesService, $compile, identityService) {
+    identityService.get().then(function (user) {
+        if (!user || user.role === 'User') {
+            return $location.url('/')
+        }
+    })
+
+    $scope.fonts = [
 		'Liberation',
 		'Arial',
 		'Times',

@@ -18,7 +18,7 @@
 		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
 			<div ng-if="type == 'friends'" class="friends-filter">
 				<dropdown title="Country" list="countries" ng-if="countries.length > 0" selected="country" change="setCountry" ></dropdown>
-				<dropdown overflow="true" title="City" list="cities" ng-if="cities.length > 0" selected="city" change="setCity"></dropdown>
+				<dropdown overflow="true" title="City" list="cities" ng-if="cities.length > 0" selected="city" change="setCity" scroll-on-second="true"></dropdown>
 				<dropdown title="Gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown>
 			</div>
 

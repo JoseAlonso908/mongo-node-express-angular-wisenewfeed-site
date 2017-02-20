@@ -264,7 +264,10 @@ var Model = function(mongoose) {
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
 					path: 'author',
-				}}
+				}},
+                {path: 'images', populate: {
+                    path: 'author',
+                }}
 			]).lean().exec((err, article) => {
 				if (article.sharedFrom) {
 					models.User.setXpInfo(article.sharedFrom.author, (err, user) => {

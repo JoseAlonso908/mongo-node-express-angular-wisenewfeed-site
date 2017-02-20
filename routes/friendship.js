@@ -86,11 +86,11 @@ router.get('/pending', (req, res) => {
 })
 
 router.get('/list', (req, res) => {
-    let {skip, limit, country, city, gender} = req.query
-
+    let {skip, limit, country, city, gender, id} = req.query
     let filters = {country, city, gender}
+    if (!id) id = req.user._id
 
-    models.Friendship.friendsDetailedPaged(req.user._id, skip, limit, filters, (err, result) => {
+    models.Friendship.friendsDetailedPaged(id, skip, limit, filters, (err, result) => {
         if (err) return res.status(400).send(err)
         res.send(result)
     })

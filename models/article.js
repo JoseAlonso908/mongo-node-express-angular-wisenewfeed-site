@@ -175,6 +175,7 @@ var Model = function(mongoose) {
 						$project: {
 							category: 1,
 							country: 1,
+							title: 1,
 							text: 1,
 							author: 1,
 							createdAt: 1,
@@ -444,12 +445,12 @@ var Model = function(mongoose) {
 						as: 'images',
 					}
 				},
-				{
-					$unwind: {
-						path: '$images',
-						preserveNullAndEmptyArrays: true,
-					}
-				},
+				// {
+				// 	$unwind: {
+				// 		path: '$images',
+				// 		preserveNullAndEmptyArrays: true,
+				// 	}
+				// },
 			]
 
 			aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
@@ -710,7 +711,7 @@ var Model = function(mongoose) {
 				// Remove unnecessary reactions from articles
 				{
 					$project: {
-						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						country: 1, category: 1, title: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
 						reactions: {
 							$filter: {
 								input: '$reactions',
@@ -723,7 +724,7 @@ var Model = function(mongoose) {
 				// Calculate reactions count for each article
 				{
 					$project: {
-						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						country: 1, category: 1, title: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
 						reactionsCount: {
 							$size: '$reactions'
 						}
@@ -801,7 +802,7 @@ var Model = function(mongoose) {
 				// Calculate comments count for each article
 				{
 					$project: {
-						country: 1, category: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
+						country: 1, category: 1, title: 1, text: 1, images: 1, author: 1, createdAt: 1, sharedFrom: 1,
 						commentsCount: {
 							$size: '$comments'
 						}

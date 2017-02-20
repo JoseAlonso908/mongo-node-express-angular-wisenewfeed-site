@@ -35,13 +35,19 @@
 		<div class="text" ng-if="comment.author.role.toLowerCase() == 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks"></div>
 		<div class="text" ng-if="comment.author.role.toLowerCase() != 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks | url"></div>
 
+		<div class="editing-photos" ng-show="comment.editing">
+			<div class="image" ng-class="{removing: image.removing}" ng-repeat="image in comment.images" style="background-image: url({{image.filename}})">
+				<a href="javascript:void(0);" class="remove" ng-click="toggleRemoveImage(image)"><i class="material-icons">close</i></a>
+			</div>
+		</div>
+
 		<div class="buttons" ng-show="comment.editing">
 			<button ng-click="setEditingMode(comment, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>
 			<button ng-click="updateComment(comment)" ng-disabled="loading" class="save cta-button">Save</button>
 		</div>
 
 		<div class="images" ng-hide="comment.editing">
-			<a ng-href="image" lightbox class="image" ng-repeat="image in comment.images" style="background-image: url({{image}})"></a>
+			<a image="image" lightbox class="image" ng-repeat="image in comment.images" style="background-image: url({{image.filename}})"></a>
 		</div>
 
 		<a href="javascript:void(0);" class="showmore" ng-show="comment.fullText != '' && !comment.hideShowMore" ng-click="comment.text = comment.fullText; comment.hideShowMore = true">Show more...</a>

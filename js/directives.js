@@ -434,6 +434,10 @@ angular.module('er.directives', [])
 					var reader = new FileReader()
 					var file = e.target.files[0]
 
+                    if (file.size > 5 * 1024 * 1024) {
+                        return alert('Image size should be less than 5 MB')
+                    }
+
 					if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
 						return
 					}
@@ -1084,6 +1088,10 @@ angular.module('er.directives', [])
 					var reader = new FileReader()
 					var file = e.target.files[0]
 
+                    if (file.size > 5 * 1024 * 1024) {
+                        return alert('Image size should be less than 5 MB')
+                    }
+
 					if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
 						return
 					}
@@ -1261,12 +1269,23 @@ angular.module('er.directives', [])
 				comment.editing = mode
 			}
 
+			$scope.toggleRemoveImage = function (image) {
+				image.removing = !image.removing
+			}
+
 			$scope.updateComment = function (comment) {
 				$scope.loading = true
 
-				commentService.update(comment._id, comment.editingText, []).then(function (result) {
+				var imagesToRemove = comment.images.map(function (i) {
+					if (i.removing) return i._id
+				}).filter(function (i) {return !!i})
+
+				console.log(imagesToRemove)
+
+				commentService.update(comment._id, comment.editingText, imagesToRemove, []).then(function (result) {
                     $scope.loading = false
 					comment.text = result.data.comment.text
+					comment.images = result.data.comment.images
 					$scope.setEditingMode(comment, false)
 					$scope.$apply()
 				})

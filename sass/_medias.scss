@@ -103,9 +103,9 @@
 			.middle {
 				width: 75%;
 
-				&.wide {
-					width: 100%;
-				}
+				//&.wide {
+				//	width: 100%;
+				//}
 
 				.people {
 					person {
@@ -239,8 +239,40 @@
 			.middle {
 				width: calc(70% - 20px) !important;
 
-				&.wide {
-					width: 100% !important;
+				//&.wide {
+				//	width: 100% !important;
+				//}
+
+				.friends-filter {
+					dropdown {
+						width: calc(33% - 15px);
+
+						.dropdown-wrapper {
+							.dropdown {
+								width: 100%;
+								@include box-sizing(border-box);
+							}
+
+							.dropdown-list {
+								min-width: auto;
+								max-width: 100%;
+
+								li {
+									.sublist-wrapper {
+										min-width: auto;
+										max-width: 130%;
+										margin-left: calc(100% - 22px);
+
+										li {
+											white-space: nowrap;
+											overflow: hidden;
+											text-overflow: ellipsis;
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -334,7 +366,12 @@
 
 				.footer {
 					.stats {
-						display: none;
+						//display: none;
+						margin-left: 160px;
+
+						.stat {
+							margin: 0 20px;
+						}
 					}
 				}
 			}
@@ -721,6 +758,16 @@
 				.type {
 					margin-left: 5px;
 				}
+			}
+		}
+	}
+
+	.lightbox {
+		.wrapper {
+			@include flex-wrap(wrap);
+
+			.image, .info {
+				width: 100%;
 			}
 		}
 	}

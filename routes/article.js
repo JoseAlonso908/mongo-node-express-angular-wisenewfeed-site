@@ -287,96 +287,104 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 		}
 	}
 
-	models.Comment.addComment(postId, req.user._id, text, filenames, (err, post) => {
-		// We send notification of this type only once per user
-		// (because user can react to post multiple times)
-		let receivedNotificationsIds = []
+    // We send notification of this type only once per user
+    // (because user can react to post multiple times)
+    let receivedNotificationsIds = []
 
-		async.waterfall([
-			(cb) => {
-				models.Article.findOneById(postId, (err, post) => {
-					cb(err, post.author)
-				})
-			},
-			(postAuthor, cb) => {
-				if (postAuthor.notifications[req.user.role] == false) {
-					return cb(null, postAuthor)
-				}
+	let commentPost
 
-				// Add comment notification
-				models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
-					cb(null, postAuthor)
-				})
-			},
-			(postAuthor, cb) => {
-				// Notify people who like this post about this reaction
-				models.PostReaction.getAllByPostOfType(postId, 'like', (err, reactions) => {
-					async.eachSeries(reactions, (r, cb) => {
-						let recipientId = r.author._id
-						if (receivedNotificationsIds.indexOf(recipientId.toString()) > -1) return cb()
+	async.waterfall([
+        (next) => {
+            models.Image.createBunch(req.user._id, filenames, next)
+        },
+		(images, next) => {
+            models.Comment.addComment(postId, req.user._id, text, images, (err, post) => {
+            	commentPost = post
+                next()
+            })
+		},
+		(next) => {
+			models.Article.findOneById(postId, (err, post) => {
+                next(err, post.author)
+			})
+		},
+		(postAuthor, next) => {
+			if (postAuthor.notifications[req.user.role] == false) {
+				return next(null, postAuthor)
+			}
 
-						if (!r.author.notifications.liked) {
-							return cb()
+			// Add comment notification
+			models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
+                next(null, postAuthor)
+			})
+		},
+		(postAuthor, next) => {
+			// Notify people who like this post about this reaction
+			models.PostReaction.getAllByPostOfType(postId, 'like', (err, reactions) => {
+				async.eachSeries(reactions, (r, cb) => {
+					let recipientId = r.author._id
+					if (receivedNotificationsIds.indexOf(recipientId.toString()) > -1) return cb()
+
+					if (!r.author.notifications.liked) {
+						return cb()
+					}
+
+					models.Notification.create(recipientId, req.user._id, postId, null, 'commentilike', (err) => {
+						if (!err) {
+							receivedNotificationsIds.push(recipientId.toString())
 						}
 
-						models.Notification.create(recipientId, req.user._id, postId, null, 'commentilike', (err) => {
-							if (!err) {
-								receivedNotificationsIds.push(recipientId.toString())
-							}
-
-							cb()
-						})
-					}, (err) => {
-						cb(null, postAuthor)
+						cb()
 					})
+				}, (err) => {
+                    next(null, postAuthor)
 				})
-			},
-			(postAuthor, cb) => {
-				// Notify people who commented this post about this reaction
-				models.Comment.getPostComments(postId, (err, comments) => {
-					async.eachSeries(comments, (c, cb) => {
-						let commenterId = c.author._id
-						if (receivedNotificationsIds.indexOf(commenterId.toString()) > -1) return cb()
+			})
+		},
+		(postAuthor, next) => {
+			// Notify people who commented this post about this reaction
+			models.Comment.getPostComments(postId, (err, comments) => {
+				async.eachSeries(comments, (c, cb) => {
+					let commenterId = c.author._id
+					if (receivedNotificationsIds.indexOf(commenterId.toString()) > -1) return cb()
 
-						if (!c.author.notifications.reacted) {
-							return cb()
+					if (!c.author.notifications.reacted) {
+						return cb()
+					}
+
+					models.Notification.create(commenterId, req.user._id, commentPost, null, 'commenticomment', (err) => {
+						if (!err) {
+							receivedNotificationsIds.push(commenterId.toString())
 						}
 
-						models.Notification.create(commenterId, req.user._id, post, null, 'commenticomment', (err) => {
-							if (!err) {
-								receivedNotificationsIds.push(commenterId.toString())
-							}
-
-							cb()
-						})
-					}, (err) => {
-						cb(err, postAuthor)
+						cb()
 					})
+				}, (err) => {
+                    next(err, postAuthor)
 				})
-			},
-			(postAuthor, cb) => {
-				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, post, null, 'comment', () => {
-					cb()
-				})
-			},
-			(cb) => {
-				models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, post, null, 'comment', () => {
-					cb()
-				})
-			},
-		], (err) => {
-			res.send({ok: true})
-		})
-
+			})
+		},
+		(postAuthor, next) => {
+			models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, commentPost, null, 'comment', () => {
+                next()
+			})
+		},
+		(next) => {
+			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, commentPost, null, 'comment', () => {
+                next()
+			})
+		},
+	], (err) => {
+		res.send({ok: true})
 	})
 })
 
 router.post('/comment/edit', tempUploads.array('files', 5), (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 
-	let {commentId, text} = req.body
+	let {commentId, text, remove} = req.body
 
-	let filenames = []
+    let filenames = []
 
 	if (req.files && req.files.length > 0) {
 		const fs = require('fs')
@@ -393,9 +401,17 @@ router.post('/comment/edit', tempUploads.array('files', 5), (req, res) => {
 		}
 	}
 
-	models.Comment.editComment(commentId, req.user._id, text, [], (err, comment) => {
-		if (err) res.status(400).send({message: 'Error updating comment'})
-		else res.send({ok: true, comment})
+	async.series({
+		removeImages: (next) => {
+			models.Image.removeBunch(req.user._id, remove, next)
+		},
+		save: (next) => {
+            models.Comment.editComment(commentId, req.user._id, text, [], remove, next)
+		}
+	}, (err, results) => {
+		let comment = results.save
+        if (err) res.status(400).send({message: 'Error updating comment'})
+        else res.send({ok: true, comment: comment})
 	})
 })
 

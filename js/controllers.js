@@ -960,6 +960,7 @@ angular.module('er.controllers', [])
 				city: $scope.user.city,
 				field: $scope.user.field,
 				language: e.target.language.value,
+				gender: $scope.user.gender,
 			}
 
 			if ($scope.profileSettings.$valid) {
@@ -2179,6 +2180,10 @@ angular.module('er.controllers', [])
 
             var reader = new FileReader()
             var file = e.target.files[0]
+
+			if (file.size > 5 * 1024 * 1024) {
+            	return alert('Image size should be less than 5 MB')
+			}
 
             if (['image/jpeg', 'image/png'].indexOf(file.type) === -1) {
                 return

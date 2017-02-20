@@ -97,6 +97,13 @@ var model = function (mongoose) {
 			Model.remove({_id, author}, callback)
 		},
 
+		removeBunch: (author, ids, callback) => {
+			author = MOI(author)
+			ids = ids.map(MOI)
+
+			Model.remove({_id: {$in: ids}, author}, callback)
+		},
+
 		setPrivacy: (author, id, privacy, callback) => {
 			author = MOI(author)
 			let _id = MOI(id)

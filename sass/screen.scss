@@ -20,7 +20,11 @@ $progressColor-good: #4f9b14;
 
 @import "loader";
 
-@import "liberation";
+//@import "liberation";
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
 
 b, strong {
 	font-weight: bold;
@@ -1296,6 +1300,12 @@ a.small-icon, button.small-icon {
 							overflow: hidden;
 						}
 
+						h3 {
+							font-family: Georgia, serif;
+							font-size: 22px;
+							font-weight: 500;
+						}
+
 						textarea.text {
 							width: 100%; height: 200px;
 							padding: 10px;
@@ -1682,6 +1692,7 @@ a.small-icon, button.small-icon {
 							@include display-flex;
 							@include justify-content(flex-end);
 							width: 100%;
+							margin-top: 10px;
 
 							.cta-button {
 								height: 24px;
@@ -1693,6 +1704,46 @@ a.small-icon, button.small-icon {
 
 									&:hover {
 										background-color: darken($middleGrey, 10%);
+									}
+								}
+							}
+						}
+
+						.editing-photos {
+							@include display-flex;
+							@include justify-content(flex-start);
+							margin: 15px 0;
+
+							.image {
+								width: 90px; height: 90px;
+								margin: 0 5px;
+								background-position: center;
+								background-repeat: no-repeat;
+								background-size: cover;
+								border-radius: 3px;
+								overflow: hidden;
+
+								&.removing {
+									opacity: .4;
+								}
+
+								.remove {
+									position: absolute;
+									width: inherit; height: inherit;
+									background-color: rgba(0, 0, 0, .4);
+									color: #ffffff;
+									font-size: 24px;
+									text-align: center;
+									line-height: 90px;
+									opacity: 0;
+									border-radius: inherit;
+
+									@include transition(opacity .2s);
+								}
+
+								&:hover {
+									.remove {
+										opacity: 1;
 									}
 								}
 							}
@@ -1794,7 +1845,11 @@ a.small-icon, button.small-icon {
 				div[contenteditable].ng-empty:before {
 					display: block;
 					content: 'Share an article, photo, or update';
+					padding-right: 22px;
 					color: $middleGrey;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 				}
 
 				textarea, div[contenteditable] {
@@ -5376,11 +5431,11 @@ a.small-icon, button.small-icon {
 .write-post {
 	.text {
 		color: #333333;
-		font-size: 16px;
+		font-size: 17px;
 		line-height: 26px;
 		letter-spacing: .3px;
 		box-sizing: border-box;
-		font-family: Liberation, serif;
+		font-family: Georgia, serif;
 		background-color: #ffffff;
 
 		b {
@@ -5421,11 +5476,12 @@ a.small-icon, button.small-icon {
 		}
 	}
 
-	.content {
+	.post-content {
 		.controls {
 			@include display-flex;
 			@include justify-content(flex-start);
-			height: 20px;
+			@include flex-wrap(wrap);
+			min-height: 20px;
 			margin: 20px 3px 4px;
 
 			i {
@@ -5440,7 +5496,7 @@ a.small-icon, button.small-icon {
 				background: transparent;
 				border: none;
 
-				&.wide {
+				&.wide, &.wide .control-wrapper {
 					@include display-flex;
 					width: auto;
 
@@ -5477,7 +5533,7 @@ a.small-icon, button.small-icon {
 			}
 
 			.divider {
-				width: 0; height: 100%;
+				width: 0; height: 20px;
 				margin: 0 10px;
 				border-left: 1px solid $middleGrey;
 

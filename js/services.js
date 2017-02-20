@@ -590,7 +590,7 @@ angular.module('er.services', [])
 					headers['Content-Type'] = undefined
 				} else {
 					fd = {
-						title: text,
+						title: title,
 						text: text,
 					}
 				}
@@ -750,7 +750,7 @@ angular.module('er.services', [])
 				return data
 			})
 		},
-		update: function (commentId, text, files) {
+		update: function (commentId, text, remove, files) {
 			return new Promise(function (resolve, reject) {
 				var headers = {
 					'Authorization': $cookies.get('token'),
@@ -760,6 +760,7 @@ angular.module('er.services', [])
 					var fd = new FormData()
 					fd.append('commentId', commentId)
 					fd.append('text', text)
+                    fd.append('remove', remove)
 
 					for (var i in files) {
 						fd.append('files', files[i])
@@ -769,7 +770,8 @@ angular.module('er.services', [])
 				} else {
 					fd = {
 						commentId: commentId,
-						text: text
+						text: text,
+                        remove: remove,
 					}
 				}
 

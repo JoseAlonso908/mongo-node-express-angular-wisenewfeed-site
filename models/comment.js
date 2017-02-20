@@ -9,7 +9,10 @@ var Model = function(mongoose) {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'article',
 		},
-		images		: [String],
+        images		: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'image',
+        }],
 		text		: String,
 		createdAt	: {type: Date, default: Date.now},
 		likes		: {type: Number, default: 0},
@@ -23,7 +26,12 @@ var Model = function(mongoose) {
 
 		findOneById: (_id, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
-			Model.findOne({_id}).populate('author').lean().exec(callback)
+			Model.findOne({_id}).populate([
+                {path: 'author'},
+                {path: 'images', populate: {
+                    path: 'author',
+                }}
+            ]).lean().exec(callback)
 		},
 
 		addComment: (post, author, text, images, callback) => {
@@ -38,13 +46,30 @@ var Model = function(mongoose) {
 			comment.save(callback)
 		},
 
-		editComment: (_id, author, text, images, callback) => {
+		editComment: (_id, author, text, images, removeImages, callback) => {
 			_id = MOI(_id)
 			author = MOI(author)
 
 			Model.findOne({_id, author}).exec((err, comment) => {
+				if (removeImages && comment.images) {
+					comment.images = comment.images.filter((i) => {
+						if (removeImages.indexOf(i.toString()) > -1) {
+							return false
+						}
+
+						return true
+					})
+				}
+
 				Object.assign(comment, {text})
-				comment.save(callback)
+				comment.save((err, result) => {
+                    Model.findOne({_id: result._id}).populate([
+                        {path: 'author'},
+                        {path: 'images', populate: {
+                            path: 'author',
+                        }}
+                    ]).lean().exec(callback)
+				})
 			})
 		},
 
@@ -63,7 +88,12 @@ var Model = function(mongoose) {
 				else return id
 			})
 
-			Model.find({post: {$in: postIds}}).populate('author').exec((err, comments) => {
+			Model.find({post: {$in: postIds}}).populate([
+                {path: 'author'},
+                {path: 'images', populate: {
+                    path: 'author',
+                }}
+            ]).exec((err, comments) => {
 				for (let comment of comments) {
 					let postId = comment.post
 
@@ -81,7 +111,12 @@ var Model = function(mongoose) {
 		getPostComments: (post, callback) => {
 			if (typeof post !== 'object') post = mongoose.Types.ObjectId(post)
 
-			Model.find({post}).populate('author').exec((err, comments) => {
+			Model.find({post}).populate([
+                {path: 'author'},
+                {path: 'images', populate: {
+                    path: 'author',
+                }}
+            ]).exec((err, comments) => {
 				callback(err, comments)
 			})
 		},
@@ -89,7 +124,12 @@ var Model = function(mongoose) {
 		getByUser: (author, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 
-			Model.find({author}).select('-__v').populate('author').sort({createdAt: 'desc'}).exec(callback)
+			Model.find({author}).select('-__v').populate([
+                {path: 'author'},
+                {path: 'images', populate: {
+                    path: 'author',
+                }}
+            ]).sort({createdAt: 'desc'}).exec(callback)
 		},
 
 		getByArticles: (articlesIds, callback) => {

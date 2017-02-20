@@ -10,15 +10,17 @@
                 <input type="text" ng-model="title">
             </div>
 
-            <div class="content">
+            <div class="post-content">
                 <div class="controls">
-                    <button title="Select font" class="control wide" ng-click="showFontList($event)">
-                        <div class="title">Font</div>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </button>
                     <div class="fonts-list" ng-show="fontListVisible">
                         <button ng-repeat="font in fonts" ng-style="{'font-family': font}" ng-click="setFont($event, font)">{{font}}</button>
                     </div>
+                    <button title="Select font" class="control wide" ng-click="showFontList($event)">
+                        <div class="control-wrapper">
+                            <div class="title">Font</div>
+                            <i class="material-icons">keyboard_arrow_down</i>
+                        </div>
+                    </button>
                     <div class="divider"></div>
                     <button title="Bold" class="control" ng-click="command('bold')"><i class="material-icons">format_bold</i></button>
                     <button title="Italic" class="control" ng-click="command('italic')"><i class="material-icons">format_italic</i></button>

@@ -757,11 +757,10 @@
 			}
 		}
 
-		#filters-wrapper {
-			.filters {
+		#filters-wrapper .filters, .friends-filter{
 				justify-content: flex-start;
 
-				 dropdown {
+				dropdown {
 					width: 100%;
 					box-sizing: border-box;
 
@@ -779,7 +778,7 @@
 						.dropdown-list {
 							width: 100%;
 
-							 li.nested {
+							li.nested {
 								height: auto;
 								min-height: 36px;
 								&:after {
@@ -811,7 +810,7 @@
 				> a {
 					// width: 100% !important;
 				}
-			}
+
 		}
 
 		#wallpaper-block-wrapper {

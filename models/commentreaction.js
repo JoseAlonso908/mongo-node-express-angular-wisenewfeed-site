@@ -84,7 +84,9 @@ var Model = function(mongoose) {
 				}
 			}
 
-			commentIds = commentIds.map((id) => {
+            commentIds = commentIds.filter(id => {
+                return (id && id != ' ')
+            }).map((id) => {
 				if (typeof id !== 'object') return mongoose.Types.ObjectId(id)
 			})
 

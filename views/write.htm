@@ -32,7 +32,7 @@
                     <button title="Add quotation" class="control" ng-click="command('formatBlock', 'blockquote')"><i class="material-icons">format_quote</i></button>
                     <button title="Remove quotation" class="control" ng-click="command('formatBlock', 'div')"><i class="material-icons">remove_circle_outline</i></button>
                     <div class="divider"></div>
-                    <button title="Add photo" class="control" ng-click="addImage()"><i class="material-icons">photo</i></button>
+                    <button title="Add photo" class="control" ng-click="addImage()" ng-show="files.length < 5"><i class="material-icons">photo</i></button>
                 </div>
                 <div class="text" ng-keyup="autocomplete($event)" contenteditable ng-model="text"></div>
             </div>

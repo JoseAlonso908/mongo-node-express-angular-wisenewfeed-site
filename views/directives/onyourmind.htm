@@ -17,7 +17,7 @@
 
 	<div class="clear"></div>
 
-	<a ng-href="#!/write" class="write">Write a Post</a>
+	<a ng-href="#!/write" class="write" ng-if="user && user.role != 'User'">Write a Post</a>
 
 	<div class="upload-files" ng-show="files.length > 0">
 		<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">

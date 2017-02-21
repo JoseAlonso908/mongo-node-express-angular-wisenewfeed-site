@@ -26,7 +26,8 @@
         }
         .field-group {
             width: 100%;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
+            display: inline-block;
         }
         .field-name {
             font-weight: bold;
@@ -56,38 +57,56 @@
     <h4 class="heading">Signup for Beta: {{form.email}}</h4>
     <div class="signup-form">
         <div class="sub-heading">General Information</div>
+
+        {% if form.role %}
         <div class="field-group">
             <div class="field-name">Role</div>
             <div class="field-value">{{form.role}}</div>
         </div>
+        {% endif %}
+
+        {% if form.name %}
         <div class="field-group">
             <div class="field-name">Full name</div>
             <div class="field-value">{{form.name}}</div>
         </div>
+        {% endif %}
+
+        {% if form.title %}
         <div class="field-group">
             <div class="field-name">Title</div>
             <div class="field-value">{{form.title}}</div>
         </div>
+        {% endif %}
+
+        {% if form.company %}
         <div class="field-group">
             <div class="field-name">Company</div>
             <div class="field-value">{{form.company}}</div>
         </div>
+        {% endif %}
+
+        {% if form.info %}
         <div class="field-group">
             <div class="field-name">Info</div>
             <div class="field-value">{{form.info}}</div>
         </div>
+        {% endif %}
 
 
-        <div class="sub-heading">Experience</div>
-        {% for item in form.experience %}
-           <div class="field-group">
-               <div class="field-name">{{item.place}}</div>
-               <div class="bold-inline-title">From:</div>
-               <div class="dates">{{item.from}}</div>
-               <div class="bold-inline-title">To:</div>
-               <div class="dates">{{item.to}}</div>
-           </div>
-        {% endfor %}
+        {% if form.experience %}
+            <div class="sub-heading">Experience</div>
+            {% for item in form.experience %}
+               <div class="field-group">
+                   <div class="field-name">{{item.place}}</div>
+                   <div class="bold-inline-title">From:</div>
+                   <div class="dates">{{item.from}}</div>
+                   <div class="bold-inline-title">To:</div>
+                   <div class="dates">{{item.to}}</div>
+               </div>
+            {% endfor %}
+        {% endif %}
+
 
         <div class="sub-heading">Contact Information</div>
         <div class="field-group">
@@ -142,13 +161,15 @@
         {% endfor %}
 
         <!-- CERTIFICATES -->
-        <div class="sub-heading">Certificates</div>
-        {% for item in form.certificates %}
-        <a href="{{item.file}}">{{item.title}}</a>
-        {% endfor %}
+        {% if form.certificates.length > 0 %}
+            <div class="sub-heading">Certificates</div>
+            {% for item in form.certificates %}
+               <a href="{{item.file}}">{{item.title}}</a>
+            {% endfor %}
+        {% endif %}
 
         <!-- ADDITIONAL FILES -->
-        {% if form.additional %}
+        {% if form.additional.length > 0 %}
             <div class="sub-heading">Additional files</div>
             {% for item in form.additional %}
             <a href="{{item.file}}">{{item.title}}</a>

@@ -8,7 +8,7 @@ var model = function (mongoose) {
 			ref: 'user',
 		},
 		filename	: String,
-		privacy		: {type: String, default: 'public'},
+		privacy		: {type: String, default: 'Stranger'},
 	})
 
 	var Model = mongoose.model('image', schema)

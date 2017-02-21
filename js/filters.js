@@ -63,9 +63,17 @@ angular.module('er.filters', [])
 })
 .filter('url', function ($sce) {
 	// TODO: info available at http://stackoverflow.com/questions/37684/how-to-replace-plain-urls-with-links/21925491#21925491
+
 	return function (input) {
+		/* function from  : https://gist.github.com/CatTail/4174511 */
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
         var replacedText, replacePattern1, replacePattern2, replacePattern3;
         input = input.toString()
+        input = decodeHtmlEntity(input)
 
         //URLs starting with http://, https://, or ftp://
         replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;

@@ -273,7 +273,7 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	let filenames = []
 
     if (req.user.role === 'user') {
-        text = text.replace(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?/gi,'')
+        text = text.replace(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\\.]{2,6})(:\d{2,8})?([\/\w\#?\.-]*)*\/?/gi,'')
 	}
 
 	if (req.files && req.files.length > 0) {

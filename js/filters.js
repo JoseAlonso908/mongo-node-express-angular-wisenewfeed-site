@@ -111,11 +111,17 @@ angular.module('er.filters', [])
 	};
 })
 .filter('removehtml', function () {
+    var decodeHtmlEntity = function(str) {
+        return str.replace(/&#(\d+);/g, function(match, dec) {
+            return String.fromCharCode(dec);
+        });
+    };
 	return function (input) {
-		if (!input) return ''
-        input = input.replace(/(<([^>]+)>)/gi,'')
+        console.log(input);
+        if (!input) return ''
+        input = input.replace(/(<([^>]+)>)/gi,' ')
         input = input.replace(/[&]nbsp[;]/gi, ' ')
         input = input.replace(/[<]br[^>]*[>]/gi,'')
-        return input
+        return decodeHtmlEntity(input)
 	}
 });

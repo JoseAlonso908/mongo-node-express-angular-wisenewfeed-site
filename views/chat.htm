@@ -86,7 +86,7 @@
 
 								<div class="images" ng-class="{empty: m.images.length == 0}">
 									<div class="image-wrapper" ng-repeat="image in m.images">
-										<img src="{{image}}">
+										<div ng-click="window.open(image)" class="chat-image" style="background-image: url({{image}});background-size: contain;"></div>
 									</div>
 								</div>
 							</div>

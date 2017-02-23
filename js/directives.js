@@ -932,13 +932,19 @@ angular.module('er.directives', [])
                 else if (percent > 50) label = 'Good'
                 return label
             }
+            var decodeHtmlEntity = function(str) {
+                return str.replace(/&#(\d+);/g, function(match, dec) {
+                    return String.fromCharCode(dec);
+                });
+            };
 
 			$scope.setEditingMode = function (post, mode) {
 				mode = (typeof mode !== 'undefined') ? mode : true
 
 				if (mode) {
 					if (!post.text) post.text = ''
-					post.editingText = post.text.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ')
+					post.editingText = decodeHtmlEntity(post.text)
+					post.editingText = post.editingText.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ').replace(/&amp;/gmi, '&')
 				} else {
 					post.editingText = null
 				}

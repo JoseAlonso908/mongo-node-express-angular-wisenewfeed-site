@@ -1823,6 +1823,9 @@ angular.module('er.directives', [])
 					template.find('.wrapper').on('click', function (e) {
 						e.stopImmediatePropagation()
 					});
+                    template.find('avatar').on('click', function (e) {
+                        template.remove()
+                    });
 
 					template.on('click', function () {
 						template.remove()

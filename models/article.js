@@ -466,7 +466,26 @@ var Model = function(mongoose) {
 					for (let a of articles) {images = images.concat(a.images)}
 					callback(null, images)
 				} else {
-					this.postProcessList(articles, viewer, callback)
+					// =( Have no time but need to fix. THis is Hack. Need to be replaced with aggregation
+					if (articles && articles.length > 0) {
+                        async.eachSeries(articles, (article, cb) => {
+							if (article && article.images) {
+								for (let i in article.images) {
+                                    if (article.images[i].author) {
+                                    	if (article.author && article.author._id && article.images[i].author.toString() === article.author._id.toString()) {
+                                            article.images[i].author = article.author
+										}
+									}
+								}
+							}
+							cb(null)
+                        }, (err) => {
+                            this.postProcessList(articles, viewer, callback)
+                        })
+
+					} else {
+                        this.postProcessList(articles, viewer, callback)
+                    }
 				}
 			})
 		},

@@ -117,7 +117,6 @@ angular.module('er.filters', [])
         });
     };
 	return function (input) {
-        console.log(input);
         if (!input) return ''
         input = input.replace(/(<([^>]+)>)/gi,' ')
         input = input.replace(/[&]nbsp[;]/gi, ' ')

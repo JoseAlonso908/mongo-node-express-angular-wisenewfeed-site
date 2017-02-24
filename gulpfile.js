@@ -86,7 +86,7 @@ gulp.task('serve', () => {
 })
 
 gulp.task('build', () => {
-	runSequence('css', 'browserify', 'js', 'html')
+	runSequence('css', 'js', 'html')
 })
 
 gulp.task('default', ['serve'], () => {

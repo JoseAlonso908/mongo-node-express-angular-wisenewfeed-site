@@ -1112,6 +1112,17 @@ angular.module('er.controllers', [])
 
 		$scope.$broadcast('rebuild-questions-box')
 	}
+	$scope.rateComparator = function (v1, v2) {
+		var value1 = v1.value
+		var value2 = v2.value
+		if (value1 && value1.hasOwnProperty('likes') && value1.hasOwnProperty('dislikes') && value2 && value2.hasOwnProperty('likes') && value2.hasOwnProperty('dislikes')) {
+            var v1Rate = value1.likes - value1.dislikes
+            var v2Rate = value2.likes - value2.dislikes
+            return (v1Rate < v2Rate) ? -1 : 1
+		} else {
+            return false
+        }
+    }
 
 	$scope.recalcQuestionsCounter = function () {
 		$scope.visibleQuestionsCount = 0

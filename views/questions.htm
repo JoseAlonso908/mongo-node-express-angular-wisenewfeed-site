@@ -26,7 +26,8 @@
 				<div class="list">
 					<div class="questions-list-wrapper">
 						<div class="questions-list" ng-scrollbar rebuild-on="rebuild-questions-box">
-							<div class="question" ng-hide="chosenFilter && question.type != chosenFilter" ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions">
+							<div class="question" ng-hide="chosenFilter && question.type != chosenFilter"
+								 ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions | orderBy:'reactions':true:rateComparator">
 								<a name="q{{question._id}}"></a>
 
 								<div class="title">

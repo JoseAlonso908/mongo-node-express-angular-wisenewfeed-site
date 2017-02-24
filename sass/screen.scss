@@ -5395,6 +5395,10 @@ a.small-icon, button.small-icon {
 						background-color: rgba($activeBlue, .15);
 					}
 
+					&.disabled {
+						pointer-events: none;
+					}
+
 					&:hover {
 						background-color: darken(rgba($activeBlue, .15), 5%);
 					}

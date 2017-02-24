@@ -602,8 +602,8 @@ router.get('/pieces', (req, res) => {
 router.get('/pieces/search', (req, res) => {
 	let {query} = req.query
 
-	models.Piece.search(query, (err, result) => {
-		res.send(result)
+	models.Piece.search(query, {user: req.user._id}, (err, result) => {
+        res.send(result)
 	})
 })
 

@@ -36,7 +36,7 @@ var Model = function(mongoose) {
 			})
 		},
 
-		search: (query, callback) => {
+		search: (query, options, callback) => {
             const RESULTS_LIMIT = 5
 
 			let countries = require('countries-list').countries
@@ -54,22 +54,32 @@ var Model = function(mongoose) {
 			filteredCountriesTags = countriesTags.filter((country) => {
 				return countryRegexp.test(country)
 			})
+			if (query[0] == '@') {
+            	query = query.substring(1);
+                models.User.searchFriendsAndFollowersNicknames(options.user, {query, limit: 5}, (err, results) => {
+                    results = results.map((i) => {
+                        return `@${i.nickname}`
+                    }).concat(filteredCountriesTags).slice(0, RESULTS_LIMIT)
+                    callback(null, results)
 
-			if (query[0] == '$') query = '\\' + query
-			Model.find({title: new RegExp(query, 'gi')}).limit(RESULTS_LIMIT).exec((err, results) => {
-				if (err) callback(err)
-				else {
-					results = results.map((i) => {
-						return i.title
-					}).concat(filteredCountriesTags)
+                })
+            }  else {
+                if (query[0] == '$') query = '\\' + query
+                Model.find({title: new RegExp(query, 'gi')}).limit(RESULTS_LIMIT).exec((err, results) => {
+                    if (err) callback(err)
+                    else {
+                        results = results.map((i) => {
+                            return i.title
+                        }).concat(filteredCountriesTags)
 
-					results = results.filter((item, key) => {
-						return results.indexOf(item) == key
-					}).slice(0, RESULTS_LIMIT)
+                        results = results.filter((item, key) => {
+                            return results.indexOf(item) == key
+                        }).slice(0, RESULTS_LIMIT)
 
-					callback(null, results)
-                }
-			})
+                        callback(null, results)
+                    }
+                })
+			}
 		},
 	}
 }

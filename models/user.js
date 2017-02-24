@@ -436,6 +436,55 @@ var Model = function(mongoose) {
 				})
 			})
 		},
+		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
+            console.log(options);
+            if (!options || !options.query) return [];
+            if (typeof executorID !== 'object') executorID = mongoose.Types.ObjectId(executorID)
+            async.waterfall([
+                (next) => {
+                    async.parallel({
+                        friends: cb => {
+                            models.Friendship.friends(executorID, (err, friendsIDS) => {
+                                return cb(null, friendsIDS)
+                            })
+                        },
+                        followed: cb => {
+                            models.Follow.followedByUser(executorID, {lean: true}, (err, followedIDS) => {
+                                return cb(null, followedIDS);
+                            })
+                        }
+                    }, (err, ids) => {
+                        console.log(ids);
+                        next(err, ids);
+                    })
+                }
+            ], (err, usersIds) => {
+                let friendsIds = (usersIds.friends) ? usersIds.friends.map(MOI) : usersIds.friends
+                let followedIds = (usersIds.followed) ? usersIds.followed.map(MOI) : usersIds.followed
+                let dbQuery = Model.find({
+                    $or: [
+                        {
+                            $and: [
+                                {nickname: {$regex: options.query, $options: 'gi'} },
+                                {role: 'expert'},
+                                {_id: {$in: followedIds}}
+                            ]
+                        },
+                        {
+                            $and: [
+                                {nickname: {$regex: options.query, $options: 'gi'}},
+                                {_id: {$in: friendsIds}}
+                            ]
+                        }
+                    ]
+                }, 'nickname')
+                if (options.limit) dbQuery.limit(options.limit)
+                dbQuery.exec((err, results) => {
+                    if (err) callback(err, [])
+                    else callback(null, results)
+                })
+            })
+		}
 	}
 }
 

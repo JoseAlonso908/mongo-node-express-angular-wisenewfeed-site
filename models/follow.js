@@ -147,7 +147,24 @@ var Model = function(mongoose) {
 				}, callback)
 			})
 		},
+        followedByUser: (user, options, callback) => {
+            if (typeof user !== 'object') user = mongoose.Types.ObjectId(user)
 
+            let query = Model.find({follower: user})
+
+            if (options.lean === true) query.lean()
+            if (options.skip) query.skip(Number(options.skip))
+            if (options.limit) query.limit(Number(options.limit))
+            if (options.sort) query.sort(options.sort)
+
+            query.exec((err, records) => {
+                let usersIDS = records.map(record => {
+                    return record.following;
+                })
+                return callback(err, usersIDS)
+            })
+
+        },
 		getUnreadForUser: (following, callback) => {
 			Model.count({following, read: false}).exec(callback)
 		},

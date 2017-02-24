@@ -80,7 +80,7 @@
 					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
 
 					<div class="images">
-						<a ng-href="image" lightbox class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
+						<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
 					</div>
 				</div>
 				<linkpreview meta="post.sharedFrom.meta"></linkpreview>

@@ -266,11 +266,16 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
                 {path: 'images', populate: {
                     path: 'author',
                 }}
 			]).lean().exec((err, article) => {
-				if (article.sharedFrom) {
+				if (article && article.sharedFrom) {
 					models.User.setXpInfo(article.sharedFrom.author, (err, user) => {
 						article.sharedFrom.author = user
 						callback(err, article)
@@ -692,8 +697,13 @@ var Model = function(mongoose) {
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}},
+                    path: 'author',
+                }},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
 				{path: 'images', populate: {
                     path: 'author',
                 }},

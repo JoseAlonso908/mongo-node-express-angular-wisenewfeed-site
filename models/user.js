@@ -417,11 +417,10 @@ var Model = function(mongoose) {
 
 			user = MOI(user)
 
-			let roleQuery = {$ne: 'user'}
-			if (role) roleQuery = role
+			// let roleQuery = {$ne: 'user'}
+			// if (role) roleQuery = role
 
 			let query = {
-				role: roleQuery,
 			}
 
 			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')

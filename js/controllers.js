@@ -167,11 +167,15 @@ angular.module('er.controllers', [])
 	$scope.extra = {title: '', company: '', field: ''}
 	$scope.extraError = {title: '', company: '', field: ''}
 
+    $scope.goExtendedForm = function () {
+        $location.url('/beta')
+    }
+
 	$scope.doSignup = function (role) {
-		var roles = ['expert', 'journalist', 'user']
+		var roles = ['journalist', 'user']
 		if (roles.indexOf(role) === -1) return false
 
-		if (role == 'expert' || role == 'journalist') {
+		if (role == 'journalist') {
 			// Validate additional options for expert and journalist
 			var hasErrors = false
 

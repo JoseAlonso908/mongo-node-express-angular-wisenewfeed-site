@@ -26,7 +26,7 @@
 		<avatar class="comment-author-avatar" user="comment.author"></avatar>
 		<div class="comment-title">
 			<a ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
-			<a ng-href="#!/person/{{comment.author._id}}" class="nickname dark-bold">@{{comment.author.nickname}}</a>
+			<a ng-href="#!/person/{{comment.author._id}}" ng-if="comment.author.nickname" class="nickname dark-bold">@{{comment.author.nickname}}</a>
 
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>

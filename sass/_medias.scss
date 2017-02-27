@@ -562,6 +562,11 @@
 				}
 			}
 		}
+		.friends-filter {
+			dropdown,  a {
+				margin-bottom: 15px;
+			}
+		}
 
 		.content {
 			flex-wrap: wrap;
@@ -804,12 +809,13 @@
 			}
 		}
 
-		#filters-wrapper .filters, .friends-filter{
+		#filters-wrapper .filters,  .content .middle .friends-filter{
 				justify-content: flex-start;
 
 				dropdown {
 					width: 100%;
 					box-sizing: border-box;
+					margin-right: 0;
 
 					.dropdown-wrapper {
 						width: 100%;

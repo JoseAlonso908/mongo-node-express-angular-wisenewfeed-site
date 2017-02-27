@@ -943,6 +943,12 @@ angular.module('er.directives', [])
 					if (!post.text) post.text = ''
 					post.editingText = decodeHtmlEntity(post.text)
                     post.editingText = post.editingText.replace(/<tag>([\s\S]*?)<\/tag>/gmi, "$1")
+                    post.editingText = post.editingText.replace(/<br\s?\/?>/gi, "\n")
+
+                    // fix divs
+                    post.editingText = post.editingText.replace(/<div.*?>([\s\S]*?)<\/div>/gmi, "\n$1")
+                    // remove all other tags
+                    post.editingText = post.editingText.replace(/(<[a-zA-Z0-9-]+.*?>([\s\S]*?)<\/[a-zA-Z0-9-]+>|<[a-zA-Z0-9-]+.*\/>)/gmi, "$2")
 					post.editingText = post.editingText.
 						replace(/<br\s*\/?\s*>/gmi, "\r\n").
 						replace(/&nbsp;/gmi, ' ').

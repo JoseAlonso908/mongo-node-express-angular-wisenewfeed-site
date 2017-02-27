@@ -9,16 +9,12 @@ angular.module('er.directives', [])
 		link: function(scope, element, attrs, ngModel) {
 			function read() {
 				var selection = rangy.saveSelection()
-                console.log('console.log(selection);', selection);
                 var text = element.html()
-                console.log('console.log(text)', text);
                 // remove all tags markers (we'll put them back later)
 				text = text.replace(/<tag>([\s\S]*?)<\/tag>/gmi, "$1")
-                console.log('repl1', text);
                 text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$|!)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
 					return space + '<tag>' + tag + '</tag>'
 				})
-                console.log('repl2', text);
 
                 element.html(text)
 				rangy.restoreSelection(selection)

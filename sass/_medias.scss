@@ -567,6 +567,12 @@
 				margin-bottom: 15px;
 			}
 		}
+		.dropdown-list {
+			.sublist-wrapper {
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+		}
 
 		.content {
 			flex-wrap: wrap;

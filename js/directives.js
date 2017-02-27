@@ -64,8 +64,9 @@ angular.module('er.directives', [])
                 }
 
 				// That's bad!
+				// -- And few crutches from my side
+                if ((/ipad/i).test(navigator.userAgent) && window.innerWidth > 400) $(element).addClass('overflow')
 				if (window.innerWidth < 600 || (/ipad|iphone/i).test(navigator.userAgent)) return
-
 				var mainElm, transculdedContainer, tools, thumb, thumbLine, track;
 				var flags = { bottom: attrs.hasOwnProperty('bottom') };
 				var win = angular.element($window);

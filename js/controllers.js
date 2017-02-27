@@ -167,8 +167,11 @@ angular.module('er.controllers', [])
 	$scope.extra = {title: '', company: '', field: ''}
 	$scope.extraError = {title: '', company: '', field: ''}
 
-    $scope.goExtendedForm = function () {
-        $location.url('/beta')
+    $scope.goExpertExtendedForm = function () {
+        $location.url('/beta/expert')
+    }
+    $scope.goJournalistExtendedForm = function () {
+        $location.url('/beta/journalist')
     }
 
 	$scope.doSignup = function (role) {
@@ -2254,7 +2257,7 @@ angular.module('er.controllers', [])
         range.collapse()
 
         selection.setSingleRange(range)
-
+        $(ce).change()
         console.log('refocused 3')
 
         $scope.acFocusedNode = null

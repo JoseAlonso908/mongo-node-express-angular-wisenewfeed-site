@@ -642,6 +642,11 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
 				{path: 'images', populate: {
 					path: 'author',
 				}},

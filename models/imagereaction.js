@@ -83,6 +83,7 @@ var Model = function(mongoose) {
 			}
 
 			imageIds = imageIds.map((id) => {
+				if (!id) return
 				if (typeof id !== 'object') return MOI(id)
 				else return id
 			})

@@ -108,19 +108,18 @@ angular.module('er.filters', [])
 			}
 		}
 		return value + (tail || ' …')
-	};
+	}
 })
 .filter('removehtml', function () {
     var decodeHtmlEntity = function(str) {
         return str.replace(/&#(\d+);/g, function(match, dec) {
-            return String.fromCharCode(dec);
-        });
-    };
+            return String.fromCharCode(dec)
+        })
+    }
 	return function (input) {
         if (!input) return ''
-        input = input.replace(/(<([^>]+)>)/gi,' ')
-        input = input.replace(/[&]nbsp[;]/gi, ' ')
-        input = input.replace(/[<]br[^>]*[>]/gi,'')
-        return decodeHtmlEntity(input)
+        input = decodeHtmlEntity(input)
+        input = input.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ').replace(/&amp;/gmi, '&')
+        return input
 	}
 });

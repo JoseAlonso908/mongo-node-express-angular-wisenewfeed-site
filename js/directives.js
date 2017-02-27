@@ -944,7 +944,10 @@ angular.module('er.directives', [])
 				if (mode) {
 					if (!post.text) post.text = ''
 					post.editingText = decodeHtmlEntity(post.text)
-					post.editingText = post.editingText.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ').replace(/&amp;/gmi, '&')
+					post.editingText = post.editingText.
+						replace(/<br\s*\/?\s*>/gmi, "\r\n").
+						replace(/&nbsp;/gmi, ' ').
+						replace(/&amp;/gmi, '&')
 				} else {
 					post.editingText = null
 				}

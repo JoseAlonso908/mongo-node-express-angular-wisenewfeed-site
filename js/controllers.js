@@ -2257,7 +2257,7 @@ angular.module('er.controllers', [])
         range.collapse()
 
         selection.setSingleRange(range)
-        $(ce).change()
+        $(ce).trigger('input')
         console.log('refocused 3')
 
         $scope.acFocusedNode = null

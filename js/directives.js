@@ -486,7 +486,7 @@ angular.module('er.directives', [])
 				selection.setSingleRange(range)
 
 				console.log('refocused 3')
-				$(ce).change()
+				$(ce).trigger('input')
 				$scope.acFocusedNode = null
 				$scope.acVisible = false
 				$scope.acList = []

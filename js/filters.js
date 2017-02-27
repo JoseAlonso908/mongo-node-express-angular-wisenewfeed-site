@@ -35,8 +35,15 @@ angular.module('er.filters', [])
 	}
 })
 .filter('textLinks', function ($filter) {
-	return function (input) {
+    var decodeHtmlEntity = function(str) {
+        return str.replace(/&#(\d+);/g, function(match, dec) {
+            return String.fromCharCode(dec);
+        });
+    };
+
+    return function (input) {
 		input = input || ''
+		input = decodeHtmlEntity(input)
 		input = $filter('tags')(input)
 		input = $filter('people')(input)
 		input = $filter('countries')(input)

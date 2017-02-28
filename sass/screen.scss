@@ -1822,6 +1822,7 @@ a.small-icon, button.small-icon {
 		.middle {
 			width: 50%;
 			order: 2;
+			overflow-x: hidden;
 
 			&.flex {
 				@include display-flex;

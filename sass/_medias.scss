@@ -246,6 +246,13 @@
 				.friends-filter {
 					dropdown {
 						width: calc(33% - 15px);
+						&.gender {
+							.dropdown-wrapper {
+								.dropdown-list {
+									min-width: 150px;
+								}
+							}
+						}
 
 						.dropdown-wrapper {
 							.dropdown {

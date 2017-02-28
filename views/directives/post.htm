@@ -75,6 +75,7 @@
 
 				<div class="content">
 					<h3 ng-if="post.title">{{post.title}}</h3>
+					<br>
 					<div class="images">
 						<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
 					</div>

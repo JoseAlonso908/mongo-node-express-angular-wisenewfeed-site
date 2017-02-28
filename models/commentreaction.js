@@ -92,6 +92,7 @@ var Model = function(mongoose) {
 
 			Model.find({comment: {$in: commentIds}}).populate('author', '-password').exec((err, reactions) => {
 				for (let r of reactions) {
+					if (!r || !r.author) continue
 					if (r.author._id.toString() == user) {
 						result[r.comment.toString()].youdid[r.type] = true
 					}

@@ -68,7 +68,6 @@
 						<div class="time small-light" am-time-ago="post.sharedFrom.createdAt"></div>
 						<div class="separator" ng-show="post.sharedFrom.author.position">&bull;</div>
 						<div class="position small-light" ng-show="post.sharedFrom.author.position">{{::post.sharedFrom.author.position}}</div>
-						<div class="separator">&bull;</div>
 					</div>
 
 					<button ng-if="post.sharedFrom.author.isFollowing === false && post.sharedFrom.author._id != user._id && user && user.role != 'User'" ng-click="follow(post.sharedFrom)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>

@@ -42,16 +42,15 @@
 
 		<div class="content" ng-class="{collapsed: !justone}">
 			<h3 ng-if="post.title">{{post.title}}</h3>
+			<div class="images" ng-hide="editing">
+				<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
+			</div>
 			<textarea class="text" ng-show="editing" ng-model="post.editingText" ng-disabled="loading"></textarea>
 			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
 
 			<div class="buttons" ng-show="editing">
 				<button ng-click="setEditingMode(post, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>
 				<button ng-click="updatePost(post)" ng-disabled="loading" class="save cta-button">Save</button>
-			</div>
-
-			<div class="images" ng-hide="editing">
-				<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
 			</div>
 
 			<div class="shared" ng-if="post.sharedFrom === null">
@@ -77,11 +76,10 @@
 
 				<div class="content">
 					<h3 ng-if="post.title">{{post.title}}</h3>
-					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
-
 					<div class="images">
 						<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
 					</div>
+					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
 				</div>
 				<linkpreview meta="post.sharedFrom.meta"></linkpreview>
 			</div>

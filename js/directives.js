@@ -1131,6 +1131,14 @@ angular.module('er.directives', [])
 					$timeout.cancel(this)
 				}, 0)
 			}
+            $scope.removeUpload = function (index) {
+                if ($scope.loading) return
+
+                $scope.files = $scope.files.filter(function (file, fileIndex) {
+                    if (index == fileIndex) return false
+                    return true
+                })
+            }
 
 			$scope.react = function (post, type, unreact) {
 				var action = 'react'

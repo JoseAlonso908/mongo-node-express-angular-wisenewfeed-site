@@ -409,6 +409,11 @@ var Model = function(mongoose) {
 					}
 				},
 				{
+					$match: {
+						'author.role': 'expert'
+					}
+				},
+				{
 					$unwind: {
 						path: '$author',
 						preserveNullAndEmptyArrays: true

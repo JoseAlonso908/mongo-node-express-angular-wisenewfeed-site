@@ -1,0 +1,27 @@
+<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true">
+    <i class="material-icons">more_vert</i>
+</button>
+
+<ul class="drop-menu" ng-class="{active: post.menu}" >
+    <li ng-repeat="item in items" data-value="{{item}}" ng-click="select(item)">{{item}}</li>
+</ul>
+
+<style>
+    .drop-menu {
+        display: inline-block;
+        padding: 10px 0;
+        border-radius: 4px;
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
+    }
+    .drop-menu li {
+        color: #868686;
+        display: block;
+        font-size: 13px;
+        padding: 5px 15px;
+        cursor: pointer;
+    }
+    .drop-menu li:hover {
+        background-color: rgba(67, 171, 231, 0.34);
+    }
+
+</style>

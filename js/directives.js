@@ -2225,4 +2225,20 @@ angular.module('er.directives', [])
 			meta: '=',
 		}
 	}
-});
+})
+.directive('dropmenu', function (identityService) {
+	return {
+		restrict: 'E',
+		templateUrl: 'assets/views/directives/dropmenu.htm',
+		scope: {
+			images: '=',
+		},
+		link: function ($scope) {
+            $scope.privacy = 'Stranger';
+			$scope.items = ['Family', 'Close friend', 'Friend', 'Stranger'];
+			$scope.select = function (option) {
+                $scope.privacy = option;
+			}
+		}
+	}
+})

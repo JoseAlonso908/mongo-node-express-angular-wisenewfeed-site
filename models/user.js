@@ -492,7 +492,7 @@ var Model = function(mongoose) {
 		 * */
         getUsersByNicknames: nicknames => {
            return new Promise((resolve, reject) => {
-               if (!nicknames || nicknames.length < 1) return []
+               if (!nicknames || nicknames.length < 1) return resolve([])
                Model.find({nickname: {$in: nicknames}}).exec((err, users) => {
                    if (err) return reject(err)
 				   resolve(users)

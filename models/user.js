@@ -308,7 +308,7 @@ var Model = function(mongoose) {
 
 		updateProfile: (_id, contact, experience, intro, name, title, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
-
+			if (!intro) return callback()
 			intro = intro.replace(/(\n|\r\n|\n\r)/g, '<br>')
 
 			Model.findOne({_id}, (err, user) => {

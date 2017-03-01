@@ -9,6 +9,9 @@
 			<div class="wallpaper-wrapper">
 				<bigratedavatar on-edit="$parent.changeAvatar" user="user" ng-if="user"></bigratedavatar>
 
+				<div class="buttons upper single">
+					<div ng-click="close()" class="close"><i class="material-icons">close</i><div class="title">Cancel</div></div>
+				</div>
 				<div class="buttons">
 					<div ng-click="changeWallpaper()" class="change-background"><i class="material-icons">image</i> <div class="title">Change background</div></div>
 					<input type="file" name="wallpaper" accept="image/*" class="hidden-file-input">

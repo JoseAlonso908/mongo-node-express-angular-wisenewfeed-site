@@ -72,6 +72,9 @@
 				.buttons {
 					width: calc(100% - 140px - 15px);
 					margin: 165px 0 0 140px;
+					&.upper {
+						margin-top: 120px;
+					}
 				}
 
 				.footer {
@@ -546,6 +549,12 @@
 					button, a, div {
 						.title {
 							display: none;
+						}
+					}
+					&.upper {
+						margin-top: 75px;
+						div.close {
+							padding-right: 10px;
 						}
 					}
 				}

@@ -3933,7 +3933,9 @@ a.small-icon, button.small-icon {
 				position: absolute;
 				width: calc(100% - 285px - 15px);
 				margin: 285px 0 0 285px;
-
+				&.upper {
+					margin-top: 240px;
+				}
 				&.single {
 					@include justify-content(flex-end);
 				}
@@ -3964,7 +3966,14 @@ a.small-icon, button.small-icon {
 							background-color: darken($activeBlue, 5%);
 						}
 					}
-
+					&.close {
+						color: #424242;
+						background-color: #ffffff;
+						padding-right: 15px;
+						&:hover {
+							background-color: rgba(#ffffff, .8);
+						}
+					}
 					&.save-changes {
 						color: #424242;
 						background-color: #ffffff;

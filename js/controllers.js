@@ -693,6 +693,10 @@ angular.module('er.controllers', [])
 	$scope.wallpaperStyle = {}
 
 	$scope.saving = false
+	$scope.close = function () {
+        $location.url('/my')
+    }
+
 	$scope.saveChanges = function () {
 		if ($scope.saving) return
 

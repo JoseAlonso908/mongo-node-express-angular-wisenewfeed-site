@@ -23,7 +23,8 @@
 			</div>
 
 			<div class="people" ng-if="people.length > 0">
-				<person person="person" ng-repeat="person in people"></person>
+				<!--TODO: Yep... done with ng-filters. Should be changed to server side search-->
+				<person person="person" ng-repeat="person in people | gender:gender | country:country | city:city"></person>
 				<div class="flex-people-placeholder"></div>
 				<div class="flex-people-placeholder"></div>
 			</div>

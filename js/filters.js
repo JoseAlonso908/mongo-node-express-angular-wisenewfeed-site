@@ -129,4 +129,50 @@ angular.module('er.filters', [])
         input = input.replace(/<br\s*\/?\s*>/gmi, "\r\n").replace(/&nbsp;/gmi, ' ').replace(/&amp;/gmi, '&')
         return input
 	}
+})
+.filter('gender', function () {
+    return function (items, value) {
+        if (value && value.title != 'Any') {
+            var filtered = [];
+            angular.forEach(items, function (item) {
+                if (item.gender == value.title.toLowerCase()) {
+                    filtered.push(item);
+                }
+            });
+            return filtered;
+        } else {
+            return items;
+        }
+    }
+})
+.filter('city', function () {
+    return function (items, value) {
+        if (value && value.title !== 'All') {
+            var filtered = [];
+            angular.forEach(items, function (item) {
+                if (item.city == value.title) {
+                    filtered.push(item);
+                }
+            });
+            return filtered;
+        } else {
+            return items;
+        }
+    }
+
+})
+.filter('country', function () {
+    return function (items, value) {
+        if (value && value.title !== 'All') {
+            var filtered = [];
+            angular.forEach(items, function (item) {
+                if (item.country == value.title) {
+                    filtered.push(item);
+                }
+            });
+            return filtered;
+        } else {
+            return items;
+        }
+    }
 });

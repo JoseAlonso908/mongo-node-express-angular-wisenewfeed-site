@@ -507,7 +507,7 @@ angular.module('er.controllers', [])
 		$scope.setCountry = function (item) {
 			$scope.country = item
 			setCitiesList(item)
-			loadFriends()
+			// loadFriends()
 		}
 
 		groupedCountriesService.get().then(function (result) {
@@ -518,7 +518,7 @@ angular.module('er.controllers', [])
 		$scope.city
 		$scope.setCity = function (item) {
 			$scope.city = item
-			loadFriends()
+			// loadFriends()
 		}
 
 		var setCitiesList = function (country) {
@@ -538,7 +538,7 @@ angular.module('er.controllers', [])
 
 		$scope.setGender = function (item) {
 			$scope.gender = item
-			loadFriends()
+			// loadFriends()
 		}
 
 		$scope.genders = [

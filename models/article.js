@@ -984,7 +984,19 @@ var Model = function(mongoose) {
                     resolve(result)
                 })
             })
-        }
+        },
+		/**
+		 * Get nicknames mentioned in text (tagged as @nickname)
+		 * @param text String
+		 * @returns Array of
+		 * */
+		getMentionedNicknames: text => {
+			if(!text) return []
+			let matches = text.match(/(>|^|\s|&nbsp;)@([a-z]+[a-z0-9]+)/gmi)
+            return matches.map(item => {
+                if (item) return item.trim().substring(1)
+            });
+		}
 	}
 }
 

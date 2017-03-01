@@ -483,7 +483,22 @@ var Model = function(mongoose) {
                     else callback(null, results)
                 })
             })
-		}
+		},
+
+		/**
+		 * Get users list by nicknames array
+		 * @param nicknames Array
+		 * @returns Promise
+		 * */
+        getUsersByNicknames: nicknames => {
+           return new Promise((resolve, reject) => {
+               if (!nicknames || nicknames.length < 1) return []
+               Model.find({nickname: {$in: nicknames}}).exec((err, users) => {
+                   if (err) return reject(err)
+				   resolve(users)
+               })
+		   })
+        }
 	}
 }
 

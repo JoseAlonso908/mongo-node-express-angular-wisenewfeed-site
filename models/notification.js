@@ -27,7 +27,7 @@ var Model = function(mongoose) {
 				'like', 'dislike', 'share', 'comment', 'follow',
 				'likeilike', 'dislikeilike', 'shareilike', 'commentilike',
 				'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment',
-				'friendshipnew', 'questionnew'
+				'friendshipnew', 'questionnew', 'mentioned', 'mentionedcomment'
 			],
 		},
 		createdAt	: {type: Date, default: Date.now},

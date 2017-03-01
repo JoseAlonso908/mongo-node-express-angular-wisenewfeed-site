@@ -17,7 +17,7 @@
 		<div class="text">
 			<a ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
 
-			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow', 'questionnew'].indexOf(n.type) > -1">
+			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow', 'questionnew', 'mentioned', 'mentionedcomment'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">
 					<span ng-switch-when="like">liked</span>
 					<span ng-switch-when="dislike">disliked</span>
@@ -25,9 +25,14 @@
 					<span ng-switch-when="comment">reacts on</span>
 					<span ng-switch-when="follow">is following you</span>
 					<span ng-switch-when="questionnew">asked you a new question</span>
+					<span ng-switch-when="mentioned">mentioned you</span>
+					<span ng-switch-when="mentionedcomment">mentioned you</span>
 				</span>
 
-				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">your post</a>
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined && n.type !== 'mentionedcomment'" >{{n.type === 'mentioned' ? 'in post' : 'your post'}}</a>
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined && n.type === 'mentionedcomment'">
+					in comment
+				</a>
 				<a ng-href="#!/article/{{n.comment.post._id}}/{{n.comment._id}}" ng-show="n.comment != undefined">your comment</a>
 			</div>
 			<div class="action" ng-if="'friendshipnew' === n.type">

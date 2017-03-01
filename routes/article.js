@@ -66,7 +66,29 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 		},
 		(article, next) => {
 			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
-				next()
+				next(null, article)
+			})
+		},
+		//Get mentioned users
+		(article, next) => {
+			const nicknames = models.Article.getMentionedNicknames(text)
+			models.User.getUsersByNicknames(nicknames).then(users => {
+                next(null, article, users)
+			}).catch(err => {
+                console.log('Failed to get mentioned users', err)
+                next(null, article, [])
+            })
+		},
+		// Create notifications for mentioned users
+		(article, users, next) => {
+            async.each(users, (user, cb)=> {
+            	//to, from, post, comment, type, callback
+                console.log('article._id', article._id);
+                models.Notification.create(user._id, req.user._id, article._id, null, 'mentioned', (err, res) => {
+                    cb(err)
+                })
+			}, (err, result) => {
+            	return next()
 			})
 		}
 	], (err) => {
@@ -378,6 +400,26 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
                 next()
 			})
 		},
+        (next) => {
+            const nicknames = models.Article.getMentionedNicknames(text)
+            models.User.getUsersByNicknames(nicknames).then(users => {
+                next(null, users)
+            }).catch(err => {
+                console.log('Failed to get mentioned users', err)
+                next(null, [])
+            })
+        },
+        // Create notifications for mentioned users
+        (users, next) => {
+            async.each(users, (user, cb)=> {
+                //to, from, post, comment, type, callback
+                models.Notification.create(user._id, req.user._id, postId, null, 'mentionedcomment', (err, res) => {
+                    cb(err)
+                })
+            }, (err, result) => {
+                return next()
+            })
+        }
 	], (err) => {
 		res.send({ok: true})
 	})

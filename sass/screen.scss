@@ -1845,6 +1845,49 @@ a.small-icon, button.small-icon {
 					float: left;
 				}
 
+				.post-menu {
+					position: absolute;
+					width: 180px;
+					right: 0;
+					margin: 30px 0 0 0px;
+					padding: 15px 0;
+					z-index: 3;
+					background-color: rgba($activeBlue, .15);
+					border-radius: 4px;
+					box-shadow: 0 5px 8px 0 rgba(#000000, 0.17);
+					opacity: 0;
+					pointer-events: none;
+					@include transition(opacity .2s);
+
+					&.active {
+						opacity: 1;
+						pointer-events: auto;
+					}
+
+					.divider {
+						width: 100%; height: 0;
+						margin: 15px 0 15px 0;
+						// padding-right: 50px;
+						border-top: 1px solid #f0f2f4;
+					}
+
+					a {
+						display: block;
+						height: 32px;
+						padding: 0 22px;
+						color: $middleGrey;
+						font-size: 13px;
+						line-height: 32px;
+						opacity: 1;
+						@include transition(background-color .2s);
+
+						&:hover {
+							opacity: 1;
+							background-color: rgba(#000000, .05);
+						}
+					}
+				}
+
 				div[contenteditable].ng-empty:before {
 					display: block;
 					content: 'Share an article, photo, or update';

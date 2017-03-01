@@ -22,10 +22,21 @@ router.post('/create', (req, res) => {
 
 	let user = req.user._id
 
-	models.Question.create(user, recipient, text, (err, result) => {
-		if (err) res.status(400).send(err)
-		else res.send({ok: true})
-	})
+    async.waterfall([
+        cb => {
+            models.Question.create(user, recipient, text, (err, result) => {
+				return cb(err)
+            })
+        },
+        (cb) => {
+            models.Notification.create(recipient, user, null, null, 'questionnew', (err, res) => {
+                cb(err)
+            })
+        }
+    ], (err, result) => {
+        if (err) res.status(400).send(err)
+        else res.send({ok: true})
+    })
 })
 
 router.post('/settype', (req, res) => {

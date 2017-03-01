@@ -17,13 +17,14 @@
 		<div class="text">
 			<a ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
 
-			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow'].indexOf(n.type) > -1">
+			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow', 'questionnew'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">
 					<span ng-switch-when="like">liked</span>
 					<span ng-switch-when="dislike">disliked</span>
 					<span ng-switch-when="share">shared</span>
 					<span ng-switch-when="comment">reacts on</span>
 					<span ng-switch-when="follow">is following you</span>
+					<span ng-switch-when="questionnew">asked you a new question</span>
 				</span>
 
 				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">your post</a>

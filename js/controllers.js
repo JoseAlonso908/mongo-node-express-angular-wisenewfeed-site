@@ -502,7 +502,7 @@ angular.module('er.controllers', [])
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
 
-	if ($scope.type == 'friends') {
+	if (['friends','following', 'followers'].indexOf($scope.type) > -1) {
 		$scope.country
 		$scope.setCountry = function (item) {
 			$scope.country = item

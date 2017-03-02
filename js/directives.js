@@ -397,7 +397,8 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/onyourmind.htm',
 		link: function ($scope, element, attr) {
 			$scope.create = function () {
-				if ($scope.loading) return
+                console.log('$scope.privacy', $scope.privacy);
+                if ($scope.loading) return
 				$scope.loading = true
 
 				var fileObjects = $scope.files.map(function (file) {
@@ -405,8 +406,7 @@ angular.module('er.directives', [])
 				})
 
 				var progress = function () {}
-
-				postService.create('', $scope.text, fileObjects, progress).then(function (result) {
+				postService.create({title: '', text: $scope.text, files: fileObjects}, progress).then(function (result) {
 					$scope.$parent.$apply(function () {
 						$scope.text = ''
 						$scope.files = []
@@ -422,6 +422,8 @@ angular.module('er.directives', [])
 			}
 
             $scope.files = []
+			/* TODO: change to constants */
+            $scope.privacy = 'Stranger'
 			$scope.addImage = function () {
 				if ($scope.loading) return
 
@@ -2231,14 +2233,21 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/dropmenu.htm',
 		scope: {
-			images: '=',
+			privacy: '=',
 		},
 		link: function ($scope) {
-            $scope.privacy = 'Stranger';
-			$scope.items = ['Family', 'Close friend', 'Friend', 'Stranger'];
-			$scope.select = function (option) {
+            if (!$scope.privacy) $scope.privacy = 'Stranger';
+            $scope.activeMnu = false;
+            $scope.items = ['Family', 'Close friend', 'Friend', 'Stranger'];
+            $scope.select = function (option) {
                 $scope.privacy = option;
-			}
-		}
+                console.log($scope.privacy);
+                $scope.activeMnu = false;
+            }
+            angular.element(document.body).on('click', function () {
+                $scope.activeMnu = false
+            })
+
+        }
 	}
 })

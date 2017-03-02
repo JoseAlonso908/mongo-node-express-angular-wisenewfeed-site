@@ -2180,8 +2180,11 @@ angular.module('er.controllers', [])
         })
 
         var progress = function () {}
-
-        postService.create($scope.title, $scope.textHtml, fileObjects, progress).then(function (result) {
+        postService.create({
+            title: $scope.title,
+            text: $scope.textHtml,
+            files: fileObjects
+        }, progress).then(function (result) {
             $scope.$parent.$apply(function () {
                 $scope.text = ''
                 $scope.files = []

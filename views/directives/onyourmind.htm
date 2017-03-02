@@ -3,13 +3,13 @@
 
 	<div placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" ng-keyup="autocomplete($event)" contenteditable ng-model="text"></div>
 	<!-- <textarea placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" ng-model="text"></textarea> -->
-	<dropmenu privacy=""></dropmenu>
 	<button class="send" ng-click="create()" ng-disabled="loading">
 		<div>
 			<i class="material-icons">send</i>
 			<div class="title">Send</div>
 		</div>
 	</button>
+	<dropmenu privacy="privacy" ng-disabled="loading"></dropmenu>
 	<button class="upload-image-1" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
 	<button class="upload-image-2" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
 

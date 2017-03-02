@@ -1,27 +1,59 @@
-<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true">
-    <i class="material-icons">more_vert</i>
-</button>
+<div class="drop-menu-wrap">
+    <button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();activeMnu = true">
+        {{privacy}} <i class="fa fa-shield"></i>
+    </button>
 
-<ul class="drop-menu" ng-class="{active: post.menu}" >
-    <li ng-repeat="item in items" data-value="{{item}}" ng-click="select(item)">{{item}}</li>
-</ul>
+    <ul class="drop-menu" ng-class="{active: activeMnu}">
+        <li ng-repeat="item in items" data-value="{{item}}" ng-click="select(item)" ng-class="{active: item === privacy}">{{item}}</li>
+    </ul>
 
-<style>
-    .drop-menu {
-        display: inline-block;
-        padding: 10px 0;
-        border-radius: 4px;
-        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
-    }
-    .drop-menu li {
-        color: #868686;
-        display: block;
-        font-size: 13px;
-        padding: 5px 15px;
-        cursor: pointer;
-    }
-    .drop-menu li:hover {
-        background-color: rgba(67, 171, 231, 0.34);
-    }
+    <style>
+        .drop-menu-wrap {
+            display: block;
+            float: right;
+            z-index: 10;
+        }
 
-</style>
+        .drop-menu-wrap button {
+            color: #95a2aa;
+            display: block;
+            width: 100px;
+            height: 28px;
+            margin-right: 5px;
+            margin-top: 15px;
+            text-align: right;
+        }
+        .drop-menu {
+            position: absolute;
+            z-index: 10;
+            display: inline-block;
+            padding: 10px 0;
+            border-radius: 4px;
+            background-color: #d7ebf5;
+            box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
+            opacity: 0;
+            pointer-events: none;
+            -moz-transition: opacity 0.2s;
+            -o-transition: opacity 0.2s;
+            -webkit-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+        }
+        .drop-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drop-menu li {
+            color: #868686;
+            display: block;
+            font-size: 13px;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+
+        .drop-menu li:hover, .drop-menu li.active {
+            background-color: #c7dae4;
+        }
+
+    </style>
+</div>

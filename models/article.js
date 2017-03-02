@@ -28,6 +28,11 @@ var Model = function(mongoose) {
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
 		category	: String,
+        privacy		: {
+            type: String,
+            enum: ['Family', 'Close friend', 'Friend', 'Stranger'],
+			default: 'Stranger'
+        },
 		meta		: mongoose.Schema.Types.Mixed
 	})
     schema.index({countries: 1})
@@ -287,7 +292,7 @@ var Model = function(mongoose) {
 		},
 
 		create: (data, callback) => {
-			let {author, country, category, title, text, images, allowhtml, meta} = data
+			let {author, country, category, title, text, images, allowhtml, meta, privacy} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -305,7 +310,7 @@ var Model = function(mongoose) {
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, title, text, country, category, meta, countries
+				author, images, title, text, country, category, meta, countries, privacy
 			})
 			article.save(callback)
 		},

@@ -406,7 +406,13 @@ angular.module('er.directives', [])
 				})
 
 				var progress = function () {}
-				postService.create({title: '', text: $scope.text, files: fileObjects}, progress).then(function (result) {
+				postService.create({
+                        title: '',
+                        text: $scope.text,
+                        files: fileObjects,
+                        privacy: $scope.privacy
+                    }, progress
+                ).then(function (result) {
 					$scope.$parent.$apply(function () {
 						$scope.text = ''
 						$scope.files = []

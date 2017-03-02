@@ -2123,7 +2123,8 @@ angular.module('er.controllers', [])
             return $location.url('/')
         }
     })
-
+	/*TODO: Add select privacy functionality */
+	$scope.privacy = 'Stranger'
     $scope.fonts = [
 		'Liberation',
 		'Arial',
@@ -2183,11 +2184,13 @@ angular.module('er.controllers', [])
         postService.create({
             title: $scope.title,
             text: $scope.textHtml,
-            files: fileObjects
+            files: fileObjects,
+            privacy: $scope.privacy
         }, progress).then(function (result) {
             $scope.$parent.$apply(function () {
                 $scope.text = ''
                 $scope.files = []
+				//TODO: reset privacy option too
 
                 return $location.url('/')
             })

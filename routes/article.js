@@ -21,7 +21,7 @@ router.use((req, res, next) => {
 })
 
 router.post('/create', tempUploads.array('files', 5), (req, res) => {
-	let {title, text} = req.body
+	let {title, text, privacy} = req.body
 
 	let filenames = []
 
@@ -59,7 +59,8 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	            text: text,
 	            images,
 	            allowhtml: !!title,
-				meta
+				meta,
+				privacy
 	        }, (err, article) => {
 	        	next(err, article)
 	        })

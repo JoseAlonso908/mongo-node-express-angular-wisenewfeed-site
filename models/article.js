@@ -684,7 +684,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
+		// getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
+		getByUsers: (parameters, callback) => {
+			let {authors, viewer, shares, category, country, start, limit } = parameters
+			if (!start) start = 0
+			if (!limit) limit = 4
 			authors = (authors) ? authors.map(MOI) : authors
 			shares = (shares) ? shares.map(MOI) : shares
 

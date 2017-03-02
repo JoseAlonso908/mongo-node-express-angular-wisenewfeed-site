@@ -163,7 +163,8 @@ app.get('/static/categories', (req, res) => {
 
 	let categories = getCategories()
 
-	models.Article.getByUsers([], null, [], null, country, null, null, (err, articles) => {
+	// models.Article.getByUsers([], null, [], null, country, null, null, (err, articles) => {
+	models.Article.getByUsers({authors:[], viewer: null, shares: [], category: null, country}, (err, articles) => {
 		categories[0].count = articles.length
 
 		for (let category of categories) {

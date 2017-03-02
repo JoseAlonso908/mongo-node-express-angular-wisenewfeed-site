@@ -291,8 +291,18 @@ router.get('/categories', (req, res) => {
 		if (authors.length > 0) {
 			authors.push(user._id)
 		}
+        // getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
 
-		models.Article.getByUsers(authors, null, [], null, null, null, null, (err, articles) => {
+		// models.Article.getByUsers(authors, null, [], null, null, null, null, (err, articles) => {
+		models.Article.getByUsers({
+			authors,
+            viewer: null,
+			shares: [],
+            category: null,
+			country: null,
+			start: null,
+			limit: null
+		}, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else {
 				for (let article of articles) {

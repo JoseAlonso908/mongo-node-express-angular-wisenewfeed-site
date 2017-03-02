@@ -192,10 +192,18 @@ router.get('/friendsfeed', (req, res) => {
 			})
 		},
 	], (err) => {
-		models.Article.getByUsers(authors, req.user._id, [], category, country, start, limit, (err, articles) => {
-			if (err) res.status(400).send(err)
-			else res.send(articles)
-		})
+        models.Article.getByUsers({
+            category,
+            authors,
+            country,
+            start,
+            limit,
+            viewer: req.user._id,
+            shares: []
+        }, (err, articles) => {
+            if (err) res.status(400).send(err)
+            else res.send(articles)
+        })
 	})
 })
 
@@ -233,7 +241,15 @@ router.get('/feed', (req, res) => {
 			})
 		},
 	], () => {
-		models.Article.getByUsers(authors, req.user._id, [], category, country, start, limit, (err, articles) => {
+		models.Article.getByUsers({
+            category,
+            authors,
+            country,
+            start,
+            limit,
+            viewer: req.user._id,
+            shares: []
+        }, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else res.send(articles)
 		})

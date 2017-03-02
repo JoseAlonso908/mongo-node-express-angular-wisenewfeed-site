@@ -392,7 +392,9 @@ var Model = function(mongoose) {
 			let query = {}
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
-
+            //TODO: Use const instead of string
+            const privacyIncluded = models.Article.getPrivacySubLevels('Stranger')
+            Object.assign(query, {privacy: {$in: privacyIncluded}})
 			start = Number(start)
 			limit = Number(limit)
 
@@ -686,7 +688,7 @@ var Model = function(mongoose) {
 
 		// getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
 		getByUsers: (parameters, callback) => {
-			let {authors, viewer, shares, category, country, start, limit } = parameters
+			let {authors, viewer, shares, category, country, start, limit, privacy} = parameters
 			if (!start) start = 0
 			if (!limit) limit = 4
 			authors = (authors) ? authors.map(MOI) : authors
@@ -712,6 +714,10 @@ var Model = function(mongoose) {
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			if (privacy) {
+				const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
+                Object.assign(query, {privacy: {$in: privacyIncluded}})
+			}
 			// if (country) Object.assign(query, {country})
 			Model.find(query).populate([
 				{path: 'author'},
@@ -1005,7 +1011,25 @@ var Model = function(mongoose) {
 			if (!matches || matches.length < 1) return []
             return matches.map(item => {
                 if (item) return item.trim().substring(1)
-            });
+            })
+		},
+		/**
+		 * Get sub levels of privacy.
+		 * ('Family' can see things for 'friends' and 'close friends' and for 'strangers',
+		 * but 'friend' can not see thing with privacy 'family' etc
+		 *
+		 * @param privacy String privacy lvl
+		 * @returns Array of subLevels
+		 * */
+		getPrivacySubLevels: privacy => {
+			const levels = {
+                'Family'		: ['Family', 'Close friend', 'Friend', 'Stranger'],
+                'Close friend'	: ['Close friend', 'Friend', 'Stranger'],
+                'Friend'		: ['Friend', 'Stranger'],
+                'Stranger'		: ['Stranger']
+            }
+            if (privacy && levels.hasOwnProperty(privacy)) return levels[privacy]
+			return levels['Stranger']
 		}
 	}
 }

@@ -1832,6 +1832,53 @@ a.small-icon, button.small-icon {
 				width: 75%;
 			}
 
+			.drop-menu-wrap {
+				display: block;
+				float: right;
+				z-index: 10;
+
+				button {
+					color: #95a2aa;
+					display: block;
+					width: 100px;
+					height: 28px;
+					margin-right: 5px;
+					margin-top: 15px;
+					text-align: right;
+				}
+				.drop-menu {
+					position: absolute;
+					z-index: 10;
+					display: inline-block;
+					padding: 10px 0;
+					border-radius: 4px;
+					background-color: #d7ebf5;
+					box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.17);
+					opacity: 0;
+					pointer-events: none;
+					-moz-transition: opacity 0.2s;
+					-o-transition: opacity 0.2s;
+					-webkit-transition: opacity 0.2s;
+					transition: opacity 0.2s;
+
+					&.active {
+						opacity: 1;
+						pointer-events: auto;
+					}
+
+					li {
+						color: #868686;
+						display: block;
+						font-size: 13px;
+						padding: 5px 15px;
+						cursor: pointer;
+						&:hover, &.active {
+							background-color: #c7dae4
+						}
+					}
+				}
+			}
+
 			.on-your-mind {
 				position: relative;
 				width: 100%;

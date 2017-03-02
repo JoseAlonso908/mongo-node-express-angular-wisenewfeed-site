@@ -199,7 +199,8 @@ router.get('/friendsfeed', (req, res) => {
             start,
             limit,
             viewer: req.user._id,
-            shares: []
+            shares: [],
+            privacy: 'Friend'
         }, (err, articles) => {
             if (err) res.status(400).send(err)
             else res.send(articles)

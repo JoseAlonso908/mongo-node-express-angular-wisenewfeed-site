@@ -235,7 +235,7 @@ var Model = function(mongoose) {
 						{
 							$and: [
 								{privacy: 'Friend'},
-								{'friendship.type': {$in: ['Friend']}},
+								{'friendship.type': {$in: ['Friend', 'Close friend', 'Family']}},
 							],
 						},
 						{
@@ -247,7 +247,7 @@ var Model = function(mongoose) {
 						{
 							$and: [
 								{privacy: 'Family'},
-								{'friendship.type': {$in: ['Family', 'Close friend', 'Friend']}},
+								{'friendship.type': {$in: ['Family']}},
 							],
 						},
 					]
@@ -738,10 +738,10 @@ var Model = function(mongoose) {
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
-			if (privacy) {
-				const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
-                Object.assign(query, {privacy: {$in: privacyIncluded}})
-			}
+			// if (privacy) {
+			// 	const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
+             //    Object.assign(query, {privacy: {$in: privacyIncluded}})
+			// }
 
             let filterAggregationOptions = [];
 
@@ -757,7 +757,7 @@ var Model = function(mongoose) {
             if (start) aggregationOptions.push({$skip: start})
             if (limit) aggregationOptions.push({$limit: limit})
 
-			// console.log(require('util').inspect(aggregationOptions, {depth: null}))
+			console.log(require('util').inspect(aggregationOptions, {depth: null}))
 
 			Model.aggregate(aggregationOptions).exec((err, articles) => {
                 this.postProcessList(articles, viewer, callback)

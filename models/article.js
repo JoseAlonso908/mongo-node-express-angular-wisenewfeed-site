@@ -28,6 +28,11 @@ var Model = function(mongoose) {
 		createdAt	: {type: Date, default: Date.now},
 		country		: String,
 		category	: String,
+        privacy		: {
+            type: String,
+            enum: ['Family', 'Close friend', 'Friend', 'Stranger'],
+			default: 'Stranger'
+        },
 		meta		: mongoose.Schema.Types.Mixed
 	})
     schema.index({countries: 1})
@@ -266,11 +271,16 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
                 {path: 'images', populate: {
                     path: 'author',
                 }}
 			]).lean().exec((err, article) => {
-				if (article.sharedFrom) {
+				if (article && article.sharedFrom) {
 					models.User.setXpInfo(article.sharedFrom.author, (err, user) => {
 						article.sharedFrom.author = user
 						callback(err, article)
@@ -282,7 +292,7 @@ var Model = function(mongoose) {
 		},
 
 		create: (data, callback) => {
-			let {author, country, category, title, text, images, allowhtml, meta} = data
+			let {author, country, category, title, text, images, allowhtml, meta, privacy} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -300,7 +310,7 @@ var Model = function(mongoose) {
 
 			let article = new Model()
 			Object.assign(article, {
-				author, images, title, text, country, category, meta, countries
+				author, images, title, text, country, category, meta, countries, privacy
 			})
 			article.save(callback)
 		},
@@ -382,7 +392,9 @@ var Model = function(mongoose) {
 			let query = {}
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {country})
-
+            //TODO: Use const instead of string
+            const privacyIncluded = models.Article.getPrivacySubLevels('Stranger')
+            Object.assign(query, {privacy: {$in: privacyIncluded}})
 			start = Number(start)
 			limit = Number(limit)
 
@@ -401,6 +413,11 @@ var Model = function(mongoose) {
 						localField: 'author',
 						foreignField: '_id',
 						as: 'author'
+					}
+				},
+				{
+					$match: {
+						'author.role': 'expert'
 					}
 				},
 				{
@@ -466,7 +483,26 @@ var Model = function(mongoose) {
 					for (let a of articles) {images = images.concat(a.images)}
 					callback(null, images)
 				} else {
-					this.postProcessList(articles, viewer, callback)
+					// =( Have no time but need to fix. THis is Hack. Need to be replaced with aggregation
+					if (articles && articles.length > 0) {
+                        async.eachSeries(articles, (article, cb) => {
+							if (article && article.images) {
+								for (let i in article.images) {
+                                    if (article.images[i].author) {
+                                    	if (article.author && article.author._id && article.images[i].author.toString() === article.author._id.toString()) {
+                                            article.images[i].author = article.author
+										}
+									}
+								}
+							}
+							cb(null)
+                        }, (err) => {
+                            this.postProcessList(articles, viewer, callback)
+                        })
+
+					} else {
+                        this.postProcessList(articles, viewer, callback)
+                    }
 				}
 			})
 		},
@@ -618,6 +654,11 @@ var Model = function(mongoose) {
 				{path: 'sharedFrom', populate: {
 					path: 'author',
 				}},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
 				{path: 'images', populate: {
 					path: 'author',
 				}},
@@ -645,7 +686,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
+		// getByUsers: (authors, viewer, shares, category, country, start = 0, limit = 4, callback) => {
+		getByUsers: (parameters, callback) => {
+			let {authors, viewer, shares, category, country, start, limit, privacy} = parameters
+			if (!start) start = 0
+			if (!limit) limit = 4
 			authors = (authors) ? authors.map(MOI) : authors
 			shares = (shares) ? shares.map(MOI) : shares
 
@@ -669,12 +714,21 @@ var Model = function(mongoose) {
 
 			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			if (privacy) {
+				const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
+                Object.assign(query, {privacy: {$in: privacyIncluded}})
+			}
 			// if (country) Object.assign(query, {country})
 			Model.find(query).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {
-					path: 'author',
-				}},
+                    path: 'author',
+                }},
+                {path: 'sharedFrom', populate: {
+                    path: 'images', populate: {
+                        path: 'author',
+                    }
+                }},
 				{path: 'images', populate: {
                     path: 'author',
                 }},
@@ -945,7 +999,38 @@ var Model = function(mongoose) {
                     resolve(result)
                 })
             })
-        }
+        },
+		/**
+		 * Get nicknames mentioned in text (tagged as @nickname)
+		 * @param text String
+		 * @returns Array of
+		 * */
+		getMentionedNicknames: text => {
+			if(!text) return []
+			let matches = text.match(/(>|^|\s|&nbsp;)@([a-z]+[a-z0-9]+)/gmi)
+			if (!matches || matches.length < 1) return []
+            return matches.map(item => {
+                if (item) return item.trim().substring(1)
+            })
+		},
+		/**
+		 * Get sub levels of privacy.
+		 * ('Family' can see things for 'friends' and 'close friends' and for 'strangers',
+		 * but 'friend' can not see thing with privacy 'family' etc
+		 *
+		 * @param privacy String privacy lvl
+		 * @returns Array of subLevels
+		 * */
+		getPrivacySubLevels: privacy => {
+			const levels = {
+                'Family'		: ['Family', 'Close friend', 'Friend', 'Stranger'],
+                'Close friend'	: ['Close friend', 'Friend', 'Stranger'],
+                'Friend'		: ['Friend', 'Stranger'],
+                'Stranger'		: ['Stranger']
+            }
+            if (privacy && levels.hasOwnProperty(privacy)) return levels[privacy]
+			return levels['Stranger']
+		}
 	}
 }
 

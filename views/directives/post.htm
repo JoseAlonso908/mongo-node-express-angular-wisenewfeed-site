@@ -44,7 +44,7 @@
 			<h3 ng-if="post.title">{{post.title}}</h3>
 			<br>
 			<div class="images" ng-hide="editing">
-				<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
+				<a image="image" lightbox post="post.id" author="post.author" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
 			</div>
 			<textarea class="text" ng-show="editing" ng-model="post.editingText" ng-disabled="loading"></textarea>
 			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
@@ -78,7 +78,7 @@
 					<h3 ng-if="post.title">{{post.title}}</h3>
 					<br>
 					<div class="images">
-						<a image="image" lightbox post="post.id" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
+						<a image="image" lightbox post="post.id" author="post.sharedFrom.author" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
 					</div>
 					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
 				</div>

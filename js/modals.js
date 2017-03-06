@@ -218,7 +218,7 @@ angular.module('er.modals', [])
 
     $scope.close = friendshipConfirmModal.deactivate
 	$scope.validatePhone = function (input) {
-		var phoneRegex = /^\+([0-9]{8,15})$/
+		var phoneRegex = /^([0-9]{8,15})$/
 		return phoneRegex.test(input)
     }
     $scope.confirm = function () {
@@ -229,7 +229,7 @@ angular.module('er.modals', [])
 		}
 
         $scope.loading = true
-        friendshipService.add(userID, $scope.phone, $scope.type).then(function (data) {
+        friendshipService.add(userID, '+' + $scope.phone, $scope.type).then(function (data) {
             $parent.profile.friendship = data
             $scope.loading = false
             $scope.added = true

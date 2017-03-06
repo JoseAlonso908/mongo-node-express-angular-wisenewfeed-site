@@ -191,6 +191,9 @@ var Model = function(mongoose) {
                             cond: {
                             	$and: [
 									{
+										$ne: ['$author', MOI(viewer)],
+									},
+									{
 										$or: [
 											{$eq: ['$$f.user', MOI(viewer)]},
 											{$eq: ['$$f.friend', MOI(viewer)]},
@@ -226,6 +229,9 @@ var Model = function(mongoose) {
 			{
 				$match: {
 					$or: [
+						{
+							author: MOI(viewer),
+						},
 						{
 							privacy: {$exists: false},
 						},

@@ -213,10 +213,10 @@ router.get('/feed', (req, res) => {
 	let userId = req.query.userId || req.user._id
 
 	let authors = []
-	if (req.user.role != 'user') {
-		// Include user's articles into feed
-		authors.push(userId)
-	}
+	// if (req.user.role != 'user') {
+	// 	// Include user's articles into feed
+	// 	authors.push(userId)
+	// }
 
 	let shares = []
     country = models.Article.transformToTag(country)
@@ -226,6 +226,10 @@ router.get('/feed', (req, res) => {
 			models.Follow.followingByFollower(userId, null, null, null, (err, following) => {
 				for (let user of following) {
 					authors.push(user.following._id)
+				}
+
+				if (authors.length > 0 && req.user.role != 'user') {
+                    authors.push(userId)
 				}
 
 				cb()

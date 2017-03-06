@@ -46,6 +46,10 @@ var Model = function(mongoose) {
 				delete a.sharedFrom
 			}
 
+			if (a.friendship && a.friendship.length > 0) {
+                a.friendship = a.friendship[0]
+			}
+
 			return a
 		})
 
@@ -162,7 +166,11 @@ var Model = function(mongoose) {
 		], callback)
 	}
 
-	this.getFilterAggregationOptions = (filter, viewer) => {
+	this.getFilterAggregationOptions = (filter, viewer, options) => {
+		if (!options) {
+			options = {}
+		}
+
         let filterAggregationParams = [
             {
                 $lookup: {
@@ -220,12 +228,12 @@ var Model = function(mongoose) {
                     meta: true,
                 },
             },
-            {
-                $unwind: {
-                    path: '$friendship',
-                    preserveNullAndEmptyArrays: true,
-                }
-            },
+            // {
+            //     $unwind: {
+            //         path: '$friendship',
+            //         preserveNullAndEmptyArrays: true,
+            //     }
+            // },
 			{
 				$match: {
 					$or: [
@@ -241,19 +249,19 @@ var Model = function(mongoose) {
 						{
 							$and: [
 								{privacy: 'Friend'},
-								{'friendship.type': {$in: ['Friend', 'Close friend', 'Family']}},
+								{'friendship.0.type': {$in: ['Friend', 'Close friend', 'Family']}},
 							],
 						},
 						{
 							$and: [
 								{privacy: 'Close friend'},
-								{'friendship.type': {$in: ['Family', 'Close friend']}},
+								{'friendship.0.type': {$in: ['Family', 'Close friend']}},
 							],
 						},
 						{
 							$and: [
 								{privacy: 'Family'},
-								{'friendship.type': {$in: ['Family']}},
+								{'friendship.0.type': {$in: ['Family']}},
 							],
 						},
 					]
@@ -310,6 +318,16 @@ var Model = function(mongoose) {
                 }
             }
 		]
+
+        if (options['nousers'] === true) {
+            filterAggregationParams.push({
+            	$match: {
+            		'author.role': {
+            			$ne: 'user'
+					}
+				}
+			})
+        }
 
 		switch (filter) {
 			case 'top':
@@ -751,7 +769,7 @@ var Model = function(mongoose) {
 
             let filterAggregationOptions = [];
 
-            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer)
+            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: true})
 
             var aggregationOptions = [
                 {

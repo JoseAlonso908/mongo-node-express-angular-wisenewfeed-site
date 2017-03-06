@@ -12,7 +12,7 @@
 			<profileinfo ng-if="profile" profile="profile"></profileinfo>
 		</div>
 		<div class="middle">
-			<onyourmind ng-if="user && user._id == profile._id" user="user"></onyourmind>
+			<onyourmind user="user" ng-if="user && user._id == profile._id" user="user"></onyourmind>
 			<feed user="user" id="profile._id" type="type" ng-if="profile"></feed>
 		</div>
 		<div class="right">

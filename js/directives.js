@@ -394,8 +394,13 @@ angular.module('er.directives', [])
 .directive('onyourmind', function ($rootScope, $timeout, postService, $compile, piecesService) {
 	return {
 		restrict: 'E',
+		scope: {
+			user: '='
+		},
 		templateUrl: 'assets/views/directives/onyourmind.htm',
 		link: function ($scope, element, attr) {
+			console.log($scope)
+
 			$scope.create = function () {
                 console.log('$scope.privacy', $scope.privacy);
                 if ($scope.loading) return
@@ -429,7 +434,12 @@ angular.module('er.directives', [])
 
             $scope.files = []
 			/* TODO: change to constants */
-            $scope.privacy = 'Friend'
+
+			if ($scope.user.role == 'User') {
+                $scope.privacy = 'Friend'
+            } else {
+                $scope.privacy = 'Stranger'
+			}
 			$scope.addImage = function () {
 				if ($scope.loading) return
 

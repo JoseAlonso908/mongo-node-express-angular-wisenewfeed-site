@@ -17,7 +17,7 @@
 			<pieces></pieces>
 		</div>
 		<div class="middle">
-			<onyourmind ng-if="user && user.role != 'User'"></onyourmind>
+			<onyourmind user="user" ng-if="user && user.role != 'User'"></onyourmind>
 			<feed ng-if="user || guest" user="user"></feed>
 		</div>
 		<div class="right">

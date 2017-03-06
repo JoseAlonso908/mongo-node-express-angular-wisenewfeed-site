@@ -576,7 +576,7 @@ var Model = function(mongoose) {
 			var aggregationOptions = [
 				{
 					$match: query
-				},
+				}
 			]
 
 			aggregationOptions = aggregationOptions.concat(filterAggregationOptions)

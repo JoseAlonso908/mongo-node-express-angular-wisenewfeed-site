@@ -33,7 +33,22 @@ var Model = function (mongoose) {
                 return callback()
             }
 
-            Model.findOne({friend, user}).lean().exec((err, existingFriendship) => {
+            Model.findOne({
+                $or: [
+                    {
+                        $and: [
+                            {'user': user},
+                            {'friend': friend}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {'user': friend},
+                            {'friend': user}
+                        ]
+                    }
+                ]
+            }).lean().exec((err, existingFriendship) => {
                 console.log(existingFriendship);
                 if (existingFriendship || err) callback(err)
                 else {

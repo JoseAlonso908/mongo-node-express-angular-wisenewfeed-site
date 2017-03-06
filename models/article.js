@@ -400,8 +400,16 @@ var Model = function(mongoose) {
 				])
 				break;
 		}
-
-		return filterAggregationParams
+        if (options.expertsOnly) {
+            filterAggregationParams = filterAggregationParams.concat([
+                {
+                    $match: {
+                        'author.role': 'expert'
+                    }
+                },
+            ])
+        }
+        return filterAggregationParams;
 	}
 
     /**
@@ -563,7 +571,7 @@ var Model = function(mongoose) {
 			let filterAggregationOptions = [];
 
 			if (!filter) filter = 'news'
-			filterAggregationOptions = this.getFilterAggregationOptions(filter, viewer)
+			filterAggregationOptions = this.getFilterAggregationOptions(filter, viewer, {expertsOnly: true})
 
 			var aggregationOptions = [
 				{

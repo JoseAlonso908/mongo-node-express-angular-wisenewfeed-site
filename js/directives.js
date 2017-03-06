@@ -429,7 +429,7 @@ angular.module('er.directives', [])
 
             $scope.files = []
 			/* TODO: change to constants */
-            $scope.privacy = 'Stranger'
+            $scope.privacy = 'Friend'
 			$scope.addImage = function () {
 				if ($scope.loading) return
 

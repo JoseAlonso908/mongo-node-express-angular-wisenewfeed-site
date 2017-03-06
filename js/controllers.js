@@ -2124,7 +2124,7 @@ angular.module('er.controllers', [])
         }
     })
 	/*TODO: Add select privacy functionality */
-	$scope.privacy = 'Stranger'
+	$scope.privacy = 'Friend'
     $scope.fonts = [
 		'Liberation',
 		'Arial',

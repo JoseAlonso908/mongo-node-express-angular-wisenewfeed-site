@@ -65,7 +65,7 @@ var Model = function(mongoose) {
 					let keepIt = true
 					if (!n.from) keepIt = false
 					if (['like', 'dislike', 'share', 'comment', 'follow'].indexOf(n.type) > -1 && !n.post && !n.comment) keepIt = false
-
+					if (!n.post && ['mentioned', 'mentionedcomment'].indexOf(n.type) > -1) keepIt = false
 					return keepIt
 				})
 

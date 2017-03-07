@@ -928,7 +928,7 @@ angular.module('er.directives', [])
 			})
 
 			$scope.getURL = function (id) {
-				return $window.location.origin + '/#!/article/' + id
+				return $window.location.origin + '/permarticle/' + id
             }
 
             $scope.likesClass = function(reactions) {

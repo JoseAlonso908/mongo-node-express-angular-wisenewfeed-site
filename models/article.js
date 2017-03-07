@@ -1066,7 +1066,7 @@ var Model = function(mongoose) {
 		 * */
 		getMentionedNicknames: text => {
 			if(!text) return []
-			let matches = text.match(/(>|^|\s|&nbsp;)@([a-z]+[a-z0-9]+)/gmi)
+			let matches = text.match(/@([a-z]+[a-z0-9]+)/gmi)
 			if (!matches || matches.length < 1) return []
             return matches.map(item => {
                 if (item) return item.trim().substring(1)

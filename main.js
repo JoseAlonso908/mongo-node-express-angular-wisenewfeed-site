@@ -4,7 +4,8 @@ const env = 'development'
 global.__root = __dirname
 
 const
-	express = require('express'),
+	express = require('express')
+	exphbs = require('express-handlebars'),
 	compression = require('compression'),
 	// staticCache = require('express-static-cache')
 	serveStatic = require('serve-static'),
@@ -19,6 +20,9 @@ const
 global.mailgun = new Mailgun(config.MAILGUN.APIKEY)
 
 let app = express()
+
+app.engine('handlebars', exphbs())
+app.set('view engine', 'handlebars')
 
 app.disable('x-powered-by')
 app.use(compression())
@@ -181,6 +185,20 @@ app.get('/static/categories', (req, res) => {
 		}
 
 		res.send(categories)
+	})
+})
+
+app.get('/permarticle/:id', (req, res) => {
+	let {id} = req.params
+
+    models.Article.findOneById(id, (err, article) => {
+    	article.text = article.text
+			.replace(/<.+?>/gi, '')
+			.replace('&amp;', '&')
+			.replace('&nbsp;', ' ')
+
+    	// res.send(article)
+        res.render('article', {article})
 	})
 })
 

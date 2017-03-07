@@ -429,7 +429,7 @@ var Model = function(mongoose) {
 		Model,
 
 		findOneById: (_id, callback) => {
-			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+			_id = MOI(_id)
 			Model.findOne({_id}).populate([
 				{path: 'author'},
 				{path: 'sharedFrom', populate: {

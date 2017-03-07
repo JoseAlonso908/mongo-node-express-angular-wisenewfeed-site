@@ -28,7 +28,7 @@
 				<div class="flex-people-placeholder"></div>
 				<div class="flex-people-placeholder"></div>
 			</div>
-			<div class="no-people" ng-if="people.length == 0">
+			<div class="no-people" ng-if="(people | gender:gender | country:country | city:city).length == 0">
 				Nothing to display
 			</div>
 		</div>

@@ -313,7 +313,9 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 	if (req.access_token == 'guest') return res.status(400).send({message: 'Invalid token'})
 
 	let {postId, text} = req.body
-
+    if (req.user.role == 'user') {
+        text = text.substr(0, 250)
+    }
 	let filenames = []
 
     if (req.user.role === 'user') {

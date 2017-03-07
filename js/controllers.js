@@ -846,9 +846,9 @@ angular.module('er.controllers', [])
 	}
 
 	identityService.get().then(function (user) {
-		$scope.user = user
+		$scope.user = Object.assign({}, user)
 
-		if ($scope.user.wallpaper) {
+        if ($scope.user.wallpaper) {
 			$scope.wallpaperStyle = {'background-image': 'url(' + user.wallpaper + ')}'}
 		}
 	})

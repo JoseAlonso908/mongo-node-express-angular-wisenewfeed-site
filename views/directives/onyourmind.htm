@@ -9,7 +9,7 @@
 			<div class="title">Send</div>
 		</div>
 	</button>
-	<dropmenu privacy="privacy" ng-disabled="loading"></dropmenu>
+	<dropmenu privacy="privacy" nostranger="{{(user.role == 'User') ? 'true' : 'false'}}" ng-disabled="loading"></dropmenu>
 	<button class="upload-image-1" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
 	<button class="upload-image-2" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
 

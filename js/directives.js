@@ -399,8 +399,6 @@ angular.module('er.directives', [])
 		},
 		templateUrl: 'assets/views/directives/onyourmind.htm',
 		link: function ($scope, element, attr) {
-			console.log($scope)
-
 			$scope.create = function () {
                 console.log('$scope.privacy', $scope.privacy);
                 if ($scope.loading) return
@@ -2250,12 +2248,20 @@ angular.module('er.directives', [])
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/dropmenu.htm',
 		scope: {
+			nostranger: '@',
 			privacy: '=',
 		},
 		link: function ($scope) {
             if (!$scope.privacy) $scope.privacy = 'Stranger';
             $scope.activeMnu = false;
-            $scope.items = ['Family', 'Close friend', 'Friend', 'Stranger'];
+            $scope.items = ['Family', 'Close friend', 'Friend'];
+
+            console.log($scope)
+            console.log($scope.nostranger)
+            if (!$scope.nostranger) {
+            	$scope.items.push('Stranger')
+			}
+
             $scope.select = function (option) {
                 $scope.privacy = option;
                 console.log($scope.privacy);

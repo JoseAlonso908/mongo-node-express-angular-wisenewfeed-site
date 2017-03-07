@@ -1,6 +1,7 @@
 <div class="user-profile-info" ng-if="profile">
 	<div class="info">
 		<a ng-href="#!/person/{{profile._id}}" class="name">{{profile.name}}</a>
+		<div class="nickname" ng-if="profile.nickname">@{{profile.nickname}}</div>
 		<div class="position">{{profile.title}}</div>
 	</div>
 

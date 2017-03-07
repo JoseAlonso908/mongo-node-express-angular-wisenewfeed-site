@@ -30,6 +30,7 @@
 				<div class="user-profile-info" ng-if="user">
 					<!-- <input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name"> -->
 					<div class="name">{{user.name}}</div>
+					<div class="nickname" ng-if="user.nickname">@{{user.nickname}}</div>
 					<div class="position">{{user.role}}</div>
 					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" name="title" ng-model="user.title">
 

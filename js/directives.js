@@ -798,7 +798,7 @@ angular.module('er.directives', [])
 				$scope.mutedAuthors = authors
 			})
 
-			var feedType = 'feed'
+			var feedType = 'all'
 
 			$rootScope.$on('updateFeedVisibleCount', function (event) {
 				updateVisibleCount($scope.feed)

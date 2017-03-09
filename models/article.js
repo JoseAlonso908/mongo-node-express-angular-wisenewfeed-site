@@ -228,12 +228,6 @@ var Model = function(mongoose) {
                     meta: true,
                 },
             },
-            // {
-            //     $unwind: {
-            //         path: '$friendship',
-            //         preserveNullAndEmptyArrays: true,
-            //     }
-            // },
 			{
 				$match: {
 					$or: [
@@ -404,7 +398,10 @@ var Model = function(mongoose) {
             filterAggregationParams = filterAggregationParams.concat([
                 {
                     $match: {
-                        'author.role': 'expert'
+                    	$or: [
+                    		{'author.role': 'expert'},
+                            {'author.role': 'journalist'}
+						]
                     }
                 },
             ])
@@ -777,7 +774,11 @@ var Model = function(mongoose) {
 
             let filterAggregationOptions = [];
 
-            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: true})
+			if (parameters.nousers === undefined) {
+                parameters.nousers = true
+			}
+
+            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
 
             var aggregationOptions = [
                 {

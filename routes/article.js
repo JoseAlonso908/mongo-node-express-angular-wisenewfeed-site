@@ -185,9 +185,26 @@ router.get('/friendsfeed', (req, res) => {
 	authors.push(userId)
 
 	async.series([
+        (cb) => {
+            // Add users who you're following
+            models.Follow.followingByFollower(userId, null, null, null, (err, following) => {
+                for (let user of following) {
+                    authors.push(user.following._id)
+                }
+
+                console.log(1)
+                console.log(authors)
+
+                cb()
+            })
+        },
 		(cb) => {
 			models.Friendship.friends(userId, (err, friends) => {
 				authors = authors.concat(friends)
+
+                console.log(2)
+                console.log(authors)
+
 				cb()
 			})
 		},
@@ -200,7 +217,7 @@ router.get('/friendsfeed', (req, res) => {
             limit,
             viewer: req.user._id,
             shares: [],
-            privacy: 'Friend'
+            nousers: false,
         }, (err, articles) => {
             if (err) res.status(400).send(err)
             else res.send(articles)

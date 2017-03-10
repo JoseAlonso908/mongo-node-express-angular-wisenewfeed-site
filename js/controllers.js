@@ -2005,14 +2005,14 @@ angular.module('er.controllers', [])
 		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}]
     }
 
-    $scope.attachCertificate = function () {
+    $scope.attachCertificate = function (item) {
         var certificateFileInput = document.querySelector('input[type=file][name=certificate]:last-of-type')
         angular.element(certificateFileInput).on('change', function (e) {
             e.stopImmediatePropagation()
 
             $scope.$apply(function () {
                 var file = e.target.files[0]
-
+                item.title = file.name;
                 betaUploadsService.addCert(file).then(function (result) {
                     $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
                 }).catch(function (error) {
@@ -2035,13 +2035,14 @@ angular.module('er.controllers', [])
         })
     }
 
-    $scope.attachDownload = function () {
+    $scope.attachDownload = function (item) {
         var certificateFileInput = document.querySelector('input[type=file][name=additional]:last-of-type')
         angular.element(certificateFileInput).on('change', function (e) {
             e.stopImmediatePropagation()
 
             $scope.$apply(function () {
                 var file = e.target.files[0]
+                item.title = file.name;
                 betaUploadsService.addDownload(file).then(function (result) {
                     $scope.signup.additional[$scope.signup.additional.length -1].file = result.data.file
                 }).catch(function (error) {

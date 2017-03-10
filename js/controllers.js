@@ -1911,10 +1911,10 @@ angular.module('er.controllers', [])
 .controller('profilePhotosController', function ($scope, $routeParams, identityService) {
 	var loadImages = function (callback) {
 		$scope.images = undefined
-		
+
 		identityService.images($routeParams.id).then(function (images) {
 			$scope.images = images
-			
+
 			if (typeof callback == 'function') callback()
 		})
 	}
@@ -1975,7 +1975,7 @@ angular.module('er.controllers', [])
 	})
 
 	$scope.upload = function () {
-		
+
 	}
 
 	async.parallel([
@@ -2000,9 +2000,9 @@ angular.module('er.controllers', [])
     $scope.signup = {
         role: selectedRole,
         contacts: [],
-        certificates: [{title: '', file: ''}],
-        experience: [{from: '', to: '', place: ''}],
-		additional: [{title: '', file: ''}]
+        certificates: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
+        experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
+		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}]
     }
 
     $scope.attachCertificate = function () {
@@ -2069,24 +2069,50 @@ angular.module('er.controllers', [])
     $scope.addMoreCertificates = function () {
         var lastCert = $scope.signup.certificates[$scope.signup.certificates.length - 1]
         if (lastCert.title && lastCert.file) {
-            $scope.signup.certificates.push({title: '', file: ''})
+            $scope.signup.certificates.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
             $scope.errors.certificateFillRequired = false
 		} else {
             $scope.errors.certificateFillRequired = true
 		}
     }
+    $scope.removeCertificate = function (item) {
+        var originalCertificates = $scope.signup.certificates;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificates[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
 
     $scope.addMoreExperience = function () {
         var lastExperience = $scope.signup.experience[$scope.signup.experience.length - 1]
-        console.log(lastExperience);
         if (lastExperience.place && lastExperience.from && lastExperience.to) {
             $scope.errors.experienceFillRequried = false
-            $scope.signup.experience.push({from: '', to: '', place: ''})
+            $scope.signup.experience.push({from: '', to: '', place: '', id: 'exp_' + Date.now().toString()})
         } else {
             $scope.errors.experienceFillRequried = true
             return false
         }
     }
+
+    $scope.removeExperience = function (item) {
+        var originalExperience = $scope.signup.experience
+		if (originalExperience.length > 1) {
+            for (var i = 0; i < originalExperience.length; i++) {
+                if (originalExperience[i] && originalExperience[i].id === item.id) {
+                    originalExperience.splice(i, 1)
+                }
+            }
+		} else {
+            $scope.signup.experience[0] = {from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}
+		}
+    }
+
     $scope.addMoreContacts = function () {
         if ($scope.signup.contacts.length >= 5) {
             $scope.errors.contactsLimit = true
@@ -2095,13 +2121,35 @@ angular.module('er.controllers', [])
         $scope.errors.contactsLimit = false
         $scope.signup.contacts.push('')
     }
+
+    $scope.removeContact = function (item) {
+        var contacts = $scope.signup.contacts;
+        for (var i = 0; i < contacts.length; i++) {
+            if (contacts[i] && contacts[i] === item) {
+                contacts.splice(i, 1)
+            }
+        }
+    }
+
     $scope.addMoreAdditional = function () {
         var last = $scope.signup.additional[$scope.signup.additional.length - 1]
         if (last.title && last.file) {
             $scope.errors.additionalFillRequried = false
-            $scope.signup.additional.push({title: '', file: ''})
+            $scope.signup.additional.push({title: '', file: '', id: 'addon_' + Date.now().toString()})
         } else {
             $scope.errors.additionalFillRequried = true
+        }
+    }
+    $scope.removeAdditional = function (item) {
+        var additional = $scope.signup.additional;
+        if (additional.length > 1) {
+            for (var i = 0; i < additional.length; i++) {
+                if (additional[i] && additional[i].id === item.id) {
+                    additional.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.additional[0] = {title: '', file: '', id: 'addon_' + Date.now().toString()};
         }
     }
 

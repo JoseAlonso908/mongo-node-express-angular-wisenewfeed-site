@@ -974,6 +974,24 @@ a.small-icon, button.small-icon {
 				width: 100%;
 				float: left;
 			}
+			.closable {
+				position: relative;
+				.close-btn-wrap {
+					width: 100%;
+					display: inline-block;
+				}
+				.close-trigger {
+					transition: all 0.2s;
+					float: right;
+					display: inline-block;
+					padding: 5px 7px;
+					color: lighten($middleGrey, 20%);
+					cursor: pointer;
+					&:hover {
+						color: $activeBlue
+					}
+				}
+			}
 
 			.group {
 				$sidePadding: 40px;

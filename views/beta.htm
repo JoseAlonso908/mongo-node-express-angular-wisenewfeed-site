@@ -50,18 +50,18 @@
                     <!-- Experience GROUP -->
                     <div class="group">
                         <div class="title">Experience</div>
-                        <div class="experience" ng-repeat="item in signup.experience">
+                        <div class="experience closable" ng-repeat="item in signup.experience">
+                            <div class="close-btn-wrap">
+                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeExperience(item)"></i>
+                            </div>
                             <div class="input-group">
                                 <label>Date</label>
                                 <div class="date-input-wrapper half">
-                                    <input ng-model="item.from" type="text" name="from" placeholder="From">
-                                    <i class="fa fa-calendar"></i>
+                                    <md-datepicker ng-model="item.from" name="from" md-placeholder="From" md-open-on-focus></md-datepicker>
                                 </div>
                                 <div class="date-input-wrapper half">
-                                    <input ng-model="item.to" type="text" name="to" placeholder="To">
-                                    <i class="fa fa-calendar"></i>
+                                    <md-datepicker ng-model="item.to" name="to" md-placeholder="To" md-open-on-focus></md-datepicker>
                                 </div>
-
                             </div>
                             <div class="input-group">
                                 <label>Place</label>
@@ -82,7 +82,10 @@
                     <!-- CERTIFICATES GROUP -->
                     <div class="group">
                         <div class="title">Certificates</div>
-                        <div class="input-group with-file-upload" ng-repeat="item in signup.certificates">
+                        <div class="input-group with-file-upload closable" ng-repeat="item in signup.certificates">
+                            <div class="close-btn-wrap">
+                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeCertificate(item)"></i>
+                            </div>
                             <label>Title</label>
                             <input ng-model="item.title" type="text" name="certificateTitle">
                             <input type="file" ng-model="item.file" name="certificate" class="hidden-file-input">
@@ -141,7 +144,11 @@
                             <input ng-model="signup.instagram" type="url" name="instagram">
                         </div>
 
-                        <div class="input-group" ng-repeat="item in signup.contacts track by $index">
+                        <div class="input-group closable" ng-repeat="item in signup.contacts track by $index">
+
+                            <div class="close-btn-wrap">
+                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeContact(item)"></i>
+                            </div>
                             <label>Contact</label>
                             <input ng-model="signup.contacts[$index]" type="text">
                         </div>
@@ -157,7 +164,10 @@
                     <!--  ADDITIONAL FILES GROUP -->
                     <div class="group">
                         <div class="title">Additional files</div>
-                        <div class="input-group with-file-upload" ng-repeat="item in signup.additional">
+                        <div class="input-group with-file-upload closable" ng-repeat="item in signup.additional">
+                            <div class="close-btn-wrap">
+                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeAdditional(item)"></i>
+                            </div>
                             <label>Title</label>
                             <input ng-model="item.title" type="text">
                             <input type="file" ng-model="item.file" name="additional" class="hidden-file-input">

@@ -10,7 +10,8 @@ window.async = require('async')
 
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
-	'angularMoment', require('satellizer'), require('angular-socialshare'),
+	'angularMoment', require('satellizer'), require('angular-socialshare'),require('angular-material'),
+    require('angular-messages'),
 	// 'ngScrollbar',
 	'localytics.directives', 'btford.modal','ngMask',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])

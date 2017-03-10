@@ -54,12 +54,10 @@
                             <div class="input-group">
                                 <label>Date</label>
                                 <div class="date-input-wrapper half">
-                                    <input ng-model="item.from" type="text" name="from" placeholder="From">
-                                    <i class="fa fa-calendar"></i>
+                                    <md-datepicker ng-model="item.from" name="from" md-placeholder="From" md-open-on-focus></md-datepicker>
                                 </div>
                                 <div class="date-input-wrapper half">
-                                    <input ng-model="item.to" type="text" name="to" placeholder="To">
-                                    <i class="fa fa-calendar"></i>
+                                    <md-datepicker ng-model="item.to" name="to" md-placeholder="To" md-open-on-focus></md-datepicker>
                                 </div>
 
                             </div>

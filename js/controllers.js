@@ -1998,12 +1998,6 @@ angular.module('er.controllers', [])
     	selectedRole = $routeParams.role
 	}
     $scope.signup = {
-    	name: 'Lavrenty Prokopovych',
-		title: 'lavavrik',
-		company: 'co',
-		info: 'info',
-		email: 'lavavrik@yandex.ru',
-		phone: '+380639735449',
         role: selectedRole,
         contacts: [],
         certificates: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],

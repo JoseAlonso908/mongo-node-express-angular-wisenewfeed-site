@@ -2,7 +2,8 @@ const 	express = require('express'),
 		multer = require('multer'),
 		async = require('async'),
 		path = require('path'),
-		fs = require('fs')
+		fs = require('fs'),
+		randomString = require('random-string')
 
 const config = require('./../config')
 
@@ -29,6 +30,10 @@ router.use(function (err, req, res, next) {
 })
 
 router.use((req, res, next) => {
+	if (['/approve', '/decline'].indexOf(req.path) > -1) {
+		return next()
+	}
+
 	if (!req.headers.authorization) {
 		res.status(400).send({message: 'Invalid token'})
 	} else {
@@ -472,6 +477,38 @@ router.get('/isonline', (req, res) => {
 	let {user} = req.query
 
 	res.send(ws.isOnline(user))
+})
+
+router.get('/approve', (req, res) => {
+	let {id} = req.query
+    let password = randomString({length: 8}).toUpperCase()
+
+	console.log(id)
+
+	models.User.updatePassword(id, password, (err, user) => {
+        mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
+            `Your WNF profile was approved!`,
+            `Congratulations! Your WiseNewsFeed profile was approved!\n
+User ${user.email} and ${password} to access ${req.protocol}://${req.headers.host}/`,
+            err => res.send(err)
+        )
+	})
+})
+
+router.get('/decline', (req, res) => {
+	let {id} = req.query
+
+	models.User.findById(id, (err, user) => {
+		if (!user) {
+			return res.send({message: 'User not found'})
+		}
+
+		mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
+            `Your WNF profile was declined`,
+            `Unfortunately, your WiseNewsFeed profile was declined.`,
+            err => res.send(err)
+        )
+	})
 })
 
 module.exports = router

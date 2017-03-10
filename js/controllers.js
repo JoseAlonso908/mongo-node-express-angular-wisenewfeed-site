@@ -1998,6 +1998,12 @@ angular.module('er.controllers', [])
     	selectedRole = $routeParams.role
 	}
     $scope.signup = {
+    	name: 'Lavrenty Prokopovych',
+		title: 'lavavrik',
+		company: 'co',
+		info: 'info',
+		email: 'lavavrik@yandex.ru',
+		phone: '+380639735449',
         role: selectedRole,
         contacts: [],
         certificates: [{title: '', file: ''}],
@@ -2108,11 +2114,15 @@ angular.module('er.controllers', [])
     $scope.sendForm = function (event) {
         betaUploadsService.signup($scope.signup).
 		then(function (result) {
-            $scope.submitClass = 'success'
-            $scope.submitResult = 'Your request successfully sent'
+            $scope.$apply(function () {
+                $scope.submitClass = 'success'
+                $scope.submitResult = 'Your request successfully sent'
+            })
         }).catch(function (err) {
-        	$scope.submitClass = 'error'
-            $scope.submitResult = 'Failed to submit your request'
+        	$scope.$apply(function () {
+				$scope.submitClass = 'error'
+				$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
+        	})
         })
         console.log($scope.signup)
     }

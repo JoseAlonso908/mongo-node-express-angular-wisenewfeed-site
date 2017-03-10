@@ -1119,6 +1119,10 @@ a.small-icon, button.small-icon {
 						text-align: center;
 						color: $activeBlue;
 					}
+					.error {
+						text-align: center;
+						color: red;
+					}
 					.notice {
 						padding-left: 140px;
 						color: $middleGrey;

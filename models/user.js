@@ -130,7 +130,7 @@ var Model = function(mongoose) {
 		},
 
 		findById: (_id, callback) => {
-			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
+			_id = MOI(_id)
 			Model.findOne({_id}, callback)
 		},
 
@@ -268,7 +268,7 @@ var Model = function(mongoose) {
 		},
 
 		updatePassword: (_id, password, callback) => {
-			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
+			_id = MOI(_id)
 
 			Model.findOne({_id}, (err, user) => {
 				user.password = sha1(password)

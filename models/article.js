@@ -1017,7 +1017,7 @@ var Model = function(mongoose) {
                     async.eachSeries(parsedResults, (url, cb) => {
                         metascraper.scrapeUrl(url).then((meta) => {
                         	let withMeta = null
-                            if (meta.title && meta.description) {
+                            if (meta.title && meta.description && ['YouTube', 'Vimeo'].indexOf(meta.publisher) == -1) {
 								withMeta = true
                                 parsedMeta = meta
                             }

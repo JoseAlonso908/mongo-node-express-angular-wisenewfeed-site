@@ -1990,13 +1990,14 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController', function ($scope, $routeParams, betaUploadsService, $timeout) {
+.controller('betaController', function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService) {
     $scope.errors = {}
     var availableRoles = ['expert', 'journalist']
 	var selectedRole = 'expert'
 	if ($routeParams.role && availableRoles.indexOf($routeParams.role) > -1) {
     	selectedRole = $routeParams.role
 	}
+
     $scope.signup = {
         role: selectedRole,
         contacts: [],
@@ -2004,6 +2005,22 @@ angular.module('er.controllers', [])
         experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
 		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}]
     }
+
+    identityService.get().then(function (user) {
+        $scope.user = user
+
+		Object.assign($scope.signup, {
+			name: user.name,
+			info: user.intro,
+			email: user.email,
+			phone: user.phone,
+			title: user.position,
+			company: user.company,
+			title: user.title,
+			linkedin: user.contact.linkedin,
+            facebook: user.contact.fb,
+		})
+    })
 
     $scope.attachCertificate = function () {
         var certificateFileInput = document.querySelector('input[type=file][name=certificate]:last-of-type')
@@ -2153,20 +2170,42 @@ angular.module('er.controllers', [])
         }
     }
 
+
+
     $scope.sendForm = function (event) {
-        betaUploadsService.signup($scope.signup).
-		then(function (result) {
-            $scope.$apply(function () {
-                $scope.submitClass = 'success'
-                $scope.submitResult = 'Your request successfully sent'
-            })
-        }).catch(function (err) {
-        	$scope.$apply(function () {
-				$scope.submitClass = 'error'
-				$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
-        	})
+        identityService.get().then(function (user) {
+            $scope.user = user
+
+			// User authenticated, upgrade
+			betaUploadsService.upgrade($scope.signup).
+			then(function (result) {
+				$scope.$apply(function () {
+					$scope.submitClass = 'success'
+					$scope.submitResult = 'Your request successfully sent'
+				})
+			}).catch(function (err) {
+				$scope.$apply(function () {
+					$scope.submitClass = 'error'
+					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
+				})
+			})
+        }, function (error) {
+        	// User is not authenticated
+			betaUploadsService.signup($scope.signup).
+			then(function (result) {
+				$scope.$apply(function () {
+					$scope.submitClass = 'success'
+					$scope.submitResult = 'Your request successfully sent'
+				})
+			}).catch(function (err) {
+				$scope.$apply(function () {
+					$scope.submitClass = 'error'
+					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
+				})
+			})
         })
-        console.log($scope.signup)
+
+
     }
 })
 .controller('writeController', function ($scope, $timeout, $location, $rootScope, postService, piecesService, $compile, identityService) {

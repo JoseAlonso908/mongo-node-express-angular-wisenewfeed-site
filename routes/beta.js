@@ -49,9 +49,108 @@ router.post('/adddownload', tempUploads.single('file'), (req, res) => {
     res.send({ok: true, file: relativePath})
 })
 
+router.post('/upgrade', (req, res) => {
+    async.waterfall([
+        (next) => {
+            if (!req.headers.authorization) {
+                next({message: 'Invalid token'})
+            } else {
+                req.access_token = req.headers.authorization.split(' ')[1]
+                models.Token.getUserByToken(req.access_token, next)
+            }
+        },
+        (user, next) => {
+            let {form} = req.body
+            let certificates = form.certificates.map(cert => {
+                let file = ''
+                if (cert.file) {
+                    file = `${req.protocol}://${req.headers.host}/${cert.file}`
+                }
+                return {title: cert.title, file}
+            })
+            let additional = form.additional.map(item => {
+                let file = ''
+                if (item.file) {
+                    file = `${req.protocol}://${req.headers.host}/${item.file}`
+                }
+                return {title: item.title, file}
+            })
+            form.certificates = certificates
+            form.additional = additional
+            let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
+            const pdfName = uuid.v4() + '.pdf';
+            let data = {
+                name: form.name,
+                intro: form.info,
+                email: form.email,
+                phone: form.phone,
+                position: form.title,
+                company: form.company,
+                role: form.role,
+                title: form.title,
+                contact: {
+                    email: form.email,
+                    phone: form.phone,
+                    linkedin: form.linkedin,
+                    fb: form.facebook,
+                },
+                certificates: form.certificates.map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                downloads: form.additional.map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                experience: form.experience.map(e => {
+                    return {
+                        time: e.from + ' - ' + e.to,
+                        place: e.place,
+                    }
+                })
+            }
+
+            models.User.update(user._id, data, (err, user) => {
+                pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
+                    if (err) return next(err);
+                    next(null, user, resultPDF, form)
+                })
+            })
+        },
+        (user, resultPDF, form, next) => {
+            let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
+
+            var mail = mailcomposer({
+                from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
+                to: config.ADMIN_EMAILS.join(', '),
+                subject: `ER: Upgrade to ${form.role}`,
+                text: `Upgrade for ${form.name} to ${form.role}
+                    \nApprove ${approveLink}`,
+                html: `<strong>Upgrade for ${form.name} to ${form.role}</strong><br>
+                    <a href="${approveLink}">Approve</a>`,
+                attachments: [{path: resultPDF.filename}]
+            })
+
+            next(null, mail)
+        },
+        (mail, next) => {
+            mail.build(next)
+        },
+        (msg, next) => {
+            mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
+        }
+    ], (err) => {
+        if (err) res.status(400).send(err)
+        else res.send({ok: true})
+    })
+})
+
 router.post('/signup', (req, res) => {
     let {form} = req.body
-    console.log(form);
     let certificates = form.certificates.map(cert => {
         let file = ''
         if (cert.file) {
@@ -70,8 +169,6 @@ router.post('/signup', (req, res) => {
     form.additional = additional
     let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
     const pdfName = uuid.v4() + '.pdf';
-
-    console.log(form)
 
     // Turn form to model scheme
     let user = {

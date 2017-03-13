@@ -30,7 +30,7 @@ router.use(function (err, req, res, next) {
 })
 
 router.use((req, res, next) => {
-	if (['/approve', '/decline'].indexOf(req.path) > -1) {
+	if (['/approve', '/decline', '/upgrade'].indexOf(req.path) > -1) {
 		return next()
 	}
 
@@ -508,6 +508,21 @@ router.get('/decline', (req, res) => {
             `Unfortunately, your WiseNewsFeed profile was declined.`,
             err => res.send(err)
         )
+	})
+})
+
+router.get('/upgrade', (req, res) => {
+	let {id, role} = req.query
+
+	models.User.update(id, {role}, (err, user) => {
+		if (err) res.status(400).send(err)
+		else {
+			mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
+				`Your WNF profile was approved!`,
+				`Congratulations! Your WiseNewsFeed profile was upgraded to ${role}!`,
+				err => res.send(err)
+			)
+        }
 	})
 })
 

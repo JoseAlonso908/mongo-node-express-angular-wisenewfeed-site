@@ -1311,7 +1311,9 @@ angular.module('er.services', [])
 					reject(data)
 				})
 			})
-
-		}
+		},
+		upgrade: function (form) {
+            return __s($http, $cookies, 'post', '/beta/upgrade', {form: form})
+		},
 	}
 })

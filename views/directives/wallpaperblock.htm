@@ -45,7 +45,7 @@
 
         <div ng-class="{single: (user.active_questions == 0 || !user.active_questions)}" class="buttons"
              ng-if="user._id == profile._id">
-            <a ng-href="#!/questions/{{profile._id}}" class="questions"><i class="material-icons">help</i>
+            <a ng-href="#!/questions/{{profile._id}}" class="questions" ng-if="profile.role !== 'User'"><i class="material-icons">help</i>
                 <div class="title">Question box {{(user.active_questions) ? '(' + user.active_questions + ')' : ''}}
                 </div>
             </a>

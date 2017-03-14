@@ -19,20 +19,20 @@
 		<div class="content confirm-signup">
 			<div class="block">
 				<div class="title">Are you expert or journalist?</div>
-				<div class="text">Please fill the form and choose your role</div>
+				<div class="text">Please choose your role</div>
 
-				<input type="text" ng-model="extra.title" ng-class="{error: extraError.title}" placeholder="Your title">
-				<input type="text" ng-model="extra.company" ng-class="{error: extraError.company}" placeholder="Your company">
+				<!--<input type="text" ng-model="extra.title" ng-class="{error: extraError.title}" placeholder="Your title">-->
+				<!--<input type="text" ng-model="extra.company" ng-class="{error: extraError.company}" placeholder="Your company">-->
 				<!-- <input type="text" ng-model="extra.field" ng-class="{error: extraError.field}" placeholder="Field"> -->
 
-				<select ng-model="extra.field" placeholder="Field" ng-class="{error: extraError.field}" required>
-					<option value="" disabled selected>Field</option>
-					<option ng-value="field" ng-repeat="field in fields">{{field}}</option>
-				</select>
+				<!--<select ng-model="extra.field" placeholder="Field" ng-class="{error: extraError.field}" required>-->
+					<!--<option value="" disabled selected>Field</option>-->
+					<!--<option ng-value="field" ng-repeat="field in fields">{{field}}</option>-->
+				<!--</select>-->
 
 				<div class="footer">
-					<button ng-click="goExpertExtendedForm()"  class="signup-expert cta-button">Sign up as Expert</button>
-					<button ng-click="goJournalistExtendedForm()" class="signup-journalist cta-button">Sign up as Journalist</button>
+					<a ng-href="#!/beta/expert" class="signup-expert cta-button">Sign up as Expert</a>
+					<a ng-href="#!/beta/journalist" class="signup-journalist cta-button">Sign up as Journalist</a>
 				</div>
 			</div>
 

@@ -161,8 +161,11 @@ angular.module('er.controllers', [])
 
 	$scope.signup = $cookies.getObject('signup-params')
 
-	$scope.signup.phone = '+' + $scope.signup.country.code + $scope.signup.phone
-	$scope.signup.country = $scope.signup.country.country
+
+	if ($scope.signup) {
+        $scope.signup.phone = '+' + $scope.signup.country.code + $scope.signup.phone
+        $scope.signup.country = $scope.signup.country.country
+    }
 
 	$scope.extra = {title: '', company: '', field: ''}
 	$scope.extraError = {title: '', company: '', field: ''}

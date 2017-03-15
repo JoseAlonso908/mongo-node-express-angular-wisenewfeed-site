@@ -1,5 +1,5 @@
 module.exports = {
-	ADMIN_EMAILS: ['johan@mail.ua', 'angela170990@gmail.com'],
+	ADMIN_EMAILS: ['johan@mail.ua', 'angela170990@gmail.com', 'wnfsocial@gmail.com'],
 	FACEBOOK_SECRET: 'b0f9e9d9ebaecb3d79e3f2f4c31305b9',
 	LINKEDIN_SECRET: 'iyX2DFMPitSmuHIa',
 	TWITTER_KEY: 'vWvoIDn4bHVp4TbBg4PX5X8Ir',

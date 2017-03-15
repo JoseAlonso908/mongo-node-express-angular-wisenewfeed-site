@@ -86,7 +86,6 @@ router.post('/upgrade', (req, res) => {
                 phone: form.phone,
                 position: form.title,
                 company: form.company,
-                role: form.role,
                 title: form.title,
                 contact: {
                     email: form.email,

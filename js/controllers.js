@@ -2025,22 +2025,21 @@ angular.module('er.controllers', [])
 		})
     })
 
-    $scope.attachCertificate = function () {
-        var certificateFileInput = document.querySelector('input[type=file][name=certificate]:last-of-type')
-        angular.element(certificateFileInput).on('change', function (e) {
-            e.stopImmediatePropagation()
-
-            $scope.$apply(function () {
-                var file = e.target.files[0]
-                item.title = file.name;
-                betaUploadsService.addCert(file).then(function (result) {
-                    $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
-                }).catch(function (error) {
-                    console.log(error);
-                    alert('Error while uploading file. File size should be lower than 5 megabytes.')
-                })
-            })
-        })
+    $scope.attachCertificate = function (event, item) {
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {
+				var file = e.target.files[0]
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					$scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
 
         $timeout(function () {
             certificateFileInput.click()
@@ -2055,8 +2054,8 @@ angular.module('er.controllers', [])
         })
     }
 
-    $scope.attachDownload = function (item) {
-        var certificateFileInput = document.querySelector('input[type=file][name=additional]:last-of-type')
+    $scope.attachDownload = function (event, item) {
+        var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
         angular.element(certificateFileInput).on('change', function (e) {
             e.stopImmediatePropagation()
 

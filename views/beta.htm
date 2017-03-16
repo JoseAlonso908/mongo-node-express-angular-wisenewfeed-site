@@ -89,7 +89,7 @@
                             <label>Title</label>
                             <input ng-model="item.title" type="text" name="certificateTitle">
                             <input type="file" ng-model="item.file" name="certificate" class="hidden-file-input">
-                            <div class="attach-file" ng-click="attachCertificate(item)">
+                            <div class="attach-file" ng-click="attachCertificate($event, item)">
                                 <i class="material-icons">attachment</i>
                                 <span class="title">Upload file</span>
                             </div>
@@ -171,7 +171,7 @@
                             <label>Title</label>
                             <input ng-model="item.title" type="text">
                             <input type="file" ng-model="item.file" name="additional" class="hidden-file-input">
-                            <div class="attach-file" ng-click="attachDownload(item)">
+                            <div class="attach-file" ng-click="attachDownload($event, item)">
                                 <i class="material-icons">attachment</i>
                                 <span class="title">Upload file</span>
                             </div>

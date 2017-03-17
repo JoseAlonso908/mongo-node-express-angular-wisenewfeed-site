@@ -100,13 +100,13 @@ router.post('/upgrade', (req, res) => {
                     linkedin: form.linkedin,
                     fb: form.facebook,
                 },
-                certificates: form.certificates.map(c => {
+                certificates: form.certificates.filter(c => !!(c.title && c.file)).map(c => {
                     return {
                         filename: c.title,
                         filepath: c.file
                     }
                 }),
-                downloads: form.additional.map(c => {
+                downloads: form.additional.filter(c => !!(c.title && c.file)).map(c => {
                     return {
                         filename: c.title,
                         filepath: c.file

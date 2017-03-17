@@ -77,6 +77,13 @@ router.post('/upgrade', (req, res) => {
             })
             form.certificates = certificates
             form.additional = additional
+            form.exp = form.experience.map(e => {
+                return {
+                    from: fmtDate(e.from),
+                    to: fmtDate(e.to),
+                    place: e.place,
+                }
+            })
             let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
             const pdfName = uuid.v4() + '.pdf';
             let data = {
@@ -107,7 +114,7 @@ router.post('/upgrade', (req, res) => {
                 }),
                 experience: form.experience.map(e => {
                     return {
-                        time: e.from + ' - ' + e.to,
+                        time: `${fmtDate(e.from)} - ${fmtDate(e.to)}`,
                         place: e.place,
                     }
                 })
@@ -166,6 +173,13 @@ router.post('/signup', (req, res) => {
     })
     form.certificates = certificates
     form.additional = additional
+    form.exp = form.experience.map(e => {
+        return {
+            from: fmtDate(e.from),
+            to: fmtDate(e.to),
+            place: e.place,
+        }
+    })
     let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
     const pdfName = uuid.v4() + '.pdf';
 
@@ -199,7 +213,7 @@ router.post('/signup', (req, res) => {
         }),
         experience: form.experience.map(e => {
             return {
-                time: e.from + ' - ' + e.to,
+                time: `${fmtDate(e.from)} - ${fmtDate(e.to)}`,
                 place: e.place,
             }
         })
@@ -264,5 +278,18 @@ router.post('/signup', (req, res) => {
         else res.json({ok: true})
     })
 })
+
+var fmtDate = function (d) {
+    if (!d) return '';
+    if (typeof d == 'string') d = new Date(d);
+    var month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('/');
+}
 
 module.exports = router

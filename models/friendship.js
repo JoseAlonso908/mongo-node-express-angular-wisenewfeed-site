@@ -49,7 +49,6 @@ var Model = function (mongoose) {
                     }
                 ]
             }).lean().exec((err, existingFriendship) => {
-                console.log(existingFriendship);
                 if (existingFriendship || err) callback(err)
                 else {
                     let friendship = new Model()

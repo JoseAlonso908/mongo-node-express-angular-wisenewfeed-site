@@ -81,8 +81,6 @@ var Model = function(mongoose) {
 
 			level++
 
-			// console.log('Level: ' + level + ', MIN: ' + prevXpPassed + ', MAX: ' + xpPassed + ', GAP: ' + (xpPassed - prevXpPassed) + ', FACTOR: ' + factor)
-
 			if (xpPassed > xp) break
 			prevXpPassed = xpPassed
 		}
@@ -436,7 +434,6 @@ var Model = function(mongoose) {
 			})
 		},
 		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
-            console.log(options);
             if (!options || !options.query) return [];
             if (typeof executorID !== 'object') executorID = mongoose.Types.ObjectId(executorID)
             async.waterfall([
@@ -453,7 +450,6 @@ var Model = function(mongoose) {
                             })
                         }
                     }, (err, ids) => {
-                        console.log(ids);
                         next(err, ids);
                     })
                 }

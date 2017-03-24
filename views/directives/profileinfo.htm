@@ -46,10 +46,8 @@
 	<div class="user-description-block" ng-if="profile">
 		<div class="title">Contacts</div>
 
-		<div class="value tinted" ng-show="!profile.contact.email && !profile.contact.phone && !profile.contact.skype && !profile.contact.linkedin && !profile.contact.fb">Not specified</div>
+		<div class="value tinted" ng-show="!profile.contact.skype && !profile.contact.linkedin && !profile.contact.fb">Not specified</div>
 
-		<div class="address-element email" ng-if="profile.contact.email">{{profile.contact.email}}</div>
-		<div class="address-element phone" ng-if="profile.contact.phone">{{profile.contact.phone}}</div>
 		<div class="address-element skype" ng-if="profile.contact.skype">{{profile.contact.skype}}</div>
 		<a ng-href="https://linkedin.com/in/{{profile.contact.linkedin}}" target="_blank" class="address-element linkedin" ng-if="profile.contact.linkedin">{{profile.contact.linkedin}}</a>
 		<a ng-href="https://facebook.com/{{profile.contact.fb}}" target="_blank" class="address-element fb" ng-if="profile.contact.fb">{{profile.contact.fb}}</a>

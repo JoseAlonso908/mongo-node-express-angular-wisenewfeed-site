@@ -510,7 +510,6 @@ var Model = function(mongoose) {
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
 				async.waterfall([
 					next => {
-                        console.log('FIRST');
                         let article = new Model()
                         Object.assign(article, {
                             author,
@@ -523,11 +522,9 @@ var Model = function(mongoose) {
                         })
                     },
                     (repost, next) => {
-                        console.log(repost._id);
                         if (!repost) return next()
                         sharedFrom.sharedIn.push(repost._id)
                         sharedFrom.save((err, result) => {
-                            console.log('Should be pushed');
                             next(err, repost)
                         })
                     }
@@ -789,8 +786,6 @@ var Model = function(mongoose) {
             aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
             if (start) aggregationOptions.push({$skip: start})
             if (limit) aggregationOptions.push({$limit: limit})
-
-			console.log(require('util').inspect(aggregationOptions, {depth: null}))
 
 			Model.aggregate(aggregationOptions).exec((err, articles) => {
                 this.postProcessList(articles, viewer, callback)

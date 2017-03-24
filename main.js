@@ -156,7 +156,8 @@ global.getCategories = () => {
 		{id: 18, title: 'Real Estate', tag: 'realestate', count: 0},
 		{id: 19, title: 'Religion', tag: 'religion', count: 0},
 		{id: 20, title: 'Lesson learned', tag: 'lessonlearned', count: 0},
-		{id: 21, title: 'Other', tag: 'other', count: 0},
+		{id: 21, title: 'Partnership', tag: 'partnership', count: 0},
+		{id: 22, title: 'Other', tag: 'other', count: 0},
 	]
 }
 

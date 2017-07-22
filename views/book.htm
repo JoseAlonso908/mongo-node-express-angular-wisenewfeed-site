@@ -1,0 +1,72 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="mobile-search-wrapper">
+		<search q="q"></search>
+	</div>
+
+	<div id="filters-wrapper">
+		<filters></filters>
+	</div>
+
+	<div class="content" id="content-wrapper">
+		<div class="left"></div>
+		<div class="middle">
+			<div class="avail-expert-set">
+				<h1>EXPERT AVAILABILITY</h1>
+
+				<table>
+					<thead>
+						<td>No</td>
+						<td>Date</td>
+						<td>Range of Time</td>
+						<td>Price</td>
+						<td>Action</td>
+					</thead>
+					<tbody>
+						<tr ng-repeat="avail in availability">
+							<td>{{$index+1}}</td>
+							<td>{{avail.date}}</td>
+							<td>
+								<span ng-repeat="range in avail.ranges">{{range.from}} - {{range.to}}<br></span>
+							</td>
+							<td>{{avail.price}}</td>
+							<td><button ng-click="doBooking($index)">Book</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="avail-expert-set" ng-show="isBooking">
+				<h1>BOOK YOU SCHEDULE WITH EXPERT</h1>
+
+				<label for="">Select date</label><md-datepicker ng-model="book.date" md-placeholder="Enter date"></md-datepicker>
+				<div class="time-ranges">
+					<label>Ranges of Time:</label>
+					<div ng-repeat="range in book.ranges" class="ranges-time">
+						<div class="range-item">
+							<label>From</label>
+							<md-select ng-model="range.from">
+			          			<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
+			        		</md-select>
+						</div>
+
+						<div class="range-item">
+							<label>To</label>
+							<md-select ng-model="range.to">
+		          				<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
+		        			</md-select>
+						</div>
+							
+						
+					</div>
+					<button ng-click="addMoreRangeOfTime()" md-no-ink class="md-primary">Add more range of time</button>
+					<button ng-click="addBooking()" md-no-ink class="md-primary">Add more range of time</button>
+				</div>
+			</div>
+		</div>
+		<div class="right"></div>
+		
+	</div>
+</div>

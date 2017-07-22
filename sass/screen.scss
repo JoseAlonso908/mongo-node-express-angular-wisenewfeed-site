@@ -5788,6 +5788,33 @@ a.small-icon, button.small-icon {
 	}
 }
 
+.avail-expert-set {
+  width: 100%;
+  h1 {
+  	font-weight: bold;
+  	font-size: 16px;
+  	margin: 10px;
+  	text-align: center;
+  }
+  label {
+  	font-weight: bold;
+  }
+  table {
+  	td {
+  		padding: 10px;
+  	} 
+  }
+}
+.range-item {
+	width: 48%;
+	margin-right: 10px;
+}
+
+.ranges-time {
+	display: flex;
+	margin-top: 10px;
+}
+
 @import "medias";
 @import "chosen";
 @import "scrollbar";

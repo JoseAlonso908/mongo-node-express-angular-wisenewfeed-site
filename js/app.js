@@ -100,6 +100,14 @@ angular.module('er', [
 				templateUrl: 'assets/views/write.htm',
 				controller: 'writeController',
 			})
+			.when('/availability',{
+				templateUrl:'assets/views/availability.htm',
+				controller:'availabilityController',
+			})
+			.when('/person/:id/book',{
+				templateUrl:'assets/views/book.htm',
+				controller:'bookingController',
+			})
 
 
 		$authProvider.facebook({

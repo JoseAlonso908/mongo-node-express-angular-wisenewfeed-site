@@ -414,6 +414,73 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
+.controller('availabilityController',function($scope, identityService, availabilityService){
+
+	$scope.availability = availabilityService.getAvailability();
+
+	$scope.timeranges = availabilityService.getTimeRanges();
+
+	$scope.bookings = availabilityService.getBookings();
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+	}, function () {
+		$scope.guest = true
+	})
+
+	$scope.addMoreAvail = addMoreAvail;
+	$scope.addMoreRangeOfTime = addMoreRangeOfTime;
+	$scope.saveAvailability = saveAvailability;
+
+	function saveAvailability () {
+
+	}
+
+	function addMoreRangeOfTime (index) {
+		console.log(index)
+		$scope.availability[index].ranges.push({from:'', to:''})
+	}
+
+	function addMoreAvail() {
+		$scope.availability.push({date:'', ranges:[{from:'', to:''}], price:''});
+	}
+
+
+	
+})
+.controller('bookingController',function($scope, identityService, availabilityService, bookingService){
+
+	$scope.availability = availabilityService.getAvailability();
+
+	$scope.timeranges = availabilityService.getTimeRanges();
+	$scope.book = {ranges:[{from:'',to:''}]}
+	$scope.isBooking = false;
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+	}, function () {
+		$scope.guest = true
+	})
+
+	$scope.addMoreRangeOfTime = addMoreRangeOfTime;
+	$scope.doBooking = doBooking;
+	$scope.addBooking = addBooking;
+
+	function addBooking () {
+		bookingService.book($scope.book);
+	}
+
+	function doBooking (index) {
+		$scope.isBooking = true;
+		$scope.book.date = $scope.availability[index].date;
+		$scope.book.ranges[0].from = $scope.availability[index].ranges[0].from;
+		$scope.book.ranges[0].to = $scope.availability[index].ranges[0].to;
+	}
+
+	function addMoreRangeOfTime () {
+		$scope.book.ranges.push({from:'', to:''});
+	}
+})
 .controller('profileController', function ($scope, $location, identityService) {
 	$scope.feedType = 'feed'
 

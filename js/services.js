@@ -1317,3 +1317,34 @@ angular.module('er.services', [])
 		},
 	}
 })
+.factory('availabilityService', function ($http, $cookies) {
+	return {
+		setAvailability : function(){
+
+		},
+		getAvailability: function(){
+			return [{date:'07/22/17', ranges:[{from:'12:00', to:'16:00'},{from:'18:00', to:'20:00'}], price:'15'},
+			{date:'07/22/17', ranges:[{from:'12:00', to:'16:00'},{from:'18:00', to:'20:00'}], price:'15'}];
+		},
+		getTimeRanges : function()  {
+			return ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00',
+						 '09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00',
+						 '18:00','19:00','20:00','21:00','22:00','23:00','23:30'];
+		},
+		getBookings: function() {
+			return [{user: 'sample1',date:'07/29/17', from: '13:00', to: '15:00'},
+			{user: 'sample2',date:'07/29/17', from: '13:00', to: '15:00'},
+			{user: 'sample3',date:'07/29/17', from: '13:00', to: '15:00'}]
+		}
+	}
+})
+.factory('bookingService', function ($http, $cookies) {
+	return {
+		getAvailability: function(){
+			return [{date:'', ranges:[{from:'', to:''}], price:''}];
+		},
+		book: function() {
+
+		}
+	}
+})

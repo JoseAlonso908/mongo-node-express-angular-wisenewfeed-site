@@ -52,6 +52,7 @@ var Model = function(mongoose) {
 
 			return a
 		})
+		console.log(articles);
 
 		async.waterfall([
 			// Remove images based to their privacy
@@ -63,6 +64,7 @@ var Model = function(mongoose) {
 
                     models.Image.retainImagesPrivacy(a.images, a.author, user, (err, images) => {
                     	a.images = images
+                    	console.log(images)
                         nextArticle(null, a)
 					})
 				}, (err, result) => {

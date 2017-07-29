@@ -1683,21 +1683,30 @@ angular.module('er.directives', [])
 		templateUrl: 'assets/views/directives/filters.htm',
 		link: function ($scope, element) {
 			$scope.filters = [
+				// {
+				// 	title: 'Top',
+				// 	filter: 'top',
+				// },
+				// {
+				// 	title: 'News',
+				// 	filter: 'news',
+				// },
+				// {
+				// 	title: 'Journalist',
+				// 	filter: 'journalist',
+				// },
 				{
-					title: 'Top',
-					filter: 'top',
+					title: 'Recommended',
+					filter: 'recommended',
 				},
 				{
-					title: 'News',
-					filter: 'news',
-				},
-				{
-					title: 'Journalist',
-					filter: 'journalist',
+					title: 'Most Shared',
+					filter: 'shared',
 				},
 				{
 					title: 'Expert',
 					filter: 'expert',
+					url:'#!/users/expert'
 				},
 				{
 					title: 'Photos',
@@ -1901,6 +1910,13 @@ angular.module('er.directives', [])
 				$scope.pieces = result
 			}, function () {})
 		}
+	}
+})
+.directive('showexpertrv',function(){
+	return{
+		restrict:'E',
+		templateUrl:'assets/views/directives/showexpertrv.htm',
+
 	}
 })
 .directive('profilecard', function () {

@@ -108,6 +108,10 @@ angular.module('er', [
 				templateUrl:'assets/views/book.htm',
 				controller:'bookingController',
 			})
+			.when('/showexpertreviews',{
+				templateUrl:'assets/views/showexpert.htm',
+				controller:'showexpertController',
+			})
 
 
 		$authProvider.facebook({

@@ -149,9 +149,10 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 	models.PhoneVerification.createCode(phone, (err, result) => {
 		twilioClient.messages.create({
 			to: phone,
-			from: '+18443256002',
+			from: '+15146137652',
 			body: `Expert Reaction verification code: ${result.code}`
 		}, (err, message) => {
+			console.log(err)
 			if (err) return res.status(err.status).send(err)
 			else return res.send({ok: true})
 		})

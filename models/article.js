@@ -52,7 +52,6 @@ var Model = function(mongoose) {
 
 			return a
 		})
-		console.log(articles);
 
 		async.waterfall([
 			// Remove images based to their privacy
@@ -64,7 +63,6 @@ var Model = function(mongoose) {
 
                     models.Image.retainImagesPrivacy(a.images, a.author, user, (err, images) => {
                     	a.images = images
-                    	console.log(images)
                         nextArticle(null, a)
 					})
 				}, (err, result) => {
@@ -306,11 +304,41 @@ var Model = function(mongoose) {
                 }
             },
             {
+                $unwind: {
+                    path: '$images',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
                 $lookup: {
                     from: 'images',
                     localField: 'images',
                     foreignField: '_id',
                     as: 'images',
+                }
+            },
+            {
+                $unwind: {
+                    path: '$images',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    images: { $push: "$images" },
+                    author: { $first: "$author" },
+                    sharedFrom: { $first: "$sharedFrom" },
+                    sharedIn: { $first: "$sharedIn" },
+                    countries: { $first: "$countries" },
+                    title: { $first: "$title" },
+                    text: { $first: "$text" },
+                    createdAt: { $first: "$createdAt" },
+                    country: { $first: "$country" },
+                    category: { $first: "$category" },
+                    privacy: { $first: "$privacy" },
+                    meta: { $first: "$meta" },
+                    friendship: { $first: "$friendship" }
                 }
             }
 		]
@@ -716,6 +744,7 @@ var Model = function(mongoose) {
             if (limit) aggregationOptions.push({$limit: limit})
 
             Model.aggregate(aggregationOptions).exec((err, articles) => {
+                models.Image.Model.populate(articles, { path: "sharedFrom.images" });
                 this.postProcessList(articles, viewer, callback)
             })
 		},

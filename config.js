@@ -8,8 +8,8 @@ module.exports = {
 	TWITTER_TOKEN_SECRET: 'HeC1LH0fpxleKjPcLMjqyHfnVp6MvihLBOnIhpkvhe5zB',
 	TWILIO: {
 		TEST: {
-			SID: 'AC8009e363eceb3634a9b202fd4e7866cb',
-			AUTHTOKEN: 'a88e2420bc2431ed3e954ffe4095a1b6',
+			SID: 'AC8c1f974cf7bafe24a95450d30ff4693b',
+			AUTHTOKEN: '6f6f4df6d46ec793caf9aff886e57c46',
 		}
 	},
 	MAILGUN: {

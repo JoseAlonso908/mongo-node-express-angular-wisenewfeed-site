@@ -414,6 +414,51 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
+.controller('showexpertController',function($scope,identityService,$timeout){
+	$scope.chooseRating = chooseRating;
+	$scope.choosenRating = 0;
+	$scope.ratDes = ['','Very bad','Bad','Acceptable','Good enough', 'Good'];
+	$scope.hoursd=0;
+	$scope.minutesd=0;
+	$scope.secondsd=0;
+	$scope.hours=0;
+	$scope.minutes=0;
+	$scope.seconds=0;
+
+	$scope.startCountup=function(){
+		var countUp=function(){			
+			$scope.seconds+= 1;			
+	    var mytimeout=$timeout(countUp, 1000);
+			if($scope.seconds==60){
+				$scope.seconds=0;
+				$scope.minutes+=1;
+				if($scope.minutes==60){
+					$scope.minutes=0;
+					$scope.hours+=1;
+
+				}
+			}
+		}
+		var mytimeout=$timeout(countUp,1000);
+		$scope.stopCountup=function(){
+			$timeout.cancel(mytimeout);
+		}		
+	}
+	
+
+
+	function chooseRating (rate) {
+		$scope.choosenRating = rate;
+	}
+
+	
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+	}, function () {
+		$scope.guest = true
+	})	
+})
 .controller('availabilityController',function($scope, identityService, availabilityService){
 
 	$scope.availability = availabilityService.getAvailability();
@@ -525,7 +570,7 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('articleController', function ($routeParams, $rootScope, $scope, $timeout, $location, $anchorScroll, identityService, postService) {
+.controller('articleController', function ($routeParams, $rootScope, $scope, $timeout, $location, $anchorScroll, identityService, postService, imageService) {
 	$scope.articleId = $routeParams.articleId
 	$scope.commentId = $routeParams.commentId
 
@@ -555,8 +600,8 @@ angular.module('er.controllers', [])
 		},
 		function (cb) {
 			postService.get($scope.articleId).then(function (post) {
-				$scope.post = post
-
+				$scope.post = post;
+				
 				identityService.getOther(post.author._id).then(function (profile) {
 					$scope.profile = profile
 					cb(null)

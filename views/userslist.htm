@@ -9,6 +9,11 @@
 			<pieces></pieces>
 		</div>
 		<div class="middle wide">
+			<div class="people-filter">
+				<dropdown title="Country" list="countries" selected="chosenCountry" change="setActiveCountry"></dropdown>
+				<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
+				<div class="clear"></div>
+			</div>
 			<div class="people">
 				<person ng-show="person" person="person" ng-repeat="person in people track by $index"></person>
 				<div class="flex-people-placeholder"></div>

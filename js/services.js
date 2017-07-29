@@ -1348,3 +1348,52 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('reviewsService', function ($http, $cookies) {
+	return {
+		createReview: function(data){
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/reviews/create',
+					data: {
+						rating: data.rating,
+						expert: data.expert,
+						text: data.text,
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		getExpertReviews: function(data) {
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/reviews/expertreviews',
+					data: {
+						expert: data.expert
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		}
+	}
+})
+.factory('imageService', function ($http, $cookies) {
+	return {
+		getImageByIds: function(data){
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/images/getimages',
+					data: {
+						ids: data.ids
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		}
+	}
+})

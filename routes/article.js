@@ -37,6 +37,7 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'posts', newFilename))
 
 			filenames.push(path.join('uploads', 'posts', newFilename))
+			console.log(filenames)
 		}
 	}
 
@@ -45,11 +46,13 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			models.Image.createBunch(req.user._id, filenames, next)
 		},
 		(images, next) => {
+			console.log('imagesmodelsfile',images)
 			models.Article.getFirstLinkMeta(text).then((meta) => {
 		        next(null, meta, images)
 		    }).catch(next)
 		},
 		(meta, images, next) => {
+			console.log('third ',images)
             if (text && req.user.role === 'user') text = text.replace(/\$lessonlearned/gi, '')
 			models.Article.create({
 	            author: req.user._id,

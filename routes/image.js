@@ -29,6 +29,14 @@ router.use((req, res, next) => {
 	}
 })
 
+router.post('/getimages',(req, res)=>{
+	let imagesIds = req.body.ids;
+	models.Image.getByImageIds(imagesIds, (err, images)=>{
+		if (err) res.status(400).send(err)
+		else res.send(images)
+	})
+})
+
 router.post('/add', tempUploads.array('files', 5), (req, res) => {
 	let filenames = []
 

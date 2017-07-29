@@ -116,6 +116,9 @@ var model = function (mongoose) {
 				image.save(callback)
 			})
 		},
+		getByImageIds: (ids, callback) => {
+			Model.find({_id:{$in:ids}},callback);
+		}
 	}
 }
 

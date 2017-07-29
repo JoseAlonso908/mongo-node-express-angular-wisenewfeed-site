@@ -40,6 +40,11 @@
 					Sent you a friendship request
 				</span>
 			</div>
+			<div class="action" ng-if="'acceptfriendship' === n.type">
+				<span ng-switch="n.type">
+					Accepted your friendship request
+				</span>
+			</div>
 
 			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">

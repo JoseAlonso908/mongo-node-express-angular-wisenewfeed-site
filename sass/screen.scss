@@ -943,7 +943,7 @@ a.small-icon, button.small-icon {
 				display: block;
 				list-style-type: none;
 				li {
-					width: 50%;
+					width: 100%;
 					float: left;
 					text-align: center;
 					line-height: 50px;
@@ -5814,6 +5814,287 @@ a.small-icon, button.small-icon {
 	display: flex;
 	margin-top: 10px;
 }
+.info-reviews{
+	padding-top:20px;
+}
+.info-rating{
+	background: #43abe7;
+	color: #ffffff;
+	font-size: 12px;
+	padding: 7px 10px;
+	text-align: center;
+	width: 80px;
+	border-radius: 8px;
+	float:left;
+}
+
+.info-rv{
+	font-size: 12px;
+	padding: 7px 10px;
+	float: left;
+}
+.info-reviews-rate{
+	width: 160px;
+	margin: auto;
+}
+.info-show a{
+	font-size: 12px !important;
+	font-weight: 100 !important;
+}
+.info-show {
+	text-align:center;
+	padding-top: 15px;
+}
+.expert-a-rv{
+	padding-top:60px;
+
+	padding-bottom:200px;
+}
+.expert-a-rv-i{
+	width: 76%;
+	margin: auto;
+	background: #ffffff;
+	border: 2px solid #ffffff;
+	border-radius: 3px;
+	box-shadow: 2px 2px 10px #888888;
+}
+.top-bar-i{
+	display: flex;
+	background: #ECF0F4;
+	padding: 10px 0px;
+	width: 100%;	
+}
+.tb-tl {
+	padding-left:5px;
+	padding-top:5px;
+}
+.tb-tl a{
+	text-decoration: none;
+	font-weight: 900;
+
+}
+.tb-icon-st{
+	padding:5px 88px 0 88px;
+	color:#43abe7;
+}
+.tb-t-rv{
+	padding-right: 88px;
+	padding-top:5px;
+	font-size:15px;
+}
+.tb-ip{
+	position: relative;
+}
+.tb-ip >i{
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.tb-ip-in{
+	border-radius: 0;
+	border: none;
+	padding: 5px 0px;
+
+}
+.expert-avt{
+	width:100px;
+}
+.rv-b{
+	font-size:13px;
+	color:#7F8082;
+}
+.rv-n{
+	font-size:13px;
+}
+.expert-rv-ct{
+	padding-top: 28px;
+	padding-left: 44px;
+}
+.expert-rv-text{
+	display:flex;
+	padding-top: 20px;
+	border-bottom: 1px solid;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.expert-rv-text-l{
+	display:flex;
+	padding-top: 50px;
+}
+.expert-rv-st>span{
+	font-size:13px;
+	color:#7F8082;
+}
+.expert-rv-st{
+	padding-bottom: 10px;
+	color:#43abe7;
+}
+.expert-rv-text-ct >p{
+	font-size:15px;
+	color:#7F8082;
+}
+.a-avt{
+	padding-bottom: 20px;
+}
+.expert-sh-m{
+	text-align: center;	
+}
+.expert-sh-m a{
+	font-size: 20px;
+	text-decoration: none;
+}
+.write-views-expert{
+	padding-bottom:100px;
+}
+
+.write-views-expert-in{
+	width: 60%;
+	background: #ffffff;
+	box-shadow: 2px 2px 10px #888888;
+	border: 1px solid #ffffff;
+}
+.wr-v-title{
+	text-align: center;
+	background: #ECF0F4;
+	padding: 15px 0;
+}
+.wr-v-title a{
+	text-decoration: none;
+}
+.wr-v-icon{
+	text-align: center;
+	padding: 18px 0;
+}
+.wr-v-icon span{
+	color:#7F8082;
+}
+.wr-v-icon-st{
+	padding-bottom: 5px;
+	color:#43abe7;
+}
+
+.wr-v-inp{
+	text-align: center;
+}
+.rv-ch{
+	padding:15px 5px;
+}
+.rv-ch span{
+	font-size:14px;
+	color:#7F8082;
+}
+.btn-wr{
+	float: right;
+	padding: 8px 20px;
+}
+.btn-wr-in{
+	background: #43abe7;
+	border: none;
+	padding: 10px 40px;
+	color: #ffffff;
+	font-size: 16px;
+	border-radius: 20px;
+
+}
+
+
+.timetracker-in{
+	width: 60%;
+	background: #ffffff;
+	box-shadow: 2px 2px 10px #888888;
+	border: 1px solid #ffffff;
+
+}
+.newtimeentry{
+	text-align: center;
+	padding: 13px 0;
+	background: #F6F6F6;
+
+}
+.n-t-date{
+	float:right;
+}
+.n-t-entry{
+	padding-left: 94px;
+	font-size: 19px;
+	color: #43abe7;
+
+}
+.n-t-date{
+	float: right;
+	font-size: 12px;
+	padding-right: 10px;
+	color: #7F8082;
+}
+.time-t-a{
+	width:50%;
+	margin:auto;
+	padding: 40px 0;
+}
+.time-t-a span{
+	font-size: 15px;
+	color: #AAAEB2;
+}
+.time-number{
+	text-align: center;
+	font-size: 50px;
+	font-weight: bold;
+	color: #43abe7;
+	padding-bottom: 40px;
+}
+
+.time-btn{
+	display: flex;
+	width: 45%;
+	margin: auto;
+	padding-bottom: 50px;
+}
+.time-btn-st{
+	border: none;
+	background: #43abe7;
+	color: #ffffff;
+	font-size: 17px;
+	padding: 10px 25px;
+	border-radius: 26px;
+}
+.time-btn-cl{
+	border: none;
+	background: #82898F;
+	color: #ffffff;
+	font-size: 17px;
+	padding: 10px 40px;
+	border-radius: 26px;
+
+}
+.time-btn-a-st{
+	padding-right: 30px;
+}
+
+.people-filter{
+	padding:10px 0;
+	dropdown{
+		float:left;
+		margin-right:10px !important;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @import "medias";
 @import "chosen";

@@ -16,6 +16,14 @@ var Model = function(mongoose) {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'article',
         }],
+        totalShared: {
+        	type:Number,
+        	default: 0
+        },
+        totalRecommended: {
+        	type:Number,
+        	default: 0
+        },
 		images		: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'image',
@@ -394,6 +402,20 @@ var Model = function(mongoose) {
 					},
 				])
 				break;
+			case 'recommended':
+				filterAggregationParams = filterAggregationParams.concat([
+					{
+						$sort: {totalRecommended: -1},
+					},
+				])
+				break;
+			case 'shared':
+				filterAggregationParams = filterAggregationParams.concat([
+					{
+						$sort: {totalShared: -1},
+					},
+				])
+				break;	
 			case 'journalist':
 			case 'expert':
                 filterAggregationParams = filterAggregationParams.concat([
@@ -533,32 +555,50 @@ var Model = function(mongoose) {
 			})
 		},
 
-		share: (author, sharedFrom, callback) => {
+		share: (user, sharedFrom, type, callback) => {
+			let author = user._id;
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
 
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
-				async.waterfall([
-					next => {
-                        let article = new Model()
-                        Object.assign(article, {
-                            author,
-                            sharedFrom: sharedFrom._id,
-                            country: sharedFrom.country,
-                            category: sharedFrom.category,
-                        })
-                        article.save((err, savedArticle) => {
-                            next(err, savedArticle)
-                        })
-                    },
-                    (repost, next) => {
-                        if (!repost) return next()
-                        sharedFrom.sharedIn.push(repost._id)
-                        sharedFrom.save((err, result) => {
-                            next(err, repost)
-                        })
-                    }
-				], callback)
+				if (type === 'smart') {
+					if (user.role=='expert') {
+                		sharedFrom.totalRecommended+=2;
+                	} else {
+                		sharedFrom.totalRecommended+=1;
+                	}
+                	sharedFrom.save((err, result) => {
+                        callback(err, sharedFrom)
+                    })
+				} else {
+					async.waterfall([
+						next => {
+	                        let article = new Model()
+	                        Object.assign(article, {
+	                            author,
+	                            sharedFrom: sharedFrom._id,
+	                            country: sharedFrom.country,
+	                            category: sharedFrom.category,
+	                        })
+	                        article.save((err, savedArticle) => {
+	                            next(err, savedArticle)
+	                        })
+	                    },
+	                    (repost, next) => {
+	                        if (!repost) return next()
+	                        sharedFrom.sharedIn.push(repost._id);
+	                    	if (user.role=='expert') {
+	                    		sharedFrom.totalShared+=2;
+	                    	} else {
+	                    		sharedFrom.totalShared+=1;
+	                    	}
+	                        sharedFrom.save((err, result) => {
+	                            next(err, repost)
+	                        })
+	                    }
+					], callback)
+				}
+					
 			})
 		},
 
@@ -575,6 +615,19 @@ var Model = function(mongoose) {
                     Model.update({ _id: sharedFrom }, { $pull: { 'sharedIn': post._id }}, next)
                 }
             ], callback)
+		},
+		unRecommend: (author, post, callback) => {
+			Model.findOne({_id: post}).exec((err, result)=>{
+				if (err) callback(err);
+				else {
+					if (author.role==='expert') {
+						result.totalRecommended-=2;
+					} else {
+						result.totalRecommended-=1;
+					}
+					result.save(callback)
+				}
+			})
 		},
 
 		remove: (author, _id, callback) => {
@@ -769,7 +822,7 @@ var Model = function(mongoose) {
 		},
 
 		getByUsers: (parameters, callback) => {
-			let {authors, viewer, shares, category, country, start, limit, privacy} = parameters
+			let {authors, viewer, shares, category, country, start, limit, privacy, filter} = parameters
 			if (!start) start = 0
 			if (!limit) limit = 4
 			authors = (authors) ? authors.map(MOI) : authors
@@ -806,7 +859,13 @@ var Model = function(mongoose) {
                 parameters.nousers = true
 			}
 
-            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
+			if (filter) {
+				filterAggregationOptions = this.getFilterAggregationOptions(filter, parameters.viewer, {nousers: parameters.nousers})
+			} else {
+				filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
+			}
+
+            
 
             var aggregationOptions = [
                 {
@@ -817,10 +876,13 @@ var Model = function(mongoose) {
             aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
             if (start) aggregationOptions.push({$skip: start})
             if (limit) aggregationOptions.push({$limit: limit})
-
-			Model.aggregate(aggregationOptions).exec((err, articles) => {
-                this.postProcessList(articles, viewer, callback)
-			})
+            console.log('filterfilter ',aggregationOptions)	
+            
+            	Model.aggregate(aggregationOptions).exec((err, articles) => {
+	                this.postProcessList(articles, viewer, callback)
+				})
+            	
+			
 		},
 
 		getReactedOfUser: (author, viewer, type, skip, limit, callback) => {

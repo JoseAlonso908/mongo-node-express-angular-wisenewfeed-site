@@ -739,7 +739,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('feed', function ($rootScope, identityService, feedService) {
+.directive('feed', function ($rootScope, identityService, feedService, $location) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
@@ -790,6 +790,10 @@ angular.module('er.directives', [])
 
 			$rootScope.$on('feedFilter', function (event, filter) {
 				$scope.filter = filter
+
+				if (filter=='expert') {
+					return $location.path('/users/expert')
+				}
 
 				init()
 			})
@@ -1167,6 +1171,11 @@ angular.module('er.directives', [])
 					$scope.post.youdid.like = false
 				}
 
+				if (type == 'shareFrom') {
+					action = 'react';
+					type = 'share';
+				}
+
 				// console.log($scope.post.sharedIn)
 
                 /** SHIT_START
@@ -1182,6 +1191,7 @@ angular.module('er.directives', [])
                     $scope.post.sharedIn.push(null)
                 }
                 /** SHIT_END */
+                console.log('Post ',post)
 
 				reactionsService[action](post._id, type).then(function (result) {
 					$rootScope.$emit('reloadreactions', post._id)
@@ -1696,7 +1706,7 @@ angular.module('er.directives', [])
 				// 	filter: 'journalist',
 				// },
 				{
-					title: 'Recommended',
+					title: 'Most Recommended',
 					filter: 'recommended',
 				},
 				{
@@ -1705,8 +1715,7 @@ angular.module('er.directives', [])
 				},
 				{
 					title: 'Expert',
-					filter: 'expert',
-					url:'#!/users/expert'
+					filter: 'expert'
 				},
 				{
 					title: 'Photos',

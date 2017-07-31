@@ -2294,11 +2294,13 @@ angular.module('er.controllers', [])
 			// User authenticated, upgrade
 			betaUploadsService.upgrade($scope.signup).
 			then(function (result) {
+				console.log(result);
 				$scope.$apply(function () {
 					$scope.submitClass = 'success'
 					$scope.submitResult = 'Your request successfully sent'
 				})
 			}).catch(function (err) {
+				console.log(err);
 				$scope.$apply(function () {
 					$scope.submitClass = 'error'
 					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'

@@ -180,9 +180,8 @@ router.get('/byuser', (req, res) => {
 })
 
 router.get('/friendsfeed', (req, res) => {
-	let {category, country, start, limit} = req.query
+	let {category, country, start, limit, filter} = req.query
 	let userId = req.query.userId || req.user._id
-
 	let authors = []
 	// Include user's articles into feed
 	authors.push(userId)
@@ -221,6 +220,7 @@ router.get('/friendsfeed', (req, res) => {
             viewer: req.user._id,
             shares: [],
             nousers: false,
+            filter: filter
         }, (err, articles) => {
             if (err) res.status(400).send(err)
             else res.send(articles)
@@ -229,7 +229,7 @@ router.get('/friendsfeed', (req, res) => {
 })
 
 router.get('/feed', (req, res) => {
-	let {category, country, start, limit} = req.query
+	let {category, country, start, limit, filter} = req.query
 	let userId = req.query.userId || req.user._id
 
 	let authors = []
@@ -273,7 +273,8 @@ router.get('/feed', (req, res) => {
             start,
             limit,
             viewer: req.user._id,
-            shares: []
+            shares: [],
+            filter
         }, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else res.send(articles)
@@ -612,8 +613,8 @@ router.post('/react', (req, res) => {
 				else res.send({ok: true})
 			}
 
-			if (type === 'share') {
-				models.Article.share(req.user._id, post, done)
+			if (type === 'share'||type === 'smart') {
+				models.Article.share(req.user, post, type, done)
 			} else done()
 		})
 	})
@@ -629,6 +630,8 @@ router.delete('/react', (req, res) => {
 
 		if (type === 'share') {
 			models.Article.unshare(req.user._id, post, done)
+		} else if (type==='smart'){
+			models.Article.unRecommend(req.user, post, done)
 		} else done()
 	})
 })

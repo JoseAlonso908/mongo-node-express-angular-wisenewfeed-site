@@ -1,7 +1,7 @@
 <div class="link-preview-wrapper">
     <div class="link-preview" ng-if="meta">
         <a ng-if="meta.image" href="{{meta.url}}" target="_blank">
-            <img src="{{meta.image}}">
+            <img src="proxy?url={{meta.image}}">
         </a>
         <div class="info-block">
             <div class="title">

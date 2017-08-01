@@ -101,9 +101,13 @@
 	<div class="divider" ></div>
 
 	<div class="actions" ng-if="user">
-		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
+		<button ng-if="!post.sharedFrom" ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
 			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
-			<span class="title" ng-if="post.reactions.total.smarts > 0"> {{post.reactions.total.smarts}}</span>
+			<span class="title" ng-if="post.reactions.total.smarts > 0"> {{post.totalRecommended}}</span>
+		</button>
+		<button ng-if="post.sharedFrom" ng-click="react(post.sharedFrom, 'shareSmart', post.sharedFrom.youdid.smart)" ng-class="{active: post.youdid.sharedFrom.smart}">
+			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
+			<span class="title" ng-if="post.sharedFrom.totalRecommended > 0"> {{post.sharedFrom.totalRecommended}}</span>
 		</button>
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>

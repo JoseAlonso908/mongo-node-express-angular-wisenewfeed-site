@@ -620,11 +620,14 @@ var Model = function(mongoose) {
 			Model.findOne({_id: post}).exec((err, result)=>{
 				if (err) callback(err);
 				else {
+					console.log('result', result)
 					if (author.role==='expert') {
 						result.totalRecommended-=2;
+
 					} else {
 						result.totalRecommended-=1;
 					}
+					console.log('result', result)
 					result.save(callback)
 				}
 			})

@@ -994,13 +994,19 @@ angular.module('er.directives', [])
                 }, function (error) {
                     console.error(error)
                 })
-                if ($scope.post.shareFrom) {
-                	reloadreactions.get($scope.post.shareFrom._id).then(function(reactionInfo){
-                		$scope.post.shareFrom.youdid = reactionInfo.youdid
-                    	$scope.post.shareFrom.reactions = reactionInfo.reactions
+                
+            }
+
+            var initShareReactions = function(){
+            	if ($scope.post.sharedFrom) {
+                	reactionsService.get($scope.post.sharedFrom._id).then(function(reactionInfo){
+                		$scope.post.sharedFrom.youdid = reactionInfo.youdid
+                    	$scope.post.sharedFrom.reactions = reactionInfo.reactions
                 	})
                 }
             }
+
+            initShareReactions()
 
             initReactions()
 
@@ -1008,6 +1014,11 @@ angular.module('er.directives', [])
             $rootScope.$on('reloadreactions', function (event, postId) {
                 if (postId != $scope.post._id) return
                 initReactions()
+            })
+
+            $rootScope.$on('reloadsharereactions', function (event, postId) {
+                if ($scope.post.sharedFrom&&postId != $scope.post.sharedFrom._id) return
+                initShareReactions()
             })
 
 			$scope.updatePost = function (post) {
@@ -1169,10 +1180,15 @@ angular.module('er.directives', [])
             }
 
 			$scope.react = function (post, type, unreact) {
+				var tempType = type;
 				var action = 'react'
 				if (unreact) action = 'unreact'
-
-				$scope.post.youdid[type] = (action == 'react')
+				if (type == 'shareFrom' || type == 'shareSmart'&&$scope.post.sharedFrom) {
+					$scope.post.sharedFrom.youdid[type] = (action == 'react')
+				} else {
+					$scope.post.youdid[type] = (action == 'react')
+				}	
+				
 				if (type == 'like' && $scope.post.youdid.dislike) {
 					$scope.post.youdid.dislike = false
 				} else if (type == 'dislike' && $scope.post.youdid.like) {
@@ -1183,6 +1199,11 @@ angular.module('er.directives', [])
 					action = 'react';
 					type = 'share';
 				}
+
+				if (type == 'shareSmart') {
+					type = 'smart';
+				}
+
 
 				// console.log($scope.post.sharedIn)
 
@@ -1199,10 +1220,29 @@ angular.module('er.directives', [])
                     $scope.post.sharedIn.push(null)
                 }
                 /** SHIT_END */
-                console.log('Post ',post)
 
 				reactionsService[action](post._id, type).then(function (result) {
-					$rootScope.$emit('reloadreactions', post._id)
+					if(tempType=='shareSmart' || tempType == 'shareFrom') {
+						
+						$rootScope.$emit('reloadsharereactions', post._id);
+						if (tempType == 'shareSmart') {
+							console.log($scope.user.role)
+							if (action=='react') {
+								$scope.post.sharedFrom.totalRecommended += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.sharedFrom.totalRecommended -= $scope.user.role=='Expert'? 2:1;
+							}
+						} else {
+							if (action=='react') {
+								$scope.post.sharedFrom.totalShared += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.sharedFrom.totalShared -= $scope.user.role=='Expert'? 2:1;
+							}
+						}
+					} else {
+						$rootScope.$emit('reloadreactions', post._id)
+					}
+					
 				}, function (error) {
 					console.error('Reaction failed')
 					console.error(error)

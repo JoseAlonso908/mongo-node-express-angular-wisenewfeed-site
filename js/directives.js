@@ -911,6 +911,8 @@ angular.module('er.directives', [])
 			$scope.expandVisible = false
 			$scope.editing = false
 
+			console.log($scope.post);
+
 			$timeout(function () {
 				if ($scope.justone) return
 
@@ -992,6 +994,12 @@ angular.module('er.directives', [])
                 }, function (error) {
                     console.error(error)
                 })
+                if ($scope.post.shareFrom) {
+                	reloadreactions.get($scope.post.shareFrom._id).then(function(reactionInfo){
+                		$scope.post.shareFrom.youdid = reactionInfo.youdid
+                    	$scope.post.shareFrom.reactions = reactionInfo.reactions
+                	})
+                }
             }
 
             initReactions()

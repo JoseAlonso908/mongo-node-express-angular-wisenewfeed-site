@@ -7,6 +7,7 @@
         {{/if}}
         <meta property="og:site_name" content="Wise News Feed">
         <meta property="og:description" content="{{article.text}}">
+        <meta property="og:image" content="{{article.images[0].filename}}" ng-if="article.images.length>0">
     </head>
     <body>
         <script>

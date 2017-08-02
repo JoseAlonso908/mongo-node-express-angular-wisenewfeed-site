@@ -1226,7 +1226,6 @@ angular.module('er.directives', [])
 						
 						$rootScope.$emit('reloadsharereactions', post._id);
 						if (tempType == 'shareSmart') {
-							console.log($scope.user.role)
 							if (action=='react') {
 								$scope.post.sharedFrom.totalRecommended += $scope.user.role=='Expert'? 2:1;
 							}  else {
@@ -1240,6 +1239,19 @@ angular.module('er.directives', [])
 							}
 						}
 					} else {
+						if (tempType == 'smart') {
+							if (action=='react') {
+								$scope.post.totalRecommended += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.totalRecommended -= $scope.user.role=='Expert'? 2:1;
+							}
+						} else if (tempType == 'share') {
+							if (action=='react') {
+								$scope.post.totalShared += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.totalShared -= $scope.user.role=='Expert'? 2:1;
+							}
+						}
 						$rootScope.$emit('reloadreactions', post._id)
 					}
 					

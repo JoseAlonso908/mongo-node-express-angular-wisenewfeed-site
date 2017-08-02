@@ -234,6 +234,8 @@ var Model = function(mongoose) {
                     category: true,
                     privacy: true,
                     meta: true,
+                    totalRecommended: true,
+                    totalShared: true
                 },
             },
 			{
@@ -562,6 +564,7 @@ var Model = function(mongoose) {
 
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
 				if (type === 'smart') {
+					sharedFrom.totalRecommended = sharedFrom.totalRecommended ? sharedFrom.totalRecommended : 0;
 					if (user.role=='expert') {
                 		sharedFrom.totalRecommended+=2;
                 	} else {
@@ -587,6 +590,7 @@ var Model = function(mongoose) {
 	                    (repost, next) => {
 	                        if (!repost) return next()
 	                        sharedFrom.sharedIn.push(repost._id);
+	                    	sharedFrom.totalShared = sharedFrom.totalShared? sharedFrom.totalShared: 0;
 	                    	if (user.role=='expert') {
 	                    		sharedFrom.totalShared+=2;
 	                    	} else {
@@ -627,7 +631,6 @@ var Model = function(mongoose) {
 					} else {
 						result.totalRecommended-=1;
 					}
-					console.log('result', result)
 					result.save(callback)
 				}
 			})

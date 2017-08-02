@@ -2288,6 +2288,7 @@ angular.module('er.controllers', [])
 
 
     $scope.sendForm = function (event) {
+    	
         identityService.get().then(function (user) {
             $scope.user = user
 

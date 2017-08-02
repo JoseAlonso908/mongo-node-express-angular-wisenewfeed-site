@@ -348,7 +348,9 @@ var Model = function(mongoose) {
                     category: { $first: "$category" },
                     privacy: { $first: "$privacy" },
                     meta: { $first: "$meta" },
-                    friendship: { $first: "$friendship" }
+                    friendship: { $first: "$friendship" },
+                    totalRecommended: { $first: "$totalRecommended"},
+                    totalShared: { $first: "$totalShared"}
                 }
             }
 		]
@@ -383,6 +385,8 @@ var Model = function(mongoose) {
 							author: 1,
 							createdAt: 1,
 							images: 1,
+							totalRecommended: 1,
+							totalShared: 1,
 							reactionsCount: {$size: {
 								$filter: {
 									input: '$reactions',
@@ -565,11 +569,13 @@ var Model = function(mongoose) {
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
 				if (type === 'smart') {
 					sharedFrom.totalRecommended = sharedFrom.totalRecommended ? sharedFrom.totalRecommended : 0;
+					
 					if (user.role=='expert') {
                 		sharedFrom.totalRecommended+=2;
                 	} else {
                 		sharedFrom.totalRecommended+=1;
                 	}
+                	
                 	sharedFrom.save((err, result) => {
                         callback(err, sharedFrom)
                     })

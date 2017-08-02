@@ -132,7 +132,7 @@
 	<div class="actions">
 		<button socialshare
 				socialshare-provider="facebook"
-				socialshare-title="{{post.text | removehtml | cut:true:30}}"
+				socialshare-text="{{post.text | removehtml | cut:true:30}}"
 				socialshare-description="{{post.text | removehtml | cut:true:140}}"
 				socialshare-url="{{getURL(post._id)}}">
 			<i class="fa fa-facebook-f"></i> <span class="title">Share to Facebook</span>

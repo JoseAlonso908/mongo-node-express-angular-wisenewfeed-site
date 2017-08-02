@@ -147,6 +147,7 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 	let {phone} = req.body
 
 	models.PhoneVerification.createCode(phone, (err, result) => {
+		console.log(result.code)
 		twilioClient.messages.create({
 			to: phone,
 			from: '+15146137652',

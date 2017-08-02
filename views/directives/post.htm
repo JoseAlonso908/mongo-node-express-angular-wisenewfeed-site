@@ -92,41 +92,39 @@
 		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
 	</div>
 	<linkpreview meta="post.meta"></linkpreview>
-	<div class="likes-row-wrapper" ng-class="likesClass(post.reactions)">
+	<!-- <div class="likes-row-wrapper" ng-class="likesClass(post.reactions)">
 		<div class="likes-value" ng-class="likesClass(post.reactions)">
 			{{post.reactions.likes_percentage}}% {{likesDescription(post.reactions.likes_percentage)}}
 		</div>
 		<div class="likes-row" style="width: {{post.reactions.likes_percentage}}%" ng-class="likesClass(post.reactions)"></div>
-	</div>
+	</div> -->
 	<div class="divider" ></div>
 
 	<div class="actions" ng-if="user">
-		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
-			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
-			<span class="title" ng-if="post.reactions.total.likes > 0"> {{post.reactions.total.likes}}</span>
+		<button ng-if="!post.sharedFrom" ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
+			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
+			<span class="title"> {{post.totalRecommended}}</span>
 		</button>
-		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
-			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
-			<span class="title" ng-if="post.reactions.total.dislikes > 0"> {{post.reactions.total.dislikes}}</span>
+		<button ng-if="post.sharedFrom" ng-click="react(post.sharedFrom, 'shareSmart', post.sharedFrom.youdid.smart)" ng-class="{active: post.youdid.sharedFrom.smart}">
+			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
+			<span class="title" ng-if="post.sharedFrom.totalRecommended > 0"> {{post.sharedFrom.totalRecommended}}</span>
 		</button>
-		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
-			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Smart</span>
-			<span class="title" ng-if="post.reactions.total.smarts > 0"> {{post.reactions.total.smarts}}</span>
-		</button>
-		<button ng-click="react(post, 'worthy', post.youdid.worthy)" ng-class="{active: post.youdid.worthy}">
-			<i class="fa fa-exclamation-circle" aria-hidden="true"></i><span class="title">Worthy</span>
-			<span class="title" ng-if="post.reactions.total.worthys > 0"> {{post.reactions.total.worthys}}</span>
-		</button>
-
 		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
 			<i class="material-icons">chat_bubble</i>
 			<div class="number">{{commentsCount || 0}}</div>
 		</div>
-		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && post.author.role != 'User'"
-				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}" class="share-button">
+		<button ng-if="!post.sharedFrom&&post.author._id.toString() != user._id.toString()"
+				ng-click="react(post, 'share', post.youdid.share)" ng-disabled="post.youdid.share" ng-class="{active: post.youdid.share}" class="share-button">
 			<i class="fa fa-share-square-o" aria-hidden="true"></i>
 			<span class="title">Share</span>
-			<span class="title" ng-if="post.reactions.total.shares > 0"> {{post.reactions.total.shares}}</span>
+			<span class="title" ng-if="!post.sharedFrom&&post.totalShared > 0"> {{post.totalShared}}</span>
+
+		</button>
+		<button ng-if="post.sharedFrom&&post.author._id.toString() != user._id.toString()"
+				ng-click="react(post.sharedFrom, 'shareFrom', post.youdid.share)" ng-class="{active: post.youdid.share}" ng-disabled="post.sharedFrom.youdid.share" class="share-button">
+			<i class="fa fa-share-square-o" aria-hidden="true"></i>
+			<span class="title">Share</span>
+			<span class="title" ng-if="post.sharedFrom&&post.sharedFrom.totalShared > 0"> {{post.sharedFrom.totalShared}}</span>
 		</button>
 	</div>
 	<div class="divider" ng-if="user"></div>

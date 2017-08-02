@@ -739,7 +739,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('feed', function ($rootScope, identityService, feedService) {
+.directive('feed', function ($rootScope, identityService, feedService, $location) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
@@ -791,6 +791,10 @@ angular.module('er.directives', [])
 			$rootScope.$on('feedFilter', function (event, filter) {
 				$scope.filter = filter
 
+				if (filter=='expert') {
+					return $location.path('/users/expert')
+				}
+
 				init()
 			})
 
@@ -841,6 +845,26 @@ angular.module('er.directives', [])
 				}
 
 				var setFeed = function (feed) {
+
+					if ($location.path().indexOf('person')<0) {
+						feed.sort(function(a,b){
+							a.totalRecommended = a.totalRecommended?a.totalRecommended:0;
+							a.totalShared = a.totalShared?a.totalShared:0;
+							b.totalRecommended = b.totalRecommended?b.totalRecommended:0;
+							b.totalShared = b.totalShared?b.totalShared:0;
+							if (a.sharedFrom) {
+								a.totalRecommended = a.sharedFrom.totalRecommended?a.sharedFrom.totalRecommended:0;
+								a.totalShared = a.sharedFrom.totalShared?a.sharedFrom.totalShared:0;
+							}
+
+							if (b.sharedFrom) {
+								b.totalRecommended = b.sharedFrom.totalRecommended?b.sharedFrom.totalRecommended:0;
+								b.totalShared = b.sharedFrom.totalShared?b.sharedFrom.totalShared:0;
+							}
+							return -a.totalRecommended - a.totalShared + (b.totalRecommended + b.totalShared);
+						})
+					}
+						
 					$scope.feedLoading = false
 
 					if (feed.length == 0) {
@@ -860,6 +884,7 @@ angular.module('er.directives', [])
 
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {
+						console.log('feedtpe',feedType,feed);
 						setFeed(feed)
 						updateVisibleCount($scope.feed)
 					})
@@ -882,6 +907,7 @@ angular.module('er.directives', [])
 							// feedType = 'all'
 							// return init()
 						}
+
 
 						setFeed(feed)
 						updateVisibleCount($scope.feed)
@@ -906,6 +932,8 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			$scope.expandVisible = false
 			$scope.editing = false
+
+			console.log($scope.post);
 
 			$timeout(function () {
 				if ($scope.justone) return
@@ -988,7 +1016,19 @@ angular.module('er.directives', [])
                 }, function (error) {
                     console.error(error)
                 })
+                
             }
+
+            var initShareReactions = function(){
+            	if ($scope.post.sharedFrom) {
+                	reactionsService.get($scope.post.sharedFrom._id).then(function(reactionInfo){
+                		$scope.post.sharedFrom.youdid = reactionInfo.youdid
+                    	$scope.post.sharedFrom.reactions = reactionInfo.reactions
+                	})
+                }
+            }
+
+            initShareReactions()
 
             initReactions()
 
@@ -996,6 +1036,11 @@ angular.module('er.directives', [])
             $rootScope.$on('reloadreactions', function (event, postId) {
                 if (postId != $scope.post._id) return
                 initReactions()
+            })
+
+            $rootScope.$on('reloadsharereactions', function (event, postId) {
+                if ($scope.post.sharedFrom&&postId != $scope.post.sharedFrom._id) return
+                initShareReactions()
             })
 
 			$scope.updatePost = function (post) {
@@ -1157,15 +1202,30 @@ angular.module('er.directives', [])
             }
 
 			$scope.react = function (post, type, unreact) {
+				var tempType = type;
 				var action = 'react'
 				if (unreact) action = 'unreact'
-
-				$scope.post.youdid[type] = (action == 'react')
+				if (type == 'shareFrom' || type == 'shareSmart'&&$scope.post.sharedFrom) {
+					$scope.post.sharedFrom.youdid[type] = (action == 'react')
+				} else {
+					$scope.post.youdid[type] = (action == 'react')
+				}	
+				
 				if (type == 'like' && $scope.post.youdid.dislike) {
 					$scope.post.youdid.dislike = false
 				} else if (type == 'dislike' && $scope.post.youdid.like) {
 					$scope.post.youdid.like = false
 				}
+
+				if (type == 'shareFrom') {
+					action = 'react';
+					type = 'share';
+				}
+
+				if (type == 'shareSmart') {
+					type = 'smart';
+				}
+
 
 				// console.log($scope.post.sharedIn)
 
@@ -1184,7 +1244,40 @@ angular.module('er.directives', [])
                 /** SHIT_END */
 
 				reactionsService[action](post._id, type).then(function (result) {
-					$rootScope.$emit('reloadreactions', post._id)
+					if(tempType=='shareSmart' || tempType == 'shareFrom') {
+						
+						$rootScope.$emit('reloadsharereactions', post._id);
+						if (tempType == 'shareSmart') {
+							if (action=='react') {
+								$scope.post.sharedFrom.totalRecommended += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.sharedFrom.totalRecommended -= $scope.user.role=='Expert'? 2:1;
+							}
+						} else {
+							if (action=='react') {
+								$scope.post.sharedFrom.totalShared += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.sharedFrom.totalShared -= $scope.user.role=='Expert'? 2:1;
+							}
+						}
+					} else {
+						if (tempType == 'smart') {
+							if (action=='react') {
+								console.log($scope.post.totalRecommended)
+								$scope.post.totalRecommended += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.totalRecommended -= $scope.user.role=='Expert'? 2:1;
+							}
+						} else if (tempType == 'share') {
+							if (action=='react') {
+								$scope.post.totalShared += $scope.user.role=='Expert'? 2:1;
+							}  else {
+								$scope.post.totalShared -= $scope.user.role=='Expert'? 2:1;
+							}
+						}
+						$rootScope.$emit('reloadreactions', post._id)
+					}
+					
 				}, function (error) {
 					console.error('Reaction failed')
 					console.error(error)
@@ -1696,7 +1789,7 @@ angular.module('er.directives', [])
 				// 	filter: 'journalist',
 				// },
 				{
-					title: 'Recommended',
+					title: 'Most Recommended',
 					filter: 'recommended',
 				},
 				{
@@ -1705,8 +1798,7 @@ angular.module('er.directives', [])
 				},
 				{
 					title: 'Expert',
-					filter: 'expert',
-					url:'#!/users/expert'
+					filter: 'expert'
 				},
 				{
 					title: 'Photos',

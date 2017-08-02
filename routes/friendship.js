@@ -65,8 +65,11 @@ router.post('/accept', (req, res) => {
     let {id} = req.body
     models.Friendship.accept(id, req.user._id, (err, result) => {
         if (err) return res.status(400).send(err)
-        models.Notification.create(id, req.user._id, null, null, 'acceptfriendship', (err, res) => {
-            if (err) return res.status(400).send(err);
+        models.Notification.create(id, req.user._id, null, null, 'acceptfriendship', (err, response) => {
+            if (err) {
+                console.log(err)
+                return res.status(400).send(err);
+            }
             res.send({requested: true, accepted: true})
         })
         

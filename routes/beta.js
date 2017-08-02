@@ -122,14 +122,15 @@ router.post('/upgrade', (req, res) => {
 
             models.User.update(user._id, data, (err, user) => {
                 pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
-                    if (err) return next(err);
+
+                    if (err){console.log('PDF create',err); return next(err);}
                     next(null, user, resultPDF, form)
                 })
             })
         },
         (user, resultPDF, form, next) => {
             let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
-
+            console.log(approveLink);
             var mail = mailcomposer({
                 from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
                 to: config.ADMIN_EMAILS.join(', '),
@@ -145,11 +146,12 @@ router.post('/upgrade', (req, res) => {
         },
         (mail, next) => {
             mail.build(next)
-        },
-        (msg, next) => {
-            mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
         }
+        // (msg, next) => {
+        //     mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
+        // }
     ], (err) => {
+        console.log(err)
         if (err) res.status(400).send(err)
         else res.send({ok: true})
     })

@@ -2295,31 +2295,21 @@ angular.module('er.controllers', [])
 			// User authenticated, upgrade
 			betaUploadsService.upgrade($scope.signup).
 			then(function (result) {
-				console.log(result);
-				$scope.$apply(function () {
-					$scope.submitClass = 'success'
-					$scope.submitResult = 'Your request successfully sent'
-				})
+				$scope.submitClass = 'success'
+				$scope.submitResult = 'Your request successfully sent'
 			}).catch(function (err) {
-				console.log(err);
-				$scope.$apply(function () {
-					$scope.submitClass = 'error'
-					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
-				})
+				$scope.submitClass = 'error'
+				$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
 			})
         }, function (error) {
         	// User is not authenticated
 			betaUploadsService.signup($scope.signup).
-			then(function (result) {
-				$scope.$apply(function () {
+			then(function (result) {				
 					$scope.submitClass = 'success'
-					$scope.submitResult = 'Your request successfully sent'
-				})
-			}).catch(function (err) {
-				$scope.$apply(function () {
+					$scope.submitResult = 'Your request successfully sent'				
+			}).catch(function (err) {				
 					$scope.submitClass = 'error'
-					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
-				})
+					$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'				
 			})
         })
 

@@ -198,6 +198,7 @@ app.get('/permarticle/:id', (req, res) => {
 	let {id} = req.params
 
     models.Article.findOneById(id, (err, article) => {
+        if (article.sharedFrom) article = article.sharedFrom;
     	article.text = article.text
 			.replace(/<.+?>/gi, '')
 			.replace('&amp;', '&')

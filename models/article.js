@@ -407,14 +407,14 @@ var Model = function(mongoose) {
 			case 'recommended':
 				filterAggregationParams = filterAggregationParams.concat([
 					{
-						$sort: {totalRecommended: -1},
+						$sort: {totalRecommended: -1,'sharedFrom.totalRecommended': -1},
 					},
 				])
 				break;
 			case 'shared':
 				filterAggregationParams = filterAggregationParams.concat([
 					{
-						$sort: {totalShared: -1},
+						$sort: {totalShared: -1,'sharedFrom.totalShared':-1},
 					},
 				])
 				break;	

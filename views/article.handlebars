@@ -5,8 +5,8 @@
         <meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="Wise News Feed">
         <meta prefix="og: http://ogp.me/ns#" property="og:description" content="{{article.text}}">
         <meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://sandboxapp.wisenewsfeed.com/permarticle/{{article._id}}">
-        <meta prefix="og: http://ogp.me/ns#" property="og:image:url" content="https://sandboxapp.wisenewsfeed.com/{{article.images[0].filename}}" ng-if="article.images.length>0">
-        <meta prefix="og: http://ogp.me/ns#" property="og:image:secure_url" content="https://sandboxapp.wisenewsfeed.com/{{article.images[0].filename}}" ng-if="article.images.length>0">
+        <meta prefix="og: http://ogp.me/ns#" property="og:image:url" content="https://sandboxapp.wisenewsfeed.com/{{article.images.0.filename}}" ng-if="article.images.length>0">
+        <meta prefix="og: http://ogp.me/ns#" property="og:image:secure_url" content="https://sandboxapp.wisenewsfeed.com/{{article.images.0.filename}}" ng-if="article.images.length>0">
     </head>
     <body>
         <script>

@@ -14,7 +14,7 @@ module.exports = (dsn, __root) => {
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
 		'QuestionReaction', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
 		'Report', 'ExperienceLog', 'Message', 'Friendship', 'Image',
-		'ImageReaction'],
+		'ImageReaction','Upgraderequests'],
 
 		models = {}
 
@@ -27,6 +27,7 @@ module.exports = (dsn, __root) => {
 		if (typeof id !== 'object') id = mongoose.Types.ObjectId(id)
 		return id
 	}
+	console.log(models);
 
 	return {
 		models: () => {

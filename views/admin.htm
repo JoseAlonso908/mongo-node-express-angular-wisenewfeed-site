@@ -1,0 +1,140 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="mobile-search-wrapper">
+		<search q="q"></search>
+	</div>
+	<div class="content">
+		<div>
+			<div class="ctab">
+				<a href="" ng-class="{active:isActiveTab(1)}" ng-click="changeTab(1)">Experts manager</a>
+				<a href="" ng-class="{active:isActiveTab(2)}" ng-click="changeTab(2)">Upgrade Request</a>
+			</div>
+			<div ng-show="current_tab == 1" class="tb-exma">
+			 	<div class="tb-ex-tl">	
+			 		<div class="tb-ex-tl-h">
+			 			<h1>Experts Manager</h1>
+			 		</div>
+			 		<div class="tb-ex-tl-a">
+			 			<span><a href="">Home /</a></span>	
+			 			<span> Experts Manager</span>	
+			 		</div>
+			 		<div class="clear"></div>					
+			 	</div>
+			 	<div class="tb-ex-ct">
+			 		<div class="user-list-ad">
+			 			<span>User listing, and expert enabler</span>
+			 		</div>
+			 		<div class="row-on-page">
+			 			<span >Rows on page </span>
+			 		</div>			 		
+			 		<div class="tb-ex-ct-text">
+				 		<table class="tb-ex-ct-i">				 			
+					 		<thead>
+					 			<tr class="tb-ex-ct-i-text">
+					 				<th>ID's</th>
+					 				<th>Name</th>
+					 				<th>Username</th>
+					 				<th>Email</th>
+					 				<th>Role</th>
+					 				<th>Expert</th>
+					 				<th>Downgrade</th>
+					 				<th>Remove</th>
+					 				<th>Block</th>
+					 			</tr>
+					 			<tr class="tb-ex-ct-i-input">
+					 				<th></th>
+					 				<th><input type="text" name="" placeholder="Search by name" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Username" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Email" class="input-sm form-control search-input"></td>
+					 				<th><input type="text" name="" placeholder="Search by Role" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Experts" class="input-sm form-control search-input"></th>
+					 				<th></th>
+					 				<th></th>
+					 				<th></th>
+					 			</tr>
+					 		</thead>
+					 		<tbody>
+					 			<tr class="tb-ex-ct-i-items" ng-repeat="expert in experts">
+					 				<td>{{expert._id}}</td>
+					 				<td>{{expert.name}}</td>
+					 				<td></td>
+					 				<td><a href="mailto:{{expert.email}}">{{expert.email}}</a></td>
+					 				<td>{{expert.role}}</td>
+					 				<td><input type="checkbox" name=""></td>
+					 				<td><button ng-click="downgrade(expert._id)">Downgrade</button></td>
+					 				<td><button ng-click="remove(expert._id)">Remove</button></td>
+					 				<td><button ng-click="block(expert._id)">Block</button></td>
+					 			</tr>
+					 		</tbody>
+				 		</table>
+			 		</div>			 		
+			 	</div>				
+			</div>
+
+			<div ng-show="current_tab == 2" class="tb-exma">
+			 	<div class="tb-ex-tl">	
+			 		<div class="tb-ex-tl-h">
+			 			<h1>Upgrade Requests</h1>
+			 		</div>
+			 		<div class="tb-ex-tl-a">
+			 			<span><a href="">Home /</a></span>	
+			 			<span> Experts Manager</span>	
+			 		</div>
+			 		<div class="clear"></div>					
+			 	</div>
+			 	<div class="tb-ex-ct">
+			 		<div class="user-list-ad">
+			 			<span>User listing, and expert enabler</span>
+			 		</div>
+			 		<div class="row-on-page">
+			 			<span >Rows on page </span>
+			 		</div>			 		
+			 		<div class="tb-ex-ct-text">
+				 		<table class="tb-ex-ct-i">				 			
+					 		<thead>
+					 			<tr class="tb-ex-ct-i-text">
+					 				<th>ID's</th>
+					 				<th>Name</th>
+					 				<th>Username</th>
+					 				<th>Email</th>
+					 				<th>Role</th>
+					 				<th>Expert</th>
+					 				<th>View Details</th>
+					 				<th>Approve</th>
+					 				<th>Deny</th>
+					 			</tr>
+					 			<tr class="tb-ex-ct-i-input">
+					 				<th></th>
+					 				<th><input type="text" name="" placeholder="Search by name" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Username" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Email" class="input-sm form-control search-input"></td>
+					 				<th><input type="text" name="" placeholder="Search by Role" class="input-sm form-control search-input"></th>
+					 				<th><input type="text" name="" placeholder="Search by Experts" class="input-sm form-control search-input"></th>
+					 				<th></th>
+					 				<th></th>
+					 				<th></th>
+					 			</tr>
+					 		</thead>
+					 		<tbody>
+					 			<tr class="tb-ex-ct-i-items" ng-repeat="request in requests">
+					 				<td>{{request._id}}</td>
+					 				<td>{{request.name}}</td>
+					 				<td></td>
+					 				<td><a href="">{{request.email}}</a></td>
+					 				<td>{{request.role}}</td>
+					 				<td><input type="checkbox" name=""></td>
+					 				<td><button href="{{request.pdf}}">View Details</button></td>
+					 				<td><button>Approve</button></td>
+					 				<td><button>Deny</button></td>
+					 			</tr>
+					 		</tbody>
+				 		</table>
+			 		</div>			 		
+			 	</div>				
+			</div>
+		</div>
+	</div>
+</div>

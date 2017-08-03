@@ -38,11 +38,6 @@ app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 
 app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
-app.use('/proxy', (req, res) => {
-    let {url} = req.query;
-    request.get(url).pipe(res);
-})
-
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
@@ -210,7 +205,7 @@ app.get('/permarticle/:id', (req, res) => {
 
 global.events = new (require('events'))()
 
-const server = app.listen(8006)
+const server = app.listen(8080)
 const io = require('socket.io')(server)
 global.ws = require('./routes/ws')(io)
 
@@ -224,3 +219,5 @@ app.use('/n', require('./routes/notification'))
 app.use('/questions', require('./routes/question'))
 app.use('/chat', require('./routes/chat'))
 app.use('/beta', require('./routes/beta'))
+app.use('/reviews', require('./routes/reviews'))
+app.use('/admin', require('./routes/admin'))

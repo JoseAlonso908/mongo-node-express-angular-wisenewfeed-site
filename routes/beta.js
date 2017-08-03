@@ -124,34 +124,43 @@ router.post('/upgrade', (req, res) => {
                 pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
 
                     if (err){console.log('PDF create',err); return next(err);}
-                    next(null, user, resultPDF, form)
+                    next(null, user, resultPDF, form, data)
                 })
             })
         },
-        (user, resultPDF, form, next) => {
-            let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
-            console.log(approveLink);
-            var mail = mailcomposer({
-                from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
-                to: config.ADMIN_EMAILS.join(', '),
-                subject: `ER: Upgrade to ${form.role}`,
-                text: `Upgrade for ${form.name} to ${form.role}
-                    \nApprove ${approveLink}`,
-                html: `<strong>Upgrade for ${form.name} to ${form.role}</strong><br>
-                    <a href="${approveLink}">Approve</a>`,
-                attachments: [{path: resultPDF.filename}]
+        (user, resultPDF, form,request, next) => {
+            // let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
+            // console.log(approveLink);
+            // var mail = mailcomposer({
+            //     from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
+            //     to: config.ADMIN_EMAILS.join(', '),
+            //     subject: `ER: Upgrade to ${form.role}`,
+            //     text: `Upgrade for ${form.name} to ${form.role}
+            //         \nApprove ${approveLink}`,
+            //     html: `<strong>Upgrade for ${form.name} to ${form.role}</strong><br>
+            //         <a href="${approveLink}">Approve</a>`,
+            //     attachments: [{path: resultPDF.filename}]
+            // })
+            var requ = {
+                name: user.name,
+                user: user._id.toString(),
+                email: user.email,
+                pdf: resultPDF.filename
+            };
+            
+            models.Upgraderequests.create(requ,(err, reuq) => {
+                console.log('reuq ',reuq);
+                if (err) return next(err)
+                next(null)    
             })
-
-            next(null, mail)
         },
-        (mail, next) => {
-            mail.build(next)
-        }
+        // (mail, next) => {
+        //     mail.build(next)
+        // }
         // (msg, next) => {
         //     mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
         // }
     ], (err) => {
-        console.log(err)
         if (err) res.status(400).send(err)
         else res.send({ok: true})
     })

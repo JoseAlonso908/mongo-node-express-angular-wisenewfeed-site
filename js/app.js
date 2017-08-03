@@ -112,6 +112,10 @@ angular.module('er', [
 				templateUrl:'assets/views/showexpert.htm',
 				controller:'showexpertController',
 			})
+			.when('/admin',{
+				templateUrl:'assets/views/admin.htm',
+				controller:'adminController',
+			})
 
 
 		$authProvider.facebook({

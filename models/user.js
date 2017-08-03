@@ -27,6 +27,14 @@ var Model = function(mongoose) {
 		field			: String,
 		role 			: String,
 		title 			: String,
+		isBlocked: {
+			type: Boolean,
+			default: false
+		},
+		isAdmin: {
+			type: Boolean,
+			default: false
+		},
 		contact 		: {
 			email: String,
 			phone: String,
@@ -113,6 +121,21 @@ var Model = function(mongoose) {
 
 	return {
 		setXpInfo: setXpInfo,
+
+		removeUserById : (_id, callback) => {
+			_id = MOI(_id)
+
+			Model.findOneAndRemove({_id},callback);
+		},
+
+		blockUserById: (_id, callback) => {
+			_id = MOI(_id)
+
+			Model.findOne({_id}, (err, user) => {
+				user.isBlocked = true;
+				user.save(callback);
+			})
+		},
 
 		updateLastVisit: (_id, callback) => {
 			_id = MOI(_id)
@@ -432,6 +455,25 @@ var Model = function(mongoose) {
 					async.mapSeries(users, setXpInfo, callback)
 				})
 			})
+		},
+		adminSearch: (user, q, role, skip = 0, limit = 5, nicknameSearch = false, callback) => {
+			skip = Number(skip)
+			limit = Number(limit)
+
+			user = MOI(user)
+
+			// let roleQuery = {$ne: 'user'}
+			// if (role) roleQuery = role
+
+			let query = {
+				role: 'expert'
+			}
+
+			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
+			else query.name = new RegExp(q, 'gi')
+				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
+					async.mapSeries(users, setXpInfo, callback)
+				})
 		},
 		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
             if (!options || !options.query) return [];

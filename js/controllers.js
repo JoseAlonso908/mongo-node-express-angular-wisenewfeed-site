@@ -414,6 +414,78 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
+.controller('adminController',function($scope, adminService){
+	  	$scope.current_tab = 1;    
+		
+		$scope.changeTab = function(index){
+		    $scope.current_tab = index;
+		};		 
+		
+		$scope.isActiveTab = function(index){
+		    return index === $scope.current_tab;
+		};
+
+		$scope.params = {
+			start: 0,
+			limit: 10,
+			q: { role: 'expert'}
+		}
+
+		function init () {
+			adminService.getExperts($scope.params).then(function(response){
+				$scope.experts = response.data;
+				console.log($scope.experts)
+			})
+		}
+
+		function initRequest() {
+			adminService.getRequests().then(function(response){
+				if (response) {
+					console.log('response.data ',response);
+					$scope.requests = response.data;
+				}
+			})
+		} 
+
+		initRequest();
+
+		init();
+
+		$scope.downgrade = downgrade;
+		$scope.remove = remove;
+		$scope.block = block;
+		var t;
+
+		function downgrade(id) {
+
+			
+			if (confirm("Are you sure to downgrade this expert?")) {
+				adminService.downgradeExpert(id).then(function(response){
+					init();
+				})
+			}
+			
+		}
+
+		function remove(id) {
+			if (confirm("Are you sure to remove this expert?"))
+			adminService.removeExpert(id).then(function(response){
+				init();
+			})
+		}
+
+		function block(id) {
+			if (confirm("Are you sure to remove this expert?"))
+			adminService.blockExpert(id).then(function(response){
+				init();
+			})
+		}
+
+
+
+		
+
+})
 .controller('showexpertController',function($scope,identityService,$timeout){
 	$scope.chooseRating = chooseRating;
 	$scope.choosenRating = 0;

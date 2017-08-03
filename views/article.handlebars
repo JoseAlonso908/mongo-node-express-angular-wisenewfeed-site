@@ -1,13 +1,12 @@
 <html>
     <head>
-        <meta property="og:title" content="{{article.title}}">
-        <meta property="og:type" content="article">
-        {{#if article.images.length}}
-            <meta property="og:image" content="http://expertreaction.wlab.tech/{{article.images.0.filename}}">
-        {{/if}}
-        <meta property="og:site_name" content="Wise News Feed">
-        <meta property="og:description" content="{{article.text}}">
-        <meta property="og:image" content="{{article.images[0].filename}}" ng-if="article.images.length>0">
+        <meta prefix="og: http://ogp.me/ns#" property="og:title" content="{{article.title}}">
+        <meta prefix="og: http://ogp.me/ns#" property="og:type" content="article">
+        <meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="Wise News Feed">
+        <meta prefix="og: http://ogp.me/ns#" property="og:description" content="{{article.text}}">
+        <meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://sandboxapp.wisenewsfeed.com/permarticle/{{article._id}}">
+        <meta prefix="og: http://ogp.me/ns#" property="og:image:url" content="https://sandboxapp.wisenewsfeed.com/{{article.images[0].filename}}" ng-if="article.images.length>0">
+        <meta prefix="og: http://ogp.me/ns#" property="og:image:secure_url" content="https://sandboxapp.wisenewsfeed.com/{{article.images[0].filename}}" ng-if="article.images.length>0">
     </head>
     <body>
         <script>

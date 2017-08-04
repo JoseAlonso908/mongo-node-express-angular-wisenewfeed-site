@@ -68,10 +68,10 @@ angular.module('er.services', [])
 
 			return d.promise;
 		}, 
-		upgradeExpert: function(email) {
+		upgradeExpert: function(userId, id) {
 			var d = $q.defer();
 
-			$http.post('/admin/upgradeexpert', {email:email}).then(function(response){
+			$http.post('/admin/upgradeexpert', {user:userId, id:id}).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);
@@ -79,10 +79,10 @@ angular.module('er.services', [])
 
 			return d.promise; 
 		},
-		denyExpert: function(id) {
+		denyExpert: function(userId, id) {
 			var d = $q.defer();
 
-			$http.post('/admin/denyexpert', {id:id}).then(function(response){
+			$http.post('/admin/denyexpert', {user:userId, id:id}).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);

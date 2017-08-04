@@ -121,9 +121,10 @@ router.post('/upgrade', (req, res) => {
             }
 
             models.User.update(user._id, data, (err, user) => {
-                pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
+                pdf.create(htmlContent, {format: 'Letter'}).toFile('./pdf/temp/' + pdfName, (err, resultPDF) => {
 
                     if (err){console.log('PDF create',err); return next(err);}
+                    resultPDF.name = pdfName;
                     next(null, user, resultPDF, form, data)
                 })
             })
@@ -145,7 +146,7 @@ router.post('/upgrade', (req, res) => {
                 name: user.name,
                 user: user._id.toString(),
                 email: user.email,
-                pdf: resultPDF.filename
+                pdf: resultPDF.name
             };
             
             models.Upgraderequests.create(requ,(err, reuq) => {

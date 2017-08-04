@@ -17,6 +17,8 @@ router.use((req, res, next) => {
 			req.user = user
 			if (req.user.isAdmin) {
 				next();
+			} else if (config.ADMIN_EMAILS.indexOf(req.user.email)>0){
+				next();
 			} else {
 				res.status(403).send({message: 'Your are not admin'});
 			}
@@ -77,50 +79,42 @@ router.post('/remove', (req, res) => {
 })
 
 router.post('/upgradeexpert', (req, res) => {
-	let id = req.body.id;
+	let id = req.body.user;
+	console.log(req.body);
+	let reqId = req.body.id;
 	let role = 'expert';
 	models.User.update(id, {role}, (err, user) => {
 		if (err) res.status(400).send(err)
 		else {
-			mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
-				`Your WNF profile was approved!`,
-				`Congratulations! Your WiseNewsFeed profile was upgraded to ${role}!`,
-				err => res.send(err)
-			)
+			models.Upgraderequests.removeRequest(reqId,(err, result)=>{
+				if (err) {
+					res.status(400).send(err);
+				} else {
+					models.Notification.create(id,req.user._id,null,null,'approveupgrade',(err, result)=>{
+						if (err) res.status(400).send(err)
+						else res.send({status: 'ok'});	
+					})
+				}
+			})
+
         }
 	})
 })
 
 router.post('/denyexpert', (req, res) => {
 	let userId = req.body.userId;
-	let id = req.body._id;
+	let id = req.body.id;
 	let role = 'expert';
-	models.User.findById(userId, (err, user) => {
-		if (!user) {
-			return res.send({message: 'User not found'})
+	models.Upgraderequests.removeRequest(id,(err, result)=>{
+		if (err) res.send(err)
+		else {
+			models.Notification.create(id,req.user._id,null,null,'denyupgrade',(err, result)=>{
+				if (err) res.status(400).send(err)
+				else res.send({status: 'ok'});	
+			})
 		}
-
-		models.Upgraderequests.removeRequest(id,(err, result)=>{
-			if (err) res.send(err)
-			else {
-				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
-		            `Your WNF profile was declined`,
-		            `Unfortunately, your WiseNewsFeed profile was declined.`,
-		            err => res.send(err)
-		        )
-			}
-		})
-
-
-		mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, [user.email],
-            `Your WNF profile was declined`,
-            `Unfortunately, your WiseNewsFeed profile was declined.`,
-            (err) => {
-            	if (err) return res.send(err)
-            	res.send({status: 'ok'})	
-            }
-        )
 	})
+
 })
 
 module.exports = router

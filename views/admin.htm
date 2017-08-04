@@ -126,9 +126,9 @@
 					 				<td><a href="">{{request.email}}</a></td>
 					 				<td>{{request.role}}</td>
 					 				<td><input type="checkbox" name=""></td>
-					 				<td><button href="{{request.pdf}}">View Details</button></td>
-					 				<td><button>Approve</button></td>
-					 				<td><button>Deny</button></td>
+					 				<td><button ng-click="viewDetails(request.pdf)">View Details</button></td>
+					 				<td><button ng-click="upgrade(request.user, request._id)">Approve</button></td>
+					 				<td><button ng-click="deny(request.user, request._id)">Deny</button></td>
 					 			</tr>
 					 		</tbody>
 				 		</table>

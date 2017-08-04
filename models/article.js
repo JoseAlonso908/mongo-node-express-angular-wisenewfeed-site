@@ -692,12 +692,10 @@ var Model = function(mongoose) {
 							}
 							cb(null)
                         }, (err) => {
-                            models.Image.Model.populate(articles, { path: "sharedFrom.images" });
                             this.postProcessList(articles, viewer, callback)
                         })
 
 					} else {
-                        models.Image.Model.populate(articles, { path: "sharedFrom.images" });
                         this.postProcessList(articles, viewer, callback)
                     }
 				}

@@ -206,7 +206,7 @@ app.get('/permarticle/:id', (req, res) => {
 
 global.events = new (require('events'))()
 
-const server = app.listen(8080)
+const server = app.listen(8006)
 const io = require('socket.io')(server)
 global.ws = require('./routes/ws')(io)
 

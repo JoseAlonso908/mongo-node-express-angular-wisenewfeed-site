@@ -414,6 +414,104 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
+.controller('adminController',function($scope, adminService, $window){
+	  	$scope.current_tab = 1;    
+		
+		$scope.changeTab = function(index){
+		    $scope.current_tab = index;
+		};		 
+		
+		$scope.isActiveTab = function(index){
+		    return index === $scope.current_tab;
+		};
+
+		$scope.params = {
+			start: 0,
+			limit: 10,
+			q: { role: 'expert'}
+		}
+
+		function init(){
+			adminService.getExperts($scope.params).then(function(response){
+				$scope.experts = response.data;
+			})
+		}
+
+		function initRequest() {
+			adminService.getRequests().then(function(response){
+				if (response) {
+					console.log('response.data ',response);
+					$scope.requests = response.data;
+				}
+			})
+		} 
+
+		initRequest();
+
+		init();
+
+		$scope.downgrade = downgrade;
+		$scope.remove = remove;
+		$scope.block = block;
+		$scope.upgrade = upgrade;
+		$scope.viewDetails = viewDetails;
+		$scope.deny = deny;
+		var t;
+
+		function upgrade (userId, id) {
+			console.log(userId, id)
+			if (confirm("Are you sure to upgrade this user?")) {
+				adminService.upgradeExpert(userId, id).then(function(response){
+					init();
+					initRequest();
+				})
+			}
+		}
+
+		function deny (userId, id) {
+			console.log(userId, id)
+			if (confirm("Are you sure to deny this upgrade request?")) {
+				adminService.denyExpert(userId, id).then(function(response){
+					init();
+					initRequest();
+				})
+			}
+		}
+
+		function downgrade(id) {
+
+			
+			if (confirm("Are you sure to downgrade this expert?")) {
+				adminService.downgradeExpert(id).then(function(response){
+					init();
+				})
+			}
+			
+		}
+
+		function remove(id) {
+			if (confirm("Are you sure to remove this expert?"))
+			adminService.removeExpert(id).then(function(response){
+				init();
+			})
+		}
+
+		function block(id) {
+			if (confirm("Are you sure to block this expert?"))
+			adminService.blockExpert(id).then(function(response){
+				init();
+			})
+		}
+
+		function viewDetails(link) {
+			$window.open('/assets/pdf/'+link);
+		}
+
+
+
+		
+
+})
 .controller('showexpertController',function($scope,identityService,$timeout){
 	$scope.chooseRating = chooseRating;
 	$scope.choosenRating = 0;

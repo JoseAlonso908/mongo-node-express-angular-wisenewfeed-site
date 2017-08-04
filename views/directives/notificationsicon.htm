@@ -45,6 +45,16 @@
 					Accepted your friendship request
 				</span>
 			</div>
+			<div class="action" ng-if="'approveupgrade' === n.type">
+				<span ng-switch="n.type">
+					Accepted your upgrade request
+				</span>
+			</div>
+			<div class="action" ng-if="'denyupgrade' === n.type">
+				<span ng-switch="n.type">
+					Denied your upgrade request
+				</span>
+			</div>
 
 			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">

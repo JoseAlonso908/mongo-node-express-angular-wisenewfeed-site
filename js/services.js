@@ -22,6 +22,87 @@ var __s = function ($http, $cookies, method, url, data) {
 
 
 angular.module('er.services', [])
+.factory('adminService', function($http, $q){
+	return {
+		getExperts : function(params) {
+			var d = $q.defer();
+
+			$http.post('/admin/getexperts', params).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		downgradeExpert : function(id) {
+			var d = $q.defer();
+
+			$http.post('/admin/downgrade', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		removeExpert : function(id) {
+			var d = $q.defer();
+
+			$http.post('/admin/removeuser', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		blockExpert : function(id) {
+			var d = $q.defer();
+
+			$http.post('/admin/blockuser', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		}, 
+		upgradeExpert: function(userId, id) {
+			var d = $q.defer();
+
+			$http.post('/admin/upgradeexpert', {user:userId, id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise; 
+		},
+		denyExpert: function(userId, id) {
+			var d = $q.defer();
+
+			$http.post('/admin/denyexpert', {user:userId, id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		getRequests: function() {
+			var d = $q.defer();
+
+			$http.post('/admin/getrequests',{}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		}
+	}
+})
 .factory('findAccountRequestService', function ($http, $q) {
 	return function (value) {
 		var d = $q.defer()

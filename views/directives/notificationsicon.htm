@@ -55,6 +55,11 @@
 					Denied your upgrade request
 				</span>
 			</div>
+			<div class="action" ng-if="'downgrade' === n.type">
+				<span ng-switch="n.type">
+					Downgraded you from expert to user account
+				</span>
+			</div>
 
 			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
 				<span ng-switch="n.type">

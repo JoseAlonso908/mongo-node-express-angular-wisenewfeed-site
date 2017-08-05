@@ -456,7 +456,17 @@ angular.module('er.controllers', [])
 		$scope.upgrade = upgrade;
 		$scope.viewDetails = viewDetails;
 		$scope.deny = deny;
+		$scope.refresh = refresh;
 		var t;
+
+		function refresh () {
+			init();
+			initRequest();
+		}
+
+		function alertT(text){
+			alert(text+ ' successfully!')
+		}
 
 		function upgrade (userId, id) {
 			console.log(userId, id)
@@ -464,6 +474,7 @@ angular.module('er.controllers', [])
 				adminService.upgradeExpert(userId, id).then(function(response){
 					init();
 					initRequest();
+					alertT('Upgraded');
 				})
 			}
 		}
@@ -474,6 +485,7 @@ angular.module('er.controllers', [])
 				adminService.denyExpert(userId, id).then(function(response){
 					init();
 					initRequest();
+					alertT('Denied');
 				})
 			}
 		}
@@ -484,6 +496,8 @@ angular.module('er.controllers', [])
 			if (confirm("Are you sure to downgrade this expert?")) {
 				adminService.downgradeExpert(id).then(function(response){
 					init();
+					initRequest();
+					alertT('downgraded');
 				})
 			}
 			
@@ -493,6 +507,7 @@ angular.module('er.controllers', [])
 			if (confirm("Are you sure to remove this expert?"))
 			adminService.removeExpert(id).then(function(response){
 				init();
+				alertT('User is removed');
 			})
 		}
 
@@ -500,6 +515,7 @@ angular.module('er.controllers', [])
 			if (confirm("Are you sure to block this expert?"))
 			adminService.blockExpert(id).then(function(response){
 				init();
+				alertT('Blocked user');
 			})
 		}
 
@@ -2394,7 +2410,7 @@ angular.module('er.controllers', [])
 			betaUploadsService.upgrade($scope.signup).
 			then(function (result) {
 				$scope.submitClass = 'success'
-				$scope.submitResult = 'Your request successfully sent'
+				$scope.submitResult = 'Request has been sent, you will be notify in 48h.'
 			}).catch(function (err) {
 				$scope.submitClass = 'error'
 				$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
@@ -2462,7 +2478,6 @@ angular.module('er.controllers', [])
 		$scope.command('fontName', font)
         $scope.fontListVisible = false
 	}
-
     $scope.create = function () {
 		// console.log($scope.title)
 		// console.log($scope.text)

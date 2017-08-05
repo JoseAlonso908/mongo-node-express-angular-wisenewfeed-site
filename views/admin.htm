@@ -9,8 +9,9 @@
 	<div class="content">
 		<div>
 			<div class="ctab">
-				<a href="" ng-class="{active:isActiveTab(1)}" ng-click="changeTab(1)">Experts manager</a>
-				<a href="" ng-class="{active:isActiveTab(2)}" ng-click="changeTab(2)">Upgrade Request</a>
+				<a href="" ng-class="{active:isActiveTab(1)}" ng-click="changeTab(1)">Experts manager</a> |
+				<a href="" ng-class="{active:isActiveTab(2)}" ng-click="changeTab(2)">Upgrade Request</a> |
+				<a href="" ng-click="refresh()">Refresh</a>
 			</div>
 			<div ng-show="current_tab == 1" class="tb-exma">
 			 	<div class="tb-ex-tl">	

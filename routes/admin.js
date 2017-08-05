@@ -66,7 +66,13 @@ router.post('/downgrade', (req, res) => {
 	let id = req.body.id;
 	models.User.update(req.body.id,{role:'user'}, (err, result)=>{
 		if (err) res.status(400).send(err)
-		else res.send(result) 
+		else {
+			models.Notification.create(id,req.user._id,null,null,'downgrade',(err, result)=>{
+				if (err) res.status(400).send(err)
+				else res.send({status: 'ok'});	
+			})
+		}
+			
 	})
 })
 

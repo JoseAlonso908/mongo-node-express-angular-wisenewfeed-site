@@ -278,7 +278,6 @@ var Model = function(mongoose) {
 				user.save(callback)
 			})
 		},
-
 		update: (_id, data, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
 

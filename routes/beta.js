@@ -121,7 +121,7 @@ router.post('/upgrade', (req, res) => {
             }
 
             models.User.update(user._id, data, (err, user) => {
-                pdf.create(htmlContent, {format: 'Letter'}).toFile('./pdf/temp/' + pdfName, (err, resultPDF) => {
+                pdf.create(htmlContent, {format: 'Letter'}).toFile('./assets/pdf/' + pdfName, (err, resultPDF) => {
 
                     if (err){console.log('PDF create',err); return next(err);}
                     resultPDF.name = pdfName;

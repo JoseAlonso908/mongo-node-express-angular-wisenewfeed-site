@@ -40,7 +40,7 @@ angular.module('er.directives', [])
 				element.html(ngModel.$viewValue || "")
 			}
 
-			// element.bind("input", read)
+			element.bind("input", read)
 		}
 	}
 })

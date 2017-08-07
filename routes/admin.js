@@ -62,6 +62,15 @@ router.post('/blockuser', (req, res) => {
 	})
 })
 
+router.post('/unblockuser', (req, res) => {
+	let _id = req.body.id;
+
+	models.User.unblockUserById(_id, (err, result)=>{
+		if (err) res.status(400).send(err)
+		else res.send({status: 'ok'});
+	})
+})
+
 router.post('/downgrade', (req, res) => {
 	let id = req.body.id;
 	models.User.update(req.body.id,{role:'user'}, (err, result)=>{
@@ -108,13 +117,13 @@ router.post('/upgradeexpert', (req, res) => {
 })
 
 router.post('/denyexpert', (req, res) => {
-	let userId = req.body.userId;
+	let userId = req.body.user;
 	let id = req.body.id;
 	let role = 'expert';
 	models.Upgraderequests.removeRequest(id,(err, result)=>{
 		if (err) res.send(err)
 		else {
-			models.Notification.create(id,req.user._id,null,null,'denyupgrade',(err, result)=>{
+			models.Notification.create(userId,req.user._id,null,null,'denyupgrade',(err, result)=>{
 				if (err) res.status(400).send(err)
 				else res.send({status: 'ok'});	
 			})

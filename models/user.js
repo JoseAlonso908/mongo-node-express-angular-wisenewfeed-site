@@ -136,7 +136,14 @@ var Model = function(mongoose) {
 				user.save(callback);
 			})
 		},
+		unblockUserById: (_id, callback) => {
+			_id = MOI(_id)
 
+			Model.findOne({_id}, (err, user) => {
+				user.isBlocked = false;
+				user.save(callback);
+			})
+		},
 		updateLastVisit: (_id, callback) => {
 			_id = MOI(_id)
 

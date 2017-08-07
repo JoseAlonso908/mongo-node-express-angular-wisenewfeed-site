@@ -68,6 +68,17 @@ angular.module('er.services', [])
 
 			return d.promise;
 		}, 
+		unblockExpert : function(id) {
+			var d = $q.defer();
+
+			$http.post('/admin/unblockuser', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
 		upgradeExpert: function(userId, id) {
 			var d = $q.defer();
 

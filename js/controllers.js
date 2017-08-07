@@ -453,6 +453,7 @@ angular.module('er.controllers', [])
 		$scope.downgrade = downgrade;
 		$scope.remove = remove;
 		$scope.block = block;
+		$scope.unblock=unblock;
 		$scope.upgrade = upgrade;
 		$scope.viewDetails = viewDetails;
 		$scope.deny = deny;
@@ -510,12 +511,26 @@ angular.module('er.controllers', [])
 				alertT('User is removed');
 			})
 		}
-
-		function block(id) {
-			if (confirm("Are you sure to block this expert?"))
+		
+		function block(id) {			
+			
+			if (confirm("Are you sure to block this expert?")){
+				$scope.Block="Unblock"
+			}
 			adminService.blockExpert(id).then(function(response){
 				init();
 				alertT('Blocked user');
+			})
+		}
+
+		function unblock(id) {			
+			
+			if (confirm("Are you sure to unblock this expert?")){
+				
+			}
+			adminService.unblockExpert(id).then(function(response){
+				init();
+				alertT('Unblocked user');
 			})
 		}
 
@@ -1212,7 +1227,9 @@ angular.module('er.controllers', [])
 					identityService.updateSettings(form).then(function (result) {
 						identityService.get(true).then(function (user) {
 							$scope.user = user
-							return $location.url('/my')
+							// return $location.url('/my')
+							$scope.submitClass = 'success'
+							$scope.submitResult = 'Your request successfully sent';							
 						})
 					}, function (error) {
 						alert('Failed to update settings. Please, try again later.')

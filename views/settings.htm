@@ -98,8 +98,12 @@
 					</div>
 
 					<div class="divider"></div>
-
-					<input type="submit" class="cta-button" value="Save changes">
+					<div class="tb-request">
+                        <div ng-class="submitClass">
+                            {{submitResult}}
+                        </div>
+                    </div>
+					<input type="submit" ng-class="submitClass" class="cta-button" value="Save changes">
 				</form>
 			</div>
 

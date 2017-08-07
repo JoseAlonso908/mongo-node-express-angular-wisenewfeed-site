@@ -101,6 +101,9 @@ router.post('/auth/login', (req, res) => {
 	// console.log(`Email: ${email}, password: ${password}`)
 	models.User.getByCredentials(email, password, (err, user) => {
 		if (!user) return res.status(400).send({message: `No user with this credentials`})
+		else if (user.isBlocked) {
+			return res.status(400).send({message: `Your account is blocked.	`})
+		}	
 		else {
 			getTokenAndRespond(res, user)
 		}

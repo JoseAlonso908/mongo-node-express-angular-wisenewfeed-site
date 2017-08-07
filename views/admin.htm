@@ -67,7 +67,19 @@
 					 				<td><input type="checkbox" name=""></td>
 					 				<td><button ng-click="downgrade(expert._id)">Downgrade</button></td>
 					 				<td><button ng-click="remove(expert._id)">Remove</button></td>
-					 				<td><button ng-click="block(expert._id)">Block</button></td>
+					 				<td>
+						 				<button ng-if="!expert.isBlocked" ng-click="block(expert._id)">
+							 				<span>
+							 					Block
+							 				</span> 
+						 				</button>
+						 				<button ng-if="expert.isBlocked" ng-click="unblock(expert._id)">
+							 				<span>
+							 					Unblock
+							 				</span> 
+						 				</button>
+						 				
+					 				</td>
 					 			</tr>
 					 		</tbody>
 				 		</table>

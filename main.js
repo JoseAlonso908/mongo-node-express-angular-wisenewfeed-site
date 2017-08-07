@@ -38,6 +38,11 @@ app.use('/assets', serveStatic(path.join(__dirname, 'assets'), {
 
 app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
+app.use('/proxy', (req, res) => {
+    let {url} = req.query;
+    request.get(url).pipe(res);
+})
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
@@ -135,6 +140,7 @@ app.get('/static/cities', (req, res) => {
 
 global.getCategories = () => {
 	return [
+        {id: 0, title: 'All', tag: '', count: 0},
         {id: 1, title: 'Politics', tag: 'politics', count: 0},
         {id: 2, title: 'Relashionship', tag: 'relationship', count: 0},
         {id: 3, title: 'Start up', tag: 'startup', count: 0},

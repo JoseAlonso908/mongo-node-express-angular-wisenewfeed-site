@@ -2453,6 +2453,17 @@ angular.module('er.controllers', [])
             return $location.url('/')
         }
     })
+    var quill = new Quill('#textquill', {
+		modules: {
+		    toolbar: [
+		      [{ header: [1, 2, false] }],
+		      ['bold', 'italic', 'underline'],
+		      ['code-block', 'link']
+		    ]
+		  },
+		  placeholder: 'Compose an epic...',
+		  theme: 'snow'  // or 'bubble'
+	});
 	/*TODO: Add select privacy functionality */
 	$scope.privacy = 'Stranger'
     $scope.fonts = [
@@ -2502,6 +2513,7 @@ angular.module('er.controllers', [])
 		// console.log($scope)
 		// return
 
+		var t = quill.root.innerHTML;
         if ($scope.loading) return
         $scope.loading = true
 
@@ -2512,7 +2524,7 @@ angular.module('er.controllers', [])
         var progress = function () {}
         postService.create({
             title: $scope.title,
-            text: $scope.textHtml,
+            text: t,
             files: fileObjects,
             privacy: $scope.privacy
         }, progress).then(function (result) {

@@ -49,7 +49,7 @@
 				<a image="image" lightbox post="post.id" author="post.author" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
 			</div>
 			<textarea class="text" ng-show="editing" ng-model="post.editingText" ng-disabled="loading"></textarea>
-			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
+			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos"></div>
 
 			<div class="buttons" ng-show="editing">
 				<button ng-click="setEditingMode(post, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>

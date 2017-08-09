@@ -34,7 +34,7 @@ angular.module('er.services', [])
 			})
 
 			return d.promise;
-		},
+		},		
 		downgradeExpert : function(id) {
 			var d = $q.defer();
 
@@ -101,10 +101,10 @@ angular.module('er.services', [])
 
 			return d.promise;
 		},
-		getRequests: function() {
+		getRequests: function(params) {
 			var d = $q.defer();
 
-			$http.post('/admin/getrequests',{}).then(function(response){
+			$http.post('/admin/getrequests',params).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);

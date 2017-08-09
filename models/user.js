@@ -456,7 +456,7 @@ var Model = function(mongoose) {
 				var blockedIds = blockeds.map((b) => b._id)
 				blockedIds.push(user)
 				query['_id'] = {$nin: blockedIds}
-
+				console.log(query);
 				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
 					async.mapSeries(users, setXpInfo, callback)
 				})
@@ -474,12 +474,16 @@ var Model = function(mongoose) {
 			let query = {
 				role: 'expert'
 			}
-
-			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
-			else query.name = new RegExp(q, 'gi')
-				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
-					async.mapSeries(users, setXpInfo, callback)
+			
+			
+			query.name = new RegExp(q, 'gi')
+			Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
+				if (err) return callback(err);
+				Model.count(query).exec((error, result)=>{
+					callback(error, users,result)
 				})
+				
+			})			
 		},
 		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
             if (!options || !options.query) return [];

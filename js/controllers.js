@@ -414,7 +414,7 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('adminController',function($scope, adminService, $window){
+.controller('adminController',function($scope, adminService, $window,identityService){
 	  	$scope.current_tab = 1;    
 		
 		$scope.changeTab = function(index){
@@ -428,20 +428,27 @@ angular.module('er.controllers', [])
 		$scope.params = {
 			start: 0,
 			limit: 10,
-			q: { role: 'expert'}
+			q: ''
+		}
+
+		$scope.requestParams = {
+			start: 0,
+			limit: 10,
+			q: ''
 		}
 
 		function init(){
 			adminService.getExperts($scope.params).then(function(response){
-				$scope.experts = response.data;
+				$scope.experts = response.data.results;
+				$scope.countExperts = response.data.count;
 			})
 		}
 
 		function initRequest() {
-			adminService.getRequests().then(function(response){
+			adminService.getRequests($scope.requestParams).then(function(response){
 				if (response) {
-					console.log('response.data ',response);
-					$scope.requests = response.data;
+					$scope.requests = response.data.results;
+					$scope.countRequests = response.data.count;
 				}
 			})
 		} 
@@ -458,8 +465,70 @@ angular.module('er.controllers', [])
 		$scope.viewDetails = viewDetails;
 		$scope.deny = deny;
 		$scope.refresh = refresh;
+		$scope.multisearch = multisearch;
+		$scope.next = next;
+		$scope.back = back;
+		$scope.page = 1;
+		$scope.rPage = 1;
+		$scope.multisearchRequest = multisearchRequest;
+		$scope.nextR = nextR;
+		$scope.backR = backR;
+
+		function nextR () {	
+			if ($scope.countRequests>($scope.rPage)*10) {
+				$scope.requestParams.start+=10;
+				$scope.rPage +=1;
+				initRequest();
+			}	
+		}
+
+		function backR () {	
+			if (rPage>1) {
+				$scope.requestParams.start-=10;
+				initRequest();
+			}
+		}
+
+		function multisearchRequest() {
+			$scope.requestParams.start = 0;
+			$scope.requestParams.q = $scope.requestq;
+			initRequest()
+		}
+
+
+
 		var t;
 
+		function next () {
+			if ($scope.countExperts>($scope.page)*10) {
+				$scope.params.start+=10;
+				$scope.page+=1;
+				init();
+			}
+			
+		}
+
+		function back () {
+			if ($scope.page>1) {
+				$scope.params.start-=10;
+				$scope.page-=1;
+				init();
+			}
+			
+		}
+
+
+		function multisearch () {
+			$scope.params.start = 0;
+			$scope.params.q = $scope.q.trim();
+			adminService.getExperts($scope.params).then(function (response) {
+				$scope.experts = response.data.results;
+				$scope.countExperts = response.data.count;
+			})
+		}
+
+
+		
 		function refresh () {
 			init();
 			initRequest();

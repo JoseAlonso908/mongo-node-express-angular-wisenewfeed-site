@@ -6157,6 +6157,24 @@ a.small-icon, button.small-icon {
 	font-size:15px;
 }
 
+.search-wrapper {
+	padding: 20px 10px;
+	input {
+		width: 300px;
+	}
+}
+
+.admin-pagination {
+	margin: auto;
+	width: 200px;
+	padding: 10px;
+	text-align: center;
+	a {
+		cursor: pointer;
+	}
+
+}
+
 
 
 

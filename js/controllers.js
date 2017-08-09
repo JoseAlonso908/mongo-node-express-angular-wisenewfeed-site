@@ -2523,16 +2523,13 @@ angular.module('er.controllers', [])
         }
     })
     var quill = new Quill('#textquill', {
-		modules: {
-		    toolbar: [
-		      [{ header: [1, 2, false] }],
-		      ['bold', 'italic', 'underline'],
-		      ['code-block', 'link']
-		    ]
-		  },
-		  placeholder: 'Compose an epic...',
-		  theme: 'snow'  // or 'bubble'
-	});
+        modules: {
+            toolbar: '#toolbar-container',
+            formula: true,
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow'  // or 'bubble'
+    });
 	/*TODO: Add select privacy functionality */
 	$scope.privacy = 'Stranger'
     $scope.fonts = [
@@ -2654,6 +2651,9 @@ angular.module('er.controllers', [])
             $timeout.cancel(this)
         }, 0)
     }
+
+    var toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', $scope.addImage);
 
     $scope.removeUpload = function (index) {
         if ($scope.loading) return

@@ -18,7 +18,7 @@ angular.element(document).on('keydown', function (e) {
 angular.module('er.controllers', [])
 .controller('startController', function (	$scope, $auth, $location, $cookies, $timeout,
 											countriesListService, confirmAccountModal,
-											validateEmailService, validatePhoneService,
+											validateEmailService,validateUsernameService, validatePhoneService,
 											forgotPasswordModal, findMyAccountModal, identityService
 ) {
 
@@ -84,7 +84,7 @@ angular.module('er.controllers', [])
 		$location.url('/confirmsignup')
 	}
 
-	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
+	$scope.signup = {email: '', password: '', name: '', country: '', phone: '',username: ''}
 
 	$scope.doSignup = function () {
 		console.log($scope.signup)
@@ -108,6 +108,13 @@ angular.module('er.controllers', [])
 		async.series([
 			function (callback) {
 				validateEmailService($scope.signup.email).then(function (response) {
+					callback()
+				}, function (error) {
+					callback(error)
+				})
+			},
+			function (callback) {
+				validateUsernameService($scope.signup.username).then(function (response) {
 					callback()
 				}, function (error) {
 					callback(error)

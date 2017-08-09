@@ -192,6 +192,19 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
+.factory('validateUsernameService', function ($http, $q) {
+	return function (username) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/validate/username', {username: username}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
 .factory('validatePhoneService', function ($http, $q) {
 	return function (phone) {
 		var d = $q.defer()

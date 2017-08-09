@@ -130,6 +130,22 @@ router.post('/auth/signup/validate/email', (req, res) => {
 	})
 })
 
+router.post('/auth/signup/validate/username', (req, res) => {
+	let {username} = req.body
+
+	async.series([
+		(callback) => {
+			models.User.findUsername(username, (err, user) => {
+				if (user) callback({message: 'User with this username aready exist'})
+				else callback()
+			})
+		}
+	], (err) => {
+		if (err) return res.status(400).send(err)
+		else return res.send({ok: true})
+	})
+})
+
 router.post('/auth/signup/validate/phone', (req, res) => {
 	let {phone} = req.body
 

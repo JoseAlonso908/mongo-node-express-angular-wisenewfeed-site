@@ -16,6 +16,7 @@ var Model = function(mongoose) {
 		name			: String,
         nickname		: String,
 		intro			: String,
+		username 		: String,
 		email			: String,
 		password		: {type: String, select: false},
 		phone			: String,
@@ -189,6 +190,9 @@ var Model = function(mongoose) {
 
 		findByPhone: (phone, callback) => {
 			Model.findOne({phone}, callback)
+		},
+		findUsername: (username, callback) => {
+			Model.findOne({username}, callback)
 		},
 
 		findByEmailOrPhone: (value, callback) => {

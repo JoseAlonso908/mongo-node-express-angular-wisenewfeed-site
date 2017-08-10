@@ -475,9 +475,7 @@ var Model = function(mongoose) {
 			// let roleQuery = {$ne: 'user'}
 			// if (role) roleQuery = role
 
-			let query = {
-				role: 'expert'
-			}
+			let query = {}
 			
 			
 			query.name = new RegExp(q, 'gi')

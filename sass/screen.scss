@@ -1785,6 +1785,22 @@ a.small-icon, button.small-icon {
 							resize: none;
 						}
 
+						.post-comment {
+							width: 100%; height: 72px;
+							padding: 10px;
+							border: 1px solid $activeBlue;
+							border-radius: 3px;
+							font-family: 'Roboto';
+							font-size: 13px;
+							box-sizing: border-box;
+							line-height: 20px;
+							resize: none;
+						}
+
+						tag {
+							color: $activeBlue;
+						}
+
 						.text {
 							margin-top: 12px;
 							font-size: 13px;
@@ -5068,7 +5084,43 @@ a.small-icon, button.small-icon {
 		height: 0;
 	}
 
+	tag {
+		color: $activeBlue;
+	}
+
 	textarea {
+		width: 100%; height: 38px;
+		padding: 10px;
+		border: 1px solid #f0f2f4;
+		border-radius: 3px;
+		font-family: 'Roboto';
+		font-size: 13px;
+		box-sizing: border-box;
+		resize: none;
+		line-height: 16px;
+
+		&:focus {
+			border-color: $activeBlue;
+		}
+
+		&.not-empty {
+			height: 76px;
+
+			& + .send {
+				display: block;
+				margin-top: 6px;
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			& + .send + form + .upload-image {
+				top: 85px; left: 0;
+				right: auto;
+			}
+		}
+	}
+
+	.post-comment {
 		width: 100%; height: 38px;
 		padding: 10px;
 		border: 1px solid #f0f2f4;

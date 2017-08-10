@@ -158,13 +158,16 @@
 	<postcomments nocollapse="justone" post="post" user="user"></postcomments>
 	<div class="comment-box" ng-if="user">
 		<avatar user="user"></avatar>
-		<textarea placeholder="Write a comment..." maxlength="{{user.role === 'User' ? 250 : null}}" ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
-		<button ng-click="$parent.addComment(post)" class="send">
+		<div class="post-comment" ng-class="{'not-empty': post.commentText}" contenteditable ng-model="post.commentText"></div>
+		
+		<button ng-click="$parent.addComment(post)" class="send comment-send">
 			<div>
 				<i class="material-icons">send</i>
 				<div class="title">Send</div>
 			</div>
 		</button>
+
+		
 
 		<form ng-if="user.role != 'User'"><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
 		<button ng-if="user.role != 'User' && files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>

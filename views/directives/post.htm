@@ -113,15 +113,15 @@
 			<i class="material-icons">chat_bubble</i>
 			<div class="number">{{commentsCount || 0}}</div>
 		</div>
-		<button ng-if="!post.sharedFrom&&post.author._id.toString() != user._id.toString()"
-				ng-click="react(post, 'share', post.youdid.share)" ng-disabled="post.youdid.share" ng-class="{active: post.youdid.share}" class="share-button">
+		<button ng-if="!post.sharedFrom"
+				ng-click="react(post, 'share', post.youdid.share)" ng-disabled="post.youdid.share||post.author._id.toString() == user._id.toString()" ng-class="{active: post.youdid.share}" class="share-button">
 			<i class="fa fa-share-square-o" aria-hidden="true"></i>
 			<span class="title">Share</span>
 			<span class="title" ng-if="!post.sharedFrom&&post.totalShared > 0"> {{post.totalShared}}</span>
 
 		</button>
-		<button ng-if="post.sharedFrom&&post.author._id.toString() != user._id.toString()"
-				ng-click="react(post.sharedFrom, 'shareFrom', post.youdid.share)" ng-class="{active: post.youdid.share}" ng-disabled="post.sharedFrom.youdid.share" class="share-button">
+		<button ng-if="post.sharedFrom"
+				ng-click="react(post.sharedFrom, 'shareFrom', post.youdid.share)" ng-class="{active: post.youdid.share}" ng-disabled="post.sharedFrom.youdid.share||post.sharedFrom.author._id.toString() == user._id.toString()" class="share-button">
 			<i class="fa fa-share-square-o" aria-hidden="true"></i>
 			<span class="title">Share</span>
 			<span class="title" ng-if="post.sharedFrom&&post.sharedFrom.totalShared > 0"> {{post.sharedFrom.totalShared}}</span>

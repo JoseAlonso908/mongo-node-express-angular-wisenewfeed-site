@@ -846,25 +846,6 @@ angular.module('er.directives', [])
 
 				var setFeed = function (feed) {
 
-					if ($location.path().indexOf('person')<0) {
-						feed.sort(function(a,b){
-							a.totalRecommended = a.totalRecommended?a.totalRecommended:0;
-							a.totalShared = a.totalShared?a.totalShared:0;
-							b.totalRecommended = b.totalRecommended?b.totalRecommended:0;
-							b.totalShared = b.totalShared?b.totalShared:0;
-							if (a.sharedFrom) {
-								a.totalRecommended = a.sharedFrom.totalRecommended?a.sharedFrom.totalRecommended:0;
-								a.totalShared = a.sharedFrom.totalShared?a.sharedFrom.totalShared:0;
-							}
-
-							if (b.sharedFrom) {
-								b.totalRecommended = b.sharedFrom.totalRecommended?b.sharedFrom.totalRecommended:0;
-								b.totalShared = b.sharedFrom.totalShared?b.sharedFrom.totalShared:0;
-							}
-							return -a.totalRecommended - a.totalShared + (b.totalRecommended + b.totalShared);
-						})
-					}
-						
 					$scope.feedLoading = false
 
 					if (feed.length == 0) {

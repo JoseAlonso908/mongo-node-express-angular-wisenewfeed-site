@@ -513,7 +513,7 @@ a.small-icon, button.small-icon {
 		topbar, #top-bar {
 			z-index: 101;
 		}
-
+		
 		#top-bar {
 			@include display-flex; position: relative;
 			@include justify-content(space-between);
@@ -531,6 +531,7 @@ a.small-icon, button.small-icon {
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: contain;
+				cursor: pointer;
 			}
 
 			.make-post {
@@ -5892,7 +5893,7 @@ a.small-icon, button.small-icon {
 	float: left;
 }
 .info-reviews-rate{
-	width: 160px;
+	width: 75%;
 	margin: auto;
 }
 .info-show a{

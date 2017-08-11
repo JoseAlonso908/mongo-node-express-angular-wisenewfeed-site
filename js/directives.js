@@ -1750,7 +1750,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('topbar', function ($rootScope) {
+.directive('topbar', function ($rootScope,$window) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/topbar.htm',
@@ -1761,6 +1761,10 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			if (!$scope.q) {
 				$scope.q = ''
+			}
+			$scope.goHomePage = function() {
+				console.log('ok')
+				$window.location.reload();
 			}
 
 			$scope.openUserMenu = function (e) {

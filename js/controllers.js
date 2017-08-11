@@ -87,7 +87,6 @@ angular.module('er.controllers', [])
 	$scope.signup = {email: '', password: '', name: '', country: '', phone: '',username: ''}
 
 	$scope.doSignup = function () {
-		console.log($scope.signup)
 
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
@@ -130,6 +129,7 @@ angular.module('er.controllers', [])
 		], function (err) {
 			if (err) $scope.signup.error = err
 			else {
+				console.log('ok signup')
 				confirmAccountModal.activate({$parent: $scope, phone: '+' + $scope.signup.country.code + $scope.signup.phone})
 			}
 		})
@@ -224,6 +224,8 @@ angular.module('er.controllers', [])
 			alert("Signup failed due to: " + response.data.message)
 		})
 	}
+
+	$scope.doSignup('user');
 })
 .controller('friendsFeedController', function ($scope, $rootScope, fieldsListService, groupedCountriesService, identityService) {
 	$scope.setActiveCategory = function (item) {
@@ -1303,7 +1305,7 @@ angular.module('er.controllers', [])
 					identityService.updateSettings(form).then(function (result) {
 						identityService.get(true).then(function (user) {
 							$scope.user = user
-							// return $location.url('/my')
+							$scope.doSignup('user')
 							$scope.submitClass = 'success'
 							$scope.submitResult = 'Your request successfully sent';							
 						})

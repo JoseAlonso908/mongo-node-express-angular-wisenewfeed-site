@@ -101,11 +101,11 @@
 	<div class="divider" ></div>
 
 	<div class="actions" ng-if="user">
-		<button ng-disabled="post.author._id.toString()==user._id.toString()" ng-if="!post.sharedFrom" ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
+		<button ng-disabled="post.author._id.toString()==user._id.toString()" ng-if="!post.sharedFrom" ng-dblclick="react(post, 'smart', post.youdid.smart)" ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
 			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
 			<span class="title"> {{post.totalRecommended}}</span>
 		</button>
-		<button ng-disabled="post.sharedFrom.author._id.toString()==user._id.toString()" ng-if="post.sharedFrom" ng-click="react(post.sharedFrom, 'shareSmart', post.sharedFrom.youdid.smart)" ng-class="{active: post.youdid.sharedFrom.smart}">
+		<button ng-disabled="post.sharedFrom.author._id.toString()==user._id.toString()" ng-if="post.sharedFrom" ng-dblclick="react(post.sharedFrom, 'shareSmart', post.sharedFrom.youdid.smart)" ng-click="react(post.sharedFrom, 'shareSmart', post.sharedFrom.youdid.smart)" ng-class="{active: post.youdid.sharedFrom.smart}">
 			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Recommend</span>
 			<span class="title" ng-if="post.sharedFrom.totalRecommended > 0"> {{post.sharedFrom.totalRecommended}}</span>
 		</button>
@@ -113,14 +113,14 @@
 			<i class="material-icons">chat_bubble</i>
 			<div class="number">{{commentsCount || 0}}</div>
 		</div>
-		<button ng-if="!post.sharedFrom"
+		<button ng-if="!post.sharedFrom" ng-dblclick="react(post, 'share', post.youdid.share)"
 				ng-click="react(post, 'share', post.youdid.share)" ng-disabled="post.youdid.share||post.author._id.toString() == user._id.toString()" ng-class="{active: post.youdid.share}" class="share-button">
 			<i class="fa fa-share-square-o" aria-hidden="true"></i>
 			<span class="title">Share</span>
 			<span class="title" ng-if="!post.sharedFrom&&post.totalShared > 0"> {{post.totalShared}}</span>
 
 		</button>
-		<button ng-if="post.sharedFrom"
+		<button ng-if="post.sharedFrom" ng-dblclick="react(post.sharedFrom, 'shareFrom', post.youdid.share)"
 				ng-click="react(post.sharedFrom, 'shareFrom', post.youdid.share)" ng-class="{active: post.youdid.share}" ng-disabled="post.sharedFrom.youdid.share||post.sharedFrom.author._id.toString() == user._id.toString()" class="share-button">
 			<i class="fa fa-share-square-o" aria-hidden="true"></i>
 			<span class="title">Share</span>

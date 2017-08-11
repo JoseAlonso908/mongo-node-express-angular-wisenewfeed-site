@@ -1731,7 +1731,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('topbar', function ($rootScope,$window) {
+.directive('topbar', function ($rootScope,$window,$location) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/topbar.htm',
@@ -1745,7 +1745,8 @@ angular.module('er.directives', [])
 			}
 			$scope.goHomePage = function() {
 				console.log('ok')
-				$window.location.reload();
+                if ($location.url() === '/') $window.location.reload();
+				else $location.url('/');
 			}
 
 			$scope.openUserMenu = function (e) {

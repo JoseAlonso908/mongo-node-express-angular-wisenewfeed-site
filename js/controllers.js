@@ -1208,15 +1208,16 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal) {
+.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal,validateUsernameService) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
-
+	$scope.originUser= {};
 	$scope.connect = function (provider) {
 		$auth.authenticate(provider, {updateExisting: $scope.user._id})
 		.then(function (response) {
 			identityService.get(true).then(function (user) {
 				$scope.user = user
+				
 			})
 		})
 		.catch(function (error) {
@@ -1286,7 +1287,7 @@ angular.module('er.controllers', [])
 
 			var form = {
 				name: e.target.name.value,
-                nickname: e.target.nickname.value,
+                username: e.target.username.value,
 				email: e.target.email.value,
 				phone: e.target.phone.value,
 				country: $scope.user.country,
@@ -1301,11 +1302,11 @@ angular.module('er.controllers', [])
 					if (!success) {
 						return
 					}
-
-					identityService.updateSettings(form).then(function (result) {
+					console.log($scope.user)
+					identityService.updateSettings($scope.user).then(function (result) {
+						console.log(result)
 						identityService.get(true).then(function (user) {
 							$scope.user = user
-							$scope.doSignup('user')
 							$scope.submitClass = 'success'
 							$scope.submitResult = 'Your request successfully sent';							
 						})
@@ -1314,15 +1315,27 @@ angular.module('er.controllers', [])
 					})
 				}
 
-				if (/*$scope.profileSettings.phone.$untouched || */form.phone == $scope.user.phone) {
+				if (/*$scope.profileSettings.phone.$untouched || */$scope.originUser.phone == $scope.user.phone&&$scope.originUser.username == $scope.user.username) {
 					saveSettings(true)
 				} else {
-					validatePhoneService(form.phone).then(function (result) {
-						console.log(result)
-						confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
-					}, function (error) {
-						if (error) $scope.phoneerror = error
-					})
+					if ($scope.originUser.username != $scope.user.username) {
+						validateUsernameService($scope.user.username).then(function (result) {
+							beforeSaving();
+						})
+					}
+					
+				}
+				function beforeSaving () {
+					if ($scope.originUser.phone != $scope.user.phone) {
+						validatePhoneService(form.phone).then(function (result) {
+							console.log(result)
+							confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+						}, function (error) {
+							if (error) $scope.phoneerror = error
+						})
+					} else {
+						saveSettings(true);
+					}
 				}
 			}
 		},
@@ -1393,7 +1406,9 @@ angular.module('er.controllers', [])
 		function (next) {
 			identityService.get().then(function (user) {
 				$scope.user = user
-
+				console.log($scope.user);
+				angular.copy($scope.user, $scope.originUser);
+				console.log($scope.originUser);
 				if (!$scope.user.email) {
 					$scope.emailerror = 'You email address is required to use Expert Reaction.'
 				}

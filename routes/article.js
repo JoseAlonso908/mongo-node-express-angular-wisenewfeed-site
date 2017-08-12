@@ -385,9 +385,15 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			}
 
 			// Add comment notification
-			models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
-                next(null, postAuthor)
-			})
+
+			if (postAuthor._id.toString()!=req.user._id.toString()) {
+				models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
+	                next(null, postAuthor)
+				})
+			} else {
+				next(null, postAuthor)
+			}
+				
 		},
 		(postAuthor, next) => {
 			// Notify people who like this post about this reaction

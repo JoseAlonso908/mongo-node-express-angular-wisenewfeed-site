@@ -173,6 +173,7 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 			body: `Expert Reaction verification code: ${result.code}`
 		}, (err, message) => {
 			console.log(err)
+			return res.send({ok: true})
 			if (err) return res.status(err.status).send(err)
 			else return res.send({ok: true})
 		})

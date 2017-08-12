@@ -404,7 +404,40 @@ var Model = function(mongoose) {
 			case 'news':
                 filterAggregationParams = filterAggregationParams.concat([
 					{
-						$sort: {createdAt: -1},
+						$project: {
+							category: 1,
+							country: 1,
+							countries: 1,
+							friendship: 1,
+							meta: 1,
+							title: 1,
+							text: 1,
+							author: 1,
+							createdAt: 1,
+							images: 1,
+							sharedFrom: 1,
+							sharedIn: 1,
+							totalRecommended: 1,
+							totalShared: 1,
+							latest: {
+								$floor: {
+									$divide: [
+										{ $subtract: [ new Date(), '$createdAt' ] },
+										1000 * 60 * 60 * 24
+									]
+								}
+							},
+							weightage: {
+								$add: [
+									{ $ifNull: [ { $multiply: ['$sharedFrom.totalShared', 100000] }, 0] },
+									{ $ifNull: [ { $multiply: ['$totalShared', 100000] }, 0] },
+									{ $ifNull: [ '$sharedFrom.totalRecommended', 0 ] },
+									{ $ifNull: [ '$totalRecommended', 0 ] },
+								]
+							}
+					},
+					{
+						$sort: {latest: 1, weightage: -1, createdAt: -1},
 					},
 				])
 				break;

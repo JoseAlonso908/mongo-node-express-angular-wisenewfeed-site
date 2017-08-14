@@ -159,15 +159,14 @@
 	<div class="comment-box" ng-if="user">
 		<avatar user="user"></avatar>
 		<div class="post-comment" ng-class="{'not-empty': post.commentText}" contenteditable ng-model="post.commentText"></div>
+		<div class="post-comment-suggestions"></div>
 		
 		<button ng-click="$parent.addComment(post)" class="send comment-send">
 			<div>
 				<i class="material-icons">send</i>
 				<div class="title">Send</div>
 			</div>
-		</button>
-
-		
+		</button>		
 
 		<form ng-if="user.role != 'User'"><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
 		<button ng-if="user.role != 'User' && files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>

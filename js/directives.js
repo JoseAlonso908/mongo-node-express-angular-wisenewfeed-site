@@ -15,7 +15,6 @@ angular.module('er.directives', [])
                 text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$|!)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
 					return space + '<tag>' + tag + '</tag>'
 				})
-
                 element.html(text)
 				rangy.restoreSelection(selection)
 				rangy.removeMarkers(selection)

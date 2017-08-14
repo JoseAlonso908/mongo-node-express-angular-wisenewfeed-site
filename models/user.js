@@ -454,7 +454,7 @@ var Model = function(mongoose) {
 			let query = {
 			}
 
-			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
+			if (nicknameSearch) query.username = new RegExp(q, 'gi')
 			else query.name = new RegExp(q, 'gi')
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
 				var blockedIds = blockeds.map((b) => b._id)

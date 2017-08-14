@@ -435,10 +435,11 @@ var Model = function(mongoose) {
 									{ $ifNull: [ '$totalRecommended', 0 ] },
 								]
 							}
-					},
+						}	
+					},					
 					{
-						$sort: {latest: 1, weightage: -1, createdAt: -1},
-					},
+						$sort: {latest: 1, weightage: -1, createdAt: -1}
+					}
 				])
 				break;
 			case 'recommended':

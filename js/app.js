@@ -128,8 +128,8 @@ angular.module('er', [
 		});
 	}
 ])
-.run(['$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
-function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
+.run(['fieldsListService','countriesListService','$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
+function (fieldsListService, countriesListService, $rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
 	// $templateCache.removeAll()
 
 	$cookies.put('token', 'guest')
@@ -143,6 +143,13 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 
 	identityService.get().then(function (user) {
 		if (!user) return
+	})
+
+	countriesListService.countries().then(function (list) {
+		$rootScope.suggestCountries = list
+	})
+	fieldsListService.getFullCategories().then(function(categories){
+		$rootScope.suggestCategories = categories;
 	})
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {

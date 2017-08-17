@@ -158,8 +158,25 @@
 	<postcomments nocollapse="justone" post="post" user="user"></postcomments>
 	<div class="comment-box" ng-if="user">
 		<avatar user="user"></avatar>
-		<div class="post-comment" ng-class="{'not-empty': post.commentText}" contenteditable ng-model="post.commentText"></div>
-		<div class="post-comment-suggestions"></div>
+		<div class="post-comment" ng-class="{'not-empty': post.commentText}" contenteditable ng-model="post.commentText" ng-change="multisearch()"></div>
+		<!-- <div class="post-comment-suggestions">
+			<div class="search-panel floating box-ct-comment" ng-class="{active: dropdownVisible}">							
+				<div class="loader" ng-show="loading"></div>
+				<div class="people results box-text-comment-post">
+					<div class="user" ng-repeat="u in results.users">
+						<a class="avt-comment-box" ng-href="#!/person/{{u._id}}">
+							<avatar user="u"></avatar>
+						</a>
+
+						<div class="text  text-comment-post">
+							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+							<div class="role">{{u.role}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="divider" ng-show="results.post.commentText.length > 0"></div>
+			</div>
+		</div> -->
 		
 		<button ng-click="$parent.addComment(post)" class="send comment-send">
 			<div>

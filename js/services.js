@@ -280,6 +280,10 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/user/categories', params)
 		},
+		getFullCategories : function() {
+			
+			return __s($http, $cookies, 'get', '/static/getfullcategories')
+		}
 	}
 })
 .factory('updateProfileService', function ($http, $cookies) {

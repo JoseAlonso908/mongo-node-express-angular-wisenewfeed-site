@@ -1296,6 +1296,14 @@ a.small-icon, button.small-icon {
 					margin-left: -52px;
 				}
 
+				.suggestions-users {
+					.avatar-border {
+						position: relative;
+					    float: left;
+					    margin-left: 0px;
+					}
+				}
+
 				.body {
 					.title {
 						// @include display-flex;
@@ -6238,8 +6246,77 @@ a.small-icon, button.small-icon {
 	padding-top:10px;
 }
 
+.box-ct-comment{
+	.avt-comment-box{
+		margin-left: 0 !important;
+	}
 
+	.text-comment-post{
+		margin-left: 55px;
+	}
+	.box-text-comment-post{
+		padding-left:24px;
+	}
+	
+	box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.17);
+	width: 50%;
+    position: absolute;
+    z-index: 99;
+    background: #ffffff;
 
+}
+
+.showallsearch-post{
+	padding-top:30px;
+	a{
+		font-size:15px;
+		padding-left:29px;
+	}
+}
+
+.suggestions-comment {
+	background: #fff;
+    border: 1px solid #e6e6e6;
+    width: 250px;
+    padding: 10px;
+    z-index: 100000;
+    position: absolute;
+    color: #b0bec8;
+
+    li {
+    	padding: 5px;
+    	cursor: pointer;
+    }
+
+    li:hover {
+    	color: #fff;
+    	background: #43abe7;
+    }
+
+    li.li-suggestions-users:hover {
+    	background: #fff;
+    }
+    .suggestions-users {
+    	width: 100%;
+    	float: left;
+    	padding: 5px;
+    	.avatar-border: {
+	    	position: relative !important;
+	    	margin-left: 0px !important;
+	    }
+    }
+
+    .suggestions-users:hover {
+    	color: #fff;
+    	background: #43abe7;
+    }
+
+    .suggestions-user-info {
+    	float: left;
+    	padding: 5px;
+    }
+    
+}
 
 @import "medias";
 @import "chosen";

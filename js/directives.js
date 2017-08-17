@@ -1336,6 +1336,15 @@ angular.module('er.directives', [])
             }
 
 			$scope.react = function (post, type, unreact) {
+				if (!$scope.re) $scope.re = {};
+				if (!$scope.re[type]) $scope.re[type] = {};
+				if ($scope.re[type][post]) {
+					var duration = new Date().getTime() - $scope.re[type][post];
+					if (duration <= 1000) return;
+					else $scope.re[type][post] = new Date().getTime();
+				} else {
+					$scope.re[type][post] = new Date().getTime();
+				}
 				var tempType = type;
 				var action = 'react'
 				if (unreact) action = 'unreact'

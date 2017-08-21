@@ -60,6 +60,7 @@ angular.module('er.directives', [])
 				                	var self = this;
 				                	ta.html(t+$(this).text().replace(/ /g,''))
 				                	$('.suggestions-comment').remove();
+									updateText();
 				                })
 	                		} else {
 	                			$('.suggestions-comment').remove();
@@ -91,6 +92,7 @@ angular.module('er.directives', [])
 				                	var self = this;
 				                	ta.html(t+$(this).attr('data'))
 				                	$('.suggestions-comment').remove();
+									updateText();
 				                })
 	                		} else {
 	                			$('.suggestions-comment').remove();
@@ -135,6 +137,7 @@ angular.module('er.directives', [])
 					                	var self = this;
 					                	ta.html(t+$(this).attr('data'))
 					                	$('.suggestions-comment').remove();
+										updateText();
 					                })
 		                		} else {
 		                			$('.suggestions-comment').remove('');
@@ -149,6 +152,10 @@ angular.module('er.directives', [])
                 } else {
                 	$('.suggestions-comment').remove();
                 }
+				updateText();
+			}
+			var updateText = function () {
+				var text = element.html();
 				// turn <br> into newline character
 				text = text.replace(/<br\s?\/?>/gi, "\n")
 

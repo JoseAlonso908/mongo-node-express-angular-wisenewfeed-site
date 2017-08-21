@@ -35,11 +35,21 @@
                             </p>
                         </div>
                         <div class="input-group">
-                            <label for="info">Info</label>
+                            <label for="info">cate</label>
                             <textarea ng-model="signup.info" id="info" ng-required="true"></textarea>
                             <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
                                 This field is required
                             </p>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="info">Category</label>
+                            <div ng-repeat="cat in expertCategory">
+                                {{cat.title}}
+                            </div>
+                            <select ng-model="selectedCategory" ng-change="addCategory()">
+                                <option ng-value="$index" ng-repeat="category in categories">{{category.title}}</option>
+                            </select>
                         </div>
                     </div>
 

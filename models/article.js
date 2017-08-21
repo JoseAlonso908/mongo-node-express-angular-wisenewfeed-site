@@ -689,7 +689,11 @@ var Model = function(mongoose) {
 				Object.assign(query, {text: {$not: new RegExp(`\\$partnership`, 'gi')}})
 			else 
 				Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			if (country) Object.assign(query, {country})
+			if (country) {
+
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}
 
             start = Number(start)
 			limit = Number(limit)
@@ -787,7 +791,12 @@ var Model = function(mongoose) {
 			}
 
 
-			if (country) Object.assign(query, {country})
+
+			if (country) {
+
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}	
 
 			start = Number(start)
 			limit = Number(limit)
@@ -907,8 +916,11 @@ var Model = function(mongoose) {
 			} else {
 				if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
 			}
-
-			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+		
+			if (country) {
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}
 			// if (privacy) {
 			// 	const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
              //    Object.assign(query, {privacy: {$in: privacyIncluded}})

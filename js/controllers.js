@@ -2329,12 +2329,29 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController', function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService) {
+.controller('betaController',function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService,fieldsListService) {
+    
+
+	$scope.selectedCategory;
+
+	$scope.categories = $rootScope.suggestCategories;
+	console.log($scope.categories)
+	$scope.addCategory = function(){
+		console.log($scope.selectedCategory)
+		$scope.expertCategory.push($scope.categories[$scope.selectedCategory])
+	}
+	$scope.expertCategory = [];
     $scope.errors = {}
     var availableRoles = ['expert', 'journalist']
 	var selectedRole = 'expert'
 	if ($routeParams.role && availableRoles.indexOf($routeParams.role) > -1) {
     	selectedRole = $routeParams.role
+	}
+
+	$scope.setActiveCategory = function (item) {
+		$scope.chosenCategory = item
+		$rootScope.$emit('updateCountriesFilter')
+		$rootScope.$emit('feedCategory', item)
 	}
 
     $scope.signup = {

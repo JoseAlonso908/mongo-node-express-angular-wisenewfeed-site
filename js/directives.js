@@ -995,6 +995,7 @@ angular.module('er.directives', [])
 
 					start += feed.length
 				}
+				console.log($scope.type);
 
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {
@@ -1012,7 +1013,8 @@ angular.module('er.directives', [])
 					if ($scope.user) feedAttributes['user'] = $scope.user._id
 					feedAttributes['start'] = start
 					feedAttributes['limit'] = limit
-
+					console.log('feedAttributes ',feedAttributes);
+					console.log(feedType)
 					feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
 						// $scope.feedLoading = false
 						// $scope.feed = feed

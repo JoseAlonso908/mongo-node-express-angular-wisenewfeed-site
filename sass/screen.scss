@@ -6318,6 +6318,202 @@ a.small-icon, button.small-icon {
     
 }
 
+
+.bookingtime-all{
+	.bkt-l{
+		background: #ffffff;
+	    padding: 10px 20px;
+	    margin-top: 23px;
+	    border-radius: 4px;
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.bkt-tt{
+		padding:40px 0;
+	}
+
+	.bkt-price{
+		font-size: 18px;
+    	font-weight: bold;
+	}
+	.bkt-btn{
+		float:right;
+		button{
+			    border: none;
+			    padding: 5px 26px;
+			    border-radius: 11px;
+			    background: #40a6e1;
+			    color: #ffffff;
+		}
+	}
+
+	.bkt-t{
+		padding:10px 0;
+		h1{
+			font-size: 18px;
+		    font-weight: bold;
+		    color: #999DA0;
+		}
+	}
+	.bkt-e{
+		.sp-tz{
+			float:right;
+		}		
+		span{
+			font-size: 14px;
+    		color: #D2D6D9;
+    		strong{
+    			color:#40a6e1;
+    		}
+		}
+	}
+
+	.bkt-r{
+		padding-top: 50px;
+	}
+
+	.booktime-sl{
+		background:#ffffff;		
+		border-radius:5px;
+		box-shadow: 2px 2px 10px #888888;
+		ul{
+			padding-bottom:50px;
+			padding-top:7px;
+		}
+		i{
+			padding-right:10px;
+			font-size:17px !important;
+		}
+		li:hover{
+			background:#40a6e1;
+			color:#ffffff;
+		}
+		li{	
+			cursor:pointer;
+			color: #D2D6D9;
+    		font-size: 15px;
+    		padding:5px 15px;
+		}
+	}
+
+	.booktime-alert{
+		margin-top: 50px;
+	    padding-top: 50px;
+	    padding-bottom: 10px;
+	    background: #ffffff;
+	    text-align: center;
+	    margin-bottom: 50px;
+	    border-radius: 6px;
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.border-bt-line{
+		border-bottom:1px solid #888888;
+	}
+	.bt-al{
+		padding-bottom: 20px;
+		width: 80%;
+    	margin: auto;
+    	h1{
+    		font-size: 20px;
+		    padding-bottom: 10px;
+    	}
+    	span{
+    		font-size:15px;
+    	}
+    	
+	}
+
+	.bt-btn{
+		padding-top: 12px;
+	}
+
+	.bkt-t-a{
+		padding-bottom: 20px;
+	}
+
+	.cf-booking{
+	    background: #ffffff;
+	    border-radius: 5px;	
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.cf-booking-ct{
+		padding-top: 30px;
+    	padding-bottom: 50px;
+    	padding-left:45px;
+	}
+	.cf-time{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 5px;
+		}
+	}
+	.cf-duration{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 7px;
+		}
+	}
+	.cf-vs{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 9px;
+		}
+	}
+	.cf-text{
+		font-size: 15px;
+    	color: #999DA0;
+	}
+	.btn-back{
+		border: none;
+	    padding: 7px 30px;
+	    border-radius: 13px;
+	    color: #ffffff;
+	    background: #E7F3F5;
+	}
+	.btn-next{
+		border: none;
+	    padding: 7px 30px;
+	    border-radius: 13px;
+	    color: #ffffff;
+	    background: #00B8EF;
+	}
+	.cf-booking{
+		.bkt-t-a{
+			border-bottom:1px solid;
+		}
+	}	
+
+	.bkt-t-a-l{
+		padding: 15px 30px;
+	}
+
+
+	.cf-booking-btn{
+		border-top: 1px solid;
+		.bk-btn-all{
+			float: right;
+    		padding: 20px 20px;
+		}
+	}
+	.bkt-r-a{
+		li{
+			color:#40a6e1;
+		}
+	}
+
+}
+
 @import "medias";
 @import "chosen";
 @import "scrollbar";

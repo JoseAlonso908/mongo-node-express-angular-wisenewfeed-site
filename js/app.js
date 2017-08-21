@@ -116,6 +116,10 @@ angular.module('er', [
 				templateUrl:'assets/views/admin.htm',
 				controller:'adminController',
 			})
+			.when('/bookingtime',{
+				templateUrl:'assets/views/bookingtime.htm',
+				controller:'bookingtimeController',
+			})
 
 
 		$authProvider.facebook({

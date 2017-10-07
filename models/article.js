@@ -1253,7 +1253,114 @@ var Model = function(mongoose) {
             }
             if (privacy && levels.hasOwnProperty(privacy)) return levels[privacy]
 			return levels['Stranger']
-		}
+		},
+		createdArticlesToday: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+
+			var now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			let query = Model.find({
+				$and: [
+					{
+						author: user,
+						sharedFrom: { $eq: null },
+						createdAt: { $gte: startOfToday }
+					},
+					{ title: { $ne: '' } },
+					{ title: { $ne: null } }
+				]
+			});
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
+		createdPostsToday: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+
+			var now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			let query = Model.find({
+				$and: [
+					{
+						author: user,
+						sharedFrom: { $eq: null },
+						createdAt: { $gte: startOfToday }
+					},
+					{
+						$or: [
+							{ title: { $eq: '' } },
+							{ title: { $eq: null } }
+						]
+					}
+				]
+			});
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
+		findArticlesAndPostsByUser: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+			let query = Model.find({ sharedFrom: { $eq: null }, author: user });
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
+		hasArticlesInLastWeek: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+			var now = new Date();
+			var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
+			let query = Model.find({
+				$and: [
+					{
+						author: user,
+						sharedFrom: { $eq: null },
+					},
+					{
+						$and: [
+							{ createdAt: { $gte: startOfLastWeek } },
+							{ createdAt: { $lt: endOfLastWeek } },
+						],
+					},
+					{ title: { $ne: '' } },
+					{ title: { $ne: null } },
+				]
+			});
+			query.exec((err, records) => {
+				let hasArticles = (records && records.length > 0);
+				return callback(err, hasArticles);
+			});
+		},
+		hasPostsInLastWeek: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+			var now = new Date();
+			var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
+			let query = Model.find({
+				$and: [
+					{
+						author: user,
+						sharedFrom: { $eq: null },
+					},
+					{
+						$and: [
+							{ createdAt: { $gte: startOfLastWeek } },
+							{ createdAt: { $lt: endOfLastWeek } },
+						],
+					},
+					{
+						$or: [
+							{ title: { $eq: '' } },
+							{ title: { $eq: null } },
+						],
+					},
+				]
+			});
+			query.exec((err, records) => {
+				let hasPosts = (records && records.length > 0);
+				return callback(err, hasPosts);
+			});
+		},
 	}
 }
 

@@ -69,9 +69,47 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	        })
 		},
 		(article, next) => {
-			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
-				next(null, article)
-			})
+			if (article.title && article.title !== "") {
+				models.Article.createdArticlesToday(req.user._id, (err, articles) => {
+					var count = articles.length;
+					models.ExperienceLog.awardedToday(req.user._id, 'article', (err, experiences) => {
+						var points = 0;
+						var awarded = false;
+						experiences.forEach((exp) => {
+							points += exp.reward;
+						});
+						config.WISEPOINT_REWARDS.ARTICLE_CREATE.forEach((item) => {
+							if (item.MIN_COUNT <= count && item.POINTS > points) {
+								awarded = true;
+								models.ExperienceLog.award(req.user._id, item.POINTS - points, article._id, null, 'article', (err, result) => {
+									next(null, article);
+								});
+							}
+						});
+						if (!awarded) next(null, article);
+					});
+				});
+			} else {
+				models.Article.createdPostsToday(req.user._id, (err, posts) => {
+					var count = posts.length;
+					models.ExperienceLog.awardedToday(req.user._id, 'post', (err, experiences) => {
+						var points = 0;
+						var awarded = false;
+						experiences.forEach((exp) => {
+							points += exp.reward;
+						});
+						config.WISEPOINT_REWARDS.POST_CREATE.forEach((item) => {
+							if (item.MIN_COUNT <= count && item.POINTS > points) {
+								awarded = true;
+								models.ExperienceLog.award(req.user._id, item.POINTS - points, article._id, null, 'post', (err, result) => {
+									next(null, article);
+								});
+							}
+						});
+						if (!awarded) next(null, article);
+					});
+				});
+			}
 		},
 		//Get mentioned users
 		(article, next) => {
@@ -442,14 +480,27 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			})
 		},
 		(postAuthor, next) => {
-			models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, commentPost, null, 'comment', () => {
-                next()
-			})
-		},
-		(next) => {
-			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, commentPost, null, 'comment', () => {
-                next()
-			})
+			if (postAuthor.role === 'expert') {
+				models.Comment.expertPostCommentsToday(req.user._id, (err, comments) => {
+					var count = comments.length;
+					models.ExperienceLog.awardedToday(req.user._id, 'comment', (err, experiences) => {
+						var points = 0;
+						var awarded = false;
+						experiences.forEach((exp) => {
+							points += exp.reward;
+						});
+						config.WISEPOINT_REWARDS.COMMENT_CREATE.forEach((item) => {
+							if (item.MIN_COUNT <= count && item.POINTS > points) {
+								awarded = true;
+								models.ExperienceLog.award(req.user._id, item.POINTS - points, commentPost, null, 'comment', (err, result) => {
+									next();
+								});
+							}
+						});
+						if (!awarded) next();
+					});
+				});
+			}
 		},
         (next) => {
             const nicknames = models.Article.getMentionedNicknames(text)
@@ -606,8 +657,37 @@ router.post('/react', (req, res) => {
 			})
 		},
 		(postAuthor, cb) => {
-			if (type != 'dislike') {
-				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST[type], post, null, type, cb)
+			if (type === 'share' || type === 'smart') {
+				let originalAuthor = '';
+				models.Article.findOneById(post, (err, originalPost) => {
+					originalAuthor = originalPost.author._id;
+					models.PostReaction.reactionsForUserToday(originalAuthor, type, (err, reactions) => {
+						var count = req.user.role === 'expert' ? 2 : 1;
+						console.log(reactions);
+						reactions.forEach((reaction) => {
+							if (reaction.author.role === 'expert') count += 2;
+							else count++;
+						});
+						models.ExperienceLog.awardedToday(req.user._id, type, (err, experiences) => {
+							var points = 0;
+							var awarded = false;
+							experiences.forEach((exp) => {
+								points += exp.reward;
+							});
+							console.log(count, points);
+							let pointItems = [];
+							if (type === 'share') pointItems = config.WISEPOINT_REWARDS.SHARE;
+							if (type === 'smart') pointItems = config.WISEPOINT_REWARDS.RECOMMEND;
+							pointItems.forEach((item) => {
+								if (item.MIN_COUNT <= count && item.POINTS > points) {
+									awarded = true;
+									models.ExperienceLog.award(originalAuthor, item.POINTS - points, post, null, type, cb);
+								}
+							});
+							if (!awarded) cb();
+						});
+					});
+				});
 			} else {
 				cb()
 			}

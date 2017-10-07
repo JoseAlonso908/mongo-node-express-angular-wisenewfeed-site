@@ -50,6 +50,7 @@
     "mongoose": "^4.6.4",
     "multer": "^1.2.0",
     "ng-scrollbar": "0.0.8",
+    "node-cron": "^1.2.1",
     "node-microdata-scraper": "0.0.4",
     "node-uuid": "~1.4.7",
     "numeral": "^1.5.3",

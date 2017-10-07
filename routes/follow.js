@@ -37,11 +37,24 @@ router.post('/follow', (req, res) => {
 				if (err) res.status(400).send(err)
 				else {
 					async.series({
-						rewardFollowee: function (next) {
-							models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.FOLLOW.following, null, null, 'follow', next)
-						},
-						rewardFollowing: function (next) {
-							models.ExperienceLog.award(following, config.EXP_REWARDS.FOLLOW.follower, null, null, 'follow', next)
+						reward: function (next) {
+							models.Follow.followingToday(following, (err, followers) => {
+								var count = followers.length;
+								models.ExperienceLog.awardedToday(following, 'follow', (err, experiences) => {
+									var points = 0;
+									var awarded = false;
+									experiences.forEach((exp) => {
+										points += exp.reward;
+									});
+									config.WISEPOINT_REWARDS.FOLLOWER.forEach((item) => {
+										awarded = true;
+										if (item.MIN_COUNT <= count && item.POINTS > points) {
+											models.ExperienceLog.award(following, item.POINTS - points, null, null, 'follow', next);
+										}
+									});
+									if (!awarded) next();
+								});
+							});
 						},
 						notification: function (next) {
 							// Add following notification

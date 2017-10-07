@@ -212,6 +212,46 @@ var Model = function(mongoose) {
 
 			Model.find({author, type: 'share'}).lean().exec(callback)
 		},
+		reactionsForUserToday: (user, type, callback) => {
+			if (user !== 'object') user = mongoose.Types.ObjectId(user);
+			models.Article.findArticlesAndPostsByUser(user, (err, posts) => {
+				var ids = posts.map((post) => { return post._id });
+				var now = new Date();
+				var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+				let query = Model.find({ post: { $in: ids }, type: type, createdAt: { $gte: startOfToday } })
+					.populate([ { path: 'author' } ]);
+				query.exec((err, records) => {
+					return callback(err, records);
+				});
+			});
+		},
+		hasPostReactionsInLastWeek: (user, type, callback) => {
+			if (user !== 'object') user = mongoose.Types.ObjectId(user);
+			models.Article.findArticlesAndPostsByUser(user, (err, posts) => {
+				var ids = posts.map((post) => { return post._id });
+				var now = new Date();
+				var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+				var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
+				let query = Model.find({
+					$and: [
+						{
+							post: { $in: ids },
+							type: type,
+						},
+						{
+							$and: [
+								{ createdAt: { $gte: startOfLastWeek } },
+								{ createdAt: { $lt: endOfLastWeek } },
+							],
+						},
+					],
+				});
+				query.exec((err, records) => {
+					let hasPostReactions = (records && records.length > 0);
+					return callback(err, hasPostReactions);
+				});
+			});
+		},
 	}
 }
 

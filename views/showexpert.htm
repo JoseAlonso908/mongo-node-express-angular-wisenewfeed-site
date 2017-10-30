@@ -12,7 +12,65 @@
 	</div>
 	<div class="content">
 		<div>
-			<showexpertrv> </showexpertrv>
+			<div class="container">
+				<div class="expert-a-rv">
+					<div>
+						<div class="expert-a-rv-i"> 
+							<div class="top-bar-i">
+								<div class="tb-tl">
+								<a href=""> Expert Advice Reviews</a>
+								</div>				
+								<div class="tb-icon-st">
+									<i class="fa" ng-class="{'fa-star':averageRate>=1, 'fa-star-o':averageRate<1}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':averageRate>=2, 'fa-star-o':averageRate<2}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':averageRate>=3, 'fa-star-o':averageRate<3}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':averageRate>=4, 'fa-star-o':averageRate<4}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':averageRate>=5, 'fa-star-o':averageRate<5}" aria-hidden="true"></i>
+								</div>
+								<div class="tb-t-rv">
+									<span>{{averageRate | number:0}}/5({{ratings.length}} reviews)</span>
+								</div>
+								<div class="tb-ip">
+									<input class="tb-ip-in" type="text" placeholder="Most recent" name="">
+									<i class="fa fa-caret-down" aria-hidden="true"></i>
+								</div>
+							</div>	
+							<div class="expert-rv-text" ng-repeat="rat in ratings" ng-show="$index<showlimit">
+								<div class="a-avt">
+									<div>
+										<img class="expert-avt" src="assets/images/avatar_placeholder.png">
+									</div>
+									<div>
+										<span class="rv-b">Reviews by</span>
+										<span class="rv-n">{{rat.user.name}}</span>
+									</div>						
+								</div>					
+								<div class="expert-rv-ct">
+									<div class="expert-rv-st">
+										<i class="fa" ng-class="{'fa-star':rat.rate>=1, 'fa-star-o':rat.rate<1}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':rat.rate>=2, 'fa-star-o':rat.rate<2}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':rat.rate>=3, 'fa-star-o':rat.rate<3}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':rat.rate>=4, 'fa-star-o':rat.rate<4}" aria-hidden="true"></i>
+										<i class="fa" ng-class="{'fa-star':rat.rate>=5, 'fa-star-o':rat.rate<5}" aria-hidden="true"></i>
+										<span>13 days ago</span>
+									</div>
+									<div class="expert-rv-text-ct">
+										<p>{{rat.text}}</p>
+									</div>
+								</div>					
+							</div>	
+							<div class="expert-sh-m" ng-show="showlimit<ratings.length">
+								<a href="" ng-click="showMore()">Show more</a>
+							</div>							
+						</div>
+					</div>
+				</div>
+
+
+
+				
+				
+			</div>
 		</div>
 	</div>
 </div>

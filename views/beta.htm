@@ -35,16 +35,53 @@
                             </p>
                         </div>
                         <div class="input-group">
-                            <label for="info">Info</label>
+                            <label class="lbct" for="Category">Category</label>
+                            <div class="slcategoryall">
+                                <div class="slcategory" ng-repeat="cat in expertCategory">
+                                    {{cat.title}}
+                                </div>
+                                <div class="addcateall">
+                                    <select class="addcate" ng-model="selectedCategory" ng-change="addCategory()">
+                                        <option ng-value="$index" ng-repeat="category in categories">{{category.title}}</option>
+                                    </select>
+                                </div> 
+                            </div>     
+                                                     
+                        </div>
+                        <div class="input-group">
+                            <label for="info">cate</label>
                             <textarea ng-model="signup.info" id="info" ng-required="true"></textarea>
                             <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
                                 This field is required
                             </p>
                         </div>
+                        <div class="input-group with-file-upload closable" ng-repeat="item in signup.certificates">
+                            <div class="close-btn-wrap">
+                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeCertificate(item)"></i>
+                            </div>
+                            <label>Title</label>
+                            <input ng-model="item.title" type="text" name="certificateTitle">
+                            <input type="file" ng-model="item.file" name="certificate" class="hidden-file-input">
+                            <div class="attach-file" ng-click="attachCertificate($event, item)">
+                                <i class="material-icons">attachment</i>
+                                <span class="title">Upload file</span>
+                            </div>
+                            <div class="notice">Add title for uploaded file</div>
+                        </div>
+                        <div class="input-group">
+                            <p ng-show="errors.certificateFillRequired" class="error-block">
+                                Please, fill existing fields first
+                            </p>
+                            <a href="javascript:void(0);" class="add-more" ng-click="addMoreCertificates()">
+                                <i class="fa fa-plus"></i>
+                                Add more file
+                            </a>
+                        </div>
+
                     </div>
 
                     <!-- Experience GROUP -->
-                    <div class="group">
+                    <!-- <div class="group">
                         <div class="title">Experience</div>
                         <div class="experience closable" ng-repeat="item in signup.experience">
                             <div class="close-btn-wrap">
@@ -73,7 +110,8 @@
                                 Add more experience
                             </a>
                         </div>
-                    </div>
+                    </div> -->
+                   
 
                     <!-- CERTIFICATES GROUP -->
                     <div class="group">

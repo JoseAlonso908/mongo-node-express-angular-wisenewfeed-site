@@ -16,6 +16,7 @@ var Model = function(mongoose) {
 		name			: String,
         nickname		: String,
 		intro			: String,
+		username 		: String,
 		email			: String,
 		password		: {type: String, select: false},
 		phone			: String,
@@ -136,7 +137,14 @@ var Model = function(mongoose) {
 				user.save(callback);
 			})
 		},
+		unblockUserById: (_id, callback) => {
+			_id = MOI(_id)
 
+			Model.findOne({_id}, (err, user) => {
+				user.isBlocked = false;
+				user.save(callback);
+			})
+		},
 		updateLastVisit: (_id, callback) => {
 			_id = MOI(_id)
 
@@ -182,6 +190,9 @@ var Model = function(mongoose) {
 
 		findByPhone: (phone, callback) => {
 			Model.findOne({phone}, callback)
+		},
+		findUsername: (username, callback) => {
+			Model.findOne({username}, callback)
 		},
 
 		findByEmailOrPhone: (value, callback) => {
@@ -278,7 +289,6 @@ var Model = function(mongoose) {
 				user.save(callback)
 			})
 		},
-
 		update: (_id, data, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
 
@@ -318,11 +328,11 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (_id, name, email, phone, country, city, gender, field, language, nickname, callback) => {
+		updateSettings: (_id, name, email, phone, country, city, gender, field, language, username, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
 
 			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, city, gender, field, language, nickname})
+				Object.assign(user, {name, email, phone, country, city, gender, field, language, username})
 				user.save(callback)
 			})
 		},
@@ -444,13 +454,13 @@ var Model = function(mongoose) {
 			let query = {
 			}
 
-			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
+			if (nicknameSearch) query.username = new RegExp(q, 'gi')
 			else query.name = new RegExp(q, 'gi')
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
 				var blockedIds = blockeds.map((b) => b._id)
 				blockedIds.push(user)
 				query['_id'] = {$nin: blockedIds}
-
+				console.log(query);
 				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
 					async.mapSeries(users, setXpInfo, callback)
 				})
@@ -465,15 +475,17 @@ var Model = function(mongoose) {
 			// let roleQuery = {$ne: 'user'}
 			// if (role) roleQuery = role
 
-			let query = {
-				role: 'expert'
-			}
-
-			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
-			else query.name = new RegExp(q, 'gi')
-				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
-					async.mapSeries(users, setXpInfo, callback)
+			let query = {}
+			
+			
+			query.name = new RegExp(q, 'gi')
+			Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
+				if (err) return callback(err);
+				Model.count(query).exec((error, result)=>{
+					callback(error, users,result)
 				})
+				
+			})			
 		},
 		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
             if (!options || !options.query) return [];

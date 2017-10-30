@@ -1,5 +1,5 @@
 angular.module('er.directives', [])
-.directive('contenteditable', function() {
+.directive('contenteditable', ['$rootScope','identityService','countriesListService','fieldsListService','$filter',function($rootScope, identityService, countriesListService,fieldsListService,$filter) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -7,6 +7,11 @@ angular.module('er.directives', [])
 			'htmlValue': '=',
 		},
 		link: function(scope, element, attrs, ngModel) {
+
+			scope.countries = $rootScope.suggestCountries;
+			scope.categories = $rootScope.suggestCategories;
+			console.log(scope.countries, scope.categories);
+			var ta; 
 			function read() {
 				var selection = rangy.saveSelection()
                 var text = element.html()
@@ -15,13 +20,142 @@ angular.module('er.directives', [])
                 text = text.replace(/(>|^|\s|&nbsp;)((#|@|\$|!)[a-z]+[a-z0-9]+)/gmi, function (match, space, tag, offset, string) {
 					return space + '<tag>' + tag + '</tag>'
 				})
-
                 element.html(text)
+                
+                
 				rangy.restoreSelection(selection)
 				rangy.removeMarkers(selection)
 
                 text = element.html()
+                if (text.substr(text.length-6, text.length)=='</tag>'|| text.indexOf('</tag><div class="suggestions-comment"')>0) {
+                	var tags = element.children('tag')
+                	ta = $(tags[tags.length-1])
+                	if (tags.length>0) {
+                		var tag = ta.html();
+	                	var t = tag[0];
+	                	var offset = ta.position()
+	                	var q = tag.substr(1, tag.length-1)
+	                	if (t == '!') {
+	                		var res = $filter('filter')(scope.countries, q)
+	                		if (res.length>0) {
+	                			var sgts = '<ul>'
+		                		for (var i in res) {
+		                			sgts += '<li>'+res[i].country+'</li>'
+		                		}
+		                		sgts +='</ul>'
+		                		console.log(t, q)
+		                		var append = $('.suggestions-comment');
+		                		if (append.length>0) {
+		                			append.html(sgts);		                			
 
+		                		} else {
+		                			
+		                			sgts = '<div class="suggestions-comment">'+sgts+'</div>'
+		                			element.append(sgts);
+		                		}
+				                
+				                $('.suggestions-comment').css('top',offset.top+20);
+				                $('.suggestions-comment').css('left',offset.left);
+				                $('.suggestions-comment li').click(function(){			                					                	
+				                	var self = this;
+				                	ta.html(t+$(this).text().replace(/ /g,''))
+				                	$('.suggestions-comment').remove();
+									updateText();
+				                })
+	                		} else {
+	                			$('.suggestions-comment').remove();
+	                		}
+		                		
+	                	}
+	                	if (t == '$') {
+	                		console.log(scope.categories)
+	                		var res = $filter('filter')(scope.categories, q)
+	                		if (res.length>0) {
+	                			var sgts = '<ul>'
+		                		for (var i in res) {
+		                			sgts += '<li data="'+res[i].tag+'">'+res[i].title+'</li>'
+		                		}
+		                		sgts +='</ul>'
+		                
+				                var append = $('.suggestions-comment');
+		                		if (append.length>0) {
+		                			append.html(sgts);
+		                		} else {
+		                			sgts = '<div class="suggestions-comment">'+sgts+'</div>'
+		                			element.append(sgts);
+		                		}
+				                $('.suggestions-comment').css('top',offset.top+20);
+				                $('.suggestions-comment').css('left',offset.left);
+
+
+				                $('.suggestions-comment li').click(function(){
+				                	var self = this;
+				                	ta.html(t+$(this).attr('data'))
+				                	$('.suggestions-comment').remove();
+									updateText();
+				                })
+	                		} else {
+	                			$('.suggestions-comment').remove();
+	                		}
+	                	}
+
+	                	if (t == '@') {
+	                		identityService.multisearch(q).then(function (results) {
+								results.users = results.users.map(function (user) {
+									user.avatar = user.avatar || '/assets/images/avatar_placeholder.png';
+									user.role = user.role[0].toUpperCase() + user.role.substr(1);
+									return user
+								});
+								// '/assets/images/avatar_placeholder.png'
+								var res = results.users;
+								if (res.length>0) {
+		                			var sgts = '<ul>'
+			                		for (var i in res) {
+			                			sgts += '<li class="li-suggestions-users" data="'+res[i].username+'"><div class="suggestions-users">';
+			                			var ava = res[i].avatar? res[i].avatar : '/assets/images/avatar_placeholder.png';
+			                			sgts += '<div class="avatar-border"><a class="avatar" style="background-image: url('+ava+')"></a></div>';
+			                			sgts += '<div class="suggestions-user-info">';
+			                			sgts += '<strong>'+res[i].name+'</strong><br>'
+			                			sgts += '<span>@'+res[i].username+'</span>';
+			                			sgts += '</div>'
+			                			sgts += '</div></li>'
+			                		}
+			                		sgts +='</ul>'
+			                
+					                var append = $('.suggestions-comment');
+			                		if (append.length>0) {
+			                			append.html(sgts);
+			                		} else {
+			                			sgts = '<div class="suggestions-comment">'+sgts+'</div>'
+			                			element.append(sgts);
+			                		}
+					                $('.suggestions-comment').css('top',offset.top+20);
+					                $('.suggestions-comment').css('left',offset.left);
+
+
+					                $('.suggestions-comment li').click(function(){
+					                	var self = this;
+					                	ta.html(t+$(this).attr('data'))
+					                	$('.suggestions-comment').remove();
+										updateText();
+					                })
+		                		} else {
+		                			$('.suggestions-comment').remove('');
+		                		}
+							})
+	                	}
+                	} else {
+                		$('.suggestions-comment').remove();
+                	}
+                	
+                	
+                } else {
+                	$('.suggestions-comment').remove();
+                }
+				updateText();
+			}
+			var updateText = function () {
+				var text = element.html();
 				// turn <br> into newline character
 				text = text.replace(/<br\s?\/?>/gi, "\n")
 
@@ -32,7 +166,6 @@ angular.module('er.directives', [])
 				text = text.replace(/<div.*?>([\s\S]*?)<\/div>/gmi, "\n$1")
 				// remove all other tags
 				text = text.replace(/(<[a-zA-Z0-9-]+.*?>([\s\S]*?)<\/[a-zA-Z0-9-]+>|<[a-zA-Z0-9-]+.*\/>)/gmi, "$2")
-
 				ngModel.$setViewValue(text)
 			}
 
@@ -43,7 +176,7 @@ angular.module('er.directives', [])
 			element.bind("input", read)
 		}
 	}
-})
+}])
 .directive('ngScrollbar', ['$parse', '$window', '$rootScope',
 	function ($parse, $window, $rootScope) {
 		return {
@@ -739,7 +872,7 @@ angular.module('er.directives', [])
 		},
 	}
 })
-.directive('feed', function ($rootScope, identityService, feedService, $location) {
+.directive('feed', function ($rootScope, identityService, feedService, $location, countriesListService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/feed.htm',
@@ -846,25 +979,6 @@ angular.module('er.directives', [])
 
 				var setFeed = function (feed) {
 
-					if ($location.path().indexOf('person')<0) {
-						feed.sort(function(a,b){
-							a.totalRecommended = a.totalRecommended?a.totalRecommended:0;
-							a.totalShared = a.totalShared?a.totalShared:0;
-							b.totalRecommended = b.totalRecommended?b.totalRecommended:0;
-							b.totalShared = b.totalShared?b.totalShared:0;
-							if (a.sharedFrom) {
-								a.totalRecommended = a.sharedFrom.totalRecommended?a.sharedFrom.totalRecommended:0;
-								a.totalShared = a.sharedFrom.totalShared?a.sharedFrom.totalShared:0;
-							}
-
-							if (b.sharedFrom) {
-								b.totalRecommended = b.sharedFrom.totalRecommended?b.sharedFrom.totalRecommended:0;
-								b.totalShared = b.sharedFrom.totalShared?b.sharedFrom.totalShared:0;
-							}
-							return -a.totalRecommended - a.totalShared + (b.totalRecommended + b.totalShared);
-						})
-					}
-						
 					$scope.feedLoading = false
 
 					if (feed.length == 0) {
@@ -881,6 +995,7 @@ angular.module('er.directives', [])
 
 					start += feed.length
 				}
+				console.log($scope.type);
 
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {
@@ -898,7 +1013,8 @@ angular.module('er.directives', [])
 					if ($scope.user) feedAttributes['user'] = $scope.user._id
 					feedAttributes['start'] = start
 					feedAttributes['limit'] = limit
-
+					console.log('feedAttributes ',feedAttributes);
+					console.log(feedType)
 					feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
 						// $scope.feedLoading = false
 						// $scope.feed = feed
@@ -933,6 +1049,9 @@ angular.module('er.directives', [])
 			$scope.expandVisible = false
 			$scope.editing = false
 
+			$scope.dropdownVisible = false;
+			$scope.loading = false;
+			
 			console.log($scope.post);
 
 			$timeout(function () {
@@ -945,10 +1064,35 @@ angular.module('er.directives', [])
 				}
 			})
 
+			
 			angular.element(document.body).on('click', function () {
-				$scope.post.menu = false
+				$scope.post.menu = false;
+				$scope.dropdownVisible = false;
+				$scope.$apply()
 			})
+			$scope.multisearch = function () {
+				var post = $scope.post.commentText.trim();
 
+				if (!post) {
+					$scope.dropdownVisible = false;
+					return
+				}
+
+				$scope.loading = true;
+
+				identityService.multisearch($scope.post).then(function (results) {
+					results.users = results.users.map(function (user) {
+						user.avatar = user.avatar || '/assets/images/avatar_placeholder.png';
+						user.role = user.role[0].toUpperCase() + user.role.substr(1);
+						return user
+					});
+
+					$scope.results = results;
+
+					$scope.loading = false;
+					$scope.dropdownVisible = true
+				})
+			};
 			followService.isFollowing($scope.post.author._id).then(function (result) {
 				$scope.post.author.isFollowing = result
 			})
@@ -1202,6 +1346,15 @@ angular.module('er.directives', [])
             }
 
 			$scope.react = function (post, type, unreact) {
+				if (!$scope.re) $scope.re = {};
+				if (!$scope.re[type]) $scope.re[type] = {};
+				if ($scope.re[type][post]) {
+					var duration = new Date().getTime() - $scope.re[type][post];
+					if (duration <= 1000) return;
+					else $scope.re[type][post] = new Date().getTime();
+				} else {
+					$scope.re[type][post] = new Date().getTime();
+				}
 				var tempType = type;
 				var action = 'react'
 				if (unreact) action = 'unreact'
@@ -1750,7 +1903,7 @@ angular.module('er.directives', [])
 		}
 	}
 })
-.directive('topbar', function ($rootScope) {
+.directive('topbar', function ($rootScope,$window,$location) {
 	return {
 		restrict: 'E',
 		templateUrl: 'assets/views/directives/topbar.htm',
@@ -1761,6 +1914,11 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			if (!$scope.q) {
 				$scope.q = ''
+			}
+			$scope.goHomePage = function() {
+				console.log('ok')
+                if ($location.url() === '/') $window.location.reload();
+				else $location.url('/');
 			}
 
 			$scope.openUserMenu = function (e) {
@@ -2020,6 +2178,7 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.image = $scope.user.avatar || '/assets/images/avatar_placeholder.png'
+			
 		}
 	}
 })

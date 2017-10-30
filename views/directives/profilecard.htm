@@ -1,4 +1,4 @@
-<div class="card user-info">
+<div class="card user-info" ng-controller="showexpertController">
 	<div class="mini-wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
 	<a href="#!/person/{{user._id}}">
 		<div class="avatar" style="background-image: url('{{image}}')"></div>
@@ -6,7 +6,7 @@
 
 	<div class="info">
 		<div class="name dark-bold">{{user.name}}</div>
-		<div class="status">{{user.role}}</div>
+		<div class="status">@{{user.username}}</div>
 		<a href="#!/person/{{user._id}}">View profile</a>
 	</div>
 
@@ -18,14 +18,14 @@
 	<div class="info-reviews">
 		<div class="info-reviews-rate">
 			<div class="info-rating">
-				<span>3,9/5</span>
+				<span>{{averageRate | number:0}}/5</span>
 				<i class="fa fa-star" aria-hidden="true"></i>
 			</div>
-			<div class="info-rv">25 Reviews</div>
+			<div class="info-rv">({{ratings.length}} reviews)</div>
 			<div class="clear"></div>
 		</div>	
 		<div class="info-show">
-			<a href=""> Show Reviews</a>	
+			<a href="#!/showexpertreviews"> Show Reviews</a>	
 		</div>		
 	</div>
 </div>

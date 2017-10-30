@@ -45,6 +45,11 @@ h3 {
 	line-height: 2em;
 }
 
+.ql-video {
+    width: 500px;
+    height: 281px;
+}
+
 .material-icons-pseudo-class {
 	text-transform: none;
 	font-feature-settings: 'liga' 1;
@@ -508,7 +513,7 @@ a.small-icon, button.small-icon {
 		topbar, #top-bar {
 			z-index: 101;
 		}
-
+		
 		#top-bar {
 			@include display-flex; position: relative;
 			@include justify-content(space-between);
@@ -526,6 +531,7 @@ a.small-icon, button.small-icon {
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: contain;
+				cursor: pointer;
 			}
 
 			.make-post {
@@ -1290,6 +1296,14 @@ a.small-icon, button.small-icon {
 					margin-left: -52px;
 				}
 
+				.suggestions-users {
+					.avatar-border {
+						position: relative;
+					    float: left;
+					    margin-left: 0px;
+					}
+				}
+
 				.body {
 					.title {
 						// @include display-flex;
@@ -1780,6 +1794,22 @@ a.small-icon, button.small-icon {
 							resize: none;
 						}
 
+						.post-comment {
+							width: 100%; height: 72px;
+							padding: 10px;
+							border: 1px solid $activeBlue;
+							border-radius: 3px;
+							font-family: 'Roboto';
+							font-size: 13px;
+							box-sizing: border-box;
+							line-height: 20px;
+							resize: none;
+						}
+
+						tag {
+							color: $activeBlue;
+						}
+
 						.text {
 							margin-top: 12px;
 							font-size: 13px;
@@ -2021,7 +2051,7 @@ a.small-icon, button.small-icon {
 
 				div[contenteditable].ng-empty:before {
 					display: block;
-					content: 'Share an article, photo, or update';
+					content: 'Share your wisdom, photo, or update';
 					padding-right: 22px;
 					color: $middleGrey;
 					overflow: hidden;
@@ -5063,7 +5093,43 @@ a.small-icon, button.small-icon {
 		height: 0;
 	}
 
+	tag {
+		color: $activeBlue;
+	}
+
 	textarea {
+		width: 100%; height: 38px;
+		padding: 10px;
+		border: 1px solid #f0f2f4;
+		border-radius: 3px;
+		font-family: 'Roboto';
+		font-size: 13px;
+		box-sizing: border-box;
+		resize: none;
+		line-height: 16px;
+
+		&:focus {
+			border-color: $activeBlue;
+		}
+
+		&.not-empty {
+			height: 76px;
+
+			& + .send {
+				display: block;
+				margin-top: 6px;
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			& + .send + form + .upload-image {
+				top: 85px; left: 0;
+				right: auto;
+			}
+		}
+	}
+
+	.post-comment {
 		width: 100%; height: 38px;
 		padding: 10px;
 		border: 1px solid #f0f2f4;
@@ -5662,6 +5728,7 @@ a.small-icon, button.small-icon {
 			border: 1px solid $iconGrey;
 			background-color: #ffffff;
 			font-size: 16px;
+            margin-bottom: 10px;
 
 			@include box-sizing(border-box);
 		}
@@ -5736,7 +5803,7 @@ a.small-icon, button.small-icon {
 			width: 100%; height: 400px;
 			padding: 6px;
 			border: 1px solid $iconGrey;
-			overflow: auto;
+			/*overflow: auto;*/
 
 			tag {
 				color: $activeBlue;
@@ -5834,7 +5901,7 @@ a.small-icon, button.small-icon {
 	float: left;
 }
 .info-reviews-rate{
-	width: 160px;
+	width: 75%;
 	margin: auto;
 }
 .info-show a{
@@ -5952,6 +6019,7 @@ a.small-icon, button.small-icon {
 	background: #ffffff;
 	box-shadow: 2px 2px 10px #888888;
 	border: 1px solid #ffffff;
+	margin: auto;
 }
 .wr-v-title{
 	text-align: center;
@@ -6003,7 +6071,7 @@ a.small-icon, button.small-icon {
 	background: #ffffff;
 	box-shadow: 2px 2px 10px #888888;
 	border: 1px solid #ffffff;
-
+	margin: auto;
 }
 .newtimeentry{
 	text-align: center;
@@ -6150,12 +6218,347 @@ a.small-icon, button.small-icon {
 	padding-top:30px;
 }
 
+.tb-request{
+	padding-bottom: 20px;
+	padding-left: 50px;
+	color:#43abe7;
+	font-size:15px;
+}
+
+.search-wrapper {
+	padding: 20px 10px;
+	input {
+		width: 300px;
+	}
+}
+
+.admin-pagination {
+	margin: auto;
+	width: 200px;
+	padding: 10px;
+	text-align: center;
+	a {
+		cursor: pointer;
+	}
+
+}
+
+.settings-username{
+	padding-top:10px;
+}
+
+.box-ct-comment{
+	.avt-comment-box{
+		margin-left: 0 !important;
+	}
+
+	.text-comment-post{
+		margin-left: 55px;
+	}
+	.box-text-comment-post{
+		padding-left:24px;
+	}
+	
+	box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.17);
+	width: 50%;
+    position: absolute;
+    z-index: 99;
+    background: #ffffff;
+
+}
+
+.showallsearch-post{
+	padding-top:30px;
+	a{
+		font-size:15px;
+		padding-left:29px;
+	}
+}
+
+.suggestions-comment {
+	background: #fff;
+    border: 1px solid #e6e6e6;
+    width: 250px;
+    padding: 10px;
+    z-index: 100000;
+    position: absolute;
+    color: #b0bec8;
+
+    li {
+    	padding: 5px;
+    	cursor: pointer;
+    }
+
+    li:hover {
+    	color: #fff;
+    	background: #43abe7;
+    }
+
+    li.li-suggestions-users:hover {
+    	background: #fff;
+    }
+    .suggestions-users {
+    	width: 100%;
+    	float: left;
+    	padding: 5px;
+    	.avatar-border: {
+	    	position: relative !important;
+	    	margin-left: 0px !important;
+	    }
+    }
+
+    .suggestions-users:hover {
+    	color: #fff;
+    	background: #43abe7;
+    }
+
+    .suggestions-user-info {
+    	float: left;
+    	padding: 5px;
+    }
+    
+}
 
 
+.bookingtime-all{
+	.bkt-l{
+		background: #ffffff;
+	    padding: 10px 20px;
+	    margin-top: 23px;
+	    border-radius: 4px;
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.bkt-tt{
+		padding:40px 0;
+	}
+
+	.bkt-price{
+		font-size: 18px;
+    	font-weight: bold;
+	}
+	.bkt-btn{
+		float:right;
+		button{
+			    border: none;
+			    padding: 5px 26px;
+			    border-radius: 11px;
+			    background: #40a6e1;
+			    color: #ffffff;
+		}
+	}
+
+	.bkt-t{
+		padding:10px 0;
+		h1{
+			font-size: 18px;
+		    font-weight: bold;
+		    color: #999DA0;
+		}
+	}
+	.bkt-e{
+		.sp-tz{
+			float:right;
+		}		
+		span{
+			font-size: 14px;
+    		color: #D2D6D9;
+    		strong{
+    			color:#40a6e1;
+    		}
+		}
+	}
+
+	.bkt-r{
+		padding-top: 50px;
+	}
+
+	.booktime-sl{
+		background:#ffffff;		
+		border-radius:5px;
+		box-shadow: 2px 2px 10px #888888;
+		ul{
+			padding-bottom:50px;
+			padding-top:7px;
+		}
+		i{
+			padding-right:10px;
+			font-size:17px !important;
+		}
+		li:hover{
+			background:#40a6e1;
+			color:#ffffff;
+		}
+		li{	
+			cursor:pointer;
+			color: #D2D6D9;
+    		font-size: 15px;
+    		padding:5px 15px;
+		}
+	}
+
+	.booktime-alert{
+		margin-top: 50px;
+	    padding-top: 50px;
+	    padding-bottom: 10px;
+	    background: #ffffff;
+	    text-align: center;
+	    margin-bottom: 50px;
+	    border-radius: 6px;
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.border-bt-line{
+		border-bottom:1px solid #888888;
+	}
+	.bt-al{
+		padding-bottom: 20px;
+		width: 80%;
+    	margin: auto;
+    	h1{
+    		font-size: 20px;
+		    padding-bottom: 10px;
+    	}
+    	span{
+    		font-size:15px;
+    	}
+    	
+	}
+
+	.bt-btn{
+		padding-top: 12px;
+	}
+
+	.bkt-t-a{
+		padding-bottom: 20px;
+	}
+
+	.cf-booking{
+	    background: #ffffff;
+	    border-radius: 5px;	
+	    box-shadow: 2px 2px 10px #888888;
+	}
+	.cf-booking-ct{
+		padding-top: 30px;
+    	padding-bottom: 50px;
+    	padding-left:45px;
+	}
+	.cf-time{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 5px;
+		}
+	}
+	.cf-duration{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 7px;
+		}
+	}
+	.cf-vs{
+		padding-bottom:8px;
+		span{
+			font-size: 15px;
+    		color: #999DA0;
+		}
+		i{
+			padding-right: 9px;
+		}
+	}
+	.cf-text{
+		font-size: 15px;
+    	color: #999DA0;
+	}
+	.btn-back{
+		border: none;
+	    padding: 7px 30px;
+	    border-radius: 13px;
+	    color: #ffffff;
+	    background: #00B8EF;
+	}
+	.btn-next{
+		border: none;
+	    padding: 7px 30px;
+	    border-radius: 13px;
+	    color: #ffffff;
+	    background: #00B8EF;
+	}
+	.cf-booking{
+		.bkt-t-a{
+			border-bottom:1px solid;
+		}
+	}	
+
+	.bkt-t-a-l{
+		padding: 15px 30px;
+	}
 
 
+	.cf-booking-btn{
+		border-top: 1px solid;
+		.bk-btn-all{
+			float: right;
+    		padding: 20px 20px;
+		}
+	}
+	.bkt-r-a{
+		li{
+			color:#40a6e1;
+		}
+	}
+
+}
 
 
+.filter-cities-expert{
+	label{
+		font-size: 13px;
+	}
+	.settings-field-block{		
+		float: left;
+	    padding: 5px 10px;	    
+	    background: #cad4db;
+	    border-radius: 21px;
+	    color: #ffffff;
+	    margin-right:6px;	    
+	    select{
+	    	option{
+	    		background:#ffffff;	    		
+	    		color:black;
+	    	}
+	    }
+
+	}
+	select{
+		padding-left: 4px;
+		font-size: 14px;
+    	font-weight: bold;	
+		width: 200px;
+	    background: #cad4db;
+	    border: none;
+	}
+}
+.write-views-expert-bot {
+	padding: 20px;
+}
+.addcate{
+	background: rgb(255, 255, 255);
+    border: 1px solid rgb(230, 233, 236);
+    padding: 5px 30px;
+    margin-left: 20px;
+}
+.slcategory{
+	padding-left: 20px;
+}
+.slcategoryall{
+	float: left;
+}
 
 @import "medias";
 @import "chosen";

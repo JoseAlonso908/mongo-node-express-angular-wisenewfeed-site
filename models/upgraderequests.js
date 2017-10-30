@@ -78,8 +78,23 @@ var Model = function(mongoose) {
 			Object.assign(request, data)
 			request.save(callback)
 		},
-		getRequests: (callback) => {
-			Model.find().exec(callback)
+		getRequests: (q, skip, limit, callback) => {
+			skip = Number(skip)
+			limit = Number(limit)
+
+
+			let query = {}
+			
+			
+			query.name = new RegExp(q, 'gi')
+
+			Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
+				if (err) return callback(err);
+				Model.count(query).exec((error, result)=>{
+					callback(error, users,result)
+				})
+				
+			})
 		},
 		removeRequest: (id, callback) => {
 			if (typeof id !== 'object') id = mongoose.Types.ObjectId(id)

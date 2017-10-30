@@ -9,8 +9,16 @@
 			<pieces></pieces>
 		</div>
 		<div class="middle wide">
-			<div class="people-filter">
+			<div class="people-filter filter-cities-expert">
 				<dropdown title="Country" list="countries" selected="chosenCountry" change="setActiveCountry"></dropdown>
+				<div class="settings-field-block">
+					<label>City:</label>
+					<div class="small-loader" ng-show="loadingCities"></div>
+					<select ng-model="user.city" name="city">
+						<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
+					</select>
+					<div class="clear"></div>
+				</div>
 				<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
 				<div class="clear"></div>
 			</div>

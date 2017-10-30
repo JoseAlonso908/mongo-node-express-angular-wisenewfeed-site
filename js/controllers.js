@@ -18,7 +18,7 @@ angular.element(document).on('keydown', function (e) {
 angular.module('er.controllers', [])
 .controller('startController', function (	$scope, $auth, $location, $cookies, $timeout,
 											countriesListService, confirmAccountModal,
-											validateEmailService, validatePhoneService,
+											validateEmailService,validateUsernameService, validatePhoneService,
 											forgotPasswordModal, findMyAccountModal, identityService
 ) {
 
@@ -84,10 +84,9 @@ angular.module('er.controllers', [])
 		$location.url('/confirmsignup')
 	}
 
-	$scope.signup = {email: '', password: '', name: '', country: '', phone: ''}
+	$scope.signup = {email: '', password: '', name: '', country: '', phone: '',username: ''}
 
 	$scope.doSignup = function () {
-		console.log($scope.signup)
 
 		for (var field in $scope.signup) {
 			if (field === 'error') continue
@@ -114,6 +113,13 @@ angular.module('er.controllers', [])
 				})
 			},
 			function (callback) {
+				validateUsernameService($scope.signup.username).then(function (response) {
+					callback()
+				}, function (error) {
+					callback(error)
+				})
+			},
+			function (callback) {
 				validatePhoneService('+' + $scope.signup.country.code + $scope.signup.phone).then(function (response) {
 					callback()
 				}, function (error) {
@@ -123,6 +129,7 @@ angular.module('er.controllers', [])
 		], function (err) {
 			if (err) $scope.signup.error = err
 			else {
+				console.log('ok signup')
 				confirmAccountModal.activate({$parent: $scope, phone: '+' + $scope.signup.country.code + $scope.signup.phone})
 			}
 		})
@@ -217,6 +224,8 @@ angular.module('er.controllers', [])
 			alert("Signup failed due to: " + response.data.message)
 		})
 	}
+
+	$scope.doSignup('user');
 })
 .controller('friendsFeedController', function ($scope, $rootScope, fieldsListService, groupedCountriesService, identityService) {
 	$scope.setActiveCategory = function (item) {
@@ -316,18 +325,30 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('homeController', function ($scope, $rootScope, fieldsListService, groupedCountriesService, identityService) {
+.controller('homeController', function ($scope,countriesListService, $rootScope, fieldsListService, groupedCountriesService, identityService) {
 	$scope.setActiveCategory = function (item) {
 		$scope.chosenCategory = item
 		$rootScope.$emit('updateCountriesFilter')
 		$rootScope.$emit('feedCategory', item)
 	}
 
-	$scope.setActiveCountry = function (item) {
-		$scope.chosenCountry = item
 
+	$scope.setActiveCountry = function (item) {
+
+		$scope.chosenCountry = item
+		console.log('asditem1 ',item)
 		$rootScope.$emit('updateCategoriesFilter')
 		$rootScope.$emit('feedCountry', item)
+
+		console.log('asditem ',item.title)
+		$scope.cities = []
+		$scope.loadingCities = true
+		console.log('asd11231 ',$scope.user.country)
+		countriesListService.cities(item.title).then(function (list) {
+			$scope.cities = list
+			$scope.loadingCities = false
+			console.log('asdasd ',$scope.cities )
+		})
 	}
 
 	var getCountriesList = function () {
@@ -414,7 +435,7 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('adminController',function($scope, adminService, $window){
+.controller('adminController',function($scope, adminService, $window,identityService){
 	  	$scope.current_tab = 1;    
 		
 		$scope.changeTab = function(index){
@@ -428,20 +449,27 @@ angular.module('er.controllers', [])
 		$scope.params = {
 			start: 0,
 			limit: 10,
-			q: { role: 'expert'}
+			q: ''
+		}
+
+		$scope.requestParams = {
+			start: 0,
+			limit: 10,
+			q: ''
 		}
 
 		function init(){
 			adminService.getExperts($scope.params).then(function(response){
-				$scope.experts = response.data;
+				$scope.experts = response.data.results;
+				$scope.countExperts = response.data.count;
 			})
 		}
 
 		function initRequest() {
-			adminService.getRequests().then(function(response){
+			adminService.getRequests($scope.requestParams).then(function(response){
 				if (response) {
-					console.log('response.data ',response);
-					$scope.requests = response.data;
+					$scope.requests = response.data.results;
+					$scope.countRequests = response.data.count;
 				}
 			})
 		} 
@@ -453,10 +481,83 @@ angular.module('er.controllers', [])
 		$scope.downgrade = downgrade;
 		$scope.remove = remove;
 		$scope.block = block;
+		$scope.unblock=unblock;
 		$scope.upgrade = upgrade;
 		$scope.viewDetails = viewDetails;
 		$scope.deny = deny;
+		$scope.refresh = refresh;
+		$scope.multisearch = multisearch;
+		$scope.next = next;
+		$scope.back = back;
+		$scope.page = 1;
+		$scope.rPage = 1;
+		$scope.multisearchRequest = multisearchRequest;
+		$scope.nextR = nextR;
+		$scope.backR = backR;
+
+		function nextR () {	
+			if ($scope.countRequests>($scope.rPage)*10) {
+				$scope.requestParams.start+=10;
+				$scope.rPage +=1;
+				initRequest();
+			}	
+		}
+
+		function backR () {	
+			if (rPage>1) {
+				$scope.requestParams.start-=10;
+				initRequest();
+			}
+		}
+
+		function multisearchRequest() {
+			$scope.requestParams.start = 0;
+			$scope.requestParams.q = $scope.requestq;
+			initRequest()
+		}
+
+
+
 		var t;
+
+		function next () {
+			if ($scope.countExperts>($scope.page)*10) {
+				$scope.params.start+=10;
+				$scope.page+=1;
+				init();
+			}
+			
+		}
+
+		function back () {
+			if ($scope.page>1) {
+				$scope.params.start-=10;
+				$scope.page-=1;
+				init();
+			}
+			
+		}
+
+
+		function multisearch () {
+			$scope.params.start = 0;
+			$scope.params.q = $scope.q.trim();
+			adminService.getExperts($scope.params).then(function (response) {
+				$scope.experts = response.data.results;
+				$scope.countExperts = response.data.count;
+			})
+		}
+
+
+		
+		function refresh () {
+			init();
+			initRequest();
+		}
+
+		function alertT(text){
+			alert(text+ ' successfully!')
+		}
 
 		function upgrade (userId, id) {
 			console.log(userId, id)
@@ -464,6 +565,7 @@ angular.module('er.controllers', [])
 				adminService.upgradeExpert(userId, id).then(function(response){
 					init();
 					initRequest();
+					alertT('Upgraded');
 				})
 			}
 		}
@@ -474,6 +576,7 @@ angular.module('er.controllers', [])
 				adminService.denyExpert(userId, id).then(function(response){
 					init();
 					initRequest();
+					alertT('Denied');
 				})
 			}
 		}
@@ -484,6 +587,8 @@ angular.module('er.controllers', [])
 			if (confirm("Are you sure to downgrade this expert?")) {
 				adminService.downgradeExpert(id).then(function(response){
 					init();
+					initRequest();
+					alertT('downgraded');
 				})
 			}
 			
@@ -493,13 +598,29 @@ angular.module('er.controllers', [])
 			if (confirm("Are you sure to remove this expert?"))
 			adminService.removeExpert(id).then(function(response){
 				init();
+				alertT('User is removed');
+			})
+		}
+		
+		function block(id) {			
+			
+			if (confirm("Are you sure to block this expert?")){
+				$scope.Block="Unblock"
+			}
+			adminService.blockExpert(id).then(function(response){
+				init();
+				alertT('Blocked user');
 			})
 		}
 
-		function block(id) {
-			if (confirm("Are you sure to block this expert?"))
-			adminService.blockExpert(id).then(function(response){
+		function unblock(id) {			
+			
+			if (confirm("Are you sure to unblock this expert?")){
+				
+			}
+			adminService.unblockExpert(id).then(function(response){
 				init();
+				alertT('Unblocked user');
 			})
 		}
 
@@ -512,8 +633,9 @@ angular.module('er.controllers', [])
 		
 
 })
-.controller('showexpertController',function($scope,identityService,$timeout){
+.controller('advisedtimeController',function(ratingService, $scope,identityService,$interval,$routeParams){
 	$scope.chooseRating = chooseRating;
+	$scope.submitRating=submitRating;
 	$scope.choosenRating = 0;
 	$scope.ratDes = ['','Very bad','Bad','Acceptable','Good enough', 'Good'];
 	$scope.hoursd=0;
@@ -522,11 +644,19 @@ angular.module('er.controllers', [])
 	$scope.hours=0;
 	$scope.minutes=0;
 	$scope.seconds=0;
+	var interval;
+	$scope.isFinishedAdvisedTime = false;
+
+	$scope.expertId = $routeParams.id;
+
+
 
 	$scope.startCountup=function(){
+
+
+
 		var countUp=function(){			
 			$scope.seconds+= 1;			
-	    var mytimeout=$timeout(countUp, 1000);
 			if($scope.seconds==60){
 				$scope.seconds=0;
 				$scope.minutes+=1;
@@ -537,22 +667,97 @@ angular.module('er.controllers', [])
 				}
 			}
 		}
-		var mytimeout=$timeout(countUp,1000);
-		$scope.stopCountup=function(){
-			$timeout.cancel(mytimeout);
-		}		
+
+		interval = $interval(countUp,1000);
+
+
+
+				
+	}
+
+	$scope.stopCountup=function(){
+		console.log("stopCountup")
+		$interval.cancel(interval);
+		if ($scope.user.role == 'User') {
+			console.log($scope.user)
+			$scope.isFinishedAdvisedTime = true;
+		}
 	}
 	
 
 
 	function chooseRating (rate) {
 		$scope.choosenRating = rate;
+		console.log($scope.choosenRating)
 	}
+
+	function submitRating (){
+		var data = {
+			rate: $scope.choosenRating,
+			text: $scope.reviewText,
+			expertId: $scope.expertId
+		}
+		ratingService.create(data).then(function(response){
+			console.log(response);
+		})
+	}
+
 
 	
 
 	identityService.get().then(function (user) {
+		console.log($scope.user)
 		$scope.user = user
+	}, function () {
+		$scope.guest = true
+	})	
+})
+.controller('quanlyController',function($scope,dsquanlyService){
+	$scope.addDS=addDS
+
+	function addDS(){
+		var data={
+			ghidanh:$scope.ghidanh,
+			ten:$scope.ten,
+			sdt:$scope.sdt,
+			ngaysinh:$scope.ngaysinh,
+			lop:{
+				tenlop:$scope.tenlop,
+				giohoc:$scope.giohoc,
+				coso:$scope.coso,
+				hocphi:$scope.hocphi
+			}
+		}
+		dsquanlyService.create(data).then(function(response){
+			console.log(response);
+		})
+	}
+})
+.controller('showexpertController',function($scope,identityService,$timeout,ratingService){
+
+	$scope.showlimit = 5;
+	$scope.showMore = showMore;
+
+	function showMore () {
+		$scope.showlimit+=5;
+	}
+
+	identityService.get().then(function (user) {
+		$scope.user = user
+		console.log(user)
+		ratingService.listRating(user._id).then(function(response){
+			console.log(response);
+			if (response, response.data) {
+				if (response.data.ok) {
+					$scope.ratings = response.data.ratings;
+					var sum = 0;
+					for (var i in $scope.ratings) {
+						sum+=$scope.ratings[i].rate;
+					}
+					$scope.averageRate = sum/$scope.ratings.length;
+				}
+			}
+		})
 	}, function () {
 		$scope.guest = true
 	})	
@@ -591,26 +796,40 @@ angular.module('er.controllers', [])
 
 	
 })
-.controller('bookingController',function($scope, identityService, availabilityService, bookingService){
-
+.controller('bookingController',function($scope, bookService,identityService, availabilityService, bookingService,$routeParams){
+	
 	$scope.availability = availabilityService.getAvailability();
-
 	$scope.timeranges = availabilityService.getTimeRanges();
 	$scope.book = {ranges:[{from:'',to:''}]}
+	$scope.expertId = $routeParams.id;
 	$scope.isBooking = false;
 
-	identityService.get().then(function (user) {
-		$scope.user = user
-	}, function () {
-		$scope.guest = true
-	})
 
 	$scope.addMoreRangeOfTime = addMoreRangeOfTime;
 	$scope.doBooking = doBooking;
 	$scope.addBooking = addBooking;
 
-	function addBooking () {
-		bookingService.book($scope.book);
+
+	// function submitRating (){
+	// 	var data = {
+	// 		rate: $scope.choosenRating,
+	// 		text: $scope.reviewText,
+	// 		expertId: $scope.expertId
+	// 	}
+	// 	ratingService.create(data).then(function(response){
+	// 		console.log(response);
+	// 	})
+	// }
+	function addBooking () {	
+		var data = {
+			date: $scope.book.date,		
+			timeFrom: $scope.book.ranges[0].from,
+			timeTo: $scope.book.ranges[0].to,
+			expertId: $scope.expertId
+		}
+		bookService.create(data).then(function(response){
+			console.log(response);
+		})
 	}
 
 	function doBooking (index) {
@@ -618,11 +837,25 @@ angular.module('er.controllers', [])
 		$scope.book.date = $scope.availability[index].date;
 		$scope.book.ranges[0].from = $scope.availability[index].ranges[0].from;
 		$scope.book.ranges[0].to = $scope.availability[index].ranges[0].to;
+
 	}
 
 	function addMoreRangeOfTime () {
 		$scope.book.ranges.push({from:'', to:''});
 	}
+
+
+
+	
+	identityService.get().then(function (user) {
+		$scope.user = user
+	}, function () {
+		$scope.guest = true
+	})
+})
+.controller('bookingtimeController',function($scope){
+	this.myDate = new Date();
+  	this.isOpen = false;
 })
 .controller('profileController', function ($scope, $location, identityService) {
 	$scope.feedType = 'feed'
@@ -1099,15 +1332,16 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal) {
+.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal,validateUsernameService) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
-
+	$scope.originUser= {};
 	$scope.connect = function (provider) {
 		$auth.authenticate(provider, {updateExisting: $scope.user._id})
 		.then(function (response) {
 			identityService.get(true).then(function (user) {
 				$scope.user = user
+				
 			})
 		})
 		.catch(function (error) {
@@ -1177,7 +1411,7 @@ angular.module('er.controllers', [])
 
 			var form = {
 				name: e.target.name.value,
-                nickname: e.target.nickname.value,
+                username: e.target.username.value,
 				email: e.target.email.value,
 				phone: e.target.phone.value,
 				country: $scope.user.country,
@@ -1192,26 +1426,40 @@ angular.module('er.controllers', [])
 					if (!success) {
 						return
 					}
-
-					identityService.updateSettings(form).then(function (result) {
+					console.log($scope.user)
+					identityService.updateSettings($scope.user).then(function (result) {
+						console.log(result)
 						identityService.get(true).then(function (user) {
 							$scope.user = user
-							return $location.url('/my')
+							$scope.submitClass = 'success'
+							$scope.submitResult = 'Your request successfully sent';							
 						})
 					}, function (error) {
 						alert('Failed to update settings. Please, try again later.')
 					})
 				}
 
-				if (/*$scope.profileSettings.phone.$untouched || */form.phone == $scope.user.phone) {
+				if (/*$scope.profileSettings.phone.$untouched || */$scope.originUser.phone == $scope.user.phone&&$scope.originUser.username == $scope.user.username) {
 					saveSettings(true)
 				} else {
-					validatePhoneService(form.phone).then(function (result) {
-						console.log(result)
-						confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
-					}, function (error) {
-						if (error) $scope.phoneerror = error
-					})
+					if ($scope.originUser.username != $scope.user.username) {
+						validateUsernameService($scope.user.username).then(function (result) {
+							beforeSaving();
+						})
+					}
+					
+				}
+				function beforeSaving () {
+					if ($scope.originUser.phone != $scope.user.phone) {
+						validatePhoneService(form.phone).then(function (result) {
+							console.log(result)
+							confirmPhoneModal.activate({$parent: $scope, phone: form.phone, callback: saveSettings})
+						}, function (error) {
+							if (error) $scope.phoneerror = error
+						})
+					} else {
+						saveSettings(true);
+					}
 				}
 			}
 		},
@@ -1272,6 +1520,7 @@ angular.module('er.controllers', [])
 
 	$scope.countryChosen = function () {
 		$scope.loadingCities = true
+		console.log($scope.user.country)
 		countriesListService.cities($scope.user.country).then(function (list) {
 			$scope.cities = list
 			$scope.loadingCities = false
@@ -1282,7 +1531,9 @@ angular.module('er.controllers', [])
 		function (next) {
 			identityService.get().then(function (user) {
 				$scope.user = user
-
+				console.log($scope.user);
+				angular.copy($scope.user, $scope.originUser);
+				console.log($scope.originUser);
 				if (!$scope.user.email) {
 					$scope.emailerror = 'You email address is required to use Expert Reaction.'
 				}
@@ -2098,6 +2349,8 @@ angular.module('er.controllers', [])
 	$scope.canLoadMore = true
 	$scope.people = []
 
+
+
 	$scope.init = function () {
 		$scope.loading = true
 
@@ -2203,12 +2456,33 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController', function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService) {
+.controller('betaController',function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService,fieldsListService) {
+   
+
+	$scope.selectedCategory;
+	$scope.categories = $rootScope.suggestCategories;
+	// console.log($scope.categories)
+	console.log('asda1 ',$rootScope.suggestCategories)
+	console.log('all ',$scope.categories[0])
+	
+	$scope.addCategory = function(){		
+		console.log('asdasda   ',$scope.selectedCategory)		
+		$scope.expertCategory.push($scope.categories[$scope.selectedCategory])
+	}		
+
+	
+	$scope.expertCategory = [];
     $scope.errors = {}
     var availableRoles = ['expert', 'journalist']
 	var selectedRole = 'expert'
 	if ($routeParams.role && availableRoles.indexOf($routeParams.role) > -1) {
     	selectedRole = $routeParams.role
+	}
+
+	$scope.setActiveCategory = function (item) {
+		$scope.chosenCategory = item
+		$rootScope.$emit('updateCountriesFilter')
+		$rootScope.$emit('feedCategory', item)
 	}
 
     $scope.signup = {
@@ -2223,6 +2497,7 @@ angular.module('er.controllers', [])
         $scope.user = user
 
 		Object.assign($scope.signup, {
+
 			name: user.name,
 			info: user.intro,
 			email: user.email,
@@ -2394,7 +2669,7 @@ angular.module('er.controllers', [])
 			betaUploadsService.upgrade($scope.signup).
 			then(function (result) {
 				$scope.submitClass = 'success'
-				$scope.submitResult = 'Your request successfully sent'
+				$scope.submitResult = 'Request has been sent, you will be notify in 48h.'
 			}).catch(function (err) {
 				$scope.submitClass = 'error'
 				$scope.submitResult = (err.data.message) ? err.data.message : 'Failed to submit your request'
@@ -2420,6 +2695,14 @@ angular.module('er.controllers', [])
             return $location.url('/')
         }
     })
+    var quill = new Quill('#textquill', {
+        modules: {
+            toolbar: '#toolbar-container',
+            formula: true,
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow'  // or 'bubble'
+    });
 	/*TODO: Add select privacy functionality */
 	$scope.privacy = 'Stranger'
     $scope.fonts = [
@@ -2462,7 +2745,6 @@ angular.module('er.controllers', [])
 		$scope.command('fontName', font)
         $scope.fontListVisible = false
 	}
-
     $scope.create = function () {
 		// console.log($scope.title)
 		// console.log($scope.text)
@@ -2470,6 +2752,7 @@ angular.module('er.controllers', [])
 		// console.log($scope)
 		// return
 
+		var t = quill.root.innerHTML;
         if ($scope.loading) return
         $scope.loading = true
 
@@ -2480,7 +2763,7 @@ angular.module('er.controllers', [])
         var progress = function () {}
         postService.create({
             title: $scope.title,
-            text: $scope.textHtml,
+            text: t,
             files: fileObjects,
             privacy: $scope.privacy
         }, progress).then(function (result) {
@@ -2541,6 +2824,9 @@ angular.module('er.controllers', [])
             $timeout.cancel(this)
         }, 0)
     }
+
+    var toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', $scope.addImage);
 
     $scope.removeUpload = function (index) {
         if ($scope.loading) return

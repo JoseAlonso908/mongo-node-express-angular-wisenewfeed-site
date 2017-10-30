@@ -26,11 +26,13 @@ router.use((req, res, next) => {
 	}
 })
 
-router.post('/getrequests', (req, res)=>{
-	models.Upgraderequests.getRequests((err, results)=>{
+router.post('/getrequests', (req, res)=>{	
+	let {q, start, limit} = req.body;
+	models.Upgraderequests.getRequests(q,start, limit, (err, results, count)=>{
 		if (err) return res.status(500).send(err)
-		res.send(results)
+		res.send({results: results, count: count})
 	})
+
 })
 
 router.post('/getexperts', (req, res)=>{
@@ -38,11 +40,12 @@ router.post('/getexperts', (req, res)=>{
 
 	let role = 'expert'
 
-	models.User.adminSearch(req.user._id, q, role, start, limit, false, (err, results) => {
+	models.User.adminSearch(req.user._id, q, role, start, limit, false, (err, results, count) => {
 		if (err) res.status(400).send(err)
-		else res.send(results)
+		else res.send({results: results, count: count})
 	})
 })
+
 
 router.post('/removeuser', (req, res) => {
 	let _id = req.body.id;
@@ -62,11 +65,26 @@ router.post('/blockuser', (req, res) => {
 	})
 })
 
+router.post('/unblockuser', (req, res) => {
+	let _id = req.body.id;
+
+	models.User.unblockUserById(_id, (err, result)=>{
+		if (err) res.status(400).send(err)
+		else res.send({status: 'ok'});
+	})
+})
+
 router.post('/downgrade', (req, res) => {
 	let id = req.body.id;
 	models.User.update(req.body.id,{role:'user'}, (err, result)=>{
 		if (err) res.status(400).send(err)
-		else res.send(result) 
+		else {
+			models.Notification.create(id,req.user._id,null,null,'downgrade',(err, result)=>{
+				if (err) res.status(400).send(err)
+				else res.send({status: 'ok'});	
+			})
+		}
+			
 	})
 })
 
@@ -102,13 +120,13 @@ router.post('/upgradeexpert', (req, res) => {
 })
 
 router.post('/denyexpert', (req, res) => {
-	let userId = req.body.userId;
+	let userId = req.body.user;
 	let id = req.body.id;
 	let role = 'expert';
 	models.Upgraderequests.removeRequest(id,(err, result)=>{
 		if (err) res.send(err)
 		else {
-			models.Notification.create(id,req.user._id,null,null,'denyupgrade',(err, result)=>{
+			models.Notification.create(userId,req.user._id,null,null,'denyupgrade',(err, result)=>{
 				if (err) res.status(400).send(err)
 				else res.send({status: 'ok'});	
 			})

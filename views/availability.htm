@@ -19,7 +19,7 @@
 			</div>
 			
 			<div ng-repeat="avail in availability" class="avail-expert-set">
-				<label for="availdate{{$index}}">Select date</label><md-datepicker ng-model="avail.date" md-placeholder="Enter date"></md-datepicker>
+				<label for="availdate{{$index}}">Select date</label><md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date"></md-datepicker>
 				<div class="time-ranges">
 					<label>Ranges of Time:</label>
 					<div ng-repeat="range in avail.ranges" class="ranges-time">
@@ -29,15 +29,12 @@
 			          			<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
 			        		</md-select>
 						</div>
-
 						<div class="range-item">
 							<label>To</label>
 							<md-select ng-model="range.to">
 		          				<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
 		        			</md-select>
-						</div>
-							
-						
+						</div>						
 					</div>
 					<button ng-click="addMoreRangeOfTime($index)" md-no-ink class="md-primary">Add more range of time</button>
 				</div>

@@ -101,6 +101,9 @@ router.post('/auth/login', (req, res) => {
 	// console.log(`Email: ${email}, password: ${password}`)
 	models.User.getByCredentials(email, password, (err, user) => {
 		if (!user) return res.status(400).send({message: `No user with this credentials`})
+		else if (user.isBlocked) {
+			return res.status(400).send({message: `Your account is blocked.	`})
+		}	
 		else {
 			getTokenAndRespond(res, user)
 		}
@@ -121,6 +124,22 @@ router.post('/auth/signup/validate/email', (req, res) => {
 				else callback()
 			})
 		},
+	], (err) => {
+		if (err) return res.status(400).send(err)
+		else return res.send({ok: true})
+	})
+})
+
+router.post('/auth/signup/validate/username', (req, res) => {
+	let {username} = req.body
+
+	async.series([
+		(callback) => {
+			models.User.findUsername(username, (err, user) => {
+				if (user) callback({message: 'User with this username aready exist'})
+				else callback()
+			})
+		}
 	], (err) => {
 		if (err) return res.status(400).send(err)
 		else return res.send({ok: true})
@@ -154,6 +173,7 @@ router.post('/auth/signup/verify/phone', (req, res) => {
 			body: `Expert Reaction verification code: ${result.code}`
 		}, (err, message) => {
 			console.log(err)
+			return res.send({ok: true})
 			if (err) return res.status(err.status).send(err)
 			else return res.send({ok: true})
 		})

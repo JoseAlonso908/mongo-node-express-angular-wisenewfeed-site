@@ -116,6 +116,20 @@ angular.module('er', [
 				templateUrl:'assets/views/admin.htm',
 				controller:'adminController',
 			})
+			.when('/bookingtime',{
+				templateUrl:'assets/views/bookingtime.htm',
+				controller:'bookingtimeController',
+			})
+			.when('/advisedtime/:id',{
+				templateUrl:'assets/views/advisedtime.htm',
+				controller:'advisedtimeController',
+			})
+			.when('/quanly',{
+				templateUrl:'assets/views/quanly.htm',
+				controller:'quanlyController',
+			})
+
+
 
 
 		$authProvider.facebook({
@@ -128,8 +142,8 @@ angular.module('er', [
 		});
 	}
 ])
-.run(['$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
-function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
+.run(['fieldsListService','countriesListService','$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
+function (fieldsListService, countriesListService, $rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
 	// $templateCache.removeAll()
 
 	$cookies.put('token', 'guest')
@@ -143,6 +157,13 @@ function ($rootScope, $route, $http, $templateCache, $location, $cookies, identi
 
 	identityService.get().then(function (user) {
 		if (!user) return
+	})
+
+	countriesListService.countries().then(function (list) {
+		$rootScope.suggestCountries = list
+	})
+	fieldsListService.getFullCategories().then(function(categories){
+		$rootScope.suggestCategories = categories;
 	})
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {

@@ -216,10 +216,10 @@ router.post('/profile/edit/removedownload', (req, res) => {
 
 router.post('/profile/edit/settings', (req, res) => {
 	let user = req.user
-	let {nickname, name, email, phone, country, city, gender, field, language} = req.body
+	let {username, name, email, phone, country, city, gender, field, language} = req.body
 
 	if (user) {
-		models.User.updateSettings(user._id, name, email, phone, country, city, gender, field, language, nickname, () => {
+		models.User.updateSettings(user._id, name, email, phone, country, city, gender, field, language, username, () => {
 			res.send({ok: true})
 		})
 	} else res.status(400).send({message: 'Invalid token'})

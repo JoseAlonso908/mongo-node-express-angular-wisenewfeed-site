@@ -34,7 +34,7 @@ angular.module('er.services', [])
 			})
 
 			return d.promise;
-		},
+		},		
 		downgradeExpert : function(id) {
 			var d = $q.defer();
 
@@ -68,6 +68,17 @@ angular.module('er.services', [])
 
 			return d.promise;
 		}, 
+		unblockExpert : function(id) {
+			var d = $q.defer();
+
+			$http.post('/admin/unblockuser', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
 		upgradeExpert: function(userId, id) {
 			var d = $q.defer();
 
@@ -90,10 +101,10 @@ angular.module('er.services', [])
 
 			return d.promise;
 		},
-		getRequests: function() {
+		getRequests: function(params) {
 			var d = $q.defer();
 
-			$http.post('/admin/getrequests',{}).then(function(response){
+			$http.post('/admin/getrequests',params).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);
@@ -181,6 +192,19 @@ angular.module('er.services', [])
 		return d.promise
 	}
 })
+.factory('validateUsernameService', function ($http, $q) {
+	return function (username) {
+		var d = $q.defer()
+
+		$http.post('/auth/signup/validate/username', {username: username}).then(function (response) {
+			d.resolve(response.data)
+		}, function (error) {
+			d.reject(error.data.message)
+		})
+
+		return d.promise
+	}
+})
 .factory('validatePhoneService', function ($http, $q) {
 	return function (phone) {
 		var d = $q.defer()
@@ -256,6 +280,10 @@ angular.module('er.services', [])
 
 			return __s($http, $cookies, 'get', '/user/categories', params)
 		},
+		getFullCategories : function() {
+			
+			return __s($http, $cookies, 'get', '/static/getfullcategories')
+		}
 	}
 })
 .factory('updateProfileService', function ($http, $cookies) {
@@ -1476,5 +1504,88 @@ angular.module('er.services', [])
 				})
 			})
 		}
+	}
+})
+.factory('ratingService', function ($http, $cookies) {
+	return {
+		create: function(data){
+			console.log(data);
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/rating/create',
+					data: {
+						expert: data.expertId,
+						text: data.text,
+						rate: data.rate
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		},
+		listRating: function(id) {
+			console.log(id)
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/rating/list',
+					data: {
+						id: id,
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		}
+	}
+})
+.factory('dsquanlyService',function($http, $cookies){
+	return {
+		create:function(data){
+			console.log(data)
+			return new Promise(function(resolve,reject){
+				$http({
+					method:'POST',
+					url:'/dsquanly/create',
+					data:{
+						ghidanh:data.ghidanh,
+						ten:data.ten,
+						sdt:data.sdt,
+						ngaysinh:data.ngaysinh,
+						lop:{
+							tenlop:data.tenlop,
+							giohoc:data.giohoc,
+							coso:data.coso,
+							hocphi:data.hocphi
+						}
+					},
+				}).then(resolve).catch(function(data,status){
+					reject(data)
+				})
+			})
+		}
+	}
+})
+.factory('bookService', function ($http, $cookies) {
+	return {
+		create: function(data){
+			console.log(data);
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/book/create',
+					data: {
+						date:data.date,			
+						timeFrom: data.timeFrom,
+						timeTo: data.timeTo,
+						expertId: data.expertId
+					},
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
+		}
+		
 	}
 })

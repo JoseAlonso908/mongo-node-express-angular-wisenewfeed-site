@@ -404,8 +404,42 @@ var Model = function(mongoose) {
 			case 'news':
                 filterAggregationParams = filterAggregationParams.concat([
 					{
-						$sort: {createdAt: -1},
-					},
+						$project: {
+							category: 1,
+							country: 1,
+							countries: 1,
+							friendship: 1,
+							meta: 1,
+							title: 1,
+							text: 1,
+							author: 1,
+							createdAt: 1,
+							images: 1,
+							sharedFrom: 1,
+							sharedIn: 1,
+							totalRecommended: 1,
+							totalShared: 1,
+							latest: {
+								$floor: {
+									$divide: [
+										{ $subtract: [ new Date(), '$createdAt' ] },
+										1000 * 60 * 60 * 24
+									]
+								}
+							},
+							weightage: {
+								$add: [
+									{ $ifNull: [ { $multiply: ['$sharedFrom.totalShared', 100000] }, 0] },
+									{ $ifNull: [ { $multiply: ['$totalShared', 100000] }, 0] },
+									{ $ifNull: [ '$sharedFrom.totalRecommended', 0 ] },
+									{ $ifNull: [ '$totalRecommended', 0 ] },
+								]
+							}
+						}	
+					},					
+					{
+						$sort: {latest: 1, weightage: -1, createdAt: -1}
+					}
 				])
 				break;
 			case 'recommended':
@@ -651,8 +685,15 @@ var Model = function(mongoose) {
 
 		getAll: (viewer, category, country, filter, start = 0, limit = 4, callback) => {
 			let query = {}
-			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			if (country) Object.assign(query, {country})
+			if (category!=='partnership') 
+				Object.assign(query, {text: {$not: new RegExp(`\\$partnership`, 'gi')}})
+			else 
+				Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			if (country) {
+
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}
 
             start = Number(start)
 			limit = Number(limit)
@@ -743,10 +784,19 @@ var Model = function(mongoose) {
 				]
 			})
 
-			if (category) {
+			if (category!=='partnership') {
+				query['$and'].push({text: {$not: new RegExp(`\\$partnership`, 'gi')}})
+			} else {
 				query['$and'].push({text: new RegExp(`\\$${category}`, 'gi')})
 			}
-			if (country) Object.assign(query, {country})
+
+
+
+			if (country) {
+
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}	
 
 			start = Number(start)
 			limit = Number(limit)
@@ -858,8 +908,19 @@ var Model = function(mongoose) {
 				query = {}
 			}
 
-			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+
+
+			
+			if (category!=='partnership') {
+				 Object.assign(query, { text: {$not: new RegExp(`\\$partnership`, 'gi')} })
+			} else {
+				if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			}
+		
+			if (country) {
+				country = country.replace(/ /g, '');
+				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
+			}
 			// if (privacy) {
 			// 	const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
              //    Object.assign(query, {privacy: {$in: privacyIncluded}})
@@ -876,22 +937,24 @@ var Model = function(mongoose) {
 			} else {
 				filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
 			}
-
+			console.log(query)
             
 
             var aggregationOptions = [
                 {
                     $match: query
-                },
+                }
             ]
 
             aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
             if (start) aggregationOptions.push({$skip: start})
             if (limit) aggregationOptions.push({$limit: limit})
-            console.log('filterfilter ',aggregationOptions)	
-            
+      
             	Model.aggregate(aggregationOptions).exec((err, articles) => {
-	                this.postProcessList(articles, viewer, callback)
+            		if (!err)
+	            	    this.postProcessList(articles, viewer, callback)
+	            	else callback(err)
+
 				})
             	
 			

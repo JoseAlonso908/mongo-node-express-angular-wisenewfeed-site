@@ -114,6 +114,33 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('expertService', function ($http, $q) {
+	return {
+		getnameCity: function(filtercity) {
+			var d = $q.defer();
+
+			$http.post('/expertcityname/getbynamecity',{filtercity: filtercity}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		getnameCountry:function(filtercountry){
+			var d=$q.defer();
+
+			$http.post('/expertcountryname/getbynamecountry',{filtercountry: filtercountry}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		}
+	}
+})
+
 .factory('findAccountRequestService', function ($http, $q) {
 	return function (value) {
 		var d = $q.defer()

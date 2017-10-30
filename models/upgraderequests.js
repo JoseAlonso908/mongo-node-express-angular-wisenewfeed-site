@@ -95,6 +95,7 @@ var Model = function(mongoose) {
 				})
 				
 			})
+			
 		},
 		removeRequest: (id, callback) => {
 			if (typeof id !== 'object') id = mongoose.Types.ObjectId(id)

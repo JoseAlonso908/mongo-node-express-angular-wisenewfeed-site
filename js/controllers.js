@@ -325,12 +325,14 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 })
-.controller('homeController', function ($scope,countriesListService, $rootScope, fieldsListService, groupedCountriesService, identityService) {
+.controller('homeController', function ($scope, expertService, countriesListService, $rootScope, fieldsListService, groupedCountriesService, identityService) {
 	$scope.setActiveCategory = function (item) {
 		$scope.chosenCategory = item
 		$rootScope.$emit('updateCountriesFilter')
 		$rootScope.$emit('feedCategory', item)
+
 	}
+
 
 
 	$scope.setActiveCountry = function (item) {
@@ -341,15 +343,47 @@ angular.module('er.controllers', [])
 		$rootScope.$emit('feedCountry', item)
 
 		console.log('asditem ',item.title)
+		var namecountry=item.title;
 		$scope.cities = []
-		$scope.loadingCities = true
-		console.log('asd11231 ',$scope.user.country)
+		$scope.loadingCities = true;		
+		console.log('asd11231 ',$scope.user)
+		console.log('$scope.filtercountry1',$scope.filtercountry)
+		expertService.getnameCountry(namecountry).then(function(response){
+			$scope.peopleresults=response.data;			
+			console.log('$scope.peopleresults',response.data)
+		})
 		countriesListService.cities(item.title).then(function (list) {
 			$scope.cities = list
 			$scope.loadingCities = false
 			console.log('asdasd ',$scope.cities )
 		})
+
+		
+		
+		// $scope.countryChosen = function () {
+		// 	$scope.loadingCities = true
+		// 	console.log($scope.user.country)
+		// 	countriesListService.cities($scope.user.country).then(function (list) {
+		// 		$scope.cities = list
+		// 		$scope.loadingCities = false
+		// 	})
+		// }
 	}
+
+	$scope.cityChosen = function(){
+		console.log('peoplefinddasdasd',$scope.filtercity)
+		console.log('peoplefinddasdasd1123',$scope.people);
+		expertService.getnameCity($scope.filtercity).then(function(response){
+			$scope.peopleresults = response.data;
+			// console.log('responseresponseresponse',response)
+			
+		})
+		
+
+	}
+	
+	 
+	
 
 	var getCountriesList = function () {
 		groupedCountriesService.get(($scope.chosenCategory && $scope.chosenCategory.id !== 0) ? $scope.chosenCategory.tag : undefined).then(function (result) {

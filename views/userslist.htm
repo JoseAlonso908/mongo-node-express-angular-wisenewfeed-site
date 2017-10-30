@@ -10,21 +10,20 @@
 		</div>
 		<div class="middle wide">
 			<div class="people-filter filter-cities-expert">
-				<dropdown title="Country" list="countries" selected="chosenCountry" change="setActiveCountry"></dropdown>
+				<dropdown title="Country" list="countries" ng-model="filtercountry" selected="chosenCountry" change="setActiveCountry"></dropdown>
 				<div class="settings-field-block">
 					<label>City:</label>
 					<div class="small-loader" ng-show="loadingCities"></div>
-					<select ng-model="user.city" name="city">
+					<select ng-model="filtercity" name="city" ng-change="cityChosen()">
 						<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
 					</select>
 					<div class="clear"></div>
 				</div>
-
 				<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
 				<div class="clear"></div>
 			</div>
 			<div class="people">
-				<person ng-show="person" person="person" ng-repeat="person in people track by $index"></person>
+				<person ng-show="person" person="person" ng-repeat="person in peopleresults  "></person>
 				<div class="flex-people-placeholder"></div>
 				<div class="flex-people-placeholder"></div>
 			</div>

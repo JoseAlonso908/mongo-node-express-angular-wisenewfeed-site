@@ -101,12 +101,9 @@ router.post('/upgradeexpert', (req, res) => {
 	console.log(req.body);
 	let reqId = req.body.id;
 	let role = 'expert';
-<<<<<<< HEAD
-	models.User.update(id, {role}, (err, user) => {
-=======
+
 	let nextXpCronDate = new Date(new Date().getTime() + (7 * 24 * 60 * 60 * 1000));
 	models.User.update(id, {role, nextXpCronDate}, (err, user) => {
->>>>>>> 5a073e9a05ee2900504ffc1d40c0bdcb2e951e90
 		if (err) res.status(400).send(err)
 		else {
 			models.Upgraderequests.removeRequest(reqId,(err, result)=>{

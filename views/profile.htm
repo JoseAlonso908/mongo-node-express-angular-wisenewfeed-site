@@ -19,7 +19,7 @@
 			<div ng-if="type == 'friends' || type == 'following' || type == 'followers'" class="friends-filter">
 				<dropdown title="Country" list="countries" ng-if="countries.length > 0" selected="country" change="setCountry" ></dropdown>
 				<dropdown overflow="true" title="City" list="cities" ng-if="cities.length > 0" selected="city" change="setCity" scroll-on-second="true"></dropdown>
-				<dropdown title="Gender" class="gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown>
+				<!-- <dropdown title="Gender" class="gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown> -->
 			</div>
 
 			<div class="people" ng-if="people.length > 0">

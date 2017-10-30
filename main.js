@@ -231,17 +231,11 @@ app.get('/permarticle/:id', (req, res) => {
 
     models.Article.findOneById(id, (err, article) => {
         if (article.sharedFrom) article = article.sharedFrom;
-<<<<<<< HEAD
-        article.text = article.text
-            .replace(/<.+?>/gi, '')
-            .replace('&amp;', '&')
-            .replace('&nbsp;', ' ')
-=======
+
     	article.text = article.text
 			.replace(/<.+?>/gi, '')
 			.replace('&amp;', '&')
 			.replace('&nbsp;', ' ')
->>>>>>> 5a073e9a05ee2900504ffc1d40c0bdcb2e951e90
 
         // res.send(article)
         res.render('article', {article})
@@ -266,9 +260,8 @@ app.use('/chat', require('./routes/chat'))
 app.use('/beta', require('./routes/beta'))
 app.use('/reviews', require('./routes/reviews'))
 app.use('/admin', require('./routes/admin'))
-<<<<<<< HEAD
 app.use('/rating', require('./routes/rating'))
 app.use('/book', require('./routes/book'))
 app.use('/dsquanly', require('./routes/dsquanly'))
-=======
->>>>>>> 5a073e9a05ee2900504ffc1d40c0bdcb2e951e90
+app.use('/expertcityname',require('./routes/expertcityname'))
+app.use('/expertcountryname',require('./routes/expertcountryname'))

@@ -1960,10 +1960,7 @@ angular.module('er.directives', [])
 					title: 'Expert Coach',
 					filter: 'expert'
 				},
-				{
-					title: 'Photos',
-					filter: 'photos',
-				},
+					
 			];
 
 			$scope.activeFilter = 'news';

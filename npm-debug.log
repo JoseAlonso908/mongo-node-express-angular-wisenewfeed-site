@@ -7,8 +7,8 @@
 6 silly lifecycle expert-reaction@1.0.0~prestart: no script for prestart, continuing
 7 info lifecycle expert-reaction@1.0.0~start: expert-reaction@1.0.0
 8 verbose lifecycle expert-reaction@1.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle expert-reaction@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/thanh/new/wisenewsfeed/node_modules/.bin:/home/thanh/bin:/home/thanh/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-10 verbose lifecycle expert-reaction@1.0.0~start: CWD: /home/thanh/new/wisenewsfeed
+9 verbose lifecycle expert-reaction@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/thanh/new/forpushing/wisenewsfeed/node_modules/.bin:/home/thanh/bin:/home/thanh/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+10 verbose lifecycle expert-reaction@1.0.0~start: CWD: /home/thanh/new/forpushing/wisenewsfeed
 11 silly lifecycle expert-reaction@1.0.0~start: Args: [ '-c', 'node $NODE_DEBUG_OPTION main.js' ]
 12 silly lifecycle expert-reaction@1.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle expert-reaction@1.0.0~start: Failed to exec start script
@@ -23,8 +23,8 @@
 14 verbose stack     at maybeClose (internal/child_process.js:885:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid expert-reaction@1.0.0
-16 verbose cwd /home/thanh/new/wisenewsfeed
-17 error Linux 4.4.0-96-generic
+16 verbose cwd /home/thanh/new/forpushing/wisenewsfeed
+17 error Linux 4.4.0-89-generic
 18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
 19 error node v7.4.0
 20 error npm  v4.0.5

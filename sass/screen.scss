@@ -289,6 +289,7 @@ a {
 		}
 	}
 
+/*
 	&.gold {
 		$color: #f4bf64;
 		border-color: $color;
@@ -307,6 +308,84 @@ a {
 
 	&.bronze {
 		$color: #e79a4f;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+*/
+	&.badge-0 {
+		$color: #003669;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-1 {
+		$color: #4545c5;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-2 {
+		$color: #6e4ca6;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-3 {
+		$color: #9d1797;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-4 {
+		$color: #ee2567;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-5 {
+		$color: #be1104;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-6 {
+		$color: #ff7b06;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-7 {
+		$color: #926d1d;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-8 {
+		$color: #8eb236;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-9 {
+		$color: #0fc977;
+		border-color: $color;
+		.badge .number {
+			background-color: $color;
+		}
+	}
+	&.badge-10 {
+		$color: #e69f05;
 		border-color: $color;
 		.badge .number {
 			background-color: $color;
@@ -2051,7 +2130,7 @@ a.small-icon, button.small-icon {
 
 				div[contenteditable].ng-empty:before {
 					display: block;
-					content: 'Share your wisdom, photo, or update';
+					content: 'Share your wisdom or Post an Article';
 					padding-right: 22px;
 					color: $middleGrey;
 					overflow: hidden;
@@ -4095,6 +4174,7 @@ a.small-icon, button.small-icon {
 					background-size: contain;
 					z-index: 4;
 
+/*
 					&.bronze {
 						background-image: url('../images/bronze.png');
 					}
@@ -4105,6 +4185,40 @@ a.small-icon, button.small-icon {
 
 					&.gold {
 						background-image: url('../images/gold.png');
+					}
+*/
+					&.badge-0 {
+						background-image: url('../images/badges/0.png');
+					}
+					&.badge-1 {
+						background-image: url('../images/badges/1.png');
+					}
+					&.badge-2 {
+						background-image: url('../images/badges/2.png');
+					}
+					&.badge-3 {
+						background-image: url('../images/badges/3.png');
+					}
+					&.badge-4 {
+						background-image: url('../images/badges/4.png');
+					}
+					&.badge-5 {
+						background-image: url('../images/badges/5.png');
+					}
+					&.badge-6 {
+						background-image: url('../images/badges/6.png');
+					}
+					&.badge-7 {
+						background-image: url('../images/badges/7.png');
+					}
+					&.badge-8 {
+						background-image: url('../images/badges/8.png');
+					}
+					&.badge-9 {
+						background-image: url('../images/badges/9.png');
+					}
+					&.badge-10 {
+						background-image: url('../images/badges/10.png');
 					}
 
 					.rating-value {
@@ -6559,6 +6673,8 @@ a.small-icon, button.small-icon {
 .slcategoryall{
 	float: left;
 }
+
+
 
 @import "medias";
 @import "chosen";

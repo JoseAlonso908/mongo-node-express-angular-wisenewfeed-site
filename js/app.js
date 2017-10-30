@@ -131,7 +131,6 @@ angular.module('er', [
 
 
 
-
 		$authProvider.facebook({
 			clientId: 685381251615066
 		})

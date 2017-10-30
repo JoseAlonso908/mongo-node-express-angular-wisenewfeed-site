@@ -17,7 +17,7 @@ var Model = function(mongoose) {
 		type		: {
 			type: String,
 			enum: [
-				'create', 'like', 'dislike', 'share', 'comment', 'follow',
+				'create', 'like', 'dislike', 'smart', 'share', 'comment', 'follow', 'post', 'article'
 			],
 		},
 		createdAt	: {type: Date, default: Date.now},
@@ -35,10 +35,22 @@ var Model = function(mongoose) {
 			Object.assign(log, {user, reward, post, comment, type})
 			log.save((err, result) => {
 				models.User.findById(user, (err, user) => {
+					if (reward < 0) reward = (reward < -user.xp) ? -user.xp : reward;
+					if (user.xp === reward && user.role === 'expert') user.role = 'user'; // Downgrade expert to user;
 					user.xp += reward
 					user.save(callback)
 				})
 			})
+		},
+		awardedToday: (user, type, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+
+			let now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			let query = Model.find({ user: user, type: type, createdAt: { $gte: startOfToday } });
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
 		},
 	}
 }

@@ -16,6 +16,7 @@ module.exports = (dsn, __root) => {
 		'Report', 'ExperienceLog', 'Message', 'Friendship', 'Image',
 		'ImageReaction','Upgraderequests','Rating','Book','Dsquanly'],
 
+
 		models = {}
 
 	for (let model of modelsNames) {

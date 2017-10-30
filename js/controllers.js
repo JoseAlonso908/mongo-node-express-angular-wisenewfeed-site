@@ -636,6 +636,7 @@ angular.module('er.controllers', [])
 .controller('advisedtimeController',function(ratingService, $scope,identityService,$interval,$routeParams){
 	$scope.chooseRating = chooseRating;
 	$scope.submitRating=submitRating;
+
 	$scope.choosenRating = 0;
 	$scope.ratDes = ['','Very bad','Bad','Acceptable','Good enough', 'Good'];
 	$scope.hoursd=0;
@@ -682,6 +683,7 @@ angular.module('er.controllers', [])
 			console.log($scope.user)
 			$scope.isFinishedAdvisedTime = true;
 		}
+
 	}
 	
 
@@ -707,11 +709,13 @@ angular.module('er.controllers', [])
 
 	identityService.get().then(function (user) {
 		console.log($scope.user)
+
 		$scope.user = user
 	}, function () {
 		$scope.guest = true
 	})	
 })
+
 .controller('quanlyController',function($scope,dsquanlyService){
 	$scope.addDS=addDS
 
@@ -762,6 +766,7 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})	
 })
+
 .controller('availabilityController',function($scope, identityService, availabilityService){
 
 	$scope.availability = availabilityService.getAvailability();
@@ -2457,6 +2462,7 @@ angular.module('er.controllers', [])
 	])
 })
 .controller('betaController',function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService,fieldsListService) {
+
    
 
 	$scope.selectedCategory;
@@ -2470,7 +2476,6 @@ angular.module('er.controllers', [])
 		$scope.expertCategory.push($scope.categories[$scope.selectedCategory])
 	}		
 
-	
 	$scope.expertCategory = [];
     $scope.errors = {}
     var availableRoles = ['expert', 'journalist']

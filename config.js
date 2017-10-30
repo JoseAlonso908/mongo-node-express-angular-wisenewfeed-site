@@ -40,4 +40,58 @@ module.exports = {
 			follower: 3,
 		},
 	},
+	WISEPOINT_REWARDS: {
+		POST_CREATE: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 1, POINTS: 2 },
+			{ MIN_COUNT: 3, POINTS: 3 },
+			{ MIN_COUNT: 6, POINTS: 4 },
+			{ MIN_COUNT: 10, POINTS: 5 },
+		],
+		ARTICLE_CREATE: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 1, POINTS: 3 },
+			{ MIN_COUNT: 3, POINTS: 4 },
+			{ MIN_COUNT: 5, POINTS: 5 },
+		],
+		COMMENT_CREATE: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 2, POINTS: 2 },
+			{ MIN_COUNT: 10, POINTS: 3 },
+			{ MIN_COUNT: 20, POINTS: 4 },
+			{ MIN_COUNT: 30, POINTS: 5 },
+		],
+		RECOMMEND: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 50, POINTS: 1 },
+			{ MIN_COUNT: 100, POINTS: 2 },
+			{ MIN_COUNT: 300, POINTS: 3 },
+			{ MIN_COUNT: 600, POINTS: 4 },
+			{ MIN_COUNT: 1000, POINTS: 5 },
+		],
+		SHARE: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 20, POINTS: 1 },
+			{ MIN_COUNT: 50, POINTS: 2 },
+			{ MIN_COUNT: 100, POINTS: 3 },
+			{ MIN_COUNT: 300, POINTS: 4 },
+			{ MIN_COUNT: 500, POINTS: 5 },
+		],
+		FOLLOWER: [
+			{ MIN_COUNT: 0, POINTS: 0 },
+			{ MIN_COUNT: 1, POINTS: 1 },
+			{ MIN_COUNT: 10, POINTS: 2 },
+			{ MIN_COUNT: 30, POINTS: 3 },
+			{ MIN_COUNT: 60, POINTS: 4 },
+			{ MIN_COUNT: 100, POINTS: 5 },
+		],
+		NEGATIVE: {
+			NO_POST: 5,
+			NO_ARTICLE: 5,
+			NO_COMMENT: 5,
+			NO_RECOMMEND: 5,
+			NO_SHARE: 5,
+		},
+		NEGATE_MIN_POINTS: 0,
+	}
 }

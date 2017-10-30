@@ -139,6 +139,47 @@ var Model = function(mongoose) {
 		getByArticlesLean: (articlesIds, callback) => {
 			Model.find({post: {$in: articlesIds}}).exec(callback)
 		},
+		expertPostCommentsToday: (author, callback) => {
+			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author);
+
+			var now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			let query = Model.find({ author: author, createdAt: { $gte: startOfToday } })
+				.populate([ { path: 'post', populate: { path: 'author' } } ]);
+			query.exec((err, records) => {
+				records = records.filter(record => {
+					return record.post.author.role === 'expert';
+				});
+				return callback(err, records);
+			});
+		},
+		hasCommentsInLastWeek: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+
+			var now = new Date();
+			var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
+			let query = Model.find({
+				$and: [
+					{
+						author: user,
+					},
+					{
+						$and: [
+							{ createdAt: { $gte: startOfLastWeek } },
+							{ createdAt: { $lt: endOfLastWeek } },
+						],
+					},
+				],
+			}).populate([ { path: 'post', populate: { path: 'author' } } ]);
+			query.exec((err, records) => {
+				records = records.filter(record => {
+					return record.post.author.role === 'expert';
+				});
+				let hasComments = (records && records.length > 0);
+				return callback(err, hasComments);
+			});
+		},
 	}
 }
 

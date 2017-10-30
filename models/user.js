@@ -65,30 +65,31 @@ var Model = function(mongoose) {
 		color 			: {type: String, default: 'bronze'},
 		xp				: {type: Number, default: 0},
 		xpInfo 			: {type: Object, default: {a: 1}},
+		nextXpCronDate		: Date,
 		lastVisit		: Date,
 	})
 
 	var getLevelInfoByXP = (xp) => {
 		let level = 0,
+			levelScore = 0,
+			badge = 0,
+			badgeLevel = 0,
+			badgeMaxLevels = 10,
 			xpPassed = 0,
-			prevXpPassed = 0,
-			baseXP = 50
+			prevXpPassed = 0
 
 		while (xpPassed <= xp) {
-			if (xpPassed == 0) {
-				xpPassed = baseXP
-			} else {
-				var factor = 3.08 - Math.sqrt(Math.log(level))
-
-				if (factor < 1.01) {
-					factor = 1.01
-				}
-
-				xpPassed *= factor
-				xpPassed = Math.round(xpPassed)
+			if (badge < 10) levelScore += ((badge+1) * 10);
+			else levelScore += ((badge+5) * 10);
+			xpPassed += levelScore;
+			level++;
+			badgeLevel++;
+			if (badgeLevel == badgeMaxLevels) {
+				badge++;
+				badgeLevel = 0;
+				badgeMaxLevels = Math.round(badgeMaxLevels * 0.8);
+				if (badge == 10) badgeMaxLevels = 100000000; // Not acheivable target for an user
 			}
-
-			level++
 
 			if (xpPassed > xp) break
 			prevXpPassed = xpPassed
@@ -99,6 +100,7 @@ var Model = function(mongoose) {
 			prevLevelXp: prevXpPassed,
 			nextLevelXp: xpPassed,
 			xpGap: xpPassed - prevXpPassed,
+			badge: badge,
 		}
 	}
 
@@ -205,6 +207,7 @@ var Model = function(mongoose) {
 
 			let user = new Model()
 			Object.assign(user, params)
+			user.nextXpCronDate = new Date(new Date().getTime() + (7 * 24 * 60 * 60 * 1000));
 			user.save(callback)
 		},
 
@@ -548,9 +551,32 @@ var Model = function(mongoose) {
 				   resolve(users)
                })
 		   })
-        }
+        },
 
-
+		findByCronScheduledToday: (callback) => {
+			var now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			var endOfToday = new Date(startOfToday.getTime() + (24 * 60 * 60 * 1000));
+			let query = Model.find({
+				$and: [
+					{ role: { $ne: 'user' } },
+					{
+						$or: [
+							{
+								$and: [
+									{ nextXpCronDate: { $gte: startOfToday } },
+									{ nextXpCronDate: { $lt: startOfToday } },
+								],
+							},
+							{ nextXpCronDate: { $eq: null } },
+						],
+					},
+				],
+			});
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
 	}
 }
 

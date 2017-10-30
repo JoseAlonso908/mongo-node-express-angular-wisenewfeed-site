@@ -1734,6 +1734,7 @@ angular.module('er.directives', [])
 		},
 		link: function ($scope, element, attr) {
 			$scope.person.role = $scope.person.role[0].toUpperCase() + $scope.person.role.substr(1)
+			$scope.person.role = ($scope.person.role === 'Expert') ? 'Expert Coach' : $scope.person.role;
 
 			followService.isFollowing($scope.person._id).then(function (result) {
 				$scope.person.isFollowing = result
@@ -1955,7 +1956,8 @@ angular.module('er.directives', [])
 					filter: 'shared',
 				},
 				{
-					title: 'Expert',
+
+					title: 'Expert Coach',
 					filter: 'expert'
 				},
 				{

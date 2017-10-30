@@ -171,7 +171,17 @@ var Model = function(mongoose) {
 
 		setReadAllForUser: (following, callback) => {
 			Model.update({following}, {$set: {read: true}}, {multi: true}, callback)
-		}
+		},
+		followingToday: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+
+			var now = new Date();
+			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			let query = Model.find({following: user, createdAt: { $gte: startOfToday }});
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
 	}
 }
 

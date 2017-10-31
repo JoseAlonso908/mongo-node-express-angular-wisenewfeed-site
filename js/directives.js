@@ -995,7 +995,7 @@ angular.module('er.directives', [])
 
 					start += feed.length
 				}
-				console.log($scope.type);
+				
 
 				if ($scope.type == 'own') {
 					feedService.byUser($scope.id, start, limit).then(function (feed) {

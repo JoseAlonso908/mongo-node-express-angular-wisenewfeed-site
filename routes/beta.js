@@ -61,6 +61,7 @@ router.post('/upgrade', (req, res) => {
         },
         (user, next) => {
             let {form} = req.body
+            console.log('fomemememe',req.body)
             let certificates = form.certificates.map(cert => {
                 let file = ''
                 if (cert.file) {
@@ -94,6 +95,7 @@ router.post('/upgrade', (req, res) => {
                 position: form.title,
                 company: form.company,
                 title: form.title,
+                categories: form.categories,
                 contact: {
                     email: form.email,
                     phone: form.phone,
@@ -120,6 +122,7 @@ router.post('/upgrade', (req, res) => {
                 })
             }
 
+            console.log('dadada',data)
             models.User.update(user._id, data, (err, user) => {
                 pdf.create(htmlContent, {format: 'Letter'}).toFile('./assets/pdf/' + pdfName, (err, resultPDF) => {
 

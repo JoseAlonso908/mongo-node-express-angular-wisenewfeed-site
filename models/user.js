@@ -22,6 +22,7 @@ var Model = function(mongoose) {
 		phone			: String,
 		country			: String,
 		city 			: String,
+		categories      : String,
 		gender			: String,
 		position		: String,
 		company 		: String,

@@ -38,8 +38,9 @@
 
                             <label class="lbct" for="Category">Category</label>
                             <div class="slcategoryall">
-                                <div class="slcategory" ng-repeat="cat in expertCategory">
+                                <div class="slcategory"  ng-repeat="cat in expertCategory">
                                     {{cat.title}}
+                                    <button class="btnlsct" ng-click="hidden($index)" >x</button>
                                 </div>
                                 <div class="addcateall">
                                     <select class="addcate" ng-model="selectedCategory" ng-change="addCategory()">

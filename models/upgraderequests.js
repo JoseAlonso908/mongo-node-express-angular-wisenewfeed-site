@@ -76,6 +76,7 @@ var Model = function(mongoose) {
 		create: (data, callback) => {
 			let request = new Model()
 			Object.assign(request, data)
+			console.log('datadata',request)
 			request.save(callback)
 		},
 		getRequests: (q, skip, limit, callback) => {

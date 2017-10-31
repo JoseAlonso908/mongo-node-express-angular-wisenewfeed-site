@@ -887,6 +887,7 @@ a.small-icon, button.small-icon {
 		flex-direction: row;
 		max-width: 1180px;
 		width: 100%;
+		min-height:100vh;
 		margin: 0 auto 0;
 		// @include flex-wrap(wrap);
 		padding-bottom: 20px;
@@ -2030,7 +2031,7 @@ a.small-icon, button.small-icon {
 			width: 50%;
 			order: 2;
 			overflow-x: hidden;
-
+			overflow: unset;
 			&.flex {
 				@include display-flex;
 			}
@@ -6669,12 +6670,18 @@ a.small-icon, button.small-icon {
 }
 .slcategory{
 	padding-left: 20px;
+	padding-bottom:5px;
 }
 .slcategoryall{
 	float: left;
 }
 
-
+.btnlsct{
+	float: right;
+    font-size: 15px;
+    border: none;
+    padding: 0 9px;
+}
 
 @import "medias";
 @import "chosen";

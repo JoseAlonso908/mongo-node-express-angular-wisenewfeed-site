@@ -332,6 +332,8 @@ angular.module('er.controllers', [])
 		$rootScope.$emit('feedCategory', item)
 
 	}
+	$scope.cities = ["All"];
+	$scope.filtercity = "All"
 
 
 
@@ -342,43 +344,42 @@ angular.module('er.controllers', [])
 		$rootScope.$emit('updateCategoriesFilter')
 		$rootScope.$emit('feedCountry', item)
 
-		console.log('asditem ',item.title)
-		var namecountry=item.title;
-		$scope.cities = []
-		$scope.loadingCities = true;		
-		console.log('asd11231 ',$scope.user)
-		console.log('$scope.filtercountry1',$scope.filtercountry)
-		expertService.getnameCountry(namecountry).then(function(response){
+		
+		$scope.namecountry=item.title;
+		$scope.cities = [];
+		$scope.loadingCities = true;
+		expertService.getnameCountry($scope.namecountry).then(function(response){
 			$scope.peopleresults=response.data;			
 			console.log('$scope.peopleresults',response.data)
 		})
 		countriesListService.cities(item.title).then(function (list) {
-			$scope.cities = list
+
+			list.unshift("All");
+			$scope.cities = list;
 			$scope.loadingCities = false
 			console.log('asdasd ',$scope.cities )
-		})
-
-		
-		
-		// $scope.countryChosen = function () {
-		// 	$scope.loadingCities = true
-		// 	console.log($scope.user.country)
-		// 	countriesListService.cities($scope.user.country).then(function (list) {
-		// 		$scope.cities = list
-		// 		$scope.loadingCities = false
-		// 	})
-		// }
+		})	
 	}
 
 	$scope.cityChosen = function(){
-		console.log('peoplefinddasdasd',$scope.filtercity)
-		console.log('peoplefinddasdasd1123',$scope.people);
-		expertService.getnameCity($scope.filtercity).then(function(response){
-			$scope.peopleresults = response.data;
-			// console.log('responseresponseresponse',response)
-			
-		})
 		
+		
+		console.log('peoplefinddasdasd1123',$scope.people);
+		
+		
+		if($scope.filtercity=="All"){
+			console.log('$scope.namecountry',$scope.namecountry)
+			expertService.getnameCountry($scope.namecountry).then(function(response){
+				$scope.peopleresults=response.data;			
+				console.log('$scope.peopleresults',response.data)
+			})
+		}else{
+			expertService.getnameCity($scope.filtercity).then(function(response){
+				$scope.peopleresults = response.data;
+				// console.log('responseresponseresponse',response)
+				
+			})
+		}
 
 	}
 	
@@ -496,6 +497,7 @@ angular.module('er.controllers', [])
 			adminService.getExperts($scope.params).then(function(response){
 				$scope.experts = response.data.results;
 				$scope.countExperts = response.data.count;
+				console.log('$scope.experts$scope.experts',$scope.experts)
 			})
 		}
 
@@ -2504,12 +2506,34 @@ angular.module('er.controllers', [])
 	// console.log($scope.categories)
 	console.log('asda1 ',$rootScope.suggestCategories)
 	console.log('all ',$scope.categories[0])
-	
+	// $scope.slcat='';
 	$scope.addCategory = function(){		
 		console.log('asdasda   ',$scope.selectedCategory)		
 		$scope.expertCategory.push($scope.categories[$scope.selectedCategory])
-	}		
+		console.log('$scope.expertCategory',$scope.expertCategory)		
+		
+		$scope.slcat='';
+		console.log('$scope.signup.categories',$scope.signup.categories)
 
+		for (var i in $scope.expertCategory ){	
+			
+			$scope.slcat=$scope.slcat+$scope.expertCategory[i].title+',';
+			
+			console.log('asdasdslcat',$scope.slcat)
+
+			$scope.signup.categories=$scope.slcat;		
+		}
+    	
+    	$scope.hidden=function($index){
+    		$scope.expertCategory.splice($index,1);
+    	}
+
+		
+		// console.log('asdasdslcat',$scope.slcat)	
+	}		
+	
+	
+	
 	$scope.expertCategory = [];
     $scope.errors = {}
     var availableRoles = ['expert', 'journalist']
@@ -2529,14 +2553,15 @@ angular.module('er.controllers', [])
         contacts: [],
         certificates: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
         experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
-		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}]
-    }
+		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}],
+		categories:''
+
+    }	
 
     identityService.get().then(function (user) {
         $scope.user = user
 
 		Object.assign($scope.signup, {
-
 			name: user.name,
 			info: user.intro,
 			email: user.email,
@@ -2700,13 +2725,28 @@ angular.module('er.controllers', [])
 
 
     $scope.sendForm = function (event) {
-    	
+
+   //  	if ($scope.signup.categories) {
+   //  		console.log('$scope.signup.categories',$scope.signup.categories)
+   //  		for (var i in $scope.expertCategory ){	
+
+			// 	$scope.slcat=$scope.slcat+','+$scope.expertCategory[i].title;
+				
+			// 	console.log('asdasdslcat',$scope.slcat)
+
+			// 	$scope.signup.categories=$scope.slcat;		
+			// }
+   //  	}
+	    	
         identityService.get().then(function (user) {
             $scope.user = user
 
+
 			// User authenticated, upgrade
+			console.log('results',$scope.signup)
 			betaUploadsService.upgrade($scope.signup).
 			then(function (result) {
+				
 				$scope.submitClass = 'success'
 				$scope.submitResult = 'Request has been sent, you will be notify in 48h.'
 			}).catch(function (err) {

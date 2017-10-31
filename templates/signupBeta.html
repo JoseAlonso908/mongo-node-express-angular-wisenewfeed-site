@@ -94,6 +94,12 @@
         {% endif %}
 
 
+        {% if form.info %}
+        <div class="field-group">
+            <div class="field-name">Categories</div>
+            <div class="field-value">{{form.categories}}</div>
+        </div>
+        {% endif %}
         {% if form.exp %}
             <div class="sub-heading">Experience</div>
             {% for item in form.exp %}

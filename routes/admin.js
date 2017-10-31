@@ -7,6 +7,25 @@ const 	express = require('express'),
 let tempUploads = multer({dest: 'temp/'})
 let router = express.Router()
 
+// router.use((req, res, next) => {
+// 	if (!req.headers.authorization) {
+// 		res.status(400).send({message: 'Invalid token'})
+// 	} else {
+// 		req.access_token = req.headers.authorization.split(' ')[1]
+
+// 		models.Token.getUserByToken(req.access_token, (err, user) => {
+// 			req.user = user
+// 			if (req.user.isAdmin) {
+// 				next();
+// 			} else if (config.ADMIN_EMAILS.indexOf(req.user.email)>0){
+// 				next();
+// 			} else {
+// 				res.status(403).send({message: 'Your are not admin'});
+// 			}
+// 		})
+// 	}
+// })
+
 router.use((req, res, next) => {
 	if (!req.headers.authorization) {
 		res.status(400).send({message: 'Invalid token'})
@@ -14,13 +33,10 @@ router.use((req, res, next) => {
 		req.access_token = req.headers.authorization.split(' ')[1]
 
 		models.Token.getUserByToken(req.access_token, (err, user) => {
-			req.user = user
-			if (req.user.isAdmin) {
-				next();
-			} else if (config.ADMIN_EMAILS.indexOf(req.user.email)>0){
-				next();
-			} else {
-				res.status(403).send({message: 'Your are not admin'});
+			if (err || !user) res.status(400).send({message: 'User not found'})
+			else {
+				req.user = user
+				next()
 			}
 		})
 	}

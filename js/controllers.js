@@ -330,6 +330,39 @@ angular.module('er.controllers', [])
 		$scope.chosenCategory = item
 		$rootScope.$emit('updateCountriesFilter')
 		$rootScope.$emit('feedCategory', item)
+		$scope.namecategory=item.title;
+		var data = {}
+
+
+		if($scope.namecountry){
+
+			data.country=$scope.namecountry;			
+			data.categories=$scope.namecategory;
+			
+		}
+
+		if($scope.namecountry && $scope.filtercity){
+			data.city=$scope.filtercity;
+		}
+		if(data.city=='All'){
+			data.city='';
+		}
+		if(data.categories=='All'){
+			data.categories='';
+		}
+
+		// data={country:a,categories:b}
+		console.log('data',data)
+		expertService.getnameCategory(data.categories,data.city,data.country).then(function(response){
+			$scope.peopleresults=response.data;
+			console.log('categoryct',response.data);
+		})
+	
+
+		
+		
+		
+		
 
 	}
 	$scope.cities = ["All"];
@@ -344,14 +377,42 @@ angular.module('er.controllers', [])
 		$rootScope.$emit('updateCategoriesFilter')
 		$rootScope.$emit('feedCountry', item)
 
+
+
 		
 		$scope.namecountry=item.title;
 		$scope.cities = [];
 		$scope.loadingCities = true;
-		expertService.getnameCountry($scope.namecountry).then(function(response){
-			$scope.peopleresults=response.data;			
-			console.log('$scope.peopleresults',response.data)
-		})
+		// expertService.getnameCountry($scope.namecountry).then(function(response){
+		// 	$scope.peopleresults=response.data;			
+		// 	console.log('$scope.peopleresults',response.data)
+		// })
+
+		var data = {}
+
+
+		if($scope.namecountry){
+
+			data.country=$scope.namecountry;			
+			data.categories=$scope.namecategory;
+			
+		}
+
+		if($scope.namecountry && $scope.filtercity){
+			data.city=$scope.filtercity;
+		}
+
+		if(data.city=='All'){
+			data.city='';
+		}
+		if(data.categories=='All'){
+			data.categories='';
+		}
+		console.log('datacttt',data)
+		expertService.getnameCountry(data.categories,data.city,data.country).then(function(response){
+				$scope.peopleresults=response.data;
+				console.log('categoryct',response.data);
+			})
 		countriesListService.cities(item.title).then(function (list) {
 
 			list.unshift("All");
@@ -365,21 +426,32 @@ angular.module('er.controllers', [])
 		
 		
 		console.log('peoplefinddasdasd1123',$scope.people);
-		
-		
-		if($scope.filtercity=="All"){
-			console.log('$scope.namecountry',$scope.namecountry)
-			expertService.getnameCountry($scope.namecountry).then(function(response){
-				$scope.peopleresults=response.data;			
-				console.log('$scope.peopleresults',response.data)
-			})
-		}else{
-			expertService.getnameCity($scope.filtercity).then(function(response){
-				$scope.peopleresults = response.data;
-				// console.log('responseresponseresponse',response)
-				
-			})
+
+		var data = {}
+
+
+		if($scope.namecountry){
+
+			data.country=$scope.namecountry;			
+			data.categories=$scope.namecategory;
+			
 		}
+
+		if($scope.namecountry && $scope.filtercity){
+			data.city=$scope.filtercity;
+		}
+		if(data.city=='All'){
+			data.city='';
+		}
+		if(data.categories=='All'){
+			data.categories='';
+		}
+		expertService.getnameCity(data.categories,data.city,data.country).then(function(response){
+			$scope.peopleresults=response.data;
+			console.log('categoryct',response.data);
+		})
+
+	
 
 	}
 	

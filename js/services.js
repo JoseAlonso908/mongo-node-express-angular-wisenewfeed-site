@@ -116,10 +116,10 @@ angular.module('er.services', [])
 })
 .factory('expertService', function ($http, $q) {
 	return {
-		getnameCity: function(filtercity) {
+		getnameCity: function(filtercategory,filtercity,filtercountry) {
 			var d = $q.defer();
 
-			$http.post('/expertcityname/getbynamecity',{filtercity: filtercity}).then(function(response){
+			$http.post('/expertcityname/getbynamecity',{filtercategory: filtercategory,filtercountry: filtercountry,filtercity:filtercity}).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);
@@ -127,10 +127,22 @@ angular.module('er.services', [])
 
 			return d.promise;
 		},
-		getnameCountry:function(filtercountry){
+		getnameCountry:function(filtercategory,filtercity,filtercountry){
 			var d=$q.defer();
 
-			$http.post('/expertcountryname/getbynamecountry',{filtercountry: filtercountry}).then(function(response){
+			$http.post('/expertcountryname/getbynamecountry',{filtercategory: filtercategory,filtercountry: filtercountry,filtercity:filtercity}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+
+		getnameCategory:function(filtercategory,filtercity,filtercountry){
+			var d=$q.defer();
+			console.log('filtercountry',filtercountry);
+			$http.post('/expertcategoryname/getbynamecategory',{filtercategory: filtercategory,filtercountry: filtercountry,filtercity:filtercity}).then(function(response){
 				d.resolve(response);	
 			},function(error){
 				d.reject(error);

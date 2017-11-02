@@ -23,9 +23,9 @@ router.use((req, res, next) => {
 	}
 })
 
-router.post('/getbynamecity', (req, res)=>{	
-	let {filtercategory,filtercountry,filtercity} = req.body;	
-
+router.post('/getbynamecategory', (req, res)=>{	
+	let {filtercategory,filtercountry,filtercity} = req.body;
+	console.log('req.body',req.body)
 	var query = {};
 	if(filtercity) {
 		query.city = filtercity;

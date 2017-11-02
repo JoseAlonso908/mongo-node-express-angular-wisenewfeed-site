@@ -24,8 +24,22 @@ router.use((req, res, next) => {
 })
 
 router.post('/getbynamecountry', (req, res)=>{	
-	let {filtercountry} = req.body;
-	models.User.findByQuery({country:filtercountry},(err, resultscuathanh) => {
+	let {filtercategory,filtercountry,filtercity} = req.body;
+	var query = {};
+	if(filtercity) {
+		query.city = filtercity;
+	}
+
+	if(filtercountry) {
+		query.country = filtercountry;
+	}
+
+	if(filtercategory) {
+		query.categories = {$regex: new RegExp(filtercategory), $options: '-i'};
+	}
+
+	// {city: filtercity}
+	models.User.findByQuery(query,(err, resultscuathanh) => {
 		if (err) {
 			res.status(500);
 		} else {

@@ -106,16 +106,18 @@ var Model = function(mongoose) {
 	}
 
 	var setXpInfo = function (user, callback) {
-		user.xpInfo = getLevelInfoByXP(user.xp)
 
-		if (user.xpInfo.level > 0 && user.xpInfo.level < 30) {
-			user.color = 'bronze'
-		} else if (user.xpInfo.level >= 30 && user.xpInfo.level < 60) {
-			user.color = 'silver'
-		} else {
-			user.color = 'gold'
+		if (user) {
+			user.xpInfo = getLevelInfoByXP(user.xp)
+
+			if (user.xpInfo.level >0 && user.xpInfo.level < 30) {
+				user.color = 'bronze'
+			} else if (user.xpInfo.level >= 30 && user.xpInfo.level < 60) {
+				user.color = 'silver'
+			} else {
+				user.color = 'gold'
+			}
 		}
-
 		callback(null, user)
 	}
 
@@ -190,6 +192,7 @@ var Model = function(mongoose) {
 
 		findByEmail: (email, callback) => {
 			Model.findOne({email}, callback)
+			console.log('email',email)
 		},
 
 		findByPhone: (phone, callback) => {

@@ -81,14 +81,16 @@ var Model = function(mongoose) {
 				async.map(following, (f, next) => {
 					async.parallel([
 						(next) => {
-							models.User.setXpInfo(f.follower, (err, follower) => {
-								f.follower = follower
+							models.User.setXpInfo(f.follower, (err, follower) => {								
+								f.follower = follower								
 								next()
 							})
 						},
 						(next) => {
 							models.User.setXpInfo(f.following, (err, following) => {
 								f.following = following
+								console.log('errrrr',err)
+								console.log('f.followerf.follower',f.follower)
 								next()
 							})
 						},

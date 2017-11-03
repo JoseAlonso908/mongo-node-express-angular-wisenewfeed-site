@@ -182,9 +182,10 @@ angular.module('er.services', [])
 .factory('forgotPasswordService', function ($http, $q) {
 	return function (email) {
 		var d = $q.defer()
-
+		console.log('emailemail',email);
 		$http.post('/auth/forgotpassword', {email: email}).then(function (response) {
 			d.resolve(response.data)
+
 		}, function (error) {
 			d.reject(error.data.message)
 		})

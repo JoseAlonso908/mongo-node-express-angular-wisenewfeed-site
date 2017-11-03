@@ -341,6 +341,7 @@ angular.module('er.controllers', [])
 
 			if($scope.namecountry=='All'){
 				data.country='';
+				data.city='';
 			}else{
 				data.country=$scope.namecountry;			
 				data.categories=$scope.namecategory;
@@ -400,6 +401,7 @@ angular.module('er.controllers', [])
 
 		var data = {}
 
+
 		if($scope.categories){
 			data.categories=$scope.namecategory;
 		}
@@ -408,6 +410,7 @@ angular.module('er.controllers', [])
 
 			if($scope.namecountry=='All'){
 				data.country='';
+				data.city='';
 			}else{
 				data.country=$scope.namecountry;			
 				data.categories=$scope.namecategory;
@@ -455,8 +458,9 @@ angular.module('er.controllers', [])
 
 		if($scope.namecountry){
 
-			if(data.namecountry=='All'){
+			if($scope.namecountry=='All'){
 				data.country='';
+				data.city='';
 			}else{
 				data.country=$scope.namecountry;			
 				data.categories=$scope.namecategory;

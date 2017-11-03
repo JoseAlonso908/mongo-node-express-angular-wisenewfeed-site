@@ -333,17 +333,27 @@ angular.module('er.controllers', [])
 		$scope.namecategory=item.title;
 		var data = {}
 
+		if($scope.categories){
+			data.categories=$scope.namecategory;
+		}
 
 		if($scope.namecountry){
 
-			data.country=$scope.namecountry;			
-			data.categories=$scope.namecategory;
+			if($scope.namecountry=='All'){
+				data.country='';
+			}else{
+				data.country=$scope.namecountry;			
+				data.categories=$scope.namecategory;
+			}
+			
 			
 		}
 
 		if($scope.namecountry && $scope.filtercity){
 			data.city=$scope.filtercity;
 		}
+
+
 		if(data.city=='All'){
 			data.city='';
 		}
@@ -390,17 +400,26 @@ angular.module('er.controllers', [])
 
 		var data = {}
 
+		if($scope.categories){
+			data.categories=$scope.namecategory;
+		}
 
 		if($scope.namecountry){
 
-			data.country=$scope.namecountry;			
-			data.categories=$scope.namecategory;
+			if($scope.namecountry=='All'){
+				data.country='';
+			}else{
+				data.country=$scope.namecountry;			
+				data.categories=$scope.namecategory;
+			}
+			
 			
 		}
 
 		if($scope.namecountry && $scope.filtercity){
 			data.city=$scope.filtercity;
 		}
+
 
 		if(data.city=='All'){
 			data.city='';
@@ -430,16 +449,27 @@ angular.module('er.controllers', [])
 		var data = {}
 
 
+		if($scope.categories){
+			data.categories=$scope.namecategory;
+		}
+
 		if($scope.namecountry){
 
-			data.country=$scope.namecountry;			
-			data.categories=$scope.namecategory;
+			if(data.namecountry=='All'){
+				data.country='';
+			}else{
+				data.country=$scope.namecountry;			
+				data.categories=$scope.namecategory;
+			}
+			
 			
 		}
 
 		if($scope.namecountry && $scope.filtercity){
 			data.city=$scope.filtercity;
 		}
+
+
 		if(data.city=='All'){
 			data.city='';
 		}

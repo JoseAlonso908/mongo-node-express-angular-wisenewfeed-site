@@ -37,7 +37,6 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			fs.renameSync(path.join(__root, tempPath), path.join(__root, 'uploads', 'posts', newFilename))
 
 			filenames.push(path.join('uploads', 'posts', newFilename))
-			console.log(filenames)
 		}
 	}
 

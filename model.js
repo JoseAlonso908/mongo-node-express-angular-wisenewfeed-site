@@ -28,7 +28,6 @@ module.exports = (dsn, __root) => {
 		if (typeof id !== 'object') id = mongoose.Types.ObjectId(id)
 		return id
 	}
-	console.log(models);
 
 	return {
 		models: () => {

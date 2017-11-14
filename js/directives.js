@@ -2157,6 +2157,7 @@ angular.module('er.directives', [])
 		link: function ($scope, element, attr) {
 			piecesService.get().then(function (result) {
 				$scope.pieces = result
+				console.log(result)
 			}, function () {})
 		}
 	}

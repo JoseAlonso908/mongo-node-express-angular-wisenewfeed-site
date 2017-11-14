@@ -98,7 +98,7 @@ router.get('/followers', (req, res) => {
 			models.Follow.followingByFollower(req.user._id, null, null, null, (err, following) => {
 				followers = followers.map((follower) => {
 					for (let followee of following) {
-						if (follower.follower._id.toString() === followee.following._id.toString()) {
+						if (follower.follower&&followee.following&&follower.follower._id.toString() === followee.following._id.toString()) {
 							follower.isFollowing = true
 							break
 						}

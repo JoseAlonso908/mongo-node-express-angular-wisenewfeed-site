@@ -196,7 +196,6 @@ router.post('/auth/forgotpassword', (req, res) => {
 		if (!user) res.status(400).send({message: 'User with this email does not exist'})
 		else {
 			models.ResetPassword.createRequest(email, (err, request) => {
-				console.log('emailasdasd',email);
 				mailgun.sendText(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, email,
 				`Password recovery`,
 				`You requested a password reset. Please follow this link to proceed:

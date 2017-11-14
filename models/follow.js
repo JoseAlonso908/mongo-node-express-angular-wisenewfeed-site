@@ -67,12 +67,16 @@ var Model = function(mongoose) {
 
 			query.exec((err, following) => {
 				if (following && !sort) {
+					console.log('following ',following)
 					following = following.sort((a, b) => {
-						if (a.following.name > b.following.name) {
-							return 1
-						} else if (a.following.name < b.following.name) {
-							return -1
+						if (a.following&&b.following) {
+							if (a.following.name > b.following.name) {
+								return 1
+							} else if (a.following.name < b.following.name) {
+								return -1
+							}
 						}
+							
 
 						return 0
 					})

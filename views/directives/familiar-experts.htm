@@ -6,7 +6,7 @@
 
 	<div class="loader" ng-show="familiarExpertsLoading"></div>
 
-	<familiarexpert person="expert" user="user" ng-repeat="expert in users"></familiarexpert>
+	<familiarexpert person="expert" user="user" ng-repeat="expert in users | filter:user.categories "></familiarexpert>
 	<div class="footer" ng-show="!familiarExpertsLoading">
 		<a href="javascript:void(0);" ng-click="init()"><i class="material-icons">refresh</i> Refresh</a>
 		<a ng-href="#!/users/expert">Find Expert</a>

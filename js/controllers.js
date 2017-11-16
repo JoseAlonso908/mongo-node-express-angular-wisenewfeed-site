@@ -1099,11 +1099,14 @@ angular.module('er.controllers', [])
 	$scope.feedType = 'people'
 	$scope.id = $routeParams.id
 
+
 	if (['friends','following', 'followers'].indexOf($scope.type) > -1) {
 		$scope.country
 		$scope.setCountry = function (item) {
 			$scope.country = item
 			setCitiesList(item)
+
+			console.log('itemfolwwlwing',item)
 			// loadFriends()
 		}
 

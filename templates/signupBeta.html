@@ -94,12 +94,96 @@
         {% endif %}
 
 
-        {% if form.info %}
+        {% if form.categories %}
         <div class="field-group">
             <div class="field-name">Categories</div>
             <div class="field-value">{{form.categories}}</div>
         </div>
         {% endif %}
+        {% if form.educa %}
+        <div class="field-group">
+            <div class="field-name">Edu</div>
+            <div class="field-value">{{form.educa}}</div>
+        </div>
+        {% endif %}
+        
+        {% if form.expc %}
+        <div class="field-group">
+            <div class="field-name">ExperienceCoach</div>
+            <div class="field-value">{{form.expc}}</div>
+        </div>
+        {% endif %}    
+        {% if form.own %}
+        <div class="field-group">
+            <div class="field-name">Categories</div>
+            <div class="field-value">{{form.own}}</div>
+        </div>
+        {% endif %}  
+        {% if form.car %}
+        <div class="field-group">
+            <div class="field-name">car</div>
+            <div class="field-value">{{form.car}}</div>
+        </div>
+        {% endif %}   
+        {% if form.achi %}
+        <div class="field-group">
+            
+            <div class="field-name">achi</div>
+            <div class="field-value">{{form.achi}}</div>
+        </div>
+        {% endif %} 
+        {% if form.consi %}
+        <div class="field-group">            
+            <div class="field-name">consi</div>
+            <div class="field-value">{{form.consi}}</div>
+        </div>
+        {% endif %}     
+        
+        {% if form.cy %}
+        <div class="field-group">            
+            <div class="field-name">cy</div>
+            <div class="field-value">{{form.cy}}</div>
+        </div>
+        {% endif %}    
+            
+        {% if form.expy %}
+        <div class="field-group">            
+            <div class="field-name">expy</div>
+            <div class="field-value">{{form.expy}}</div>
+        </div>
+        {% endif %}    
+        
+        {% if form.wb %}
+        <div class="field-group">            
+            <div class="field-name">wb</div>
+            <div class="field-value">{{form.wb}}</div>
+        </div>
+        {% endif %}    
+        {% if form.hp %}
+        <div class="field-group">            
+            <div class="field-name">hp</div>
+            <div class="field-value">{{form.hp}}</div>
+        </div>
+        {% endif %}
+        % if form.vl %}
+        <div class="field-group">            
+            <div class="field-name">vl</div>
+            <div class="field-value">{{form.vl}}</div>
+        </div>
+        {% endif %}
+        % if form.pyh %}
+        <div class="field-group">            
+            <div class="field-name">pyh</div>
+            <div class="field-value">{{form.pyh}}</div>
+        </div>
+        {% endif %}
+            
+        % if form.cerci %}
+        <div class="field-group">            
+            <div class="field-name">cerci</div>
+            <div class="field-value">{{form.cerci}}</div>
+        </div>
+        {% endif %} 
         {% if form.exp %}
             <div class="sub-heading">Experience</div>
             {% for item in form.exp %}

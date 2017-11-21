@@ -2617,16 +2617,16 @@ angular.module('er.controllers', [])
 	$scope.selectedCategory;
 	$scope.categories = $rootScope.suggestCategories;
 	// console.log($scope.categories)
-	console.log('asda1 ',$rootScope.suggestCategories)
-	console.log('all ',$scope.categories[0])
+	// console.log('asda1 ',$rootScope.suggestCategories)
+	// console.log('all ',$scope.categories[0])
 	// $scope.slcat='';
 	$scope.addCategory = function(){		
 		console.log('asdasda   ',$scope.selectedCategory)		
 		$scope.expertCategory.push($scope.categories[$scope.selectedCategory])
-		console.log('$scope.expertCategory',$scope.expertCategory)		
+		// console.log('$scope.expertCategory',$scope.expertCategory)		
 		
 		$scope.slcat='';
-		console.log('$scope.signup.categories',$scope.signup.categories)
+		// console.log('$scope.signup.categories',$scope.signup.categories)
 
 		for (var i in $scope.expertCategory ){	
 			
@@ -2675,6 +2675,19 @@ angular.module('er.controllers', [])
         $scope.user = user
 
 		Object.assign($scope.signup, {
+			cerci:user.cerci,
+			educa:user.educa,
+			expc:user.expc,
+			own:user.own,
+			car:user.car,
+			achi:user.achi,
+			consi:user.consi,
+			cy:user.cy,
+			expy:user.expy,
+			wb:user.wb,
+			hp:user.hp,
+			vl:user.vl,
+			pyh:user.pyh,
 			name: user.name,
 			info: user.intro,
 			email: user.email,

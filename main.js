@@ -141,7 +141,7 @@ app.get('/static/cities', (req, res) => {
 global.getCategories = () => {
 
 	return [
-		{ id: 0, title: 'All', tag: 'all', count: 0 },
+		// { id: 0, title: 'All', tag: 'all', count: 0 },
 		{ id: 1, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
 		{ id: 2, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
 		{ id: 3, title: 'Finance Coaching', tag: 'financecoaching', count: 0 },

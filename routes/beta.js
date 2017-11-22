@@ -88,6 +88,9 @@ router.post('/upgrade', (req, res) => {
             let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
             const pdfName = uuid.v4() + '.pdf';
             let data = {
+                ywab:form.ywab,
+                yob:form.yob,
+                cibw:form.cibw,
                 cerci:form.cerci,
                 educa:form.educa,
                 expc:form.expc,

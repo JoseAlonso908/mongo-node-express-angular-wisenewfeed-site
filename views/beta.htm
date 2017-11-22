@@ -52,9 +52,8 @@
                         </div>
                         <div class="proof-ed">
                             <div class="input-group">
-
                                 <div class="title">Do you have proof of sucessful education in related category ?</div>
-                                <textarea ng-model="singup.educa" id="info" ng-required="true"></textarea>
+                                <textarea ng-model="signup.educa" id="info" ng-required="true"></textarea>
                                 <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
                                     This field is required
                                 </p>
@@ -291,7 +290,30 @@
                             <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
                                 This field is required
                             </p>
-                        </div>    
+                        </div>   
+                        <div class="proof-bottom">
+                            
+                            <div class="title">Have you writen any books ? </div>
+                            <div class="proof-h">
+                                <span>Title:</span>
+                                <input ng-model="signup.ywab" class="ip-h" type="text" name="">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="proof-c">
+                                <span>Year of bublication:</span>
+                                <input ng-model="signup.yob" class="ip-ct" type="" name="">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="proof-f">
+                                <div><span>Where can i buy ?</span></div>
+                                <textarea rows="4" cols="50" ng-model="signup.cibw" id="info" ng-required="true"></textarea>
+                                <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
+                                    This field is required
+                                </p>
+                            </div>
+                            <div class="clear"></div>
+                            
+                        </div> 
                         
 
                     </div>
@@ -330,31 +352,7 @@
                    
 
                     <!-- CERTIFICATES GROUP -->
-                    <div class="group">
-                        <div class="title">Certificates</div>
-                        <div class="input-group with-file-upload closable" ng-repeat="item in signup.certificates">
-                            <div class="close-btn-wrap">
-                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeCertificate(item)"></i>
-                            </div>
-                            <label>Title</label>
-                            <input ng-model="item.title" type="text" name="certificateTitle">
-                            <input type="file" ng-model="item.file" name="certificate" class="hidden-file-input">
-                            <div class="attach-file" ng-click="attachCertificate($event, item)">
-                                <i class="material-icons">attachment</i>
-                                <span class="title">Upload file</span>
-                            </div>
-                            <div class="notice">Add title for uploaded file</div>
-                        </div>
-                        <div class="input-group">
-                            <p ng-show="errors.certificateFillRequired" class="error-block">
-                                Please, fill existing fields first
-                            </p>
-                            <a href="javascript:void(0);" class="add-more" ng-click="addMoreCertificates()">
-                                <i class="fa fa-plus"></i>
-                                Add more certificates
-                            </a>
-                        </div>
-                    </div>
+                   
 
                     <!-- CONTACT INFORMATION GROUP -->
                     <!-- <div class="group">
@@ -412,30 +410,7 @@
                     </div> -->
 
                     <!--  ADDITIONAL FILES GROUP -->
-                    <div class="group">
-                        <div class="title">Additional files</div>
-                        <div class="input-group with-file-upload closable" ng-repeat="item in signup.additional">
-                            <div class="close-btn-wrap">
-                                <i class="fa fa-close close-trigger js-close-trigger" ng-click="removeAdditional(item)"></i>
-                            </div>
-                            <label>Title</label>
-                            <input ng-model="item.title" type="text">
-                            <input type="file" ng-model="item.file" name="additional" class="hidden-file-input">
-                            <div class="attach-file" ng-click="attachDownload($event, item)">
-                                <i class="material-icons">attachment</i>
-                                <span class="title">Upload file</span>
-                            </div>
-                            <div class="notice">Add title for uploaded file</div>
-                        </div>
-                        <div class="input-group">
-                            <p ng-show="errors.additionalFillRequried" class="error-block">
-                                Please, fill existing fields first
-                            </p>
-                            <a href="javascript:void(0);" class="add-more" ng-click="addMoreAdditional()">
-                                <i class="fa fa-plus"></i>
-                                Add more files
-                            </a>
-                        </div>
+                <div class="group">                        
                     <div class="input-group">
                         <div ng-class="submitClass">
                             {{submitResult}}

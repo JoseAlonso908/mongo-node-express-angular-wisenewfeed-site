@@ -42,6 +42,9 @@ var Model = function(mongoose) {
 		vl              : String,
 		pyh             : String,
 		cerci           : String,
+		ywab            : String,
+		yob             : String,
+		cibw            : String,
 		isBlocked: {
 			type: Boolean,
 			default: false

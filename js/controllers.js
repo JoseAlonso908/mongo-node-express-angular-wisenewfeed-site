@@ -2675,6 +2675,9 @@ angular.module('er.controllers', [])
         $scope.user = user
 
 		Object.assign($scope.signup, {
+			ywab:user.ywab,
+			yob:user.yob,
+			cibw:user.cibw,
 			cerci:user.cerci,
 			educa:user.educa,
 			expc:user.expc,

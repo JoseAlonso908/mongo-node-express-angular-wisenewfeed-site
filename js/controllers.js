@@ -2667,7 +2667,8 @@ angular.module('er.controllers', [])
         certificates: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
         experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
 		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}],
-		categories:''
+		categories:'',
+		book:[{title:'',author:'',publication:'',retailstore:''}]
 
     }	
 
@@ -2675,6 +2676,7 @@ angular.module('er.controllers', [])
         $scope.user = user
 
 		Object.assign($scope.signup, {
+			author:user.author,
 			ywab:user.ywab,
 			yob:user.yob,
 			cibw:user.cibw,
@@ -2772,6 +2774,14 @@ angular.module('er.controllers', [])
 		} else {
             $scope.errors.certificateFillRequired = true
 		}
+    }
+    $scope.addMoreBooks = function () {       
+        $scope.signup.book.push({title: '', author: '',publication:'',retailstore:''});
+        console.log($scope.signup.book.length);
+            
+            
+
+		
     }
     $scope.removeCertificate = function (item) {
         var originalCertificates = $scope.signup.certificates;

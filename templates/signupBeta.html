@@ -101,25 +101,21 @@
         </div>
         {% endif %}  
 
-        {% if form.ywab %}
-        <div class="field-group">
-            <div class="field-name">Have you writen any books ?</div>
-            <div class="field-value">{{form.ywab}}</div>
-        </div>
-        {% endif %}      
-
-        {% if form.yob %}
-        <div class="field-group">
-            <div class="field-name">Year of bublication</div>
-            <div class="field-value">{{form.yob}}</div>
-        </div>
-        {% endif %}
-
-        {% if form.cibw %}
-        <div class="field-group">
-            <div class="field-name">Where can i buy ?</div>
-            <div class="field-value">{{form.cibw}}</div>
-        </div>
+        {% if form.book %}
+            <div class="sub-heading">Book</div>
+            {% for item in form.book %}
+               <div class="field-group">
+                   <div class="field-name">Title</div>
+                   <div class="field-value">{{item.title}}</div>
+                   <div class="field-name">Author</div>
+                   <div class="field-value">{{item.author}}</div>
+                   <div class="field-name">Publication</div>
+                   <div class="field-value">{{item.publication}}</div>
+                   <div class="field-name">Retailstore</div>
+                   <div class="field-value">{{item.retailstore}}</div>
+                   
+               </div>
+            {% endfor %}
         {% endif %}
 
         {% if form.cerci %}

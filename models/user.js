@@ -45,6 +45,13 @@ var Model = function(mongoose) {
 		ywab            : String,
 		yob             : String,
 		cibw            : String,
+		author          : String,
+		book:[{
+			title:String,
+			publication:String,
+	        author:String,
+	        retailstore:String,
+		}],
 		isBlocked: {
 			type: Boolean,
 			default: false

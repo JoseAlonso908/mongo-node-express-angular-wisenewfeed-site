@@ -291,30 +291,32 @@
                                 This field is required
                             </p>
                         </div>   
-                        <div class="proof-bottom">
+                        <div class="input-group " ng-repeat="item in signup.book">
+                            <div class="addbook-bottom">
+                                <label>Title</label>
+                                <input ng-model="item.title" type="text" >
+                            </div>
+                            <div class="addbook-bottom">
+                                <label>Publication</label>
+                                <input ng-model="item.publication" type="text"> 
+                            </div>
+                            <div class="addbook-bottom">
+                                <label>retailstore</label>
+                                <input ng-model="item.retailstore" type="text">
+                            </div>
                             
-                            <div class="title">Have you writen any books ? </div>
-                            <div class="proof-h">
-                                <span>Title:</span>
-                                <input ng-model="signup.ywab" class="ip-h" type="text" name="">
-                            </div>
-                            <div class="clear"></div>
-                            <div class="proof-c">
-                                <span>Year of bublication:</span>
-                                <input ng-model="signup.yob" class="ip-ct" type="" name="">
-                            </div>
-                            <div class="clear"></div>
-                            <div class="proof-f">
-                                <div><span>Where can i buy ?</span></div>
-                                <textarea rows="4" cols="50" ng-model="signup.cibw" id="info" ng-required="true"></textarea>
-                                <p ng-show="signupBetaForm.info.$error.required && signupBetaForm.info.$touched" class="error-block">
-                                    This field is required
-                                </p>
-                            </div>
-                            <div class="clear"></div>
-                            
-                        </div> 
+                            <div class="addbook-bottom">
+                                <label>author</label>
+                                <input ng-model="item.author" type="text">
+                            </div>                            
                         
+                        </div> 
+                        <div class="input-group">
+                            <a href="javascript:void(0);" class="add-more" ng-hide='signup.book.length>5' ng-click="addMoreBooks()">
+                                <i class="fa fa-plus"></i>
+                                Add more books
+                            </a>
+                        </div> 
 
                     </div>
 

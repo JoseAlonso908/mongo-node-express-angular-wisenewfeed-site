@@ -87,7 +87,18 @@ router.post('/upgrade', (req, res) => {
             })
             let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
             const pdfName = uuid.v4() + '.pdf';
+            console.log('form',form);    
+            for (i in form.book){
+                var a={};
+                a.title=form.book[i].title;
+                a.author=form.book[i].author;
+                a.publication=form.book[i].publication;
+                a.retailstore=form.book[i].retailstore;
+                console.log('aaa',a); 
+            }     
+
             let data = {
+                author:form.author,
                 ywab:form.ywab,
                 yob:form.yob,
                 cibw:form.cibw,
@@ -112,6 +123,7 @@ router.post('/upgrade', (req, res) => {
                 company: form.company,
                 title: form.title,
                 categories: form.categories,
+                book:form.book,
                 contact: {
                     email: form.email,
                     phone: form.phone,

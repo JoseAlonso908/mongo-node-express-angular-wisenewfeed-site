@@ -136,6 +136,36 @@ router.post('/upgrade', (req, res) => {
                         filepath: c.file
                     }
                 }),
+                certificatesB: form.certificatesB.filter(c => !!(c.title && c.file)).map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                certificatesCa: form.certificatesCa.filter(c => !!(c.title && c.file)).map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                certificatesE: form.certificatesE.filter(c => !!(c.title && c.file)).map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                certificatesAc: form.certificatesAc.filter(c => !!(c.title && c.file)).map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
+                certificatesC: form.certificatesC.filter(c => !!(c.title && c.file)).map(c => {
+                    return {
+                        filename: c.title,
+                        filepath: c.file
+                    }
+                }),
                 downloads: form.additional.filter(c => !!(c.title && c.file)).map(c => {
                     return {
                         filename: c.title,
@@ -207,6 +237,42 @@ router.post('/signup', (req, res) => {
         }
         return {title: cert.title, file}
     })
+
+    let certificatesB = form.certificatesB.map(cert => {
+        let file = ''
+        if (cert.file) {
+            file = `${req.protocol}://${req.headers.host}/${cert.file}`
+        }
+        return {title: cert.title, file}
+    })
+    let certificatesCa = form.certificatesCa.map(cert => {
+        let file = ''
+        if (cert.file) {
+            file = `${req.protocol}://${req.headers.host}/${cert.file}`
+        }
+        return {title: cert.title, file}
+    })
+    let certificatesE = form.certificatesE.map(cert => {
+        let file = ''
+        if (cert.file) {
+            file = `${req.protocol}://${req.headers.host}/${cert.file}`
+        }
+        return {title: cert.title, file}
+    })
+    let certificatesAc = form.certificatesAc.map(cert => {
+        let file = ''
+        if (cert.file) {
+            file = `${req.protocol}://${req.headers.host}/${cert.file}`
+        }
+        return {title: cert.title, file}
+    })
+    let certificatesC = form.certificatesC.map(cert => {
+        let file = ''
+        if (cert.file) {
+            file = `${req.protocol}://${req.headers.host}/${cert.file}`
+        }
+        return {title: cert.title, file}
+    })
     let additional = form.additional.map(item => {
         let file = ''
         if (item.file) {
@@ -215,6 +281,11 @@ router.post('/signup', (req, res) => {
         return {title: item.title, file}
     })
     form.certificates = certificates
+    form.certificatesB = certificatesB
+    form.certificatesCa = certificatesCa
+    form.certificatesE = certificatesE
+    form.certificatesAc = certificatesAc
+    form.certificatesC = certificatesC
     form.additional = additional
     form.exp = form.experience.map(e => {
         return {
@@ -243,6 +314,36 @@ router.post('/signup', (req, res) => {
             fb: form.facebook,
         },
         certificates: form.certificates.map(c => {
+            return {
+                filename: c.title,
+                filepath: c.file
+            }
+        }),
+        certificatesB: form.certificatesB.map(c => {
+            return {
+                filename: c.title,
+                filepath: c.file
+            }
+        }),
+        certificatesCa: form.certificatesCa.map(c => {
+            return {
+                filename: c.title,
+                filepath: c.file
+            }
+        }),
+        certificatesE: form.certificatesE.map(c => {
+            return {
+                filename: c.title,
+                filepath: c.file
+            }
+        }),
+        certificatesAc: form.certificatesAc.map(c => {
+            return {
+                filename: c.title,
+                filepath: c.file
+            }
+        }),
+        certificatesC: form.certificatesC.map(c => {
             return {
                 filename: c.title,
                 filepath: c.file

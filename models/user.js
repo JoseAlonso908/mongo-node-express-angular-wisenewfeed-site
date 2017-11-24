@@ -71,6 +71,26 @@ var Model = function(mongoose) {
 			filename	: String,
 			filepath	: String,
 		}],
+		certificatesB: [{
+			filename	: String,
+			filepath	: String,
+		}],
+		certificatesCa: [{
+			filename	: String,
+			filepath	: String,
+		}],
+		certificatesE: [{
+			filename	: String,
+			filepath	: String,
+		}],
+		certificatesAc: [{
+			filename	: String,
+			filepath	: String,
+		}],
+		certificatesC: [{
+			filename	: String,
+			filepath	: String,
+		}],
 		downloads: [{
 			filename	: String,
 			filepath	: String,

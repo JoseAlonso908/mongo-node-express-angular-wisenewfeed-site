@@ -1562,7 +1562,7 @@ angular.module('er.controllers', [])
 			e.preventDefault()
 
 			$scope.phoneerror = ''
-
+			console.log('aaaaa',$scope.user.book);
 			var form = {
 				name: e.target.name.value,
                 username: e.target.username.value,
@@ -2665,11 +2665,15 @@ angular.module('er.controllers', [])
         role: selectedRole,
         contacts: [],
         certificates: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
+        certificatesE: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],  
+        certificatesB: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
+        certificatesCa: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],   
+        certificatesAc: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],
+        certificatesC: [{title: '', file: '', id: 'cert_' + Date.now().toString()}],    
         experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
 		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}],
 		categories:'',
 		book:[{title:'',author:'',publication:'',retailstore:''}]
-
     }	
 
     identityService.get().then(function (user) {
@@ -2706,21 +2710,168 @@ angular.module('er.controllers', [])
     })
 
     $scope.attachCertificate = function (event, item) {
+
 		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
 		angular.element(certificateFileInput).on('change', function (e) {
 			e.stopImmediatePropagation()
-			$scope.$apply(function () {
+			$scope.$apply(function () {				
 				var file = e.target.files[0]
+				// console.log('aaa',file)
 				item.title = file.name;
 				betaUploadsService.addCert(file).then(function (result) {
 					$scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					// $scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					// $scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					// $scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					// $scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					// $scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					console.log('aaabbbb',result.data.file)
 				}).catch(function (error) {
 					console.log(error);
 					alert('Error while uploading file. File size should be lower than 5 megabytes.')
 				})
 			})
 		})
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
 
+    $scope.attachCertificateE = function (event, item) {
+
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {				
+				var file = e.target.files[0]
+				// console.log('aaa',file)
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					// $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					$scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					// $scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					// $scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					// $scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					// $scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
+
+    $scope.attachCertificateB = function (event, item) {
+
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {				
+				var file = e.target.files[0]
+				// console.log('aaa',file)
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					// $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					// $scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					$scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					// $scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					// $scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					// $scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
+
+    $scope.attachCertificateCa = function (event, item) {
+
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {				
+				var file = e.target.files[0]
+				// console.log('aaa',file)
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					// $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					// $scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					// $scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					$scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					// $scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					// $scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
+
+    $scope.attachCertificateAc = function (event, item) {
+
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {				
+				var file = e.target.files[0]
+				// console.log('aaa',file)
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					// $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					// $scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					// $scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					// $scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					$scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					// $scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
+        $timeout(function () {
+            certificateFileInput.click()
+        }, 0)
+    }
+
+    $scope.attachCertificateC = function (event, item) {
+
+		var certificateFileInput = angular.element(event.target).parents('.input-group').children('input[type=file]')
+		angular.element(certificateFileInput).on('change', function (e) {
+			e.stopImmediatePropagation()
+			$scope.$apply(function () {				
+				var file = e.target.files[0]
+				// console.log('aaa',file)
+				item.title = file.name;
+				betaUploadsService.addCert(file).then(function (result) {
+					// $scope.signup.certificates[$scope.signup.certificates.length -1].file = result.data.file
+					// $scope.signup.certificatesE[$scope.signup.certificatesE.length -1].file = result.data.file
+					// $scope.signup.certificatesB[$scope.signup.certificatesB.length -1].file = result.data.file
+					// $scope.signup.certificatesCa[$scope.signup.certificatesCa.length -1].file = result.data.file
+					// $scope.signup.certificatesAc[$scope.signup.certificatesAc.length -1].file = result.data.file
+					$scope.signup.certificatesC[$scope.signup.certificatesC.length -1].file = result.data.file
+					
+				}).catch(function (error) {
+					console.log(error);
+					alert('Error while uploading file. File size should be lower than 5 megabytes.')
+				})
+			})
+		})
         $timeout(function () {
             certificateFileInput.click()
         }, 0)
@@ -2775,6 +2926,55 @@ angular.module('er.controllers', [])
             $scope.errors.certificateFillRequired = true
 		}
     }
+    $scope.addMoreCertificatesE = function () {
+        var lastCert = $scope.signup.certificatesE[$scope.signup.certificatesE.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificatesE.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+    $scope.addMoreCertificatesB = function () {
+        var lastCert = $scope.signup.certificatesB[$scope.signup.certificatesB.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificatesB.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+
+    $scope.addMoreCertificatesCa = function () {
+        var lastCert = $scope.signup.certificatesCa[$scope.signup.certificatesCa.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificatesCa.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+
+    $scope.addMoreCertificatesAc = function () {
+        var lastCert = $scope.signup.certificatesAc[$scope.signup.certificatesAc.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificatesAc.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+
+    $scope.addMoreCertificatesC = function () {
+        var lastCert = $scope.signup.certificatesC[$scope.signup.certificatesC.length - 1]
+        if (lastCert.title && lastCert.file) {
+            $scope.signup.certificatesC.push({title: '', file: '', id: 'cert_' + Date.now().toString()})
+            $scope.errors.certificateFillRequired = false
+		} else {
+            $scope.errors.certificateFillRequired = true
+		}
+    }
+
     $scope.addMoreBooks = function () {       
         $scope.signup.book.push({title: '', author: '',publication:'',retailstore:''});
         console.log($scope.signup.book.length);
@@ -2783,6 +2983,8 @@ angular.module('er.controllers', [])
 
 		
     }
+    
+
     $scope.removeCertificate = function (item) {
         var originalCertificates = $scope.signup.certificates;
         if (originalCertificates.length > 1) {
@@ -2793,6 +2995,76 @@ angular.module('er.controllers', [])
             }
         } else {
             $scope.signup.certificates[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
+
+    $scope.removeCertificateE = function (item) {
+        var originalCertificates = $scope.signup.certificatesE;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificatesE[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
+
+    $scope.removeCertificateB = function (item) {
+        var originalCertificates = $scope.signup.certificatesB;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificatesB[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
+
+    $scope.removeCertificateCa = function (item) {
+        var originalCertificates = $scope.signup.certificatesCa;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificatesCa[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
+
+    $scope.removeCertificateAc = function (item) {
+        var originalCertificates = $scope.signup.certificatesAc;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificatesAc[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
+        }
+
+    }
+
+    $scope.removeCertificateC = function (item) {
+        var originalCertificates = $scope.signup.certificatesC;
+        if (originalCertificates.length > 1) {
+            for (var i = 0; i < originalCertificates.length; i++) {
+                if (originalCertificates[i] && originalCertificates[i].id === item.id) {
+                    originalCertificates.splice(i, 1)
+                }
+            }
+        } else {
+            $scope.signup.certificatesC[0] = {title: '', file: '', id: 'cert_' + Date.now().toString()};
         }
 
     }

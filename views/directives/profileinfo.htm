@@ -41,6 +41,11 @@
 		<div class="value tinted" ng-show="!profile.certificates || profile.certificates.length == 0">Not specified</div>
 
 		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificates">{{cert.filename}}</a>
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesE">{{cert.filename}}</a>
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesB">{{cert.filename}}</a>
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesCa">{{cert.filename}}</a>
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesAc">{{cert.filename}}</a>
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesC">{{cert.filename}}</a>
 	</div>
 
 	<div class="user-description-block" ng-if="profile">

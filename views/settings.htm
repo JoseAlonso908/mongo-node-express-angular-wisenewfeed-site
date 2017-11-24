@@ -90,6 +90,58 @@
 						</select>
 						<div class="clear"></div>
 					</div>
+					<div ng-repeat="item in user.book"> 
+						<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">Book</h1>
+						<div class="settings-field-block">
+						<label>Title</label><input type="text" name="email" minlength="1" value="{{item.title}}" required>
+						<div class="clear"></div>
+						
+						</div>
+
+						<div class="settings-field-block">
+							<label>Author</label><input type="text" name="email" minlength="1" value="{{item.author}}" required>
+							<div class="clear"></div>
+							
+						</div>
+						<div class="settings-field-block">
+							<label>Publications</label><input type="text" name="email" minlength="1" value="{{item.publication}}" required>
+							<div class="clear"></div>
+							
+						</div>
+						<div class="settings-field-block">
+							<label>Retail Store</label><input type="text" name="email" minlength="1" value="{{item.retailstore}}" required>
+							<div class="clear"></div>
+							
+						</div>
+					</div>
+					<div class="settings-field-block">
+						<label>Title</label><input type="text" name="email" minlength="1" ng-model="titlebook" required>
+						<div class="clear"></div>
+						
+						</div>
+
+						<div class="settings-field-block">
+							<label>Author</label><input type="text" name="email" minlength="1" ng-model="authorbook" required>
+							<div class="clear"></div>
+							
+						</div>
+						<div class="settings-field-block">
+							<label>Publications</label><input type="text" name="email" minlength="1" ng-model="publicationbook" required>
+							<div class="clear"></div>
+							
+						</div>
+						<div class="settings-field-block">
+							<label>Retail Store</label><input type="text" name="email" minlength="1" ng-model="retailstorebook" required>
+							<div class="clear"></div>
+							
+						</div>
+
+					<div class="input-group" style="float: right">
+                        <a href="javascript:void(0);" class="add-more"  ng-click="addMoreBooks()">
+                            <i class="fa fa-plus"></i>
+                            Add more books
+                        </a>
+                    </div> 
 
 					<div class="divider"></div>
 					<div class="tb-request">

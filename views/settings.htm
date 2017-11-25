@@ -90,51 +90,36 @@
 						</select>
 						<div class="clear"></div>
 					</div>
+					<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">Book</h1>	
+
 					<div ng-repeat="item in user.book"> 
-						<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">Book</h1>
+						<div class="close-btn-wrap">
+                            <button  ng-click="hidden($index)"  class="btn btn-danger">x</button>
+                        </div>
+						<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">#{{$index+1}}</h1>
 						<div class="settings-field-block">
-						<label>Title</label><input type="text" name="email" minlength="1" value="{{item.title}}" required>
+						<label>Title</label><input type="text" name="email" minlength="1" ng-model="item.title" required>
 						<div class="clear"></div>
 						
 						</div>
 
 						<div class="settings-field-block">
-							<label>Author</label><input type="text" name="email" minlength="1" value="{{item.author}}" required>
+							<label>Author</label><input type="text" name="email" minlength="1" ng-model="item.author" required>
 							<div class="clear"></div>
 							
 						</div>
 						<div class="settings-field-block">
-							<label>Publications</label><input type="text" name="email" minlength="1" value="{{item.publication}}" required>
+							<label>Publications</label><input type="text" name="email" minlength="1" ng-model="item.publication" required>
 							<div class="clear"></div>
 							
 						</div>
 						<div class="settings-field-block">
-							<label>Retail Store</label><input type="text" name="email" minlength="1" value="{{item.retailstore}}" required>
+							<label>Retail Store</label><input type="text" name="email" minlength="1" ng-model="item.retailstore" required>
 							<div class="clear"></div>
 							
-						</div>
-					</div>
-					<div class="settings-field-block">
-						<label>Title</label><input type="text" name="email" minlength="1" ng-model="titlebook" required>
-						<div class="clear"></div>
-						
 						</div>
 
-						<div class="settings-field-block">
-							<label>Author</label><input type="text" name="email" minlength="1" ng-model="authorbook" required>
-							<div class="clear"></div>
-							
-						</div>
-						<div class="settings-field-block">
-							<label>Publications</label><input type="text" name="email" minlength="1" ng-model="publicationbook" required>
-							<div class="clear"></div>
-							
-						</div>
-						<div class="settings-field-block">
-							<label>Retail Store</label><input type="text" name="email" minlength="1" ng-model="retailstorebook" required>
-							<div class="clear"></div>
-							
-						</div>
+					</div>						
 
 					<div class="input-group" style="float: right">
                         <a href="javascript:void(0);" class="add-more"  ng-click="addMoreBooks()">

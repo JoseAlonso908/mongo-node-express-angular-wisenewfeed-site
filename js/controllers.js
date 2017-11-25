@@ -1504,6 +1504,17 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	
+
+    // $scope.addMoreBooks = function () {       
+    //     $scope.signup.book.push({title: '', author: '',publication:'',retailstore:''});
+    //     console.log($scope.signup.book.length);
+            
+            
+
+		
+    // }
+
 	$scope.disconnect = function (provider) {
 		identityService.disconnectSocial(provider).then(function (response) {
 			identityService.get(true).then(function (user) {
@@ -1557,12 +1568,23 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	
+
+
+	$scope.addMoreBooks = function () {       
+		$scope.user.book.push({title: '', author: '',publication:'',retailstore:''});
+    }
+
+    $scope.hidden=function($index){
+		$scope.user.book.splice($index,1);
+	}
+
 	$scope.savingFuncs = {
 		general: function (e) {
 			e.preventDefault()
 
 			$scope.phoneerror = ''
-			console.log('aaaaa',$scope.user.book);
+			// console.log('aaaaa',$scope.user.book);
 			var form = {
 				name: e.target.name.value,
                 username: e.target.username.value,
@@ -1574,15 +1596,17 @@ angular.module('er.controllers', [])
 				language: e.target.language.value,
 				gender: $scope.user.gender,
 			}
+			// console.log('bbbb',form)
 
 			if ($scope.profileSettings.$valid) {
 				var saveSettings = function (success) {
 					if (!success) {
 						return
 					}
-					console.log($scope.user)
+					// console.log($scope.user)
+
 					identityService.updateSettings($scope.user).then(function (result) {
-						console.log(result)
+						// console.log(result)
 						identityService.get(true).then(function (user) {
 							$scope.user = user
 							$scope.submitClass = 'success'
@@ -1685,7 +1709,7 @@ angular.module('er.controllers', [])
 		function (next) {
 			identityService.get().then(function (user) {
 				$scope.user = user
-				console.log($scope.user);
+				// console.log($scope.user);
 				angular.copy($scope.user, $scope.originUser);
 				console.log($scope.originUser);
 				if (!$scope.user.email) {

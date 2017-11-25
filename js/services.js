@@ -424,6 +424,7 @@ angular.module('er.services', [])
 			this.otherCache = {}
 		},
 		updateSettings: function (data) {
+			console.log('data',data)
 			return __s($http, $cookies, 'post', '/user/profile/edit/settings', data)
 		},
 		isPasswordValid: function (password) {

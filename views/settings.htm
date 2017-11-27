@@ -122,11 +122,12 @@
 					</div>						
 
 					<div class="input-group" style="float: right">
-                        <a href="javascript:void(0);" class="add-more"  ng-click="addMoreBooks()">
+                        <a href="javascript:void(0);" class="add-more" ng-hide='user.book.length>4'  ng-click="addMoreBooks()">
                             <i class="fa fa-plus"></i>
                             Add more books
                         </a>
                     </div> 
+                    <div class="clear"></div>
 
 					<div class="divider"></div>
 					<div class="tb-request">

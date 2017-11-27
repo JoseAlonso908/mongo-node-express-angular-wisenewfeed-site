@@ -294,20 +294,20 @@
                         <div class="input-group " ng-repeat="item in signup.book">
                             <div class="addbook-bottom">
                                 <label>Title</label>
-                                <input ng-model="item.title" type="text" >
+                                <input ng-model="item.title" type="text" ng-required="true">
                             </div>
                             <div class="addbook-bottom">
                                 <label>Publication</label>
-                                <input ng-model="item.publication" type="text"> 
+                                <input ng-model="item.publication" type="text" ng-required="true">  
                             </div>
                             <div class="addbook-bottom">
                                 <label>Retailstore</label>
-                                <input ng-model="item.retailstore" type="text">
+                                <input ng-model="item.retailstore" type="text" ng-required="true">
                             </div>
                             
                             <div class="addbook-bottom">
                                 <label>Author</label>
-                                <input ng-model="item.author" type="text">
+                                <input ng-model="item.author" type="text" ng-required="true">
                             </div>                            
                         
                         </div> 

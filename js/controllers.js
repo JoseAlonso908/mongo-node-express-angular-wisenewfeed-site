@@ -1598,6 +1598,7 @@ angular.module('er.controllers', [])
 			}
 			// console.log('bbbb',form)
 
+			console.log('valid',$scope.profileSettings.$valid)
 			if ($scope.profileSettings.$valid) {
 				var saveSettings = function (success) {
 					if (!success) {

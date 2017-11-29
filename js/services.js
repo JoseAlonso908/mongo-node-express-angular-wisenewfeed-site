@@ -741,28 +741,28 @@ angular.module('er.services', [])
             var title = parameters.title,
 				text = parameters.text,
 				files = parameters.files,
-				privacy = parameters.privacy
+				privacy = parameters.privacy,
+				keywords = parameters.keywords
 			return new Promise(function (resolve, reject) {
 				var headers = {
 					'Authorization': $cookies.get('token'),
 				}
 
+				var fd = new FormData()
+				fd.append('title', title)
+				fd.append('text', text)
+				fd.append('privacy', privacy)
+				headers['Content-Type'] = undefined
+				if (keywords && keywords.length > 0) {
+					var kws = []
+					for (var i in keywords) {
+						kws.push(keywords[i].text)
+					}
+					fd.append('keywords', JSON.stringify(kws))
+				}
 				if (files && files.length > 0) {
-					var fd = new FormData()
-					fd.append('title', title)
-                    fd.append('text', text)
-                    fd.append('privacy', privacy)
-
 					for (var i in files) {
 						fd.append('files', files[i])
-					}
-
-					headers['Content-Type'] = undefined
-				} else {
-					fd = {
-						title: title,
-						text: text,
-						privacy: privacy,
 					}
 				}
 

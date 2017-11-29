@@ -64,6 +64,10 @@
                 <div id="textquill" class="text" ng-keyup="autocomplete($event)" ng-model="text"></div>
             </div>
 
+            <div>
+                <tags-input ng-model="keywords"></tags-input>
+            </div>
+
             <form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
 
             <div class="upload-files" ng-show="files.length > 0">

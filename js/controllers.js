@@ -3282,7 +3282,8 @@ angular.module('er.controllers', [])
         theme: 'snow'  // or 'bubble'
     });
 	/*TODO: Add select privacy functionality */
-	$scope.privacy = 'Stranger'
+	$scope.privacy = 'Stranger';
+	$scope.keywords = [];
     $scope.fonts = [
 		'Liberation',
 		'Arial',
@@ -3342,6 +3343,7 @@ angular.module('er.controllers', [])
         postService.create({
             title: $scope.title,
             text: t,
+            keywords: $scope.keywords,
             files: fileObjects,
             privacy: $scope.privacy
         }, progress).then(function (result) {

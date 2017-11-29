@@ -202,6 +202,18 @@ var Model = function(mongoose) {
 			})
 		},
 
+		findAll: (callback) => {
+			Model.find(callback)
+		},
+
+		findByPage: (page, count, callback) => {
+			let skips = page * count;
+			let query = Model.find().sort({ username: 1 }).skip(skips).limit(count);
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
+
 		findOne: (params, callback) => {
 			Model.findOne(params, callback)
 		},

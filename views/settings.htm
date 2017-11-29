@@ -92,7 +92,7 @@
 					</div>
 					<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">Book</h1>	
 
-					<div ng-repeat="item in user.book"> 
+					<div ng-repeat="(i,item) in user.book"> 
 						<div class="close-btn-wrap">
                             <button  ng-click="hidden($index)"  class="btn btn-danger">x</button>
                         </div>
@@ -104,10 +104,30 @@
 						</div>
 
 						<div class="settings-field-block">
-							<label>Author</label><input type="text" name="email" minlength="1" ng-model="item.author" required>
+							<!-- <label>Author</label><input type="text" name="email" minlength="1" ng-model="item.author" required> -->
+
+							<label>Author</label>
+                            <div class="author-st" ng-repeat="aut in item.author track by $index">{{aut}}   
+                                <button class="btnlsct" ng-click="removeAuthor(i, $index)">x</button>
+                            </div>
+                            <input class="author-st-ip" ng-change="myFunc(i, item)" ng-model="item.authersearch" type="text" require>
 							<div class="clear"></div>
 							
 						</div>
+						<div class="clear"></div>   
+                        <div class="authorst-tb" ng-hide="hiddenAuthor[i]"> 
+                            <ul>
+                                <li ng-repeat="ite in authorresults" ng-click="addauthor(i, ite.username)">
+                                    <div class="authorav">
+                                        <img class="img-author" src="{{ite.avatar}}">
+                                    </div>
+                                    <div class="authorn">
+                                        <div>{{ite.name}}</div>
+                                        <div>@{{ite.username}}</div>
+                                    </div>
+                                </li>                                      
+                            </ul>
+                        </div>
 						<div class="settings-field-block">
 							<label>Publications</label><input type="text" name="email" minlength="1" ng-model="item.publication" required>
 							<div class="clear"></div>

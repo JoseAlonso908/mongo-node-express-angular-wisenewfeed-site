@@ -6704,3 +6704,61 @@ a.small-icon, button.small-icon {
     font-size: 13px;
     
 }
+.slauthor{
+	padding-left: 140px;
+    padding-bottom: 5px;
+    width: 48%;
+}
+.author-tb{
+	ul{
+		width: 50%;
+	    margin-left: 142px;
+	    position: absolute;
+	    padding: 5px 10px;
+	    background: #ffffff;
+	    z-index:999999;
+		}
+	li{
+		padding-bottom:5px;
+	}
+	img{
+		width: 34px;
+	}
+	.authorav{
+		float:left;
+	}
+	.authorn{
+		padding-top:3px;
+	}
+}
+.authorst-tb{
+	ul{
+		width: 80%;
+	    margin-left: 112px;
+	    position: absolute;
+	    padding: 5px 10px;
+	    z-index: 99999;
+	    background: #ffffff;
+		}
+	li{
+		padding-bottom:5px;
+	}
+	img{
+		width: 34px;
+	}
+	.authorav{
+		float:left;
+	}
+	.authorn{
+		padding-top:3px;
+	}
+}
+.author-st{
+	width: 70%;
+    padding-left: 111px;
+    padding-bottom:5px;
+}
+.author-st-ip{
+	float: right !important;
+    margin-right: 130px !important;
+}

@@ -53,7 +53,7 @@
 		<div class="value tinted" ng-show="!profile.book || profile.book.length == 0">Not specified</div>
 		<div ng-repeat="cert in profile.book" >
 			<div class="book-pr">{{cert.title}} - {{cert.publication}}</div>
-			<div class="book-pr"><a href="#!/tagsearch/@{{profile.username}}" class="text-people">@{{profile.username}}</a> <a class="text-people" href="#!/tagsearch/@{{cert.author}}">@{{cert.author}}</a></div>
+			<div class="book-pr"><a href="#!/tagsearch/@{{profile.username}}" class="text-people">@{{profile.username}}</a> <a ng-repeat="i in cert.author" class="text-people" href="#!/tagsearch/@{{i}}">@{{i}}</a></div>
 			<div class="book-pr">Available in {{cert.retailstore}}</div>
 			<br>
 		</div>

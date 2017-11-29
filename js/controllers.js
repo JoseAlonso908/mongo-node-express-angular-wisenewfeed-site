@@ -1486,15 +1486,23 @@ angular.module('er.controllers', [])
 		})
 	}
 })
-.controller('settingsController', function ($rootScope, $scope, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal,validateUsernameService) {
+.controller('settingsController', function ($rootScope, $scope, authorService, $location, $auth, identityService, followService, countriesListService, fieldsListService, validatePhoneService, confirmPhoneModal,validateUsernameService) {
 	$scope.pages = ['general', 'password', 'notifications']
 	$scope.activePage = 'general'
 	$scope.originUser= {};
+	$scope.hiddenAuthor = [true];
 	$scope.connect = function (provider) {
 		$auth.authenticate(provider, {updateExisting: $scope.user._id})
 		.then(function (response) {
 			identityService.get(true).then(function (user) {
 				$scope.user = user
+
+				if ($scope.user.book) {
+					$scope.hiddenAuthor = [];
+					for (var i in $scope.user.book) {
+						$scope.hiddenAuthor.push(true);
+					}
+				}
 				
 			})
 		})
@@ -1568,11 +1576,34 @@ angular.module('er.controllers', [])
 		})
 	}
 
-	
+	$scope.myFunc=function(ind,item){
+    	for (var i in $scope.hiddenAuthor) {
+    		$scope.hiddenAuthor[i] = true;
+    	}
 
+    	$scope.hiddenAuthor[ind] = false;
+
+		authorService.getnameAuthor(item.authersearch).then(function(response){
+			$scope.authorresults=response.data;
+			console.log('categoryct',response.data);
+		})
+    }
+    $scope.addauthor=function(index, author){
+    	console.log(index)
+    	$scope.hiddenAuthor[index]=true;
+    	$scope.user.book[index].author.push(author);
+
+
+    	
+    }
+
+    $scope.removeAuthor = function(i, index) {
+    	$scope.user.book[i].author.splice(index, 1);
+    }
 
 	$scope.addMoreBooks = function () {       
-		$scope.user.book.push({title: '', author: '',publication:'',retailstore:''});
+		$scope.user.book.push({title: '', author: [],publication:'',retailstore:''});
+		$scope.hiddenAuthor.push(true)
     }
 
     $scope.hidden=function($index){
@@ -2635,12 +2666,14 @@ angular.module('er.controllers', [])
 		},
 	])
 })
-.controller('betaController',function ($scope, $rootScope, $routeParams, betaUploadsService, $timeout, identityService,fieldsListService) {
+.controller('betaController',function ($scope, $rootScope, authorService, $routeParams, betaUploadsService, $timeout, identityService,fieldsListService) {
 
    
 
+
 	$scope.selectedCategory;
 	$scope.categories = $rootScope.suggestCategories;
+	$scope.hiddenAuthor = [true];
 	// console.log($scope.categories)
 	// console.log('asda1 ',$rootScope.suggestCategories)
 	// console.log('all ',$scope.categories[0])
@@ -2698,8 +2731,45 @@ angular.module('er.controllers', [])
         experience: [{from: '', to: '', place: '', id: 'exp_' + Date.now().toString()}],
 		additional: [{title: '', file: '', id: 'addon_' + Date.now().toString()}],
 		categories:'',
-		book:[{title:'',author:'',publication:'',retailstore:''}]
+		book:[{title:'',author:[],publication:'',retailstore:''}]
     }	
+
+    $scope.myFunc=function(ind,item){
+    	console.log('ok',item.author);
+    	for (var i in $scope.hiddenAuthor) {
+    		$scope.hiddenAuthor[i] = true;
+    	}
+    	$scope.hiddenAuthor[ind] = false;
+    	
+		authorService.getnameAuthor(item.authersearch).then(function(response){
+			$scope.authorresults=response.data;
+			console.log('categoryct',response.data);
+		})
+    }
+    $scope.addauthor=function(index, author){
+    	$scope.hiddenAuthor[index]=true;
+
+    	$scope.signup.book[index].author.push(author);
+    	// console.log('ok',$scope.signup.book[0].author)
+
+
+    	
+    }	
+
+    $scope.removeAuthor = function(i, index) {
+    	$scope.signup.book[i].author.splice(index, 1);
+    }
+    
+    $scope.addMoreBooks = function () {    
+
+        $scope.signup.book.push({title: '', author: [],publication:'',retailstore:''});
+        console.log($scope.signup.book.length);
+       
+       	$scope.hiddenAuthor.push(true)     
+            
+
+		
+    }
 
     identityService.get().then(function (user) {
         $scope.user = user
@@ -3000,14 +3070,7 @@ angular.module('er.controllers', [])
 		}
     }
 
-    $scope.addMoreBooks = function () {       
-        $scope.signup.book.push({title: '', author: '',publication:'',retailstore:''});
-        console.log($scope.signup.book.length);
-            
-            
-
-		
-    }
+    
     
 
     $scope.removeCertificate = function (item) {

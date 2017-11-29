@@ -49,7 +49,7 @@ var Model = function(mongoose) {
 		book:[{
 			title:String,
 			publication:String,
-	        author:String,
+	        author:[],
 	        retailstore:String,
 		}],
 		isBlocked: {

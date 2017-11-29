@@ -114,6 +114,21 @@ angular.module('er.services', [])
 		}
 	}
 })
+.factory('authorService', function ($http, $q) {
+	return {
+		getnameAuthor: function(item) {
+			var d = $q.defer();
+
+			$http.post('/authorname/getbynameauthor',{item: item}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		}
+	}
+})
 .factory('expertService', function ($http, $q) {
 	return {
 		getnameCity: function(filtercategory,filtercity,filtercountry) {

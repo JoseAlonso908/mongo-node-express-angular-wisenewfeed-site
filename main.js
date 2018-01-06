@@ -57,6 +57,47 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.htm'))
 })
 
+app.get('/googleec79aee7f6c7529f.html', (req, res) => {
+	res.sendFile(path.join(__dirname, 'googleec79aee7f6c7529f.html'))
+})
+
+app.get('/robots.txt', (req, res) => {
+	res.sendFile(path.join(__dirname, 'robots.txt'))
+})
+
+app.get('/sitemap.xml', (req, res) => {
+	res.set('Content-Type', 'application/xml');
+	models.User.findAll((err, users) => {
+		let length = Math.floor(users.length / 10000);
+		if (users.length % 10000 != 0) length++;
+		let body = '<?xml version="1.0" encoding="UTF-8"?>';
+		body += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		for (let i = 0; i < length; i++) {
+			body += '<sitemap>';
+			body += '<loc>https://sandboxapp.wisenewsfeed.com/sitemap-' + (i+1) + '.xml</loc>';
+			body += '</sitemap>';
+		}
+		body += '</sitemapindex>';
+		res.send(body);
+	});
+})
+
+app.get('/sitemap-:page.xml', (req, res) => {
+	res.set('Content-Type', 'application/xml');
+	let page = req.params.page;
+	models.User.findByPage(page-1, 10000, (err, users) => {
+		let body = '<?xml version="1.0" encoding="UTF-8"?>';
+		body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		for (let index in users) {
+			body += '<url>';
+			body += '<loc>https://sandboxapp.wisenewsfeed.com/#!/person/' + users[index]._id + '</loc>';
+			body += '</url>';
+		}
+		body += '</urlset>';
+		res.send(body);
+	});
+})
+
 let getCountries = () => {
     return JSON.parse(JSON.stringify(countriesList))
 }
@@ -141,7 +182,15 @@ app.get('/static/cities', (req, res) => {
 global.getCategories = () => {
 
 	return [
-		// { id: 0, title: 'All', tag: 'all', count: 0 },
+		{ id: 0, title: 'All', tag: 'all', count: 0 },
+		{ id: 1, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
+		{ id: 2, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
+		{ id: 3, title: 'Life Coaching', tag: 'lifecoaching', count: 0 },
+		{ id: 4, title: 'Career Coaching', tag: 'careercoaching', count: 0 },
+		{ id: 5, title: 'Life Style Coaching', tag: 'lifestylecoaching', count: 0 },
+		{ id: 6, title: 'Learning Coaching', tag: 'learningcoaching', count: 0 },
+		{ id: 7, title: 'Other', tag: 'other', count: 0 },
+/*
 		{ id: 1, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
 		{ id: 2, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
 		{ id: 3, title: 'Finance Coaching', tag: 'financecoaching', count: 0 },
@@ -185,6 +234,7 @@ global.getCategories = () => {
 		{ id: 41, title: 'Spiritual and Fulfillment Coaching', tag: 'spiritualandfulfillmentcoaching', count: 0 },
 		{ id: 42, title: 'Collaboration', tag: 'collaboration', count: 0 },
 		{ id: 43, title: 'Other', tag: 'other', count: 0 },
+*/
 	]
 }
 
@@ -268,3 +318,4 @@ app.use('/expertcountryname',require('./routes/expertcountryname'))
 app.use('/expertcategoryname',require('./routes/expertcategoryname'))
 app.use('/authorname',require('./routes/authorname'))
 app.use('/availability',require('./routes/availability'))
+app.use('/seo', require('./routes/seo'))

@@ -41,6 +41,7 @@ var Model = function(mongoose) {
             enum: ['Family', 'Close friend', 'Friend', 'Stranger'],
 			default: 'Stranger'
         },
+		keywords	: [{ type: mongoose.Schema.Types.String }],
 		meta		: mongoose.Schema.Types.Mixed
 	})
     schema.index({countries: 1})
@@ -553,7 +554,7 @@ var Model = function(mongoose) {
 		},
 
 		create: (data, callback) => {
-			let {author, country, category, title, text, images, allowhtml, meta, privacy} = data
+			let {author, country, category, title, text, images, allowhtml, meta, privacy, keywords} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -573,6 +574,7 @@ var Model = function(mongoose) {
 			Object.assign(article, {
 				author, images, title, text, country, category, meta, countries, privacy
 			})
+			article.keywords = keywords;
 			article.save(callback)
 		},
 
@@ -664,7 +666,6 @@ var Model = function(mongoose) {
 			Model.findOne({_id: post}).exec((err, result)=>{
 				if (err) callback(err);
 				else {
-					console.log('result', result)
 					if (author.role==='expert') {
 						result.totalRecommended-=2;
 
@@ -937,7 +938,6 @@ var Model = function(mongoose) {
 			} else {
 				filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
 			}
-			console.log(query)
             
 
             var aggregationOptions = [
@@ -1292,6 +1292,22 @@ var Model = function(mongoose) {
 							{ title: { $eq: null } }
 						]
 					}
+				]
+			});
+			query.exec((err, records) => {
+				return callback(err, records);
+			});
+		},
+		findArticlesByUser: (user, callback) => {
+			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
+			let query = Model.find({
+				$and: [
+					{
+						sharedFrom: { $eq: null },
+						author: user
+					},
+					{ title: { $ne: '' } },
+					{ title: { $ne: null } }
 				]
 			});
 			query.exec((err, records) => {

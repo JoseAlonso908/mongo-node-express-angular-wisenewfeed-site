@@ -13,7 +13,7 @@ angular.module('er', [
 	'angularMoment', require('satellizer'), require('angular-socialshare'),require('angular-material'),
     require('angular-messages'),
 	// 'ngScrollbar',
-	'localytics.directives', 'btford.modal','ngMask',
+	'localytics.directives', 'btford.modal','ngMask','ngTagsInput',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$httpProvider',
 	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $httpProvider) {

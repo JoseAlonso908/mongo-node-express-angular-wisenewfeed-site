@@ -21,8 +21,9 @@ router.use((req, res, next) => {
 })
 
 router.post('/create', tempUploads.array('files', 5), (req, res) => {
-	let {title, text, privacy} = req.body
+	let {title, text, privacy, keywords} = req.body
 
+	if (keywords) keywords = JSON.parse(keywords)
 	let filenames = []
 
 	if (req.files && req.files.length > 0) {
@@ -62,7 +63,8 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	            images,
 	            allowhtml: !!title,
 				meta,
-				privacy
+				privacy,
+				keywords
 	        }, (err, article) => {
 	        	next(err, article)
 	        })

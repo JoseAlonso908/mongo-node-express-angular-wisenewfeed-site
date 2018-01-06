@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /user
+Disallow: /image
+Disallow: /article
+Disallow: /follow
+Disallow: /friendship
+Disallow: /n
+Disallow: /questions
+Disallow: /chat
+Disallow: /beta
+Disallow: /reviews
+Disallow: /admin
+
+Sitemap: https://sandboxapp.wisenewsfeed.com/sitemap.xml

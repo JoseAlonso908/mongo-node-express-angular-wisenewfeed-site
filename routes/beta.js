@@ -179,8 +179,6 @@ router.post('/upgrade', (req, res) => {
                     }
                 })
             }
-
-            console.log('dadada',data)
             models.User.update(user._id, data, (err, user) => {
                 pdf.create(htmlContent, {format: 'Letter'}).toFile('./assets/pdf/' + pdfName, (err, resultPDF) => {
 

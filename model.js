@@ -14,7 +14,7 @@ module.exports = (dsn, __root) => {
 		'FindAccount', 'Piece', 'Follow', 'Notification', 'Question',
 		'QuestionReaction', 'HiddenArticle', 'MutedAuthor', 'BlockedUser',
 		'Report', 'ExperienceLog', 'Message', 'Friendship', 'Image',
-		'ImageReaction','Upgraderequests','Rating','Book','Dsquanly'],
+		'ImageReaction','Upgraderequests','Rating','Book','Dsquanly','Availability'],
 
 
 		models = {}

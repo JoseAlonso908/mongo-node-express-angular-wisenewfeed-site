@@ -6762,3 +6762,77 @@ a.small-icon, button.small-icon {
 	float: right !important;
     margin-right: 130px !important;
 }
+.gr-avail{
+	padding-top:20px;
+	label{
+		font-size: 15px;
+	    font-weight: 100;
+	    padding-top: 5px;
+	}
+
+	.ip-avail{
+		float: right;    
+		margin-right: 350px;
+    	width: 40%;
+	    padding: 5px 14px;
+	    border: 1px solid #e6e9ec;
+	    border-radius: 3px;
+	    color: #535659;
+	    box-sizing: border-box;
+	}
+
+	.bt-avail{
+		padding: 7px 12px;
+	    color: #fff;
+	    background-color: #337ab7;
+	    border: 1px solid #2e6da4;
+	    border-radius: 3px;
+	}
+
+}
+.avail-md{
+	padding: 20px 35px;
+    background: #b5bed0;
+    border-radius: 3px;
+}
+.availbt-edit{
+	padding: 5px 10px;
+    font-size: 15px;
+    color: #ffffff;
+    border-radius: 4px;
+    background: #337ab7;
+    a{
+    	text-decoration:none ;
+    }
+}
+.chosetimeexp{	
+	.allbtnexptime{
+		
+		background: #ffffff;
+	    width: 65%;
+	    padding-left: 23px;
+	    padding-top: 20px;
+	    padding-bottom: 20px;
+	    border: 1px solid;
+		
+
+		.btexptime{
+			padding: 25px 18px;
+			margin-bottom:5px;
+		    border: none;
+		    border-radius: 60px;
+		    font-size: 14px;
+			margin-right:20px;
+		}
+		
+
+			.btexptime1{
+				margin-right:17px;
+				margin-bottom:5px;
+				padding: 25px 15px;
+			    border: none;
+			    border-radius: 60px;
+			    font-size: 14px;
+			}
+	}
+}

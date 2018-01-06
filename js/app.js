@@ -65,6 +65,10 @@ angular.module('er', [
 			.when('/person/:id', {
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'personController',
+			})			
+			.when('/editavail/:id', {
+				templateUrl: 'assets/views/editavail.htm',
+				controller: 'availabilityController',
 			})
 			.when('/editmy', {
 				templateUrl: 'assets/views/edit-profile.htm',

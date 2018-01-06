@@ -10,10 +10,10 @@
 	<div id="filters-wrapper">
 		<filters></filters>
 	</div>
-	<div class="content" id="content-wrapper">
+	<div class="container" id="content-wrapper">
 		<div class="left"></div>
-		<div class="middle">
-			<div class="avail-expert-set">
+		<div class="avail-md">
+			<!-- <div class="avail-expert-set">
 				<h1>EXPERT AVAILABILITY</h1>
 				<table>
 					<thead>
@@ -32,6 +32,41 @@
 							</td>
 							<td>{{avail.price}}</td>
 							<td><button ng-click="doBooking($index)">Book</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div> -->
+
+			<div class="avail-expert-set">
+				<h1>BOOKINGS</h1>
+
+				<table class="table table-bordered">
+					<thead>
+						<td>No</td>
+						<td>Date</td>
+						<td>From-To</td>
+						<td>Price</td>
+						<td>Service</td>	
+						<td>Action</td>				
+					</thead>
+					<tbody  ng-repeat="booking in bookingAvail">
+						<tr>
+							<td>{{$index+1}}</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.date}}</div>
+							</td>
+							<td> 
+								<div ng-repeat="avail in booking.availability">
+									<span ng-repeat="range in avail.ranges">{{range.from}}----->{{range.to}};</span>
+								</div>								
+							</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.price}}</div>								
+							</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.service}}</div>								
+							</td>
+							<td><button  class="availbt-edit" ng-click="doBooking($index)">Book</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -63,6 +98,53 @@
 					<button ng-click="addBooking()" md-no-ink class="md-primary">AddBook</button>
 				</div>
 			</div>
+
+			<!-- <div class="chosetimeexp">
+				<div>
+					<select>
+						<option>SERVICE</option>
+						<option>EXPERT LIVE ADVICE</option>
+						<option>EXPERT BOOST</option>
+					</select>
+					<select> 
+						<option>AM</option>
+						<option>PM</option>
+					</select>
+					<select>
+						<option>15m</option>
+						<option>30m</option>
+						<option>45m</option>
+						<option>60m</option>
+					</select>
+				</div>
+				<div>
+					<div>
+						<h1>Start Time</h1>
+					</div>
+					<div class="allbtnexptime">
+						<div>
+							<button class="btexptime">1:00</button>
+							<button class="btexptime">2:00</button>
+							<button class="btexptime">3:00</button>
+							<button class="btexptime">4:00</button>
+						</div>
+						<div>
+							<button class="btexptime">5:00</button>
+							<button class="btexptime">6:00</button>
+							<button class="btexptime">7:00</button>
+							<button class="btexptime">8:00</button>
+						</div>
+						
+						<div>
+							<button class="btexptime">9:00</button>
+							<button class="btexptime1">10:00</button>
+							<button class="btexptime1">11:00</button>
+							<button class="btexptime1">12:00</button>
+						</div>
+						
+					</div>
+				</div>				
+			</div> -->
 		</div>
 		<div class="right"></div>
 		

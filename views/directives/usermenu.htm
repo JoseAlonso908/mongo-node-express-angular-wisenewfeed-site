@@ -11,5 +11,6 @@
 	<a href="javascript:void(0);" onclick="alert('Will be available soon')">Brand Zone</a>
 	<div class="divider"></div>
 	<a ng-href="#!/settings">Settings</a>
+	<a ng-show="user.role == 'Expert'" ng-href="#!/availability">Availability</a>
 	<a href="javascript:void(0);" ng-click="logout()">Logout</a>
 </div>

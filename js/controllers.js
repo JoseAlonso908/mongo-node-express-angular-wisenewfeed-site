@@ -913,7 +913,7 @@ angular.module('er.controllers', [])
 	})	
 })
 
-.controller('availabilityController',function($scope, identityService, availabilityService){
+.controller('availabilityController',function($scope, identityService, availabilityService, $routeParams){
 
 	$scope.availability = availabilityService.getAvailability();
 
@@ -921,23 +921,70 @@ angular.module('er.controllers', [])
 
 	$scope.bookings = availabilityService.getBookings();
 
+	$scope.availa=$routeParams.id;
+	
+	$scope.editavaila=editavaila;
+	$scope.removeavaila=removeavaila;
+
+	availabilityService.getidAvail($scope.availa).then(function(result){
+		$scope.editavail=result.data;
+		console.log('editavail',$scope.editavail)
+	})
+
 	identityService.get().then(function (user) {
 		$scope.user = user
 	}, function () {
 		$scope.guest = true
 	})
 
+		
+
+	function editavaila(avail) {
+		availabilityService.updateavail(avail).then(function(response){
+			
+		})
+	}
+	function removeavaila(id) {
+		availabilityService.deleteavail(id).then(function(response){
+			
+		})
+	}
+	
+
+	function init(){
+		if()
+
+		availabilityService.getAvail().then(function(response){
+			$scope.bookingAvail=response.data;
+		})
+	}
+
+	init();
+
 	$scope.addMoreAvail = addMoreAvail;
 	$scope.addMoreRangeOfTime = addMoreRangeOfTime;
 	$scope.saveAvailability = saveAvailability;
 
+	
+
 	function saveAvailability () {
+		
+		$scope.data = {
+			
+			availability:$scope.availability,
+			userId: $scope.user._id
+		}
+		// console.log('aaaa',)
+		availabilityService.create($scope.data).then(function(response){
+			// console.log(response);
+		})
 
 	}
 
 	function addMoreRangeOfTime (index) {
-		console.log(index)
+		console.log('indexxx',index)
 		$scope.availability[index].ranges.push({from:'', to:''})
+
 	}
 
 	function addMoreAvail() {
@@ -947,7 +994,7 @@ angular.module('er.controllers', [])
 
 	
 })
-.controller('bookingController',function($scope, bookService,identityService, availabilityService, bookingService,$routeParams){
+.controller('bookingController',function($scope, bookService, identityService, availabilityService, bookingService,$routeParams){
 	
 	$scope.availability = availabilityService.getAvailability();
 	$scope.timeranges = availabilityService.getTimeRanges();
@@ -971,6 +1018,17 @@ angular.module('er.controllers', [])
 	// 		console.log(response);
 	// 	})
 	// }
+
+
+	function init(){
+
+		availabilityService.getAvail().then(function(response){
+			$scope.bookingAvail=response.data;
+		})
+	}
+
+	init();
+
 	function addBooking () {	
 		var data = {
 			date: $scope.book.date,		
@@ -1502,6 +1560,7 @@ angular.module('er.controllers', [])
 					for (var i in $scope.user.book) {
 						$scope.hiddenAuthor.push(true);
 					}
+					
 				}
 				
 			})
@@ -1577,15 +1636,16 @@ angular.module('er.controllers', [])
 	}
 
 	$scope.myFunc=function(ind,item){
-    	for (var i in $scope.hiddenAuthor) {
+    	for (var i in $scope.user.book) {
     		$scope.hiddenAuthor[i] = true;
+    		console.log('2',$scope.hiddenAuthor[i]);
     	}
 
     	$scope.hiddenAuthor[ind] = false;
+    	console.log('ind',ind)
 
 		authorService.getnameAuthor(item.authersearch).then(function(response){
 			$scope.authorresults=response.data;
-			console.log('categoryct',response.data);
 		})
     }
     $scope.addauthor=function(index, author){
@@ -2735,22 +2795,19 @@ angular.module('er.controllers', [])
     }	
 
     $scope.myFunc=function(ind,item){
-    	console.log('ok',item.author);
-    	for (var i in $scope.hiddenAuthor) {
+    	for (var i in $scope.signup.book) {
     		$scope.hiddenAuthor[i] = true;
     	}
     	$scope.hiddenAuthor[ind] = false;
     	
 		authorService.getnameAuthor(item.authersearch).then(function(response){
 			$scope.authorresults=response.data;
-			console.log('categoryct',response.data);
 		})
     }
     $scope.addauthor=function(index, author){
     	$scope.hiddenAuthor[index]=true;
 
     	$scope.signup.book[index].author.push(author);
-    	// console.log('ok',$scope.signup.book[0].author)
 
 
     	

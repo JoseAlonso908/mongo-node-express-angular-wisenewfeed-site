@@ -11,16 +11,16 @@
 		<filters></filters>
 	</div>
 
-	<div class="content" id="content-wrapper">
+	<div class="container" id="content-wrapper">
 		<div class="left"></div>
-		<div class="middle">
+		<div class="avail-md">
 			<div class="avail-expert-set">
 				<h1>SET AVAILABILITY</h1>
 			</div>
 			
 			<div ng-repeat="avail in availability" class="avail-expert-set">
-				<label for="availdate{{$index}}">Select date</label><md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date"></md-datepicker>
-				<div class="time-ranges">
+				<label for="availdate{{$index}}">Select date</label><md-datepicker ng-model="avail.date" md-placeholder="Enter date"></md-datepicker>
+				<div class="time-ranges gr-avail">
 					<label>Ranges of Time:</label>
 					<div ng-repeat="range in avail.ranges" class="ranges-time">
 						<div class="range-item">
@@ -36,42 +36,57 @@
 		        			</md-select>
 						</div>						
 					</div>
-					<button ng-click="addMoreRangeOfTime($index)" md-no-ink class="md-primary">Add more range of time</button>
+					<button ng-click="addMoreRangeOfTime($index)"  class="bt-avail">Add more range of time</button>
 				</div>
 				
-				<div>
-					<label>Price per hour: </label><input type="text" ng-model="avail.price" name="">
+				<div class="gr-avail">
+					<label>Price per hour: </label><input class="ip-avail" type="text" ng-model="avail.price" name="">
+					<div class="clear"></div>
+				</div>
+				<div  class="gr-avail">
+					<label>Service: </label><input class="ip-avail" type="text" ng-model="avail.service" name="">
+					<div class="clear"></div>	
 				</div>
 			</div>
-			<div>
-				<button ng-click="addMoreAvail()" class="md-warn">Add More Availability</button>
+			<div class="gr-avail">
+				<button ng-click="addMoreAvail()" class="bt-avail">Add More Availability</button>
 			</div>
 			
 
-			<div>
-				<button ng-click="saveAvailability()" class="md-primary">Save</button>
+			<div class="gr-avail">
+				<button ng-click="saveAvailability()" class="bt-avail">Save</button>
 			</div>
 
 			<div class="avail-expert-set">
 				<h1>BOOKINGS</h1>
 
-				<table>
+				<table class="table table-bordered">
 					<thead>
 						<td>No</td>
-						<td>User</td>
 						<td>Date</td>
-						<td>From</td>
-						<td>To</td>
-						<td>Status</td>
+						<td>From-To</td>
+						<td>Price</td>
+						<td>Service</td>	
+						<td>Edit</td>				
 					</thead>
-					<tbody>
-						<tr ng-repeat="booking in bookings">
+					<tbody  ng-repeat="booking in bookingAvail">
+						<tr>
 							<td>{{$index+1}}</td>
-							<td>{{booking.user}}</td>
-							<td>{{booking.date}}</td>
-							<td>{{booking.from}}</td>
-							<td>{{booking.to}}</td>
-							<td>{{booking.status}}</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.date}}</div>
+							</td>
+							<td> 
+								<div ng-repeat="avail in booking.availability">
+									<span ng-repeat="range in avail.ranges">{{range.from}}------->{{range.to}};</span>
+								</div>								
+							</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.price}}</div>								
+							</td>
+							<td>
+								<div ng-repeat="avail in booking.availability">{{avail.service}}</div>								
+							</td>
+							<td><a class="availbt-edit" href="#!/editavail/{{booking._id}}">Edit</a> </td>
 						</tr>
 					</tbody>
 				</table>

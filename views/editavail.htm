@@ -1,0 +1,23 @@
+<div class="container" ng-repeat="avail in editavail">
+	<div ng-repeat=" item in avail.availability">
+		<input type="text" name="" ng-model="item.date">	
+	</div>	
+	<div ng-repeat=" item in avail.availability">
+		<input type="text" name="" ng-model="item.price">	
+	</div>
+	<div ng-repeat=" item in avail.availability">
+		<input type="text" name="" ng-model="item.service">	
+	</div>
+	<div ng-repeat=" item in avail.availability">
+		<div ng-repeat="range in item.ranges">
+			to:<input type="" name="" ng-model="range.to">
+			from:<input type="" name="" ng-model="range.from">
+		</div>	
+	</div>
+	<button ng-click="editavaila(avail)">
+		Save
+	</button>
+	<button ng-click="removeavaila(avail._id)">
+		delete
+	</button>
+</div>

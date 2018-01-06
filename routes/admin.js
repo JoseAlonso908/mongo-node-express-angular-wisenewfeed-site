@@ -54,11 +54,12 @@ router.post('/getrequests', (req, res)=>{
 router.post('/getexperts', (req, res)=>{
 	let {q, start, limit} = req.body;
 
-	let role = 'expert'
-
+		let role = 'expert'
+	// console.log('qqq',q)
 	models.User.adminSearch(req.user._id, q, role, start, limit, false, (err, results, count) => {
 		if (err) res.status(400).send(err)
 		else res.send({results: results, count: count})
+			
 	})
 })
 

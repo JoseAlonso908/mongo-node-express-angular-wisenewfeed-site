@@ -1482,14 +1482,50 @@ angular.module('er.services', [])
 		},
 	}
 })
-.factory('availabilityService', function ($http, $cookies) {
+.factory('availabilityService', function ($http, $cookies,$q) {
 	return {
+		getAvail : function() {
+			var d = $q.defer();
+
+			$http.post('/availability/getavail').then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		updateavail: function (data) {
+			console.log('data',data)
+			return __s($http, $cookies, 'post', '/availability/updateavail', data)
+		},
+		deleteavail : function(id) {
+			var d = $q.defer();
+
+			$http.post('/availability/removeavail', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
+		getidAvail:function(id){
+			var d = $q.defer();
+
+			$http.post('/availability/editavail', {id:id}).then(function(response){
+				d.resolve(response);	
+			},function(error){
+				d.reject(error);
+			})
+
+			return d.promise;
+		},
 		setAvailability : function(){
 
 		},
 		getAvailability: function(){
-			return [{date:'07/22/17', ranges:[{from:'12:00', to:'16:00'},{from:'18:00', to:'20:00'}], price:'15'},
-			{date:'07/22/17', ranges:[{from:'12:00', to:'16:00'},{from:'18:00', to:'20:00'}], price:'15'}];
+			return [{date:'', ranges:[{from:'', to:''}], price:'',service:''}];
 		},
 		getTimeRanges : function()  {
 			return ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00',
@@ -1497,9 +1533,19 @@ angular.module('er.services', [])
 						 '18:00','19:00','20:00','21:00','22:00','23:00','23:30'];
 		},
 		getBookings: function() {
-			return [{user: 'sample1',date:'07/29/17', from: '13:00', to: '15:00'},
-			{user: 'sample2',date:'07/29/17', from: '13:00', to: '15:00'},
-			{user: 'sample3',date:'07/29/17', from: '13:00', to: '15:00'}]
+			return [{user: 'sample1',date:'07/29/17', from: '13:00', to: '15:00'}]
+		},
+		create: function(data){
+			console.log('dataaa',data);
+			return new Promise(function (resolve, reject) {
+				$http({
+					method: 'POST',
+					url: '/availability/create',
+					data: data,
+				}).then(resolve).catch(function (data, status) {
+					reject(data)
+				})
+			})
 		}
 	}
 })
@@ -1626,7 +1672,7 @@ angular.module('er.services', [])
 .factory('bookService', function ($http, $cookies) {
 	return {
 		create: function(data){
-			console.log(data);
+			
 			return new Promise(function (resolve, reject) {
 				$http({
 					method: 'POST',

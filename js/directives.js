@@ -1948,6 +1948,11 @@ angular.module('er.directives', [])
 				// 	filter: 'journalist',
 				// },
 				{
+
+					title: 'Expert Coach',
+					filter: 'expert'
+				},
+				{
 					title: 'Most Recommended',
 					filter: 'recommended',
 				},
@@ -1955,11 +1960,7 @@ angular.module('er.directives', [])
 					title: 'Most Shared',
 					filter: 'shared',
 				},
-				{
-
-					title: 'Expert Coach',
-					filter: 'expert'
-				},
+				
 					
 			];
 

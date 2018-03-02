@@ -4,17 +4,19 @@ var Model = function(mongoose) {
 		expert		: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'expert',
-		},	
-		userId:{
+		},
+		date:{
 			type:String
 		},
-		availability:[{
-			date: String,
-			ranges:[],
-			price: String,
-			service: String
-
-		}],
+		timeFrom: {
+			type: String
+		},
+		service: {
+			type:String
+		},
+		price: {
+			type:String
+		},
 		createdAt	: {type: Date, default: Date.now},
 	})
 
@@ -23,11 +25,14 @@ var Model = function(mongoose) {
 	return {
 		create: (data, callback) => {
 				
-			availability=data.availability;
-			userId=data.userId;
+			
+			date = data.date
+			timeFrom = data.timeFrom
+			service=data.service,
+			price=data.price
 
 			let item = new Model()
-			Object.assign(item, {availability,userId})
+			Object.assign(item, {date,timeFrom,service,price})
 			item.save(callback)
 		},
 		getavail: (callback) => {	
@@ -39,11 +44,12 @@ var Model = function(mongoose) {
 					
 		},
 
-		updateAvail: (availability, _id , callback) => {
+		updateAvail: (availbook, _id , callback) => {
 			
-				
-			Model.findOne({_id}, (err,availa ) => {
-				Object.assign(availa, {availability})
+			console.log('thu1',availbook)
+			Model.findOne({_id}, (err,availa) => {
+				Object.assign(availa,availbook)
+				console.log('thu2',availa)	
 				availa.save(callback)
 			})
 		},

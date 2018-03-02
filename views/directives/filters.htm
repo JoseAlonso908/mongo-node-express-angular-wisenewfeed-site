@@ -1,6 +1,9 @@
 <div class="filters">
-	<dropdown title="Country" list="countries" selected="chosenCountry" change="setActiveCountry"></dropdown>
-	<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
-
 	<a href="javascript:void(0)" ng-repeat="f in filters track by $index" ng-click="setFilter(f.filter)" ng-class="{active: f.filter == activeFilter}" class="menu-buttons">{{f.title}}</a>
+	<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
+	<a href="#!/users/expert" class="menu-buttons">Find Expert</a>
+	<dropdown title="Country" list="countries" selected="chosenCountry" change="setActiveCountry"></dropdown>
+	
+
+	
 </div>

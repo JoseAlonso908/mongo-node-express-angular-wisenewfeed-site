@@ -59,10 +59,11 @@ router.post('/editavail', (req, res) => {
 
 router.post('/updateavail', (req, res) => {
 	
-	let  availbook=req.body
-	let availability = req.body.availability;	
-	if (availbook) {
-		models.Availability.updateAvail(availability, availbook._id, () => {
+	let  avail=req.body
+	// let availability = req.body.availability;	
+	console.log('sdasda',avail)
+	if (avail) {
+		models.Availability.updateAvail(avail, avail._id, () => {
 			res.send({ok: true})
 		})
 	} else res.status(400).send({message: 'Invalid token'})

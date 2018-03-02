@@ -920,15 +920,21 @@ angular.module('er.controllers', [])
 	$scope.timeranges = availabilityService.getTimeRanges();
 
 	$scope.bookings = availabilityService.getBookings();
+	$scope.expertId = $routeParams.id;
+
+	$scope.starttimebooking=availabilityService.getTimest();
+	$scope.servicebookingtime=[{sv:'SERVICE',sv1:'EXPERT LIVE ADVICE',sv2:'EXPERT BOOST'}]
+
+	$scope.servicebk=servicebk;
 
 	$scope.availa=$routeParams.id;
-	
+	$scope.saveallbkst=saveallbkst;
+	$scope.savestbkus=savestbkus;
 	$scope.editavaila=editavaila;
 	$scope.removeavaila=removeavaila;
-
 	availabilityService.getidAvail($scope.availa).then(function(result){
 		$scope.editavail=result.data;
-		console.log('editavail',$scope.editavail)
+		console.log('editavaila',$scope.editavail)
 	})
 
 	identityService.get().then(function (user) {
@@ -937,7 +943,43 @@ angular.module('er.controllers', [])
 		$scope.guest = true
 	})
 
+	
+
+	$scope.service = {};
+	for (var i in $scope.servicebookingtime) {
+		$scope.service[$scope.servicebookingtime[i].sv] = $scope.servicebookingtime[i].sv;
+	}	
+
+	$scope.savetime = {};
+	for (var i in $scope.starttimebooking) {
+		$scope.savetime[$scope.starttimebooking[i].time] = $scope.starttimebooking[i].time;
+	}		
+
+	function servicebk(elsv){
+		$scope.b=elsv;
+		console.log(elsv)
+	}
+
+	function savestbkus(intimest){
 		
+		$scope.a=intimest;
+		console.log(intimest)
+		
+	}
+	function saveallbkst () {	
+		var data = {
+			date: $scope.book.date,		
+			timeFrom: $scope.a,
+			price:$scope.setpriceipbk,
+			service:$scope.b
+
+		}
+		$scope.submitResult = 'Successfully ';	
+		availabilityService.create(data).then(function(response){
+			// console.log(response);
+		})
+		console.log(data);
+	}
 
 	function editavaila(avail) {
 		availabilityService.updateavail(avail).then(function(response){
@@ -952,7 +994,6 @@ angular.module('er.controllers', [])
 	
 
 	function init(){
-		if()
 
 		availabilityService.getAvail().then(function(response){
 			$scope.bookingAvail=response.data;
@@ -998,15 +1039,15 @@ angular.module('er.controllers', [])
 	
 	$scope.availability = availabilityService.getAvailability();
 	$scope.timeranges = availabilityService.getTimeRanges();
+	$scope.starttimebooking=availabilityService.getTimest();
 	$scope.book = {ranges:[{from:'',to:''}]}
 	$scope.expertId = $routeParams.id;
 	$scope.isBooking = false;
-
-
 	$scope.addMoreRangeOfTime = addMoreRangeOfTime;
 	$scope.doBooking = doBooking;
 	$scope.addBooking = addBooking;
-
+	$scope.savestbkus=savestbkus;
+	$scope.saveallbkst=saveallbkst;
 
 	// function submitRating (){
 	// 	var data = {
@@ -1029,6 +1070,28 @@ angular.module('er.controllers', [])
 
 	init();
 
+	$scope.savetime = {};
+	for (var i in $scope.starttimebooking) {
+		$scope.savetime[$scope.starttimebooking[i].time] = $scope.starttimebooking[i].time;
+	}
+
+
+	function savestbkus(intimest){
+		
+		$scope.a=intimest;
+		
+	}
+	function saveallbkst () {	
+		var data = {
+			date: $scope.book.date,		
+			timeFrom: $scope.a,
+			expertId: $scope.expertId
+		}
+		console.log('data',data)
+		bookService.create(data).then(function(response){
+			console.log(response);
+		})
+	}
 	function addBooking () {	
 		var data = {
 			date: $scope.book.date,		
@@ -1041,6 +1104,7 @@ angular.module('er.controllers', [])
 		})
 	}
 
+	
 	function doBooking (index) {
 		$scope.isBooking = true;
 		$scope.book.date = $scope.availability[index].date;
@@ -1675,7 +1739,6 @@ angular.module('er.controllers', [])
 			e.preventDefault()
 
 			$scope.phoneerror = ''
-			// console.log('aaaaa',$scope.user.book);
 			var form = {
 				name: e.target.name.value,
                 username: e.target.username.value,
@@ -1687,9 +1750,8 @@ angular.module('er.controllers', [])
 				language: e.target.language.value,
 				gender: $scope.user.gender,
 			}
-			// console.log('bbbb',form)
 
-			console.log('valid',$scope.profileSettings.$valid)
+			// console.log('valid',$scope.profileSettings.$valid)
 			if ($scope.profileSettings.$valid) {
 				var saveSettings = function (success) {
 					if (!success) {
@@ -2733,6 +2795,14 @@ angular.module('er.controllers', [])
 
 	$scope.selectedCategory;
 	$scope.categories = $rootScope.suggestCategories;
+	console.log('categories',$scope.categories);
+	$scope.categoriesA=[];
+	for (i=1;i<$scope.categories.length;i++){
+		$scope.categoriesA.push($scope.categories[i]);
+
+	}
+	console.log('categoriesA',$scope.categoriesA);
+
 	$scope.hiddenAuthor = [true];
 	// console.log($scope.categories)
 	// console.log('asda1 ',$rootScope.suggestCategories)
@@ -2800,6 +2870,8 @@ angular.module('er.controllers', [])
     	}
     	$scope.hiddenAuthor[ind] = false;
     	
+    	console.log('item',ind);
+
 		authorService.getnameAuthor(item.authersearch).then(function(response){
 			$scope.authorresults=response.data;
 		})

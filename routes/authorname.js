@@ -31,15 +31,6 @@ router.post('/getbynameauthor', (req, res)=>{
 		query.username = {$regex: new RegExp(item), $options: '-i'};
 	}
 
-	// if(filtercountry) {
-	// 	query.country = filtercountry;
-	// }
-
-	// if(filtercategory) {
-	// 	query.categories = {$regex: new RegExp(filtercategory), $options: '-i'};
-	// }
-
-	// {city: filtercity}
 	models.User.findByQuery(query,(err, resultscuathanh) => {
 		if (err) {
 			res.status(500);

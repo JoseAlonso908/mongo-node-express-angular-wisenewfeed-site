@@ -187,9 +187,11 @@ global.getCategories = () => {
 		{ id: 2, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
 		{ id: 3, title: 'Life Coaching', tag: 'lifecoaching', count: 0 },
 		{ id: 4, title: 'Career Coaching', tag: 'careercoaching', count: 0 },
-		{ id: 5, title: 'Life Style Coaching', tag: 'lifestylecoaching', count: 0 },
+		{ id: 5, title: 'Health Coaching', tag: 'healthcoaching', count: 0 },
 		{ id: 6, title: 'Learning Coaching', tag: 'learningcoaching', count: 0 },
-		{ id: 7, title: 'Other', tag: 'other', count: 0 },
+		{ id: 7, title: 'Immigrant Coaching', tag: 'immigrantcoaching', count: 0 },
+		{ id: 8, title: 'Wisdom', tag: 'wisdom', count: 0 },
+		{ id: 9, title: 'Other', tag: 'other', count: 0 },
 /*
 		{ id: 1, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
 		{ id: 2, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },

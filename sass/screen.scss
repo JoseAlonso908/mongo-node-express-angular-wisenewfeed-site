@@ -4463,7 +4463,7 @@ a.small-icon, button.small-icon {
 		background-color: $soLight;
 
 		&:not(.empty) {
-			background-image: url('../images/landing.jpg');
+			background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/landing.jpg");
 		}
 
 		.content {

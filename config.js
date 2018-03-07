@@ -21,7 +21,7 @@ module.exports = {
 			DSN: 'mongodb://localhost/expertreaction'
 		},
 		'development': {
-			DSN: 'mongodb://lp:w2eVt1puhb@wlab.tech/expertreaction'
+			DSN: 'mongodb://localhost/expertreaction'
 		}
 	},
 	EXP_REWARDS: {

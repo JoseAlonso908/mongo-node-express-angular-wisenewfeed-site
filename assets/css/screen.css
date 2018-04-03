@@ -904,6 +904,9 @@ a.small-icon, button.small-icon {
   margin: 0 auto 0;
   padding-bottom: 20px;
 }
+#wrapper > .content .menu-buttons {
+  color: #ffffff;
+}
 #wrapper > .content.centered {
   -webkit-justify-content: center;
   justify-content: center;
@@ -1351,7 +1354,7 @@ a.small-icon, button.small-icon {
   text-align: center;
 }
 #wrapper > .content .card.feed-item .avatar-border {
-  position: absolute;
+  position: relative;
   margin-left: -52px;
 }
 #wrapper > .content .card.feed-item .suggestions-users .avatar-border {
@@ -1647,7 +1650,7 @@ a.small-icon, button.small-icon {
   background-color: #daeffa;
 }
 #wrapper > .content .card.feed-item .actions button i {
-  position: absolute;
+  position: relative;
   margin-left: -17px;
   margin-top: 1px;
   font-size: 13px;
@@ -1934,6 +1937,13 @@ a.small-icon, button.small-icon {
   order: 2;
   overflow-x: hidden;
   overflow: unset;
+  height: 100vh;
+  overflow-y: scroll;
+}
+#wrapper > .content .middle ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  /* make scrollbar transparent */
 }
 #wrapper > .content .middle.flex {
   display: -webkit-flex;

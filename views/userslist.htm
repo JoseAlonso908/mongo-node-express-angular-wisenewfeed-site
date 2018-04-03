@@ -10,6 +10,8 @@
 		</div>
 		<div class="middle wide">
 			<div class="people-filter filter-cities-expert">
+				<dropdown title="Type" list="coachType" selected="selectedCoachType" change="setActivityCoachType"></dropdown>
+
 				<dropdown title="Country" list="countries" ng-model="filtercountry" selected="chosenCountry" change="setActiveCountry"></dropdown>
 				<div class="settings-field-block">
 					<label>City:</label>
@@ -20,7 +22,9 @@
 					<div class="clear"></div>
 				</div>
 				<dropdown title="Category" overflow="true" list="categories" selected="chosenCategory" change="setActiveCategory" scroll-on-second="true"></dropdown>
+				<a href="#!/users/expert" class="menu-buttons">Find Expert</a>
 				<div class="clear"></div>
+				
 			</div>
 			<div class="people">
 				<person ng-show="person" person="person" ng-repeat="person in peopleresults"></person>

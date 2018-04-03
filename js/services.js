@@ -311,11 +311,25 @@ angular.module('er.services', [])
 })
 .factory('fieldsListService', function ($http, $cookies) {
 	return {
+		getbycoach: function (coach) {
+			
+			var params = {}
+			if (coach) {
+				params.coach = coach
+			}
+
+			// if (coach) {
+			// 	params.coach = coach
+			// }
+
+			return __s($http, $cookies, 'get', '/static/getcategoriesbycoach', params)
+		},
 		get: function (country) {
+	
 			var params = {}
 			if (country) {
 				params.country = country
-			}
+			}	
 
 			return __s($http, $cookies, 'get', '/static/categories', params)
 		},
@@ -386,7 +400,7 @@ angular.module('er.services', [])
 				user.followers = user.followers || 0
 				user.following = user.following || 0
 				user.avatar = user.avatar || '/assets/images/avatar_placeholder.png'
-
+				
 				if (user.role) {
 					user.role = user.role.charAt(0).toUpperCase() + user.role.slice(1)
 				}

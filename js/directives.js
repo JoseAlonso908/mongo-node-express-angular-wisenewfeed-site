@@ -1947,11 +1947,11 @@ angular.module('er.directives', [])
 				// 	title: 'Journalist',
 				// 	filter: 'journalist',
 				// },
-				{
+				// {
 
-					title: 'Expert Coach',
-					filter: 'expert'
-				},
+				// 	title: 'Expert Coach',
+				// 	filter: 'expert'
+				// },
 				{
 					title: 'Most Recommended',
 					filter: 'recommended',

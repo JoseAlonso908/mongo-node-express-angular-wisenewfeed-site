@@ -1932,6 +1932,11 @@ a.small-icon, button.small-icon {
 #wrapper > .content .left, #wrapper > .content .right {
   width: calc(25% - 26px);
 }
+#wrapper > .content ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  /* make scrollbar transparent */
+}
 #wrapper > .content .middle {
   width: 50%;
   order: 2;
@@ -1939,11 +1944,6 @@ a.small-icon, button.small-icon {
   overflow: unset;
   height: 100vh;
   overflow-y: scroll;
-}
-#wrapper > .content .middle ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-  /* make scrollbar transparent */
 }
 #wrapper > .content .middle.flex {
   display: -webkit-flex;

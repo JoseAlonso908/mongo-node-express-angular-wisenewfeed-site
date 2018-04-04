@@ -290,7 +290,7 @@ angular.module('er.controllers', [])
 				categoriesListType = 'getForUser'
 			}
 
-			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType ? $scope.selectedCoachType.id : undefined).then(function (result) {
 				if (!$scope.categories || $scope.categories.length === 0) {
 					for (var i in result) {
 						if (result[i].count == 0) continue
@@ -327,15 +327,49 @@ angular.module('er.controllers', [])
 	})
 	.controller('homeController', function ($scope, expertService, countriesListService, $rootScope, fieldsListService, groupedCountriesService, identityService) {
 		$scope.coachType = [
-			{ id: 0, title: 'All' },
-			{ id: 1, title: 'COACHING' },
-			{ id: 2, title: 'PROFESSIONAL SERVICES' }
+			{ id: 1, title: 'Coaching' },
+			{ id: 2, title: 'Professional Services' }
 		]
 
 		$scope.selectedCoachType = $scope.coachType[0];
 
 		$scope.setActivityCoachType = function (item) {
 			$scope.selectedCoachType = item;
+
+			var categoriesListType = 'get'
+			if ($scope.user && $scope.user.role != 'User') {
+				categoriesListType = 'getForUser'
+			}
+
+			fieldsListService[categoriesListType](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType.id).then(function (result) {
+				// console.log(result)
+				if (!$scope.categories || $scope.categories.length === 0 || $scope.categories[1].title !== result[1].title) {
+					for (var i in result) {
+						if (result[i].count == 0) continue
+
+						result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+					}
+
+					$scope.categories = result
+					$scope.chosenCategory = result[0]
+				} else {
+
+					for (var i in result) {
+						var newCategory = result[i]
+
+						for (var j in $scope.categories) {
+							var oldCategory = $scope.categories[j]
+
+							if (oldCategory.id == newCategory.id) {
+								if (newCategory.count == 0) delete oldCategory.additional
+								else oldCategory.additional = numeral(newCategory.count).format('0a').toUpperCase()
+							}
+						}
+					}
+				}
+			})
+
+
 
 		}
 
@@ -528,7 +562,7 @@ angular.module('er.controllers', [])
 
 							if (country.title === $scope.user.country) {
 								$scope.chosenCountry = country
-							
+
 								$scope.setActiveCountry(country);
 
 							}
@@ -573,7 +607,7 @@ angular.module('er.controllers', [])
 				categoriesListType = 'getForUser'
 			}
 
-			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType ? $scope.selectedCoachType.id : undefined).then(function (result) {
 				if (!$scope.categories || $scope.categories.length === 0) {
 					for (var i in result) {
 						if (result[i].count == 0) continue
@@ -2162,7 +2196,7 @@ angular.module('er.controllers', [])
 				categoriesListType = 'getForUser'
 			}
 
-			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined).then(function (result) {
+			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType ? $scope.selectedCoachType.id : undefined).then(function (result) {
 				if (!$scope.categories || $scope.categories.length === 0) {
 					$scope.categories = result
 					$scope.chosenCategory = result[0]

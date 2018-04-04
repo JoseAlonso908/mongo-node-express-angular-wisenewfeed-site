@@ -105,7 +105,7 @@ let getCountries = () => {
 app.get('/static/countries/grouped', (req, res) => {
     let result = []
     let countriesList = getCountries()
-    console.log('country',countriesList);
+    console.log('country', countriesList);
 
     for (let continentCode in countriesList.continents) {
         let continent = countriesList.continents[continentCode]
@@ -180,72 +180,41 @@ app.get('/static/cities', (req, res) => {
     res.send(cities)
 })
 
-global.getCategories = () => {
+global.getCategories = (coach) => {
+    return (coach == 1) ?
+        [
+            { id: 0, title: 'All', tag: 'all', count: 0 },
+            { id: 1, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
+            { id: 2, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
+            { id: 3, title: 'Life Coaching', tag: 'lifecoaching', count: 0 },
+            { id: 4, title: 'Career Coaching', tag: 'careercoaching', count: 0 },
+            { id: 5, title: 'Learning Coaching', tag: 'learningcoaching', count: 0 },
+            { id: 6, title: 'Health Coaching', tag: 'healthcoaching', count: 0 },
+            { id: 7, title: 'Immigrant Coaching', tag: 'immigrantcoaching', count: 0 },
+            { id: 8, title: 'Other', tag: 'other', count: 0 },
 
-    return [
-        { id: 0, title: 'All', tag: 'all', count: 0 },
-        { id: 1, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
-        { id: 2, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
-        { id: 3, title: 'Life Coaching', tag: 'lifecoaching', count: 0 },
-        { id: 4, title: 'Career Coaching', tag: 'careercoaching', count: 0 },
-        { id: 5, title: 'Health Coaching', tag: 'healthcoaching', count: 0 },
-        { id: 6, title: 'Learning Coaching', tag: 'learningcoaching', count: 0 },
-        { id: 7, title: 'Immigrant Coaching', tag: 'immigrantcoaching', count: 0 },
-        { id: 8, title: 'Wisdom', tag: 'wisdom', count: 0 },
-        { id: 9, title: 'Other', tag: 'other', count: 0 },
-        /*
-                { id: 1, title: 'Business Coaching', tag: 'businesscoaching', count: 0 },
-                { id: 2, title: 'Startup Coaching', tag: 'startupcoaching', count: 0 },
-                { id: 3, title: 'Finance Coaching', tag: 'financecoaching', count: 0 },
-                { id: 4, title: 'Real Estate Coaching', tag: 'realestatecoaching', count: 0 },
-                { id: 5, title: 'Executive Coaching', tag: 'executivecoaching', count: 0 },
-                { id: 6, title: 'Leadership Coaching', tag: 'leadershipcoaching', count: 0 },
-                { id: 7, title: 'Career Coaching', tag: 'careercoaching', count: 0 },
-                { id: 8, title: 'Job Getting Coaching', tag: 'jobgettingcoaching', count: 0 },
-                { id: 9, title: 'Life Coaching', tag: 'lifecoaching', count: 0 },
-                { id: 10, title: 'Relationship Coaching', tag: 'relationshipcoaching', count: 0 },
-                { id: 11, title: 'Pickup Skills Coaching', tag: 'pickupskillscoaching', count: 0 },
-                { id: 12, title: 'Dating Skills Coaching', tag: 'datingskillscoaching', count: 0 },
-                { id: 13, title: 'Confidence Coaching', tag: 'confidencecoaching', count: 0 },
-                { id: 14, title: 'Communication Skills Coaching', tag: 'communicationskillscoaching', count: 0 },
-                { id: 15, title: 'Parent Coaching', tag: 'parentcoaching', count: 0 },
-                { id: 16, title: 'Sex Coaching', tag: 'sexcoaching', count: 0 },
-                { id: 17, title: 'Teenager Coaching', tag: 'teenagercoaching', count: 0 },
-                { id: 18, title: 'Weight Loss Coaching', tag: 'weightlosscoaching', count: 0 },
-                { id: 19, title: 'Fitness Coaching', tag: 'fitnesscoaching', count: 0 },
-                { id: 20, title: 'Beauty Coaching', tag: 'beautycoaching', count: 0 },
-                { id: 21, title: 'Health Coaching', tag: 'healthcoaching', count: 0 },
-                { id: 22, title: 'Sport Coaching', tag: 'sportcoaching', count: 0 },
-                { id: 23, title: 'Nutrition Coaching', tag: 'nutritioncoaching', count: 0 },
-                { id: 24, title: 'Cooking Coaching', tag: 'cookingcoaching', count: 0 },
-                { id: 25, title: 'Fashion Coaching', tag: 'fashioncoaching', count: 0 },
-                { id: 26, title: 'Entertainment Coaching', tag: 'entertainmentcoaching', count: 0 },
-                { id: 27, title: 'Photo & Video Coaching', tag: 'photovideocoaching', count: 0 },
-                { id: 28, title: 'Music & Audio Coaching', tag: 'musicaudiocoaching', count: 0 },
-                { id: 29, title: 'Design and Creative Coaching', tag: 'designandcreativecoaching', count: 0 },
-                { id: 30, title: 'Home Design Coaching', tag: 'homedesigncoaching', count: 0 },
-                { id: 31, title: 'Education Coaching', tag: 'educationcoaching', count: 0 },
-                { id: 32, title: 'Learning Coaching', tag: 'learningcoaching', count: 0 },
-                { id: 33, title: 'Tech Coaching', tag: 'techcoaching', count: 0 },
-                { id: 34, title: 'Programming Coaching', tag: 'programmingcoaching', count: 0 },
-                { id: 35, title: 'Auto & Moto Coaching', tag: 'automotocoaching', count: 0 },
-                { id: 36, title: 'Law and Legal Coaching', tag: 'lawandlegalcoaching', count: 0 },
-                { id: 37, title: 'Immigration Coaching', tag: 'immigrationcoaching', count: 0 },
-                { id: 38, title: 'Integration Coaching', tag: 'integrationcoaching', count: 0 },
-                { id: 39, title: 'Culture Coaching', tag: 'culturecoaching', count: 0 },
-                { id: 40, title: 'Travel and Tourist Coaching', tag: 'travelandtouristcoaching', count: 0 },
-                { id: 41, title: 'Spiritual and Fulfillment Coaching', tag: 'spiritualandfulfillmentcoaching', count: 0 },
-                { id: 42, title: 'Collaboration', tag: 'collaboration', count: 0 },
-                { id: 43, title: 'Other', tag: 'other', count: 0 },
-        */
-    ]
+        ] :
+        [
+            { id: 0, title: 'All', tag: 'all', count: 0 },
+            { id: 1, title: 'Consulting Coaching', tag: 'consulting', count: 0 },
+            { id: 2, title: 'Accounting Coaching', tag: 'accounting', count: 0 },
+            { id: 3, title: 'Legal Coaching', tag: 'legal', count: 0 },
+            { id: 4, title: 'Technology Coaching', tag: 'technology', count: 0 },
+            { id: 5, title: 'Engeneering Coaching', tag: 'engeneering', count: 0 },
+            { id: 6, title: 'Recruiting Coaching', tag: 'recruiting', count: 0 },
+            { id: 7, title: 'Real Estate Coaching', tag: 'real', count: 0 },
+            { id: 8, title: 'Other', tag: 'other', count: 0 },
+        ]
 }
 
 
 // TODO: move this to cron
 app.get('/static/categories', (req, res) => {
-    let { country } = req.query;
-    let categories = getCategories()
+
+    let country = req.query.country
+    let coach = req.query.coach
+    let categories = getCategories(coach)
+    
 
     // models.Article.getByUsers([], null, [], null, country, null, null, (err, articles) => {
     models.Article.getByUsers({ authors: [], viewer: null, shares: [], category: null, country }, (err, articles) => {
@@ -263,23 +232,17 @@ app.get('/static/categories', (req, res) => {
                 }
             }
         }
-
+        console.log(categories)
         res.send(categories)
     })
 })
 
 app.get('/static/getfullcategories', (req, res) => {
-    let categories = getCategories();
-   
+    let categories = getCategories(req.query.coach);
+
     res.send(categories)
 })
 
-app.get('/static/getcategoriesbycoach', (req, res) => {
-    let categories = getCategories();
-    console.log("ca", categories)
-    alert("df");
-    res.send(categories)
-})
 
 app.get('/permarticle/:id', (req, res) => {
     let { id } = req.params

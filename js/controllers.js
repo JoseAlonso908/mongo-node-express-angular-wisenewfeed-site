@@ -228,6 +228,7 @@ angular.module('er.controllers', [])
 		$scope.doSignup('user');
 	})
 	.controller('friendsFeedController', function ($scope, $rootScope, fieldsListService, groupedCountriesService, identityService) {
+		console.log("adsfffasdfasdf",$scope.selectedCoachType)
 		$scope.setActiveCategory = function (item) {
 			$scope.chosenCategory = item
 			$rootScope.$emit('updateCountriesFilter')
@@ -341,7 +342,7 @@ angular.module('er.controllers', [])
 				categoriesListType = 'getForUser'
 			}
 
-			fieldsListService[categoriesListType](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType.id).then(function (result) {
+			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType.id).then(function (result) {
 				// console.log(result)
 				if (!$scope.categories || $scope.categories.length === 0 || $scope.categories[1].title !== result[1].title) {
 					for (var i in result) {
@@ -2167,6 +2168,7 @@ angular.module('er.controllers', [])
 
 		$scope.q = $routeParams.query
 
+		
 		$scope.setActiveCategory = function (item) {
 			$scope.chosenCategory = item
 			$rootScope.$emit('updateCountriesFilter')

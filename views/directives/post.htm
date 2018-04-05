@@ -101,7 +101,7 @@
 		</div>
 		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
 	</div>
-	<linkpreview meta="post.meta"></linkpreview>
+	<linkpreview ng-if="post.meta" meta="post.meta"></linkpreview>
 	<!-- <div class="likes-row-wrapper" ng-class="likesClass(post.reactions)">
 		<div class="likes-value" ng-class="likesClass(post.reactions)">
 			{{post.reactions.likes_percentage}}% {{likesDescription(post.reactions.likes_percentage)}}

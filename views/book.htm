@@ -10,8 +10,79 @@
 	<div id="filters-wrapper">
 		<filters></filters>
 	</div>
+	
 	<div class="container" id="content-wrapper">
 		<div class="left"></div>
+		<div class="bookingtime">
+			<div class="bookingtimetl">
+				<h1>Booking Time</h1>
+				<span> Choose date and time , Date range max 30 days</span>
+				<span class="timezonespan"> Time Zone:
+					<a href="">Estern -US & Canada</a>
+				</span>
+			</div>
+			<div class="bookingtimect">
+				<div class="starttime">
+					<div class="sltop">
+						<select ng-repeat="sv in servicebookingtime" ng-model="service[sv.sv]" ng-click="servicebk(service[sv.sv])">
+							<option ng-repeat=" elsv in sv">{{elsv}} </option>
+						</select>
+						<select>
+							<option>AM</option>
+							<option>PM</option>
+						</select>
+						<select>
+							<option>Duration</option>
+							<option>15 min</option>
+							<option>30 min</option>
+							<option>45 min</option>
+							<option>60 min</option>
+						</select>
+					</div>
+					<div>
+
+					</div>
+					<div style="display: flex">
+						<div>
+							<md-datepicker ng-model="book.date" md-placeholder="Enter date"></md-datepicker>
+						</div>
+
+						<div class="stselec">
+							<p>Start Time</p>
+							<div class="stselecin">
+								<div>
+									<select ng-repeat="time in starttimebooking" ng-model="savetime[time.time]" ng-click="savestbkus(savetime[time.time])">
+										<option ng-repeat="intimest in time">
+											{{intimest}}
+										</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="textareabook">
+					<textarea rows="4" cols="50">
+					</textarea>
+				</div>
+			</div>
+			<div class="priceipbk">
+				<h1>Set Price (USD)</h1>
+				<input type="text" name="" ng-model="setpriceipbk">
+			</div>
+			<div class="booking-bottom">
+
+				<button ng-click="saveallbkst()">SAVE</button>
+				<div class="clear"> </div>
+				<div class="tb-request">
+					<div ng-class="submitClass">
+						{{submitResult}}
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="avail-md">
 			<!-- <div class="avail-expert-set">
 				<h1>EXPERT AVAILABILITY</h1>
@@ -46,27 +117,29 @@
 						<td>Date</td>
 						<td>From-To</td>
 						<td>Price</td>
-						<td>Service</td>	
-						<td>Action</td>				
+						<td>Service</td>
+						<td>Action</td>
 					</thead>
-					<tbody  ng-repeat="booking in bookingAvail">
+					<tbody ng-repeat="booking in bookingAvail">
 						<tr>
 							<td>{{$index+1}}</td>
 							<td>
 								<div ng-repeat="avail in booking.availability">{{avail.date}}</div>
 							</td>
-							<td> 
+							<td>
 								<div ng-repeat="avail in booking.availability">
 									<span ng-repeat="range in avail.ranges">{{range.from}}----->{{range.to}};</span>
-								</div>								
+								</div>
 							</td>
 							<td>
-								<div ng-repeat="avail in booking.availability">{{avail.price}}</div>								
+								<div ng-repeat="avail in booking.availability">{{avail.price}}</div>
 							</td>
 							<td>
-								<div ng-repeat="avail in booking.availability">{{avail.service}}</div>								
+								<div ng-repeat="avail in booking.availability">{{avail.service}}</div>
 							</td>
-							<td><button  class="availbt-edit" ng-click="doBooking($index)">Book</button></td>
+							<td>
+								<button class="availbt-edit" ng-click="doBooking($index)">Book</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -74,25 +147,26 @@
 			<div class="avail-expert-set" ng-show="isBooking">
 				<h1>BOOK YOU SCHEDULE WITH EXPERT</h1>
 
-				<label for="">Select date</label><md-datepicker ng-model="book.date" md-placeholder="Enter date"></md-datepicker>
+				<label for="">Select date</label>
+				<md-datepicker ng-model="book.date" md-placeholder="Enter date"></md-datepicker>
 				<div class="time-ranges">
 					<label>Ranges of Time:</label>
 					<div ng-repeat="range in book.ranges" class="ranges-time">
 						<div class="range-item">
 							<label>From</label>
 							<md-select ng-model="range.from">
-			          			<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
-			        		</md-select>
+								<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
+							</md-select>
 						</div>
 
 						<div class="range-item">
 							<label>To</label>
 							<md-select ng-model="range.to">
-		          				<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
-		        			</md-select>
+								<md-option ng-repeat="time in timeranges" value="{{time}}">{{time}}</md-option>
+							</md-select>
 						</div>
-							
-						
+
+
 					</div>
 					<button ng-click="addMoreRangeOfTime()" md-no-ink class="md-primary">Add more range of time</button>
 					<button ng-click="addBooking()" md-no-ink class="md-primary">AddBook</button>
@@ -148,7 +222,7 @@
 		</div>
 		<div class="right"></div>
 
-		
-		
+
+
 	</div>
 </div>

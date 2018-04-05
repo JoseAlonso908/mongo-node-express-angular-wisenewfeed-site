@@ -2504,6 +2504,9 @@ angular.module('er.directives', [])
 			templateUrl: 'assets/views/directives/link-preview.htm',
 			scope: {
 				meta: '=',
+			},
+			link: function ($scope) {
+				console.log("meta+++++++",$scope.meta)
 			}
 		}
 	})

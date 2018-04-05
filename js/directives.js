@@ -1050,7 +1050,7 @@ angular.module('er.directives', [])
 			},
 			link: function ($scope, element, attr) {
 				console.log("feedtype++++++++",$scope.type)
-				console.log($scope.post.author.role)
+				console.log($scope.user.role)
 				$scope.expandVisible = false
 				$scope.editing = false
 
@@ -1351,6 +1351,8 @@ angular.module('er.directives', [])
 				}
 
 				$scope.react = function (post, type, unreact) {
+					alert();
+					console.log('react function calling')
 					if (!$scope.re) $scope.re = {};
 					if (!$scope.re[type]) $scope.re[type] = {};
 					if ($scope.re[type][post]) {

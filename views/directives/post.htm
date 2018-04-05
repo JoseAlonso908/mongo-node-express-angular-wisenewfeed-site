@@ -127,7 +127,7 @@
 			<i class="material-icons">chat_bubble</i>
 			<div class="number">{{commentsCount || 0}}</div>
 		</div>
-		<button ng-disabled="post.sharedFrom.author._id.toString()==user._id.toString()" ng-if="!post.sharedFrom&&type!=='friends'"
+		<button ng-disabled="post.sharedFrom.author._id.toString()==user._id.toString()" ng-if="post.author.role!=='User'&&type!=='friends'"
 		 ng-click="goQuestion()" ng-class="{active: post.youdid.sharedFrom.smart}">
 			<i class="fa fa-question" aria-hidden="true"></i>
 			<span class="title">Ask</span>

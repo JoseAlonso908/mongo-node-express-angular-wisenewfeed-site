@@ -1050,6 +1050,7 @@ angular.module('er.directives', [])
 			},
 			link: function ($scope, element, attr) {
 				console.log("feedtype++++++++",$scope.type)
+				console.log($scope.post.author.role)
 				$scope.expandVisible = false
 				$scope.editing = false
 

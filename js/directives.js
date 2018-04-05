@@ -1014,7 +1014,7 @@ angular.module('er.directives', [])
 						if ($scope.user) feedAttributes['user'] = $scope.user._id
 						feedAttributes['start'] = start
 						feedAttributes['limit'] = limit
-						console.log('feedAttributes ', feedAttributes,$scope.user);
+						console.log('feedAttributes ', feedAttributes, $scope.user);
 						console.log(feedType)
 						feedService[feedType].call(feedService, feedAttributes).then(function (feed) {
 							// $scope.feedLoading = false
@@ -1045,19 +1045,213 @@ angular.module('er.directives', [])
 				user: '=',
 				// When "justone" is true we don't need to collapse comments or enable link to separate post
 				justone: '=',
-				type:'=',
-			
+				type: '=',
+
 			},
-			link: function ($scope, element, attr) {
-				console.log("feedtype++++++++",$scope.type)
-				console.log($scope.user.role)
+			link: function ($scope, element, attr, questionsService, $anchorScroll) {
+				//////////////////////////////////////////////
+				$scope.id = $scope.post.author._id
+				
+				$scope.questions = []
+				$scope.chosenFilter
+				$scope.types = {
+					replied: 0,
+					cancelled: 0,
+					active: 0,
+				}
+				$scope.visibleQuestionsCount = 0
+
+				$scope.setFilter = function (filter) {
+					$scope.chosenFilter = filter
+					$scope.recalcQuestionsCounter()
+
+					$scope.$broadcast('rebuild-questions-box')
+				}
+				$scope.rateComparator = function (v1, v2) {
+					var value1 = v1.value
+					var value2 = v2.value
+					if (value1 && value1.hasOwnProperty('likes') && value1.hasOwnProperty('dislikes') && value2 && value2.hasOwnProperty('likes') && value2.hasOwnProperty('dislikes')) {
+						var v1Rate = value1.likes - value1.dislikes
+						var v2Rate = value2.likes - value2.dislikes
+						return (v1Rate < v2Rate) ? -1 : 1
+					} else {
+						return false
+					}
+				}
+
+				$scope.recalcQuestionsCounter = function () {
+					$scope.visibleQuestionsCount = 0
+
+					if (!$scope.chosenFilter) {
+						$scope.visibleQuestionsCount = $scope.questions.length
+					} else {
+						for (var i in $scope.questions) {
+							if ($scope.questions[i].type == $scope.chosenFilter) {
+								$scope.visibleQuestionsCount++
+							}
+						}
+					}
+				}
+
+				$scope.maxlength = 250
+				$scope.question = {
+					text: ''
+				}
+
+				$scope.loading = false
+
+				$scope.replyMode = false
+				$scope.replyingTo
+
+				$scope.askQuestion = function () {
+					$scope.loading = true
+					$scope.questions = []
+
+					questionsService.add($scope.id, $scope.question.text).then(function () {
+						$scope.question.text = ''
+						$scope.loading = false
+						loadQuestions()
+					})
+
+					$scope.recalcQuestionsCounter()
+				}
+
+				$scope.cancel = function (question) {
+					if ($scope.replyingTo && question._id == $scope.replyingTo._id) {
+						$scope.replyingTo = undefined
+					}
+
+					questionsService.cancel(question._id).then(function () {
+						loadQuestions($scope.recalcQuestionsCounter)
+					})
+				}
+
+				$scope.reply = function (text) {
+					$scope.loading = true
+					questionsService.reply($scope.replyingTo._id, text).then(function () {
+						$scope.loading = false
+
+						$scope.replyingTo.response = text
+						$scope.replyingTo.type = 'replied'
+						$scope.replyingTo = null
+
+						$scope.replyMode = false
+
+						loadQuestions($scope.recalcQuestionsCounter)
+					})
+
+					$scope.question.text = ''
+				}
+
+				$scope.react = function (question, type) {
+					questionsService.react(question._id, type).then(function (data) {
+						question.youdid[type] = true
+						question.reactions.likes = data.counts.likes
+						question.reactions.dislikes = data.counts.dislikes
+						question.youdid.like = data.youdid.like
+						question.youdid.dislike = data.youdid.dislike
+
+						$rootScope.$emit('updateQuestionsCounters')
+					})
+				}
+
+				$scope.unreact = function (question, type) {
+					questionsService.unreact(question._id, type).then(function (data) {
+						question.youdid[type] = false
+						question.reactions.likes = data.counts.likes
+						question.reactions.dislikes = data.counts.dislikes
+						question.youdid.like = data.youdid.like
+						question.youdid.dislike = data.youdid.dislike
+
+						$rootScope.$emit('updateQuestionsCounters')
+					})
+				}
+
+				$scope.setReplyMode = function (question) {
+					$scope.replyMode = true
+					$scope.replyingTo = question
+					$scope.question.text = ''
+				}
+
+				var loadQuestions = function (callback) {
+					$scope.types = {
+						replied: 0,
+						cancelled: 0,
+						active: 0,
+					}
+
+					questionsService.get($scope.id).then(function (questions) {
+						var done = function () {
+							$scope.$broadcast('rebuild-questions-box')
+							if (typeof callback === 'function') callback()
+						}
+
+						if ($scope.questions.length > 0) {
+							for (var i in questions) {
+								var newq = questions[i]
+
+								$scope.types[newq.type]++
+
+								for (var j in $scope.questions) {
+									var oldq = $scope.questions[j]
+
+									if (newq._id == oldq._id) {
+										oldq.liked = newq.liked
+										oldq.likes = newq.likes
+										oldq.type = newq.type
+										oldq.response = newq.response
+									}
+								}
+							}
+
+							done()
+						} else {
+							$scope.questions = questions
+
+							for (var i in $scope.questions) {
+								var question = $scope.questions[i]
+
+								$scope.types[question.type]++
+							}
+
+							$scope.visibleQuestionsCount = $scope.questions.length
+
+							done()
+						}
+					})
+				}
+
+				$rootScope.$on('updateQuestionsCounters', loadQuestions)
+
+				async.parallel([
+					function (cb) {
+						identityService.get().then(function (user) {
+							$scope.user = user
+							cb()
+						})
+					},
+					function (cb) {
+						identityService.getOther($scope.id).then(function (profile) {
+							$scope.profile = profile
+							cb()
+						})
+					},
+					function (cb) {
+						loadQuestions(cb)
+					},
+				], function () {
+				
+				})
+				//////////////////////////////
+
+
 				$scope.expandVisible = false
 				$scope.editing = false
 
 				$scope.dropdownVisible = false;
 				$scope.loading = false;
 
-			
+
 
 				$timeout(function () {
 					if ($scope.justone) return
@@ -1946,7 +2140,7 @@ angular.module('er.directives', [])
 			templateUrl: 'assets/views/directives/filters.htm',
 			link: function ($scope, element) {
 				$scope.filters = [
-			
+
 					{
 						title: 'Wisest',
 						filter: 'recommended',

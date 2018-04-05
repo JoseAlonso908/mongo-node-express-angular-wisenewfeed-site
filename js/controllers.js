@@ -228,7 +228,53 @@ angular.module('er.controllers', [])
 		$scope.doSignup('user');
 	})
 	.controller('friendsFeedController', function ($scope, $rootScope, fieldsListService, groupedCountriesService, identityService) {
-		console.log("adsfffasdfasdf",$scope.selectedCoachType)
+		$scope.coachType = [
+			{ id: 1, title: 'Coaching' },
+			{ id: 2, title: 'Professional Services' }
+		]
+
+		$scope.selectedCoachType = $scope.coachType[0];
+
+		$scope.setActivityCoachType = function (item) {
+			$scope.selectedCoachType = item;
+
+			var categoriesListType = 'get'
+			if ($scope.user && $scope.user.role != 'User') {
+				categoriesListType = 'getForUser'
+			}
+
+			fieldsListService['get'](($scope.chosenCountry && $scope.chosenCountry.id !== 0) ? $scope.chosenCountry.title : undefined, $scope.selectedCoachType.id).then(function (result) {
+				// console.log(result)
+				if (!$scope.categories || $scope.categories.length === 0 || $scope.categories[1].title !== result[1].title) {
+					for (var i in result) {
+						if (result[i].count == 0) continue
+
+						result[i].additional = numeral(result[i].count).format('0a').toUpperCase()
+					}
+
+					$scope.categories = result
+					$scope.chosenCategory = result[0]
+				} else {
+
+					for (var i in result) {
+						var newCategory = result[i]
+
+						for (var j in $scope.categories) {
+							var oldCategory = $scope.categories[j]
+
+							if (oldCategory.id == newCategory.id) {
+								if (newCategory.count == 0) delete oldCategory.additional
+								else oldCategory.additional = numeral(newCategory.count).format('0a').toUpperCase()
+							}
+						}
+					}
+				}
+			})
+
+
+
+		}
+
 		$scope.setActiveCategory = function (item) {
 			$scope.chosenCategory = item
 			$rootScope.$emit('updateCountriesFilter')
@@ -254,15 +300,27 @@ angular.module('er.controllers', [])
 
 						for (var j in continent.sub) {
 							var country = continent.sub[j]
+
+
+							if (country.title === $scope.user.country) {
+								$scope.chosenCountry = country
+
+								$scope.setActiveCountry(country);
+
+							}
 							if (country.count == 0) continue
+
 
 							country.additional = numeral(country.count).format('0a').toUpperCase()
 						}
+
+
 					}
 
 					$scope.countries = result
 
-					$scope.chosenCountry = result[0]
+
+					// $scope.chosenCountry = result[0]
 				} else {
 					for (var i in result) {
 						var newContinent = result[i]
@@ -2168,7 +2226,7 @@ angular.module('er.controllers', [])
 
 		$scope.q = $routeParams.query
 
-		
+
 		$scope.setActiveCategory = function (item) {
 			$scope.chosenCategory = item
 			$rootScope.$emit('updateCountriesFilter')

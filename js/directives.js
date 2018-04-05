@@ -1056,7 +1056,7 @@ angular.module('er.directives', [])
 				$scope.dropdownVisible = false;
 				$scope.loading = false;
 
-				console.log($scope.post);
+			
 
 				$timeout(function () {
 					if ($scope.justone) return
@@ -1449,7 +1449,7 @@ angular.module('er.directives', [])
 					})
 				}
 				$scope.goQuestion = function () {
-					$location.url('/questions/' + $scope.user._id);
+					$location.url('/questions/' + $scope.post.author._id);
 
 				}
 			}

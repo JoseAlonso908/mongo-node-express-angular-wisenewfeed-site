@@ -196,13 +196,13 @@ global.getCategories = (coach) => {
         ] :
         [
             { id: 0, title: 'All', tag: 'all', count: 0 },
-            { id: 1, title: 'Consulting Coaching', tag: 'consulting', count: 0 },
-            { id: 2, title: 'Accounting Coaching', tag: 'accounting', count: 0 },
-            { id: 3, title: 'Legal Coaching', tag: 'legal', count: 0 },
-            { id: 4, title: 'Technology Coaching', tag: 'technology', count: 0 },
-            { id: 5, title: 'Engeneering Coaching', tag: 'engeneering', count: 0 },
-            { id: 6, title: 'Recruiting Coaching', tag: 'recruiting', count: 0 },
-            { id: 7, title: 'Real Estate Coaching', tag: 'real', count: 0 },
+            { id: 1, title: 'Consulting', tag: 'consulting', count: 0 },
+            { id: 2, title: 'Accounting', tag: 'accounting', count: 0 },
+            { id: 3, title: 'Legal', tag: 'legal', count: 0 },
+            { id: 4, title: 'Technology', tag: 'technology', count: 0 },
+            { id: 5, title: 'Engeneering', tag: 'engeneering', count: 0 },
+            { id: 6, title: 'Recruiting', tag: 'recruiting', count: 0 },
+            { id: 7, title: 'Real Estate', tag: 'real', count: 0 },
             { id: 8, title: 'Other', tag: 'other', count: 0 },
         ]
 }

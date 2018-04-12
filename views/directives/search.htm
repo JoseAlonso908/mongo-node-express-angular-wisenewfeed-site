@@ -1,0 +1,52 @@
+<form>
+	<div id="search">
+		<i class="material-icons">search</i>
+		<input type="text" placeholder="Search" ng-model="q" ng-model-options="{debounce: 300}" ng-change="multisearch()" ng-class="{active: q.length > 0}">
+
+		<div class="search-panel floating" ng-class="{active: dropdownVisible}">
+			<div class="loader" ng-show="loading"></div>
+
+			<div class="categories results">
+				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.countries track by $index">{{tag}}</a>
+			</div>
+			<div class="divider" ng-show="results.countries.length > 0"></div>
+
+			<div class="categories results">
+				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.categories track by $index">{{tag}}</a>
+			</div>
+			<div class="divider" ng-show="results.categories.length > 0"></div>
+			<div class="people results">
+				<div class="user" ng-repeat="u in results.nicknames">
+					<a ng-href="#!/person/{{u._id}}">
+						<avatar user="u"></avatar>
+					</a>
+
+					<div class="text">
+						<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+						<div class="role">@{{u.nickname}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="divider" ng-show="results.nicknames.length > 0"></div>
+			<div class="tags results">
+				<a ng-href="#!/tagsearch/{{tag | encodeuri}}" ng-repeat="tag in results.tags track by $index">{{tag}}</a>
+			</div>
+			<div class="divider" ng-show="results.tags.length > 0"></div>
+			<div class="people results">
+				<div class="user" ng-repeat="u in results.users">
+					<a ng-href="#!/person/{{u._id}}">
+						<avatar user="u"></avatar>
+					</a>
+
+					<div class="text">
+						<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+						<div class="role">{{u.role}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="divider" ng-show="results.users.length > 0"></div>
+
+			<a class="all-results" href="#!/tagsearch/{{q}}">Show all search results</a>
+		</div>
+	</div>
+</form>

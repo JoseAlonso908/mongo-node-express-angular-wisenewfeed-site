@@ -1,0 +1,64 @@
+
+<a class="small-icon" title="Notifications" ng-click="showDropdown($event)">
+	<div class="badge" ng-show="count > 0">
+		<div class="value">{{count}}</div>
+	</div>
+	<i class="material-icons">notifications</i>
+</a>
+
+<div class="notifications floating" ng-class="{active: dropdownVisible}">
+	<div class="text" ng-show="notifications.length === 0">You have no notifications.</div>
+
+	<div class="notification" ng-class="{unread: !n.read}" ng-repeat="n in notifications track by n._id">
+		<div class="time" am-time-ago="n.createdAt" am-without-suffix="true"></div>
+
+		<avatar user="n.from"></avatar>
+
+		<div class="text">
+			<a ng-href="#!/person/{{n.from._id}}" class="name">{{n.from.name}}</a>
+
+			<div class="action" ng-if="['like', 'dislike', 'share', 'comment', 'follow', 'questionnew', 'mentioned', 'mentionedcomment'].indexOf(n.type) > -1">
+				<span ng-switch="n.type">
+					<span ng-switch-when="like">liked</span>
+					<span ng-switch-when="dislike">disliked</span>
+					<span ng-switch-when="share">shared</span>
+					<span ng-switch-when="comment">reacts on</span>
+					<span ng-switch-when="follow">is following you</span>
+					<span ng-switch-when="questionnew">asked you a new question</span>
+					<span ng-switch-when="mentioned">mentioned you</span>
+					<span ng-switch-when="mentionedcomment">mentioned you</span>
+				</span>
+
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined && n.type !== 'mentionedcomment'" >{{n.type === 'mentioned' ? 'in post' : 'your post'}}</a>
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined && n.type === 'mentionedcomment'">
+					in comment
+				</a>
+				<a ng-href="#!/article/{{n.comment.post._id}}/{{n.comment._id}}" ng-show="n.comment != undefined">your comment</a>
+			</div>
+			<div class="action" ng-if="'friendshipnew' === n.type">
+				<span ng-switch="n.type">
+					Sent you a friendship request
+				</span>
+			</div>
+
+			<div class="action" ng-if="['likeilike', 'dislikeilike', 'shareilike', 'commentilike', 'likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1">
+				<span ng-switch="n.type">
+					<span ng-switch-when="likeilike">liked</span>
+					<span ng-switch-when="likeicomment">liked</span>
+					<span ng-switch-when="dislikeilike">disliked</span>
+					<span ng-switch-when="dislikeicomment">disliked</span>
+					<span ng-switch-when="shareilike">shared</span>
+					<span ng-switch-when="shareicomment">shared</span>
+					<span ng-switch-when="commentilike">reacts on</span>
+					<span ng-switch-when="commenticomment">reacts on</span>
+					<!-- <span ng-switch-default>-{{n.type}}-</span> -->
+				</span>
+
+				<a ng-href="#!/article/{{n.post._id}}" ng-show="n.post != undefined">post</a>
+
+				<span ng-show="['likeilike', 'dislikeilike', 'shareilike', 'commentilike'].indexOf(n.type) > -1"> you like</span>
+				<span ng-show="['likeicomment', 'dislikeicomment', 'shareicomment', 'commenticomment'].indexOf(n.type) > -1"> you commented</span>
+			</div>
+		</div>
+	</div>
+</div>

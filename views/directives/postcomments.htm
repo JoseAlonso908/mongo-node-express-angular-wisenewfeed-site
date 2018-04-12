@@ -1,0 +1,59 @@
+<div class="comments" ng-init="showmore=false" ng-class="{moreShown: showmore || nocollapse}" ng-show="comments.length > 0">
+	<a href="javascript:void(0);" ng-click="$parent.showmore=!$parent.showmore" class="show-more" ng-if="comments.length > 3 && !nocollapse">
+		{{($parent.showmore ? 'Show less' : 'Show more')}}
+	</a>
+
+	<div class="ordering" ng-show="showmore || nocollapse">
+		<div class="title">Sort</div>
+
+		<a href="javascript:void(0);" ng-click="ordering = '+createdAt'" ng-class="{active: ordering == '+createdAt'}">By date</a>
+		<a href="javascript:void(0);" ng-click="ordering = '-likes'" ng-class="{active: ordering == '-likes'}">By rating</a>
+	</div>
+
+	<div ng-class="{highlighted: comment.highlighted}" ng-hide="comment.removed" class="comment" id="c{{comment._id}}" ng-repeat="comment in comments | orderBy:ordering">
+		<a name="c{{comment._id}}"></a>
+
+		<div class="comment-actions-wrapper" ng-hide="comment.editing">
+			<a href="javascript:void(0);" ng-if="user._id == comment.author._id" class="edit" title="Edit comment" ng-click="setEditingMode(comment, true)">
+				<i class="material-icons">mode_edit</i>
+			</a>
+
+			<a href="javascript:void(0);" ng-if="user._id == comment.author._id" class="remove" title="Remove comment" ng-click="remove(comment)">
+				<i class="material-icons">close</i>
+			</a>
+		</div>
+
+		<avatar class="comment-author-avatar" user="comment.author"></avatar>
+		<div class="comment-title">
+			<a ng-href="#!/person/{{comment.author._id}}" class="name dark-bold">{{comment.author.name}}</a>
+			<a ng-href="#!/person/{{comment.author._id}}" ng-if="comment.author.nickname" class="nickname dark-bold">@{{comment.author.nickname}}</a>
+
+			<span class="time small-light" am-time-ago="comment.createdAt"></span>
+		</div>
+
+		<textarea class="text" ng-show="comment.editing" ng-model="comment.editingText" ng-disabled="loading"></textarea>
+		<div class="text" ng-if="comment.author.role.toLowerCase() == 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks"></div>
+		<div class="text" ng-if="comment.author.role.toLowerCase() != 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks | url"></div>
+
+		<div class="editing-photos" ng-show="comment.editing">
+			<div class="image" ng-class="{removing: image.removing}" ng-repeat="image in comment.images" style="background-image: url({{image.filename}})">
+				<a href="javascript:void(0);" class="remove" ng-click="toggleRemoveImage(image)"><i class="material-icons">close</i></a>
+			</div>
+		</div>
+
+		<div class="buttons" ng-show="comment.editing">
+			<button ng-click="setEditingMode(comment, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>
+			<button ng-click="updateComment(comment)" ng-disabled="loading" class="save cta-button">Save</button>
+		</div>
+
+		<div class="images" ng-hide="comment.editing">
+			<a image="image" lightbox class="image" author="comment.author" ng-repeat="image in comment.images" style="background-image: url({{image.filename}})"></a>
+		</div>
+
+		<a href="javascript:void(0);" class="showmore" ng-show="comment.fullText != '' && !comment.hideShowMore" ng-click="comment.text = comment.fullText; comment.hideShowMore = true">Show more...</a>
+
+		<commentreactions ng-hide="comment.editing" comment="comment"></commentreactions>
+
+		<div class="divider"></div>
+	</div>
+</div>

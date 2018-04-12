@@ -1,0 +1,96 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div id="wallpaper-block-wrapper">
+		<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<profileinfo ng-if="profile" profile="profile"></profileinfo>
+		</div>
+		<div class="middle">
+			<div class="questions">
+				<div class="title-wrapper">
+					<div class="title">{{visibleQuestionsCount}} question{{(visibleQuestionsCount != 1) ? 's' : ''}}</div>
+					<div class="types">
+						<a href="javascript:void(0);" ng-click="setFilter('replied')" ng-class="{chosen: chosenFilter == 'replied'}" class="type replied">{{types.replied}} replied</a>
+						<a href="javascript:void(0);" ng-click="setFilter('cancelled')" ng-class="{chosen: chosenFilter == 'cancelled'}" class="type cancelled">{{types.cancelled}} cancelled</a>
+						<a href="javascript:void(0);" ng-click="setFilter('active')" ng-class="{chosen: chosenFilter == 'active'}" class="type active">{{types.active}} active</a>
+						<a href="javascript:void(0);" ng-click="setFilter(undefined)" ng-show="chosenFilter != undefined" class="type">Show all</a>
+					</div>
+				</div>
+
+				<div class="list">
+					<div class="questions-list-wrapper">
+						<div class="questions-list" ng-scrollbar rebuild-on="rebuild-questions-box">
+							<div class="question" ng-hide="chosenFilter && question.type != chosenFilter"
+								 ng-class="{active: question._id == replyingTo._id}" ng-repeat="question in questions | orderBy:'reactions':true:rateComparator">
+								<a name="q{{question._id}}"></a>
+
+								<div class="title">
+									<div class="name">{{::question.author.name}}</div>
+									<div class="date">{{::question.createdAt | amCalendar:referenceTime:formats}}</div>
+								</div>
+
+								<div class="text">{{::question.text}}</div>
+								<div class="response" ng-show="question.type == 'replied' && question.response">{{::question.response}}</div>
+
+								<div class="footer">
+									<div class="reactions">
+										<a href="javascript:void(0);" ng-class="{active: question.youdid.like}" ng-click="(question.youdid.like) ? unreact(question, 'like') : react(question, 'like')" class="likes"><i class="material-icons">thumb_up</i> <span>{{question.reactions.likes || 0}}</span></a>
+										<a href="javascript:void(0);" ng-class="{active: question.youdid.dislike}" ng-click="(question.youdid.dislike) ? unreact(question, 'dislike') : react(question, 'dislike')" class="dislikes"><i class="material-icons">thumb_down</i> <span>{{question.reactions.dislikes || 0}}</span></a>
+									</div>
+
+									<div class="actions">
+										<a class="item" ng-click="cancel(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">remove_circle</i> <span>Cancel</span></a>
+										<a class="item" ng-click="setReplyMode(question)" ng-show="question.recipient == user._id && question.type == 'active'" href="javascript:void(0);"><i class="material-icons">reply</i> <span>Reply</span></a>
+
+										<span class="item replied" ng-show="question.type == 'replied'"><i class="material-icons">check_circle</i> <span>Replied</span></span>
+										<span class="item cancelled" ng-show="question.type == 'cancelled'"><i class="material-icons">remove_circle</i> <span>Cancelled</span></span>
+									</div>
+								</div>
+							</div>
+
+							<div class="no-questions" ng-show="visibleQuestionsCount === 0">Nothing to display</div>
+						</div>
+					</div>
+
+					<div class="question-box-wrapper" ng-if="user && profile" ng-hide="user._id == profile._id && !replyMode">
+						<div class="question-box">
+							<avatar user="user"></avatar>
+							<textarea placeholder="{{(replyMode) ? 'Write a reply...' : 'Ask a question...'}}" ng-class="{'not-empty': question.text}" ng-model="question.text" maxlength="{{(replyMode) ? '' : maxlength}}"></textarea>
+
+							<button ng-disabled="loading" ng-click="(replyMode) ? $parent.reply(question.text) : $parent.askQuestion()" class="send">
+								<div>
+									<i class="material-icons">send</i>
+									<div class="title">Send</div>
+								</div>
+							</button>
+
+							<div ng-hide="replyMode" class="chars-counter">{{maxlength - question.text.length}} symbols left</div>
+
+							<!-- <form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form> -->
+							<!-- <button ng-if="files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button> -->
+
+							<div class="clear"></div>
+							<div class="upload-files" ng-show="files.length > 0">
+								<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
+									<a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+			<onlineflag ng-hide="profile._id == user._id" ng-if="profile" profile="profile"></onlineflag>
+			<newquestions user="profile" ng-if="profile"></newquestions>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

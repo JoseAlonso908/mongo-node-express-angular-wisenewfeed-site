@@ -1,0 +1,23 @@
+<a class="small-icon" title="Followers" ng-click="showDropdown($event)">
+	<div class="badge" ng-show="count > 0">
+		<div class="value">{{count}}</div>
+	</div>
+	<i class="material-icons">person</i>
+</a>
+
+<div class="followers floating" ng-class="{active: dropdownVisible}"> 
+	<div class="follower" ng-repeat="f in followers">
+		<button ng-if="f.role != 'User'" ng-click="toggleFollow(f, $event)" ng-class="{following: f.isFollowing}">{{(f.isFollowing) ? 'Following' : 'Follow'}}</button>
+
+		<a ng-href="#!/person/{{f._id}}">
+			<avatar user="f"></avatar>
+		</a>
+
+		<div class="text">
+			<a ng-href="#!/person/{{f._id}}" class="name">{{f.name}}</a>
+			<div class="role">{{f.role}}</div>
+		</div>
+	</div>
+
+	<div class="empty" ng-show="followers.length == 0">Nobody following you</div>
+</div>

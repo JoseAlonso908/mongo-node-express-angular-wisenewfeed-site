@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <meta property="og:title" content="{{article.title}}">
+        <meta property="og:type" content="article">
+        {{#if article.images.length}}
+            <meta property="og:image" content="http://expertreaction.wlab.tech/{{article.images.0.filename}}">
+        {{/if}}
+        <meta property="og:site_name" content="Wise News Feed">
+        <meta property="og:description" content="{{article.text}}">
+    </head>
+    <body>
+        <script>
+            window.location = '/#!' + (window.location.pathname.replace('permarticle', 'article'))
+        </script>
+    </body>
+</html>

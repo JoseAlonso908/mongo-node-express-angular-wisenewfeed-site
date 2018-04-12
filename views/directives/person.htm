@@ -1,0 +1,27 @@
+<div class="person">
+	<div class="wallpaper" ng-class="{empty: !person.wallpaper}" style="background-image: url('{{person.wallpaper}}')"></div>
+	<avatar user="person"></avatar>
+
+	<div class="buttons" ng-hide="!$parent.user || $parent.user.role == 'User'">
+		<button ng-if="person.role != 'User' && !(person._id == $parent.user._id || !$parent.user)" class="follow" ng-class="{active: person.isFollowing}" ng-click="toggleFollow(person)">{{(person.isFollowing === true) ? 'Following' : 'Follow'}}</button>
+		<button ng-hide="person._id == $parent.user._id || !$parent.user" class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();person.menu = true"><i class="material-icons">more_vert</i></button>
+
+		<div class="person-menu" ng-class="{active: person.menu}">
+			<a ng-href="#!/chat/{{person._id}}">Direct message</a>
+			<div class="divider"></div>
+			<a href="javascript:void(0);">Block</a>
+			<a href="javascript:void(0);">Report</a>
+		</div>
+	</div>
+
+	<div class="content">
+		<div class="title">
+			<a ng-href="#!/person/{{person._id}}" class="name">{{person.name}}</a>
+			<div class="role">{{person.role}}</div>
+		</div>
+
+		<div class="tagname" ng-if="person.nickname">@{{person.nickname}}</div>
+
+		<div class="intro">{{person.intro}}</div>
+	</div>
+</div>

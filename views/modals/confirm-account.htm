@@ -1,0 +1,19 @@
+<div class="backdrop">
+	<div class="popup">
+		<div class="title">Confirmation code</div>
+		<div class="text">You should receive a text at {{phone}} with your confirm code soon.</div>
+		<div class="text" ng-if="!ready">Sending code...</div>
+
+		<div class="text error">{{errormessage}}</div>
+
+		<div class="small-loader" ng-if="loading"></div>
+		<input type="text" ng-disabled="loading || !ready" ng-change="codeError = false" ng-class="{error: codeError}" ng-model="code" placeholder="Enter your code">
+
+		<div class="footer">
+			<a href="javascript:void(0);" ng-click="resend()" ng-disabled="!ready || resendTimer > 0">Resend code <span ng-show="resendTimer > 0">({{resendTimer}})</span></a>
+
+			<button ng-click="confirm()" ng-disabled="loading || !ready" class="confirm">Confirm</button>
+			<button ng-click="close()" class="cancel">Cancel</button>
+		</div>
+	</div>
+</div>

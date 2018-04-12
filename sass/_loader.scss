@@ -1,0 +1,29 @@
+.ng-hide.ng-hide-animate{
+	display: none !important;
+}
+
+.loader {
+	display: block;
+	width: 24px; height: 24px;
+	margin: 0 auto 20px;
+	animation: load 1s linear infinite;
+	border: 6px solid $iconGrey;
+	border-radius: 50%;
+}
+
+.loader:after {
+	border: 5px solid $activeBlue;
+	border-radius: 50%;
+	bottom: 15px;
+	content: '';
+	left: 1px;
+	position: absolute;
+	right: 15px;
+	top: 1px;
+}
+
+@keyframes load {
+	100% {
+		transform: rotate(360deg);
+	}
+}

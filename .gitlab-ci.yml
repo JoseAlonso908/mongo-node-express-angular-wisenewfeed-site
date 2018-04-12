@@ -1,0 +1,10 @@
+development:
+  script:
+    - cd /var/www/expert_reaction.wlab.tech;
+    - git pull origin master;
+    - npm install;
+    - gulp build;
+    - /home/gitlab-runner/scripts/forever.sh main.js
+  type: deploy
+  only:
+    - master

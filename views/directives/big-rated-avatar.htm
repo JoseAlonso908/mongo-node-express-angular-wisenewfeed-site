@@ -1,0 +1,12 @@
+<div class="rated-avatar-wrapper" title="{{user.xp}} / {{user.xpInfo.nextLevelXp}}">
+	<div ng-if="editing" ng-click="chooseFile()" class="change-avatar">
+		<i class="material-icons">photo_camera</i>
+	</div>
+	<form><input name="avatar" accept="image/*" type="file"></form>
+	<div class="avatar" ng-style="{'background-image': 'url(' + (user.avatar || '/assets/images/avatar_placeholder.png') + ')'}"></div>
+	<canvas></canvas>
+
+	<div class="badge {{user.color}}">
+		<div class="rating-value">{{level}}</div>
+	</div>
+</div>

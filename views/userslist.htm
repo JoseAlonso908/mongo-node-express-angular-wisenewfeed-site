@@ -1,0 +1,21 @@
+<div id="wrapper" ng-controller="homeController">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<profilecard ng-if="user" user="user"></profilecard>
+			<pieces></pieces>
+		</div>
+		<div class="middle wide">
+			<div class="people">
+				<person ng-show="person" person="person" ng-repeat="person in people track by $index"></person>
+				<div class="flex-people-placeholder"></div>
+				<div class="flex-people-placeholder"></div>
+			</div>
+
+			<div class="loader" ng-show="loading"></div>
+		</div>
+	</div>
+</div>

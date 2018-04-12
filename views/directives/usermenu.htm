@@ -1,0 +1,18 @@
+<div class="user-menu floating" ng-class="{active: active}">
+	<!-- <a href="javascript:void(0);">Manage Categories</a>
+	<a href="javascript:void(0);">Manage Countries</a>
+	<div class="divider"></div> -->
+	<a ng-href="#!/write" ng-if="user.role != 'User'">Write a Post</a>
+	<a ng-href="#!/person/{{user._id}}">View profile</a>
+	<a href="javascript:void(0);">Change Account</a>
+	<a href="#!/beta/expert" ng-if="user.role == 'User'">Upgrade to Expert</a>
+	<a href="#!/beta/journalist" ng-if="user.role == 'User'">Upgrade to Journalist</a>
+	<div class="divider"></div>
+	<a ng-href="#!/friendsfeed">Friend Zone</a>
+	<a href="javascript:void(0);" onclick="alert('Will be available soon')">Deals Zone</a>
+	<a href="javascript:void(0);" onclick="alert('Will be available soon')">Premium Zone</a>
+	<a ng-href="#!/photos/{{user._id}}">Photos</a>
+	<div class="divider"></div>
+	<a ng-href="#!/settings">Settings</a>
+	<a href="javascript:void(0);" ng-click="logout()">Logout</a>
+</div>

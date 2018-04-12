@@ -1,0 +1,13 @@
+node_modules/
+bower_components/
+.sass-cache/
+assets/.sass-cache/
+token
+
+temp/
+.idea/
+/npm-debug.log.*
+assets/scripts/
+assets/views/
+assets/css/
+assets/uploads/

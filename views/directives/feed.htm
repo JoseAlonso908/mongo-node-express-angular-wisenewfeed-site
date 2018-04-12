@@ -1,0 +1,11 @@
+<!-- <div class="text" ng-show="mutedAuthors.length > 0">
+	Your feed contains muted authors: <a href="#!/person/{{author._id}}" ng-repeat="author in mutedAuthors">{{author.name}}</a>
+</div> -->
+
+<photos images="feed" ng-if="filter == 'photos'"></photos>
+
+<post post="post" user="user" ng-repeat="post in feed" ng-if="filter != 'photos'"></post>
+<div class="loader" ng-show="feedLoading"></div>
+<div ng-if="visibleCount == 0" class="feed-empty">
+	No items in this feed
+</div>

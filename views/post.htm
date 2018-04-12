@@ -1,0 +1,23 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div id="wallpaper-block-wrapper">
+		<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<profileinfo ng-if="profile" profile="profile"></profileinfo>
+		</div>
+		<div class="middle">
+			<post post="post" user="user" ng-if="post" justone="true"></post>
+		</div>
+		<div class="right" ng-if="feedType != 'people'">
+			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
+			<familiarexperts></familiarexperts>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,50 @@
+@media (max-width: 1180px) {
+  #wrapper {
+    width: 900px;
+  }
+  #wrapper #top-bar #logo {
+    margin-right: 20px;
+  }
+  #wrapper #top-bar #search {
+    position: relative;
+    width: 220px;
+    height: 36px;
+  }
+  #wrapper .wallpaper-wrapper .wallpaper {
+    height: 220px;
+  }
+  #wrapper .wallpaper-wrapper .rated-avatar-wrapper {
+    width: 140px;
+    height: 140px;
+    top: 192px;
+    left: 24px;
+  }
+  #wrapper .wallpaper-wrapper .rated-avatar-wrapper .badge {
+    top: 114px;
+    left: 51px;
+  }
+  #wrapper .wallpaper-wrapper .buttons {
+    margin: 165px 0 0 140px;
+  }
+  #wrapper .wallpaper-wrapper .footer .stats {
+    margin-left: 140px;
+  }
+  #wrapper .content .left .photos {
+    width: 191px;
+    height: 191px;
+  }
+  #wrapper .content .left .photos .photo, #wrapper .content .left .photos .other-photos {
+    width: 61px;
+    height: 61px;
+  }
+  #wrapper .content .left .photos .other-photos {
+    font-size: 24px;
+    line-height: 61px;
+  }
+  #wrapper .content .middle {
+    width: 75%;
+  }
+  #wrapper .content .right {
+    display: none;
+  }
+}

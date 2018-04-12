@@ -1,0 +1,30 @@
+<div id="landing-wrapper" ng-controller="confirmSignupController">
+	<div id="header-wrapper" class="shadow">
+		<div id="header">
+			<a ng-href="#!/" id="logo"></a>
+
+			<div id="header-buttons">
+				<a href="javascript:void(0);">Home</a>
+				<a href="javascript:void(0);">FAQ</a>
+				<a href="javascript:void(0);">How it works</a>
+			</div>
+
+			<div id="search">
+				<i class="material-icons">search</i>
+				<input type="text" placeholder="Search">
+			</div>
+		</div>
+	</div>
+	<div id="content-wrapper" class="empty">
+		<div class="content confirm-signup">
+			<div class="block as-user">
+				<div class="title">Sign up as user</div>
+				<div class="text">You almost done! Come to see posted.</div>
+
+				<div class="footer">
+					<button ng-click="doSignup('user')" class="signup-expert cta-button">Join as user</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

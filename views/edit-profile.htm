@@ -1,0 +1,134 @@
+<form name="profileForm">
+	<div id="wrapper" ng-controller="editProfileController">
+	
+		<div id="top-bar-background">
+			<topbar user="user"></topbar>
+		</div>
+
+		<div id="wallpaper-block-wrapper">
+			<div class="wallpaper-wrapper">
+				<bigratedavatar on-edit="$parent.changeAvatar" user="user" ng-if="user"></bigratedavatar>
+
+				<div class="buttons upper single">
+					<div ng-click="close()" class="close"><i class="material-icons">close</i><div class="title">Cancel</div></div>
+				</div>
+				<div class="buttons">
+					<div ng-click="changeWallpaper()" class="change-background"><i class="material-icons">image</i> <div class="title">Change background</div></div>
+					<input type="file" name="wallpaper" accept="image/*" class="hidden-file-input">
+					<div ng-click="saveChanges()" class="save-changes"><i class="material-icons">save</i> <div class="title">Save changes</div></div>
+				</div>
+
+				<div class="wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
+				<div class="footer">
+					<profilereactions profile="user"></profilereactions>
+				</div>
+			</div>
+		</div>
+
+		<div class="content editing-profile">
+			<div class="left">
+				<div class="user-profile-info" ng-if="user">
+					<!-- <input class="edit-profile-input" type="text" ng-required="true" name="name" ng-model="user.name"> -->
+					<div class="name">{{user.name}}</div>
+					<div class="nickname" ng-if="user.nickname">@{{user.nickname}}</div>
+					<div class="position">{{user.role}}</div>
+					<input class="edit-profile-input" placeholder="{{user.role}} title" type="text" name="title" ng-model="user.title">
+
+					<div class="rating-wrapper" ng-if="user.likes_percentage">
+						<i class="material-icons like">thumb_up</i>
+						<div class="rating-value">{{user.likes_percentage}}% Likes</div>
+						<i class="material-icons dislike">thumb_down</i>
+					</div>
+
+					<div class="rating-bar-wrapper" ng-if="user.likes_percentage">
+						<div class="rating-bar" style="width: {{user.likes_percentage}}%;"></div>
+					</div>
+				</div>
+
+				<div class="user-description-block">
+					<div class="title">Intro</div>
+					<textarea class="edit-profile-input" name="intro" ng-model="user.intro"></textarea>
+				</div>
+
+				<div class="user-description-block">
+					<div class="title">Experience</div>
+
+					<div class="experience-block" ng-if="exp_item" ng-repeat="exp_item in user.experience">
+						<a href="javascript:void(0);" ng-click="removeExperience(exp_item)">Remove this</a>
+						<input class="edit-profile-input" type="text" ng-required="true" name="time" ng-model="exp_item.time" placeholder="Time">
+						<input class="edit-profile-input" type="text" ng-required="true" name="place" ng-model="exp_item.place" placeholder="Place">
+						<textarea class="edit-profile-input short" ng-required="true" name="description" ng-model="exp_item.description"></textarea>
+					</div>
+
+					<a href="javascript:void(0);" ng-click="addExperience()" class="add-more-experience">+ Add more</a>
+				</div>
+
+				<div class="user-description-block editing">
+					<div class="title">Certificates</div>
+					<a href="javascript:void(0);" ng-click="removeCertificate(cert)" target="_blank" class="file" ng-repeat="cert in user.certificates">{{cert.filename}}</a>
+					<input type="file" name="certificate" class="hidden-file-input">
+					<div class="attach-file" ng-click="attachCertificate()"><i class="material-icons">attachment</i><span class="title">Attach file</span></div>
+				</div>
+
+				<div class="user-description-block editing">
+					<div class="title">Contacts</div>
+					<div class="address-element email"><input name="email" placeholder="Email" ng-model="user.contact.email"></div>
+					<div class="address-element phone"><input name="phone" placeholder="Phone number" ng-model="user.contact.phone"></div>
+					<div class="address-element skype"><input name="skype" placeholder="Skype" ng-model="user.contact.skype"></div>
+					<div class="address-element linkedin"><input name="linkedin" placeholder="Eg. 'williamhgates'" ng-model="user.contact.linkedin"></div>
+					<div class="address-element fb"><input name="fb" placeholder="Eg. 'BillGates'" ng-model="user.contact.fb"></div>
+				</div>
+
+				<div class="user-description-block editing">
+					<div class="title">Downloads</div>
+					<a href="javascript:void(0);" ng-click="removeDownload(file)" class="file-download" ng-repeat="file in user.downloads">{{file.filename}}</a>
+					<input type="file" name="download" class="hidden-file-input">
+					<div class="attach-file" ng-click="attachDownload()"><i class="material-icons">attachment</i><span class="title">Attach file</span></div>
+				</div>
+
+				<div class="user-description-block" ng-if="user && user.photos">
+					<div class="title">Photos</div>
+					<div class="photos">
+						<div class="photo" ng-class="{empty: photo.url === ''}" style="background-image: url('{{photo.url}}');" ng-repeat="photo in user.randomPhotos"></div>
+						<div class="other-photos" ng-if="user.photos.length > 8">+{{user.photos.length - 8}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="middle inactive">
+				<div class="on-your-mind">
+					<avatar user="user"></avatar>
+					<textarea placeholder="What's on your mind?" ng-class="{'not-empty': onyourmind}" ng-model="onyourmind"></textarea>
+					<button class="send">
+						<div>
+							<i class="material-icons">send</i>
+							<div class="title">Send</div>
+						</div>
+					</button>
+					<button class="upload-image"><i class="material-icons">camera_alt</i></button>
+
+					<div class="clear"></div>
+				</div>
+
+				<feed ng-if="user"></feed>
+			</div>
+			<div class="right inactive">
+				<newquestions user="user" ng-if="user"></newquestions>
+
+				<familiarexperts></familiarexperts>
+
+				<div class="about-box card">
+					&copy; 2017 Expert Reaction
+					<a href=javascript:void(0);>About</a>
+					<a href=javascript:void(0);>How it work</a>
+					<a href=javascript:void(0);>FAQ</a>
+					<a href=javascript:void(0);>Business</a>
+					<a href=javascript:void(0);>Career</a>
+					<a href=javascript:void(0);>Feedback</a>
+					<a href=javascript:void(0);>Media</a>
+					<div class="divider"></div>
+					<a href=javascript:void(0); class="advertise">Advertise with Expert Reaction</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

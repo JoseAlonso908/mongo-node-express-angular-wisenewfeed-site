@@ -1,0 +1,14 @@
+<div class="images-list" ng-if="images">
+	<div image="image" lightbox  author="image.author" class="image" style="background-image: url('{{image.filename}}')" ng-repeat="image in images">
+		<div class="controls" ng-if="image.author._id == $root.user._id">
+			<select class="privacy" ng-click="$event.stopImmediatePropagation()" ng-change="setPrivacy(image)" ng-model="image.privacy">
+				<option ng-value="privacy" ng-repeat="privacy in privacyOptions">{{privacy}}</option>
+			</select>
+			<a href="javascript:void(0);" class="remove" ng-click="$event.stopImmediatePropagation(); remove(image)" title="Remove image"><i class="material-icons">close</i></a>
+		</div>
+	</div>
+	<div class="image placeholder"></div>
+	<div class="image placeholder"></div>
+	<div class="image placeholder"></div>
+	<div class="image placeholder"></div>
+</div>

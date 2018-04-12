@@ -1,0 +1,29 @@
+<div id="wrapper" ng-controller="searchController">
+	<div id="top-bar-background">
+		<topbar q="q" user="user"></topbar>
+	</div>
+
+	<div class="results-banner">Results for "{{::q}}"</div>
+
+	<div id="filters-wrapper">
+		<filters></filters>
+	</div>
+	
+	<div class="mobile-search-wrapper">
+		<search q="q"></search>
+	</div>
+
+	<div class="content">
+		<div class="left hideonmobile">
+			<profilecard ng-if="user" user="user"></profilecard>
+			<pieces></pieces>
+		</div>
+		<div class="middle">
+			<searchfeed ng-if="user || guest" q="q" user="user"></searchfeed>
+		</div>
+		<div class="right">
+			<familiarexperts></familiarexperts>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

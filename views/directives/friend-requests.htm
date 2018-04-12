@@ -1,0 +1,12 @@
+<div class="familiar-experts" ng-hide="!user">
+	<div class="header">
+		<div class="title">Friend Requests</div>
+	</div>
+
+	<div class="loader" ng-show="friendshipRequestsLoading"></div>
+
+	<friendrequest user="user" friendship-request="friendshipRequest" ng-repeat="friendshipRequest in friendshipRequests"></friendrequest>
+	<div class="footer" ng-show="!friendshipRequestsLoading">
+		<a href="javascript:void(0);" ng-click="init()"><i class="material-icons">refresh</i> Refresh</a>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div id="wallpaper-block-wrapper">
+		<wallpaperblock user="user" profile="profile" type="type"></wallpaperblock>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<profileinfo ng-if="profile" profile="profile"></profileinfo>
+		</div>
+		<div class="middle" ng-if="feedType != 'people'">
+			<onyourmind user="user" ng-if="user && user._id == profile._id" user="user"></onyourmind>
+			<feed id="profile._id" type="type" user="user" ng-if="profile"></feed>
+		</div>
+		<div class="middle" ng-class="{wide: feedType == 'people'}" ng-if="feedType == 'people'">
+			<div ng-if="type == 'friends' || type == 'following' || type == 'followers'" class="friends-filter">
+				<dropdown title="Country" list="countries" ng-if="countries.length > 0" selected="country" change="setCountry" ></dropdown>
+				<dropdown overflow="true" title="City" list="cities" ng-if="cities.length > 0" selected="city" change="setCity" scroll-on-second="true"></dropdown>
+				<dropdown title="Gender" class="gender" list="genders" ng-if="genders.length > 0" selected="gender" change="setGender"></dropdown>
+			</div>
+
+			<div class="people" ng-if="people.length > 0">
+				<!--TODO: Yep... done with ng-filters. Should be changed to server side search-->
+				<person person="person" ng-repeat="person in people | gender:gender | country:country | city:city"></person>
+				<div class="flex-people-placeholder"></div>
+				<div class="flex-people-placeholder"></div>
+			</div>
+			<div class="no-people" ng-if="(people | gender:gender | country:country | city:city).length == 0">
+				Nothing to display
+			</div>
+		</div>
+		<div class="right" ng-if="feedType != 'people'">
+			<onlineflag ng-hide="profile._id == user._id" ng-if="profile && profile.role !== 'User'" profile="profile"></onlineflag>
+			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
+			<friendshiprequests user="user" ng-show="profile._id == user._id"></friendshiprequests>
+			<familiarexperts></familiarexperts>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

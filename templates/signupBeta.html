@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--  TEMPLATE ENGINE ---- Nunjucks https://mozilla.github.io/nunjucks/ -->
+    <meta charset="UTF-8">
+    <title>Signup For Beta</title>
+    <style>
+        .heading {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .signup-form {
+            width: 100%;
+            font-size: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sub-heading {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            margin: 15px 0;
+            width: 100%;
+        }
+        .field-group {
+            width: 100%;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+        .field-name {
+            font-weight: bold;
+            float: left;
+            margin-right: 20px;
+        }
+        .field-value {
+            color: #4b4b4b;
+            float: left;
+        }
+        .bold-inline-title {
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            float: left;
+            padding-right: 20px;
+        }
+        .dates {
+            display: inline-block;
+            float: left;
+            padding-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h4 class="heading">Signup for Beta: {{form.email}}</h4>
+    <div class="signup-form">
+        <div class="sub-heading">General Information</div>
+
+        {% if form.role %}
+        <div class="field-group">
+            <div class="field-name">Role</div>
+            <div class="field-value">{{form.role}}</div>
+        </div>
+        {% endif %}
+
+        {% if form.name %}
+        <div class="field-group">
+            <div class="field-name">Full name</div>
+            <div class="field-value">{{form.name}}</div>
+        </div>
+        {% endif %}
+
+        {% if form.title %}
+        <div class="field-group">
+            <div class="field-name">Title</div>
+            <div class="field-value">{{form.title}}</div>
+        </div>
+        {% endif %}
+
+        {% if form.company %}
+        <div class="field-group">
+            <div class="field-name">Company</div>
+            <div class="field-value">{{form.company}}</div>
+        </div>
+        {% endif %}
+
+        {% if form.info %}
+        <div class="field-group">
+            <div class="field-name">Info</div>
+            <div class="field-value">{{form.info}}</div>
+        </div>
+        {% endif %}
+
+
+        {% if form.exp %}
+            <div class="sub-heading">Experience</div>
+            {% for item in form.exp %}
+               <div class="field-group">
+                   <div class="field-name">{{item.place}}</div>
+                   <div class="bold-inline-title">From:</div>
+                   <div class="dates">{{item.from}}</div>
+                   <div class="bold-inline-title">To:</div>
+                   <div class="dates">{{item.to}}</div>
+               </div>
+            {% endfor %}
+        {% endif %}
+
+
+        <div class="sub-heading">Contact Information</div>
+        <div class="field-group">
+            <div class="field-name">Phone</div>
+            <div class="field-value">{{form.phone}}</div>
+        </div>
+        <div class="field-group">
+            <div class="field-name">Email</div>
+            <div class="field-value">{{form.email}}</div>
+        </div>
+
+        {% if form.facebook %}
+            <div class="field-group">
+                <div class="field-name">Facebook</div>
+                <div class="field-value">{{form.facebook}}</div>
+            </div>
+        {% endif %}
+
+        {% if form.linkedin %}
+            <div class="field-group">
+                <div class="field-name">Linkedin</div>
+                <div class="field-value">{{form.linkedin}}</div>
+            </div>
+        {% endif %}
+
+        {% if form.twitter %}
+            <div class="field-group">
+                <div class="field-name">Twitter</div>
+                <div class="field-value">{{form.twitter}}</div>
+            </div>
+        {% endif %}
+
+
+        {% if form.pinterest %}
+            <div class="field-group">
+                <div class="field-name">Pinterest</div>
+                <div class="field-value">{{form.pinterest}}</div>
+            </div>
+        {% endif %}
+
+        {% if form.instagram %}
+            <div class="field-group">
+                <div class="field-name">Instagram</div>
+                <div class="field-value">{{form.instagram}}</div>
+            </div>
+        {% endif %}
+
+        {% for item in form.contacts %}
+            <div class="field-group">
+                {{item}}
+            </div>
+        {% endfor %}
+
+        <!-- CERTIFICATES -->
+        {% if form.certificates.length > 0 %}
+            <div class="sub-heading">Certificates</div>
+            {% for item in form.certificates %}
+               <a href="{{item.file}}">{{item.title}}</a>
+            {% endfor %}
+        {% endif %}
+
+        <!-- ADDITIONAL FILES -->
+        {% if form.additional.length > 0 %}
+            <div class="sub-heading">Additional files</div>
+            {% for item in form.additional %}
+            <a href="{{item.file}}">{{item.title}}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<div class="lightbox">
+	<div class="wrapper">
+		<div class="image">
+			<img src="{{image.filename}}" />
+		</div>
+		<div class="info">
+			<div class="author">
+				<avatar user="author"></avatar>
+				<div class="name">{{author.name}}</div>
+			</div>
+
+			<div class="reactions">
+				<button ng-click="react('like')" ng-class="{active: image.youdid.like, disabled: image.youdid.love}" class="like">
+					<div class="button-wrapper">
+						<i class="material-icons">thumb_up</i>
+						<span class="title">Like {{image.reactions.likes}}</span>
+					</div>
+				</button>
+				<button href="javascript:void(0);" ng-click="react('love')" ng-class="{active: image.youdid.love, disabled: image.youdid.like}" class="love">
+					<div class="button-wrapper">
+						<i class="material-icons">favorite</i>
+						<span class="title">Love {{image.reactions.loves}}</span>
+					</div>
+				</button>
+			</div>
+
+			<div class="cycle">
+				<a href="javascript:void(0);" ng-class="{disabled: !showPrev}" ng-click="showPrev()">Prev</a>
+				<a href="javascript:void(0);" ng-class="{disabled: !showNext}" ng-click="showNext()">Next</a>
+			</div>
+		</div>
+	</div>
+</div>

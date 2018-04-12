@@ -1,0 +1,30 @@
+<div class="on-your-mind" ng-class="{loading: loading, 'not-empty': text}">
+	<avatar user="user"></avatar>
+
+	<div placeholder="What's on your mind?" ng-disabled="loading" ng-keyup="autocomplete($event)" contenteditable ng-model="text"></div>
+	<!-- <textarea placeholder="What's on your mind?" ng-disabled="loading" ng-class="{'not-empty': text}" ng-model="text"></textarea> -->
+	<button class="send" ng-click="create()" ng-disabled="loading">
+		<div>
+			<i class="material-icons">send</i>
+			<div class="title">Send</div>
+		</div>
+	</button>
+	<dropmenu privacy="privacy" nostranger="{{(user.role == 'User') ? 'true' : 'false'}}" ng-disabled="loading"></dropmenu>
+	<button class="upload-image-1" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
+	<button class="upload-image-2" ng-if="files.length < 5" ng-click="addImage()" ng-disabled="loading"><i class="material-icons">camera_alt</i></button>
+
+	<form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
+
+	<div class="clear"></div>
+
+	<a ng-href="#!/write" class="write" ng-if="user && user.role != 'User'">Write a Post</a>
+
+	<div class="upload-files" ng-show="files.length > 0">
+		<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
+			<a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="clear"></div>
+</div>

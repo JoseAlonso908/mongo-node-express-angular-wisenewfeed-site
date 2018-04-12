@@ -1,0 +1,28 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="mobile-search-wrapper">
+		<search q="q"></search>
+	</div>
+
+	<div id="filters-wrapper">
+		<filters></filters>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<profilecard ng-if="user" user="user"></profilecard>
+			<pieces></pieces>
+		</div>
+		<div class="middle">
+			<onyourmind user="user" ng-if="user && user.role != 'User'"></onyourmind>
+			<feed ng-if="user || guest" user="user"></feed>
+		</div>
+		<div class="right">
+			<familiarexperts></familiarexperts>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

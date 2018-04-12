@@ -1,0 +1,14 @@
+<div class="familiar-experts" ng-hide="!user">
+	<div class="header">
+		<div class="title">Familiar Experts</div>
+		<!-- <a href="javascript:void(0);" class="cta-button view-all">View all</a> -->
+	</div>
+
+	<div class="loader" ng-show="familiarExpertsLoading"></div>
+
+	<familiarexpert person="expert" user="user" ng-repeat="expert in users"></familiarexpert>
+	<div class="footer" ng-show="!familiarExpertsLoading">
+		<a href="javascript:void(0);" ng-click="init()"><i class="material-icons">refresh</i> Refresh</a>
+		<a ng-href="#!/users/expert">Find Expert</a>
+	</div>
+</div>

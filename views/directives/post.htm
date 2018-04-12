@@ -1,0 +1,181 @@
+<div class="card feed-item hidden" ng-if="post.hidden && !post.muted && !post.blocked">
+	<div class="text">
+		This post is hidden. Click to <a href="javascript:void(0);" ng-click="unhide(post)">show it</a>.
+	</div>
+</div>
+
+<!-- <div class="card feed-item hidden" ng-if="post.muted">
+	<div class="text">
+		This post is belongs to author who was muted by you.
+	</div>
+</div> -->
+
+<div class="card feed-item" ng-if="!post.hidden && !post.muted && !post.blocked">
+	<avatar user="post.author"></avatar>
+
+	<div class="body">
+		<div class="title">
+			<div class="title-text">
+				<a ng-href="#!/person/{{post.author._id}}" class="name dark-bold">{{::post.author.name}}</a>
+
+				<a ng-if="!justone" ng-href="#!/article/{{post._id}}" class="time small-light" am-time-ago="post.createdAt"></a>
+				<div ng-if="justone" class="time small-light" am-time-ago="post.createdAt"></div>
+
+				<div class="separator" ng-show="post.author.position">&bull;</div>
+				<div class="position small-light" ng-show="post.author.position">{{::post.author.position}}</div>
+			</div>
+
+			<button class="more small-icon" ng-if="user" title="More" ng-click="$event.stopImmediatePropagation();post.menu = true"><i class="material-icons">more_vert</i></button>
+
+			<button ng-if="post.author.isFollowing === false && post.author._id != user._id && user && user.role != 'User'" ng-click="follow(post)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
+
+			<div class="post-menu" ng-if="user" ng-class="{active: post.menu}">
+				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="setEditingMode(post, true)">Edit</a>
+				<a href="javascript:void(0);" ng-if="post.author._id == user._id" ng-click="removePost(post)">Remove</a>
+				<a href="javascript:void(0);" ng-click="hide(post)" ng-if="post.author._id != user._id">Hide this post</a>
+				<a href="javascript:void(0);" ng-click="unfollow(post)" ng-if="post.author._id != user._id && post.author.isFollowing">Unfollow this expert</a>
+				<a href="javascript:void(0);" ng-click="mute(post.author)" ng-if="post.author._id != user._id">Mute</a>
+				<a href="javascript:void(0);" ng-click="report(post)" ng-if="post.author._id != user._id">Report</a>
+				<a href="javascript:void(0);" ng-click="block(post.author)" ng-if="post.author._id != user._id">Block</a>
+			</div>
+		</div>
+
+		<div class="content" ng-class="{collapsed: !justone}">
+			<h3 ng-if="post.title">{{post.title}}</h3>
+			<br>
+			<div class="images" ng-hide="editing">
+				<a image="image" lightbox post="post.id" author="post.author" class="image" ng-repeat="image in post.images" style="background-image: url({{image.filename}})"></a>
+			</div>
+			<textarea class="text" ng-show="editing" ng-model="post.editingText" ng-disabled="loading"></textarea>
+			<div ng-hide="editing" class="text" ng-bind-html="post.text | textLinks | embedvideos | url"></div>
+
+			<div class="buttons" ng-show="editing">
+				<button ng-click="setEditingMode(post, false)" ng-disabled="loading" class="cancel cta-button">Cancel</button>
+				<button ng-click="updatePost(post)" ng-disabled="loading" class="save cta-button">Save</button>
+			</div>
+
+			<div class="shared" ng-if="post.sharedFrom === null">
+				<div class="content">
+					<div class="text">Post removed</div>
+				</div>
+			</div>
+
+			<div class="shared" ng-if="!!post.sharedFrom">
+				<div class="title">
+					<avatar user="post.sharedFrom.author"></avatar>
+
+					<div class="title-text">
+						<a ng-href="#!/person/{{post.sharedFrom.author._id}}" class="name dark-bold">{{::post.sharedFrom.author.name}}</a>
+						<div class="time small-light" am-time-ago="post.sharedFrom.createdAt"></div>
+						<div class="separator" ng-show="post.sharedFrom.author.position">&bull;</div>
+						<div class="position small-light" ng-show="post.sharedFrom.author.position">{{::post.sharedFrom.author.position}}</div>
+					</div>
+
+					<button ng-if="post.sharedFrom.author.isFollowing === false && post.sharedFrom.author._id != user._id && user && user.role != 'User'" ng-click="follow(post.sharedFrom)" class="add small-icon" title="Follow"><i class="material-icons">person_add</i></button>
+				</div>
+
+				<div class="content">
+					<h3 ng-if="post.title">{{post.title}}</h3>
+					<br>
+					<div class="images">
+						<a image="image" lightbox post="post.id" author="post.sharedFrom.author" class="image" ng-repeat="image in post.sharedFrom.images" style="background-image: url({{image.filename}})"></a>
+					</div>
+					<div class="text" ng-bind-html="post.sharedFrom.text | textLinks"></div>
+				</div>
+				<linkpreview meta="post.sharedFrom.meta"></linkpreview>
+			</div>
+
+			<a ng-href="#!/article/{{post._id}}" class="collapsed-shade" ng-class="{visible: expandVisible}" ng-hide="editing"></a>
+		</div>
+		<a ng-href="#!/article/{{post._id}}" ng-class="{visible: expandVisible}" class="expand-article" ng-hide="editing">View full article</a>
+	</div>
+	<linkpreview meta="post.meta"></linkpreview>
+	<div class="likes-row-wrapper" ng-class="likesClass(post.reactions)">
+		<div class="likes-value" ng-class="likesClass(post.reactions)">
+			{{post.reactions.likes_percentage}}% {{likesDescription(post.reactions.likes_percentage)}}
+		</div>
+		<div class="likes-row" style="width: {{post.reactions.likes_percentage}}%" ng-class="likesClass(post.reactions)"></div>
+	</div>
+	<div class="divider" ></div>
+
+	<div class="actions" ng-if="user">
+		<button ng-click="react(post, 'like', post.youdid.like)" ng-class="{active: post.youdid.like}">
+			<i class="material-icons">thumb_up</i> <span class="title">Like</span>
+			<span class="title" ng-if="post.reactions.total.likes > 0"> {{post.reactions.total.likes}}</span>
+		</button>
+		<button ng-click="react(post, 'dislike', post.youdid.dislike)" ng-class="{active: post.youdid.dislike}">
+			<i class="material-icons">thumb_down</i> <span class="title">Dislike</span>
+			<span class="title" ng-if="post.reactions.total.dislikes > 0"> {{post.reactions.total.dislikes}}</span>
+		</button>
+		<button ng-click="react(post, 'smart', post.youdid.smart)" ng-class="{active: post.youdid.smart}">
+			<i class="fa fa-lightbulb-o" aria-hidden="true"></i><span class="title">Smart</span>
+			<span class="title" ng-if="post.reactions.total.smarts > 0"> {{post.reactions.total.smarts}}</span>
+		</button>
+		<button ng-click="react(post, 'worthy', post.youdid.worthy)" ng-class="{active: post.youdid.worthy}">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i><span class="title">Worthy</span>
+			<span class="title" ng-if="post.reactions.total.worthys > 0"> {{post.reactions.total.worthys}}</span>
+		</button>
+
+		<div title="Show comments" ng-click="commentsVisible = !commentsVisible" class="comments-count">
+			<i class="material-icons">chat_bubble</i>
+			<div class="number">{{commentsCount || 0}}</div>
+		</div>
+		<button ng-if="!post.sharedFrom && post.author._id.toString() != user._id.toString() && post.author.role != 'User'"
+				ng-click="react(post, 'share', post.youdid.share)" ng-class="{active: post.youdid.share}" class="share-button">
+			<i class="fa fa-share-square-o" aria-hidden="true"></i>
+			<span class="title">Share</span>
+			<span class="title" ng-if="post.reactions.total.shares > 0"> {{post.reactions.total.shares}}</span>
+		</button>
+	</div>
+	<div class="divider" ng-if="user"></div>
+
+	<div class="actions">
+		<button socialshare
+				socialshare-provider="facebook"
+				socialshare-title="{{post.text | removehtml | cut:true:30}}"
+				socialshare-description="{{post.text | removehtml | cut:true:140}}"
+				socialshare-url="{{getURL(post._id)}}">
+			<i class="fa fa-facebook-f"></i> <span class="title">Share to Facebook</span>
+		</button>
+		<button socialshare
+				socialshare-provider="twitter"
+				socialshare-text="{{post.text | removehtml | cut:true:60}}"
+				socialshare-hashtags="expertreaction"
+				socialshare-url="{{getURL(post._id)}}">
+			<i class="fa fa-twitter"></i> <span class="title">Share to Twitter</span>
+		</button>
+		<button socialshare
+				socialshare-provider="linkedin"
+				socialshare-text="{{post.text | removehtml | cut:true:30}}"
+				socialshare-description="{{post.text | removehtml | cut:true:140}}"
+				socialshare-source="{{getURL(post._id)}}">
+			<i class="fa fa-linkedin"></i><span class="title">Share to Linkedin</span>
+		</button>
+	</div>
+
+	<div class="divider" ng-if="user"></div>
+
+	<postcomments nocollapse="justone" post="post" user="user"></postcomments>
+	<div class="comment-box" ng-if="user">
+		<avatar user="user"></avatar>
+		<textarea placeholder="Write a comment..." maxlength="{{user.role === 'User' ? 250 : null}}" ng-class="{'not-empty': post.commentText}" ng-model="post.commentText"></textarea>
+		<button ng-click="$parent.addComment(post)" class="send">
+			<div>
+				<i class="material-icons">send</i>
+				<div class="title">Send</div>
+			</div>
+		</button>
+
+		<form ng-if="user.role != 'User'"><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
+		<button ng-if="user.role != 'User' && files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>
+
+		<div class="clear"></div>
+		<div class="upload-files" ng-if="user.role != 'User'" ng-show="files.length > 0">
+			<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
+				<a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+</div>

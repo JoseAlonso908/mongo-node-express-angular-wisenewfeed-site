@@ -1,0 +1,19 @@
+<div class="dropdown-wrapper">
+	<div class="menu-buttons dropdown">
+		<div class="title">{{title}}:</div>
+		<div class="option">{{selected.title}}</div>
+	</div>
+
+	<ul class="dropdown-list floating" ng-class="{overflow: overflow}" ng-scrollbar rebuild-on="rebuild-me" scrollbar-hide="!scrollOnSecond">
+		<li ng-repeat="item in list" ng-click="(!!(item.sub)) ? void() : choose(item)" class="{{::(!!item.sub) ? 'nested' : ''}}" ng-class="{active: (!!(item.sub)) ? isActiveParentItem(item) : isActiveItem(item)}">
+			{{item.title}} {{(item.additional) ? '(' + item.additional + ')' : ''}}
+			<div class="sublist-wrapper" ng-show="item.sub" ng-scrollbar rebuild-on="rebuild-me" scrollbar-hide="scrollOnSecond">
+				<ul class="sublist">
+					<li ng-repeat="subItem in item.sub" ng-click="choose(subItem)" ng-class="{active: isActiveItem(subItem)}">
+						{{subItem.title}} {{(subItem.additional) ? '(' + subItem.additional + ')' : ''}}
+					</li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</div>

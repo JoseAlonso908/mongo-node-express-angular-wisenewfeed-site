@@ -1,0 +1,114 @@
+<div class="user-profile-info" ng-if="profile">
+	<div class="info">
+		<a ng-href="#!/person/{{profile._id}}" class="name">{{profile.name}}</a>
+		<div class="nickname" ng-if="profile.nickname">@{{profile.nickname}}</div>
+		<div class="position">{{profile.title}}</div>
+	</div>
+
+	<div class="rating-wrapper" ng-if="profile.likes_percentage">
+		<i class="material-icons like">thumb_up</i>
+		<div class="rating-value">{{profile.likes_percentage}}% Likes</div>
+		<i class="material-icons dislike">thumb_down</i>
+	</div>
+
+	<div class="rating-bar-wrapper" ng-if="profile.likes_percentage">
+		<div class="rating-bar" style="width: {{profile.likes_percentage}}%;"></div>
+	</div>
+</div>
+
+<div class="show-collapsed-info" ng-click="detailedInfoVisible = !detailedInfoVisible">{{(detailedInfoVisible) ? 'Hide' : 'Show'}} detailed info</div>
+
+<div class="collapsed-on-mobile" ng-class="{visible: detailedInfoVisible}">
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Intro</div>
+		<div class="value" ng-show="profile.intro.length > 0">{{profile.intro}}</div>
+		<div class="value tinted" ng-show="!profile.intro || profile.intro.length == 0">Not specified</div>
+	</div>
+
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Experience</div>
+		<div class="value tinted" ng-show="!profile.experience || profile.experience.length == 0">Not specified</div>
+
+		<div class="experience-block" ng-repeat="experience in profile.experience">
+			<div class="value">{{experience.place}}</div>
+			<div class="value">{{experience.time}}</div>
+			<div class="value">{{experience.description}}</div>
+		</div>
+	</div>
+
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Certificates</div>
+		<div class="value tinted" ng-show="!profile.certificates || profile.certificates.length == 0">Not specified</div>
+
+		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificates">{{cert.filename}}</a>
+	</div>
+
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Contacts</div>
+
+		<div class="value tinted" ng-show="!profile.contact.skype && !profile.contact.linkedin && !profile.contact.fb">Not specified</div>
+
+		<div class="address-element skype" ng-if="profile.contact.skype">{{profile.contact.skype}}</div>
+		<a ng-href="https://linkedin.com/in/{{profile.contact.linkedin}}" target="_blank" class="address-element linkedin" ng-if="profile.contact.linkedin">{{profile.contact.linkedin}}</a>
+		<a ng-href="https://facebook.com/{{profile.contact.fb}}" target="_blank" class="address-element fb" ng-if="profile.contact.fb">{{profile.contact.fb}}</a>
+	</div>
+
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Downloads</div>
+		<div class="value tinted" ng-show="!profile.downloads || profile.downloads.length == 0">Not specified</div>
+
+		<a href="{{file.filepath}}" target="_blank" class="file-download" ng-repeat="file in profile.downloads">{{file.filename}}</a>
+	</div>
+
+	<div class="user-description-block" ng-if="profile">
+		<div class="title">Photos</div>
+
+		<div class="value tinted" ng-show="!images || images.length == 0">Not available</div>
+
+		<div class="photos" ng-if="images && images.length > 0">
+			<a class="photo" lightbox image="image" author="profile" ng-class="{empty: image === ''}" style="background-image: url('{{image.filename}}');" ng-repeat="image in images | limitTo: 8"></a>
+			<a ng-href="#!/photos/{{profile._id}}" class="other-photos" ng-if="images.length > 8">+{{images.length - 8}}</a>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+			<div class="photo placeholder"></div>
+		</div>
+	</div>
+</div>
+
+<div class="stats mobile">
+	<a ng-href="{{(profile.reactions.likes > 0) ? '#!/profilefeed/' + profile._id + '/liked' : 'javascript:void(0);'}}" ng-class="{active: active == 'liked'}" class="stat">
+		<i class="material-icons">thumb_up</i>
+		<div class="value">{{profile.reactions.likes || 0}}</div>
+		<div class="title">Like</div>
+	</a>
+	<a ng-href="{{(profile.reactions.dislikes > 0) ? '#!/profilefeed/' + profile._id + '/disliked' : 'javascript:void(0);'}}" ng-class="{active: active == 'disliked'}" class="stat">
+		<i class="material-icons">thumb_down</i>
+		<div class="value">{{profile.reactions.dislikes || 0}}</div>
+		<div class="title">Dislike</div>
+	</a>
+	<a ng-href="{{(profile.reactions.reacts > 0) ? '#!/profilefeed/' + profile._id + '/commented' : 'javascript:void(0);'}}" ng-class="{active: active == 'commented'}" class="stat">
+		<i class="material-icons">chat_bubble</i>
+		<div class="value">{{profile.reactions.reacts || 0}}</div>
+		<div class="title">React</div>
+	</a>
+	<a ng-href="{{(profile.reactions.following > 0) ? '#!/profilepeople/' + profile._id + '/following' : 'javascript:void(0);'}}" ng-class="{active: active == 'following'}" class="stat">
+		<i class="material-icons">person</i>
+		<div class="value">{{profile.reactions.following}}</div>
+		<div class="title">Following</div>
+	</a>
+	<a ng-if="profile.role != 'User'" ng-href="{{(profile.reactions.followers > 0) ? '#!/profilepeople/' + profile._id + '/followers' : 'javascript:void(0);'}}" ng-class="{active: active == 'followers'}" class="stat">
+		<i class="material-icons">people</i>
+		<div class="value">{{profile.reactions.followers}}</div>
+		<div class="title">Followers</div>
+	</a>
+	<a ng-href="{{(profile.reactions.friends > 0) ? '#!/profilepeople/' + profile._id + '/friends' : 'javascript:void(0);'}}" ng-class="{active: active == 'friends'}" class="stat">
+		<i class="material-icons">people</i>
+		<div class="value">{{profile.reactions.friends}}</div>
+		<div class="title">Friends</div>
+	</a>
+</div>

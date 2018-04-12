@@ -1,0 +1,115 @@
+<div id="landing-wrapper" ng-controller="startController">
+	<div id="header-wrapper">
+		<div id="header">
+			<a href="javascript:void(0);" ng-click="goHome()" id="logo"></a>
+
+			<div id="header-buttons">
+				<a href=javascript:void(0);>Home</a>
+				<a href=javascript:void(0);>FAQ</a>
+				<a href=javascript:void(0);>How it works</a>
+			</div>
+
+			<div id="search">
+				<i class="material-icons">search</i>
+				<input type="text" placeholder="Search">
+			</div>
+		</div>
+	</div>
+	<div id="content-wrapper">
+		<div class="content">
+			<div class="welcome">
+				<div class="title">Lorem Ipsum</div>
+				<div class="text">Lorem ipsum dolor sit amet, vis natum saepe signiferumque cu. Ad usu homero fastidii luptatum, est in utinam ceteros fierent. Vidit semper scripserit vel cu. Eu dolorem phaedrum referrentur has</div>
+				<a ng-href="#!/" class="join">Join as guest</a>
+			</div>
+
+			<!-- <div class="auth-blocks" ng-show="user">
+				<div class="login">
+					<div class="title">You already logged in</div>
+					
+					<div class="continue-wrapper">
+						<avatar image="{{user.avatar}}" color="{{user.color}}" number="{{user.rating}}"></avatar>
+
+						<a ng-href="#!/" class="continue">Continue as {{user.name}}</a>
+					</div>
+
+					<a href="javascript:void(0);" ng-click="logout()">Not you?</a>
+				</div>
+			</div> -->
+
+			<div class="auth-blocks">
+				<div class="login">
+					<div class="title">Log in with Email</div>
+
+					<form>
+						<input type="email" name="email" ng-model="login.email" placeholder="Email">
+						<input type="password" name="password" ng-model="login.password" placeholder="Password">
+
+						<div class="form-footer">
+							<input type="submit" ng-click="doLogin()" value="Log in">
+
+							<div class="checkbox-wrapper">
+								<input type="checkbox" ng-model="remember" id="remember" name="remember">
+								<label for="remember" id="remember-label">Remember me</label>
+							</div>
+
+							<a href="javascript:void(0);" class="forgot-password-link" ng-click="forgotPassword()">Forgot password?</a>
+						</div>
+					</form>
+
+					<div class="auth-error" ng-if="login.error">{{login.error}}</div>
+
+					<div class="divider"></div>
+
+					<div class="socials">
+						<div class="title">Log in with Social</div>
+						<div class="social-buttons">
+							<a href="javascript:void(0);" ng-click="authenticate('facebook')" class="fb"></a>
+							<a href="javascript:void(0);" ng-click="authenticate('linkedin')" class="linkedin"></a>
+							<a href="javascript:void(0);" ng-click="authenticate('twitter')" class="twitter"></a>
+						</div>
+					</div>
+				</div>
+				<a href="javascript:void(0);" ng-click="findMyAccount()">Find my account</a>
+
+				<div class="register">
+					<div class="title">Are you new? Sign up using form below</div>
+
+					<form name="signupForm" novalidate>
+						<input type="text" name="name" ng-model="signup.name" placeholder="Full name" minlength="6" ng-required="true">
+
+						<select class="half"
+							name="country"
+							chosen
+							placeholder="Country"
+							data-placeholder-text-single="'Country'"
+							allow-single-deselect="false"
+							ng-required="true"
+							ng-model="signup.country"
+							ng-options="country as country.title for country in countries"
+						>
+							<option value="">Country</option>
+						</select>
+
+						<input type="text" class="half" name="phone" ng-model="signup.phone" placeholder="Phone number" ng-minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" required>
+						<input type="email" name="email" ng-model="signup.email" placeholder="Email" ng-minlength="1" required>
+						<input type="password" name="password" ng-class="{ngInvalid: !signup.password}" ng-model="signup.password" placeholder="Password" ng-minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" required>
+						<div class="field-tip" ng-class="{visible: (!signupForm.password.$valid && signupForm.password.$touched)}">
+							<ul>
+								<li ng-if="signupForm.password.$error.required">Password length should be present</li>
+								<li ng-if="signupForm.password.$error.minlength">Password length should be 8 symbols or more</li>
+								<li ng-if="signupForm.password.$error.pattern">Password should contain at least one digit and one letter</li>
+							</ul>
+						</div>
+
+						<div class="form-footer">
+							<input type="submit" ng-click="doSignup()" value="Sign up">
+						</div>
+					</form>
+
+					<div class="auth-error" ng-if="signup.error">{{signup.error}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Expert Reaction Homepage</title>
+
+		<link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+		<script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+
+		<!--<script src="https://unpkg.com/rangy@1.3.0/lib/rangy-core.js"></script>-->
+		<!--<script src="https://unpkg.com/rangy@1.3.0/lib/rangy-selectionsaverestore.js"></script>-->
+
+		<script src="assets/scripts/angular.js"></script>
+		<script src="assets/scripts/app.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/ngMask/3.1.1/ngMask.min.js"></script>
+
+		<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.proto.js"></script>
+
+		<script>
+			WebFont.load({
+				google: {families: ['Roboto:400,400i,500,700,900', 'Material Icons']},
+				active: function() {
+					try {
+						sessionStorage.fonts = true
+					} catch (e) {
+						console.error('Error updating sessionStorage.', e)
+					}
+				}
+			})
+		</script>
+		<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=no" />
+
+		<link rel="stylesheet" type="text/css" href="assets/css/screen.css">
+	</head>
+	<body ng-app="er">
+		<div ng-view class="view"></div>
+	</body>
+</html>

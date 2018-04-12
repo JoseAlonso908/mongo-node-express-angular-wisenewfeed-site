@@ -1,0 +1,16 @@
+<div class="link-preview-wrapper">
+    <div class="link-preview" ng-if="meta">
+        <a ng-if="meta.image" href="{{meta.url}}" target="_blank">
+            <img src="{{meta.image}}">
+        </a>
+        <div class="info-block">
+            <div class="title">
+                <a href="{{meta.url}}" target="_blank">{{meta.title}}</a>
+            </div>
+            <div class="description">
+                {{meta.description}}
+            </div>
+            <div class="origin-block">{{meta.publisher}}<span ng-if="meta.author"> | </span>{{meta.author}}</div>
+        </div>
+    </div>
+</div>

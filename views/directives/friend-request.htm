@@ -1,0 +1,13 @@
+<div class="familiar-expert card" ng-show="friendshipRequest">
+	<button ng-click="mute(friendshipRequest.user)" class="hide"><i class="material-icons">close</i></button>
+	<div class="header">
+		<avatar user="friendshipRequest.user"></avatar>
+		<a ng-href="#!/person/{{friendshipRequest.user._id}}" class="name">{{friendshipRequest.user.name}}</a>
+		<div class="role">{{friendshipRequest.user.role}}, {{friendshipRequest.type}}</div>
+	</div>
+	<div class="divider"></div>
+	<div class="footer">
+		<div ng-click="accept(friendshipRequest)" class="follow" title="Accept"><i class="material-icons">person_add</i> <div class="title">Accept</div></div>
+		<div ng-click="decline(friendshipRequest)" class="follow" title="Decline"><div class="title">Decline</div></div>
+	</div>
+</div>

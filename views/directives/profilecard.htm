@@ -1,0 +1,20 @@
+<div class="card user-info">
+	<div class="mini-wallpaper" ng-class="{empty: !user.wallpaper}" style="background-image: url('{{user.wallpaper}}')"></div>
+	<a href="#!/person/{{user._id}}">
+		<div class="avatar" style="background-image: url('{{image}}')"></div>
+	</a>
+
+	<div class="info">
+		<div class="name dark-bold">{{user.name}}</div>
+		<div class="status">{{user.role}}</div>
+		<a href="#!/person/{{user._id}}">View profile</a>
+	</div>
+
+	<div ng-if="user.role == 'User'" class="divider"></div>
+
+	<div ng-if="user.role == 'User'">
+		<a href="#!/beta/expert">Upgrade to Expert</a>
+		<br>
+		<a href="#!/beta/journalist">Upgrade to Journalist</a>
+	</div>
+</div>

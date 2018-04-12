@@ -1,0 +1,25 @@
+<div id="top-bar">
+	<a id="logo" ng-href="#!/"></a>
+
+	<search q="q"></search>
+
+	<a ng-show="!user" ng-href="#!/start" class="cta-button">
+		<i class="material-icons">person</i>
+		<div class="title">Sign up</div>
+	</a>
+
+	<followersicon ng-if="user && user.role != 'User'" user="user"></followersicon>
+	<messagesicon ng-if="user" user="user"></messagesicon>
+	<notificationsicon ng-if="user" user="user"></notificationsicon>
+
+	<div id="user-block" ng-cloak ng-if="$parent.user">
+		<div class="avatar-wrapper" ng-click="$parent.openUserMenu($event)">
+			<avatar nolink="true" user="user"></avatar>
+		</div>
+		<a class="name dark-bold" ng-click="$parent.openUserMenu($event)" href="javascript:void(0);">{{user.name || 'Guest'}}</a>
+		<span class="role">{{user.role}}</span>
+		<!-- <a class="view-profile" ng-if="user.role != 'User'" ng-href="#!/person/{{user._id}}">View profile</a> -->
+
+		<usermenu user="user" ng-if="$parent.user"></usermenu>
+	</div>
+</div>

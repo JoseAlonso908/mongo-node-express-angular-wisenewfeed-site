@@ -1,0 +1,29 @@
+<div class="new-questions">
+	<div class="header">
+		<div class="title"><span ng-show="questions.length > 0">{{questions.length}} </span>New questions</div>
+		<a ng-href="#!/questions/{{user._id}}" ng-show="questions.length > 0" class="cta-button view-all">View all</a>
+	</div>
+
+	<div class="loader" ng-show="loading"></div>
+
+	<div class="question card" ng-repeat="question in questions track by $index" ng-hide="question.author.isFollowing == undefined">
+		<button ng-hide="question.author.isFollowing" ng-click="follow(question)" class="follow"><i class="material-icons">person_add</i></button>
+		<div class="header">
+			<avatar user="question.author"></avatar>
+			<div class="name">{{question.author.name}}</div>
+			<div class="role">{{question.author.role}}</div>
+		</div>
+		<div class="divider"></div>
+		<div class="text">{{question.text}}</div>
+		<div class="footer">
+			<a href="javascript:void(0);" ng-disabled="question.liked" ng-click="(question.liked) ? void(0) : like(question)" class="likes"><i class="material-icons">thumb_up</i> <span>{{question.likes || 0}}</span></a>
+			<a ng-href="#!/questions/{{user._id}}/{{question._id}}" class="reply" title="Reply"><i class="material-icons">reply</i> <div class="title">Reply</div></a>
+		</div>
+	</div>
+
+	<div class="text" ng-show="questions.length == 0 && loading == false">You have no questions</div>
+
+	<div class="footer" ng-show="!familiarExpertsLoading">
+		<a href="javascript:void(0);" ng-click="refresh()"><i class="material-icons">refresh</i> Refresh</a>
+	</div>
+</div>

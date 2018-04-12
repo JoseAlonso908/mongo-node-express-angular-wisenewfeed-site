@@ -1,0 +1,17 @@
+<div class="familiar-expert card" ng-show="person">
+	<button ng-click="mute(person)" class="hide"><i class="material-icons">close</i></button>
+	<div class="header">
+		<avatar user="person"></avatar>
+		<a ng-href="#!/person/{{person._id}}" class="name">{{person.name}}</a>
+		<div class="role">{{person.role}}</div>
+	</div>
+	<div class="divider"></div>
+	<div class="footer">
+		<div class="likes-row-wrapper">
+			<div class="likes-value">{{person.likes_percentage}}% Likes</div>
+			<div class="likes-row" style="width: {{person.likes_percentage}}%"></div>
+		</div>
+		<div ng-show="!person.isFollowing && user.role != 'User'" ng-click="follow(person)" class="follow" title="Follow"><i class="material-icons">person_add</i> <div class="title">Follow</div></div>
+		<div ng-show="person.isFollowing && user.role != 'User'" ng-click="unfollow(person)" class="follow" title="Follow"><div class="title">Unfollow</div></div>
+	</div>
+</div>

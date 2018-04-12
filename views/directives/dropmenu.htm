@@ -1,0 +1,10 @@
+<div class="drop-menu-wrap">
+    <button class="more small-icon" title="More" ng-click="$event.stopImmediatePropagation();activeMnu = true">
+        <span>{{privacy}}</span> <i class="fa fa-shield"></i>
+    </button>
+
+    <ul class="drop-menu" ng-class="{active: activeMnu}">
+        <li ng-repeat="item in items" data-value="{{item}}" ng-click="select(item)" ng-class="{active: item === privacy}">{{item}}</li>
+    </ul>
+
+</div>

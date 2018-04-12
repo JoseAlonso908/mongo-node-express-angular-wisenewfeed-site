@@ -1,0 +1,16 @@
+<div class="backdrop">
+	<div class="popup">
+		<div class="title">Complete your registration</div>
+		<div class="text">We were unable to get all required data from your social network profile. Please, fill missing fields to continue.</div>
+		
+		
+		<input type="text" ng-disabled="loading || !ready" ng-change="codeError = false" ng-class="{error: codeError}" ng-model="code" placeholder="Enter your code">
+
+		<div class="footer">
+			<a href="javascript:void(0);" ng-click="resend()" ng-disabled="!ready || resendTimer > 0">Resend code <span ng-show="resendTimer > 0">({{resendTimer}})</span></a>
+
+			<button ng-click="confirm()" ng-disabled="loading || !ready" class="confirm">Confirm</button>
+			<button ng-click="close()" class="cancel">Cancel</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+<div id="wrapper">
+    <div id="top-bar-background">
+        <topbar user="user"></topbar>
+    </div>
+
+    <div class="content">
+        <div class="write-post">
+            <div class="headline">
+                <div class="title">Headline</div>
+                <input type="text" ng-model="title">
+            </div>
+
+            <div class="post-content">
+                <div class="controls">
+                    <div class="fonts-list" ng-show="fontListVisible">
+                        <button ng-repeat="font in fonts" ng-style="{'font-family': font}" ng-click="setFont($event, font)">{{font}}</button>
+                    </div>
+                    <button title="Select font" class="control wide" ng-click="showFontList($event)">
+                        <div class="control-wrapper">
+                            <div class="title">Font</div>
+                            <i class="material-icons">keyboard_arrow_down</i>
+                        </div>
+                    </button>
+                    <div class="divider"></div>
+                    <button title="Bold" class="control" ng-click="command('bold')"><i class="material-icons">format_bold</i></button>
+                    <button title="Italic" class="control" ng-click="command('italic')"><i class="material-icons">format_italic</i></button>
+                    <button title="Underlined" class="control" ng-click="command('underline')"><i class="material-icons">format_underlined</i></button>
+                    <div class="divider"></div>
+                    <button title="Align left" class="control" ng-click="command('justifyLeft')"><i class="material-icons">format_align_left</i></button>
+                    <button title="Align center" class="control" ng-click="command('justifyCenter')"><i class="material-icons">format_align_center</i></button>
+                    <button title="Align right" class="control" ng-click="command('justifyRight')"><i class="material-icons">format_align_right</i></button>
+                    <button title="Unordered list" class="control" ng-click="command('insertUnorderedList')"><i class="material-icons">list</i></button>
+                    <div class="divider"></div>
+                    <button title="Add quotation" class="control" ng-click="command('formatBlock', 'blockquote')"><i class="material-icons">format_quote</i></button>
+                    <button title="Remove quotation" class="control" ng-click="command('formatBlock', 'div')"><i class="material-icons">remove_circle_outline</i></button>
+                    <div class="divider"></div>
+                    <button title="Add photo" class="control" ng-click="addImage()" ng-show="files.length < 5"><i class="material-icons">photo</i></button>
+                </div>
+                <div class="text" ng-keyup="autocomplete($event)" contenteditable ng-model="text"></div>
+            </div>
+
+            <form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
+
+            <div class="upload-files" ng-show="files.length > 0">
+                <div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
+                    <a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <dropmenu privacy="privacy" ng-disabled="loading" class="visible"></dropmenu>
+            <div class="clear"></div>
+            <button ng-click="create()" class="create cta-button">Publish</button>
+        </div>
+    </div>
+</div>

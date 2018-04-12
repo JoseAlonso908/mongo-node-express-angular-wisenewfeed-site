@@ -1,0 +1,277 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="content">
+		<div class="left">
+			<div class="settings-list" ng-show="user">
+				<a ng-click="activePage = 'general'" ng-class="{active: activePage == 'general'}" href="javascript:void(0);">General</a>
+				<a ng-click="activePage = 'password'" ng-class="{active: activePage == 'password'}" href="javascript:void(0);">Change password</a>
+				<a ng-hide="user.role == 'User'" ng-click="activePage = 'notifications'" ng-class="{active: activePage == 'notifications'}" href="javascript:void(0);">Notifications</a>
+				<div class="divider"></div>
+				<a ng-click="activePage = 'socialconnect'" ng-class="{active: activePage == 'socialconnect'}" href="javascript:void(0);">Social connect</a>
+				<a ng-click="activePage = 'importcontacts'" ng-class="{active: activePage == 'importcontacts'}" href="javascript:void(0);">Import contacts</a>
+			</div>
+
+			<aboutbox></aboutbox>
+		</div>
+		<div class="middle">
+			<div class="settings-wrapper" ng-class="{active: activePage == 'general'}">
+				<form name="profileSettings" ng-submit="savingFuncs['general']($event)">
+					<h3>General settings</h3>
+					<div class="subtitle">Change your basic account information and language settings.</div>
+
+					<div class="divider"></div>
+
+					<div class="settings-field-block">
+						<label>Nickname</label>
+						<input type="text" name="nickname" ng-model="user.nickname" minlength="2" maxlength="20" required ng-pattern="/^(?![0-9])[a-zA-Z0-9]+$/">
+						<div class="error-block" ng-show="(profileSettings.nickname.$error.required  || profileSettings.nickname.$error.pattern || profileSettings.nickname.$error.minlength) && profileSettings.nickname.$touched">
+							Nickname should not start with a numeric character, may not contain special characters and spaces
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="settings-field-block">
+						<label>Full name</label><input type="text" name="name" ng-model="user.name" minlength="6" required>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Email</label><input type="text" name="email" minlength="1" value="{{user.email}}" required>
+						<div class="clear"></div>
+						<div class="error">{{emailerror}}</div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Phone</label><input type="text" name="phone" minlength="8" ng-pattern="/^[0-9\(\) \+]+$/" value="{{user.phone}}" required>
+						<div class="clear"></div>
+						<div class="error">{{phoneerror}}</div>
+					</div>
+
+					<div class="divider"></div>
+
+					<div class="settings-field-block">
+						<label>Country</label>
+						<select ng-model="user.country" ng-change="countryChosen()" ng-model-options="{debounce: 250}" name="country">
+							<option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>City</label>
+						<div class="small-loader" ng-show="loadingCities"></div>
+						<select ng-model="user.city" name="city">
+							<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Field</label>
+						<select ng-model="user.field" name="field" ng-options="field.title as field.title for field in fields">
+							<option value="">Field</option>
+							<!-- <option ng-repeat="field in fields" value="{{field.title}}">{{field.title}}</option> -->
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Gender</label>
+						<select name="gender" ng-model="user.gender">
+							<option value="">Not specified</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Language</label>
+						<select name="language">
+							<option>English</option>
+							<option>Spanish</option>
+							<option>Russian</option>
+						</select>
+						<div class="clear"></div>
+					</div>
+
+					<div class="divider"></div>
+
+					<input type="submit" class="cta-button" value="Save changes">
+				</form>
+			</div>
+
+			<div class="settings-wrapper" ng-class="{active: activePage == 'password'}">
+				<form name="changePassword" ng-submit="savingFuncs['password']($event)">
+					<h3>Change password</h3>
+					<div class="subtitle">Change your password or recover your current one.</div>
+
+					<div class="divider"></div>
+
+					<div class="settings-field-block" ng-if="user.havePassword">
+						<label>Current</label><input name="oldPassword" type="{{($parent.oldPasswordShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="$parent.oldPassword" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="$parent.oldPasswordShow = !$parent.oldPasswordShow">
+							<i class="material-icons">{{($parent.oldPasswordShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>New</label><input name="newPassword" type="{{(newPasswordShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="newPassword" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="newPasswordShow = !newPasswordShow">
+							<i class="material-icons">{{(newPasswordShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
+
+					<div class="settings-field-block">
+						<label>Repeat</label><input name="newPasswordRepeat" type="{{(newPasswordRepeatShow) ? 'text' : 'password'}}" minlength="8" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/" ng-model="newPasswordRepeat" required>
+						<a href="javascript:void(0);" class="input-control" ng-click="newPasswordRepeatShow = !newPasswordRepeatShow">
+							<i class="material-icons">{{(newPasswordRepeatShow) ? 'visibility_off' : 'visibility'}}</i>
+						</a>
+						<div class="clear"></div>
+					</div>
+
+					<div class="tip">Password should be shorter than 8 symbols and contain at least one digit and one letter.</div>
+
+					<div class="divider"></div>
+
+					<input type="submit" class="cta-button" value="Save changes">
+				</form>
+			</div>
+
+			<div class="settings-wrapper" ng-class="{active: activePage == 'notifications'}">
+				<a href="javascript:void(0);" ng-class="{disabled: !user.notifications.expert && !user.notifications.journalist && !user.notifications.reacted && !user.notifications.liked}" ng-click="turnAllOff()" class="top-link">Turn off all notifications</a>
+				<h3>Notifications</h3>
+				<div class="subtitle">Manage your notifications.</div>
+
+				<div class="divider"></div>
+
+				<form name="notifications" ng-submit="savingFuncs['notifications']($event)">
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.expert" id="notifyexpert" name="notifyexpert">
+						<label for="notifyexpert" class="label">Notify about Expert</label>
+					</div>
+
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.journalist" id="notifyjournalist" name="notifyjournalist">
+						<label for="notifyjournalist" class="label">Notify about Journalist</label>
+					</div>
+
+					<div class="divider"></div>
+
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.reacted" id="notifyreacted" name="notifyreacted">
+						<label for="notifyreacted" class="label">Notify about post I reacted</label>
+					</div>
+
+					<div class="checkbox-wrapper">
+						<input type="checkbox" ng-model="user.notifications.liked" id="notifyliked" name="notifyliked">
+						<label for="notifyliked" class="label">Notify about post I liked</label>
+					</div>
+
+					<div class="divider"></div>
+
+					<input type="submit" class="cta-button" value="Save changes">
+				</form>
+			</div>
+
+			<div class="settings-wrapper" ng-class="{active: activePage == 'socialconnect'}">
+				<h3>Social connect</h3>
+				<div class="subtitle">Connect yout social accounts to Expert Reaction.</div>
+
+				<div class="divider"></div>
+
+				<div class="social-network facebook" ng-class="{connected: user.facebook}">
+					<div class="icon"></div>
+
+					<div class="info">
+						<div class="title">Facebook</div>
+						<div class="name">{{user.facebookName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-show="!user.facebook" ng-click="connect('facebook')">Connect</button>
+						<button ng-show="user.facebook" ng-click="disconnect('facebook')">Disconnect</button>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+
+				<div class="divider narrow"></div>
+
+				<div class="social-network linkedin" ng-class="{connected: user.linkedin}">
+					<div class="icon"></div>
+
+					<div class="info">
+						<div class="title">Linkedin</div>
+						<div class="name">{{user.linkedinName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-show="!user.linkedin" ng-click="connect('linkedin')">Connect</button>
+						<button ng-show="user.linkedin" ng-click="disconnect('linkedin')">Disconnect</button>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+
+				<div class="divider narrow"></div>
+
+				<div class="social-network twitter" ng-class="{connected: user.twitter}">
+					<div class="icon"></div>
+
+					<div class="info">
+						<div class="title">Twitter</div>
+						<div class="name">{{user.twitterName}}</div>
+					</div>
+
+					<div class="actions">
+						<button ng-show="!user.twitter" ng-click="connect('twitter')">Connect</button>
+						<button ng-show="user.twitter" ng-click="disconnect('twitter')">Disconnect</button>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div class="settings-wrapper" ng-class="{active: activePage == 'importcontacts'}">
+				<h3>Import contacts</h3>
+				<div class="subtitle">Choosing a service will open a window for you to log in securely and import your contacts to Expert Reaction. We won't email anyone without your consent, but we may use contact information to improve Expert and Followers suggestions</div>
+
+				<div class="divider"></div>
+
+				<div class="import-social">
+					<div class="social-info">
+						<div class="logo twitter"></div>
+						<div class="title">Twitter</div>
+					</div>
+
+					<a href="javascript:void(0);" ng-click="invite('twitter')">Search</a>
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="import-users-list">
+					<div class="user" ng-repeat="u in importedusers['twitter'] track by $index">
+						<button ng-click="toggleFollow(u)" ng-class="{following: u.isFollowing}">{{(u.isFollowing) ? 'Following' : 'Follow'}}</button>
+
+						<a ng-href="#!/person/{{u._id}}" target="_blank">
+							<avatar user="u"></avatar>
+						</a>
+
+						<div class="text">
+							<a ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</a>
+							<div class="role">{{u.role}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+
+		</div>
+	</div>
+</div>

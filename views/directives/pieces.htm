@@ -1,0 +1,19 @@
+<div class="recent-list" ng-if="pieces.tags.length > 0">
+	<div class="title"><span class="so-bold">Recent</span> #Tags</div>
+	<a ng-href="#!/tagsearch/{{tag.title | encodeuri}}" class="item" ng-repeat="tag in pieces.tags">{{tag.title}}</a>
+</div>
+
+<div class="recent-list" ng-if="pieces.people.length > 0">
+	<div class="title"><span class="so-bold">Recent</span> @PeopleName</div>
+	<a ng-href="#!/tagsearch/{{guy.title}}" class="item" ng-repeat="guy in pieces.people">{{guy.title}}</a>
+</div>
+
+<div class="recent-list" ng-if="pieces.categories.length > 0">
+	<div class="title"><span class="so-bold">Recent</span> $Category</div>
+	<a ng-href="#!/tagsearch/{{cat.title}}" class="item" ng-repeat="cat in pieces.categories">{{cat.title}}</a>
+</div>
+
+<div class="recent-list" ng-if="pieces.countries.length > 0">
+	<div class="title"><span class="so-bold">Recent</span> !Country</div>
+	<a ng-href="#!/tagsearch/{{country.title}}" class="item" ng-repeat="country in pieces.countries">{{country.title}}</a>
+</div>

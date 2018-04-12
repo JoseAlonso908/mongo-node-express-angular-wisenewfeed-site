@@ -1,0 +1,128 @@
+<div id="wrapper">
+	<div id="top-bar-background">
+		<topbar user="user"></topbar>
+	</div>
+
+	<div class="content chat-content">
+		<div class="middle wide flex">
+			<div class="messages-wrapper">
+				<div class="chats" ng-class="{hidden: !!activeChat}">
+					<div class="search">
+						<a href="javascript:void(0);" class="action"><i class="material-icons">search</i></a>
+						<input type="text" placeholder="Search in conversations" ng-change="filterConversations()" ng-model="search">
+						<a href="javascript:void(0);" ng-click="showStartConversation($event)" class="action"><i class="material-icons">add</i></a>
+					</div>
+
+					<div class="start-conversation-popup" ng-class="{hidden: !showstartconversation}">
+						<input type="text" id="add-user" ng-model="searchterm" ng-model-options="{debounce: 300}" ng-change="updateUsersSearch()" placeholder="Add Expert/Journalist">
+
+						<div class="users-autocomplete" ng-show="foundusers.length > 0">
+							<div class="user" ng-class="{chosen: u.chosen}" ng-click="chooseUser(u)" ng-repeat="u in foundusers track by u._id">
+								<avatar user="u" nolink="true"></avatar>
+								
+								<div class="text">
+									<div ng-href="#!/person/{{u._id}}" class="name">{{u.name}}</div>
+									<div class="role">{{u.role}}</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="chosen-users" ng-hide="chosenusers.length == 0">
+							<div class="chosen" ng-repeat="u in chosenusers track by $index">
+								<span class="name">{{u.name}}</span>
+								<a href="javascript:void(0);" ng-click="removeChosen($index)"><i class="material-icons">close</i></a>
+							</div>
+						</div>
+
+						<textarea ng-model="startconversationmessage" placeholder="Your invitation message"></textarea>
+
+						<a class="send" ng-click="sendStartMessages()" href="javascript:void(0);">Send</a>
+					</div>
+
+					<div class="user" ng-class="{unread: u.read === false, active: u.active, visible: u.visible}" ng-click="setActive(u)" ng-repeat="u in chats">
+						<avatar user="u" nolink="true"></avatar>
+						<div class="date" ng-show="u.lastMessageTime">{{u.lastMessageTime | amDateFormat:'MM.DD, HH:mm'}}</div>
+						<div class="text">
+							<a ng-href="#!/person/{{u._id}}" class="name">{{::u.name}}</a>
+							<div class="role">{{u.lastMessage || u.role}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat" ng-class="{hidden: !activeChat}">
+					<div class="close-chat" ng-click="makeChatsInactive()">
+						<i class="material-icons">keyboard_arrow_left</i>
+						<div class="title">Close chat</div>
+					</div>
+
+					<div class="loader" ng-show="loading"></div>
+
+					<div class="selected-messages" ng-show="selectedMessages.length > 0">
+						<div class="title">
+							<div class="ttext">{{selectedMessages.length}} message(s) selected</div>
+							<button class="small-icon" ng-click="clearSelectedMessages()">
+								<i class="material-icons">close</i>
+							</button>
+						</div>
+						<div class="buttons">
+							<a href="javascript:void(0);" ng-click="hideMessages()">Delete</a>
+							<!-- <a href="javascript:void(0);">Report spam</a> -->
+						</div>
+					</div>
+
+					<div ng-show="!chatChosen && !loading" class="text">Conversation is not chosen</div>
+					<div ng-show="chatChosen && chatMessages.length == 0 && !loading" class="text">This conversation is empty.</div>
+
+					<div class="messages-box-wrapper" ng-scrollbar bottom rebuild-bottom-on="rebuild-chat-messages-bottom" rebuild-on="rebuild-chat-messages" ng-class="{'image-added': files.length > 0}">
+						<div class="messages">
+							<!-- <a href="javascript:void(0);" ng-show="!hideLoadMore && chatChosen && chatMessages.length > 0" class="load-more" ng-click="loadMore()">Load more</a> -->
+							<div class="message" ng-hide="m.hidden" ng-class="{unread: !m.read, selected: m.selected}" ng-click="toggleSelectMessage(m)" ng-repeat="m in chatMessages track by m._id">
+								<a ng-href="#!/person/{{m.from._id}}">
+									<avatar user="m.from"></avatar>
+								</a>
+
+								<div class="date" am-time-ago="m.createdAt"></div>
+								<div class="name">{{::m.from.name}}</div>
+								<div class="mtext">{{::m.text}}</div>
+
+								<div class="images" ng-class="{empty: m.images.length == 0}">
+									<div class="image-wrapper" ng-repeat="image in m.images">
+										<div ng-click="window.open(image)" class="chat-image" style="background-image: url({{image}});background-size: contain;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="write-message" ng-if="chatChosen">
+						<avatar user="user"></avatar>
+						<textarea placeholder="Write a message..." class="not-empty" ng-model="$parent.text"
+								  ng-keyup="console.log($event);$event.keyCode == 13 && $event.ctrlKey == true && sendMessage()"
+								  maxlength="{{(user.role == 'User') ? 250 : 10000}}"></textarea>
+						<button ng-click="sendMessage()" class="send">
+							<div>
+								<i class="material-icons">send</i>
+								<div class="title">Send</div>
+							</div>
+						</button>
+
+						<form><input type="file" name="file" accept="image/*" class="hidden-file-input"></form>
+						<button ng-if="files.length < 5" ng-click="addImage()" class="upload-image"><i class="material-icons">camera_alt</i></button>
+
+						<div class="clear"></div>
+						<div class="upload-files" ng-show="files.length > 0">
+							<div class="file" ng-repeat="file in files" style="background-image: url({{file.base64}})">
+								<a href="javascript:void(0);" class="remove" ng-click="removeUpload($index)"><i class="material-icons">close</i></a>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right" ng-if="feedType != 'people'">
+			<newquestions user="user" ng-show="user && user.active_questions > 0"></newquestions>
+			<familiarexperts></familiarexperts>
+			<aboutbox></aboutbox>
+		</div>
+	</div>
+</div>

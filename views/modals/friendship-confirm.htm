@@ -1,0 +1,27 @@
+<div class="backdrop">
+    <div class="popup" ng-if="!added">
+        <div class="title">Confirm your friendship</div>
+        <div class="text">Please, insert your friend's phone number to confirm yo friendship:  +(country code)local phone number</div>
+        <div class="text error">{{$parent.error}}</div>
+
+        <div class="small-loader" ng-if="loading"></div>
+        <input type="text" ng-change="$parent.phoneError = false" ng-class="{error: $parent.phoneError}"
+               ng-model="$parent.phone" placeholder="Phone" mask="+9 999 999 99 99?9" mask-clean="true">
+
+        <select ng-model="$parent.type" ng-options="type for type in types"></select>
+
+        <div class="footer">
+            <!--TODO: MAKE SURE THAT CONFIRM IS FROM RIGHT SIDE -->
+            <button ng-click="$parent.confirm()" class="confirm">Confirm</button>
+            <button ng-click="$parent.close()" class="cancel">Cancel</button>
+        </div>
+    </div>
+
+    <div ng-if="added" class="popup">
+        <div class="text">Request successfully sent to user.</div>
+
+        <div class="footer">
+            <button ng-click="$parent.close()" class="confirm">Close</button>
+        </div>
+    </div>
+</div>

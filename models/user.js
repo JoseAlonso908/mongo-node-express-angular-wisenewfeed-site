@@ -16,50 +16,17 @@ var Model = function(mongoose) {
 		name			: String,
         nickname		: String,
 		intro			: String,
-		username 		: String,
 		email			: String,
 		password		: {type: String, select: false},
 		phone			: String,
 		country			: String,
 		city 			: String,
-		categories      : String,
 		gender			: String,
 		position		: String,
 		company 		: String,
 		field			: String,
 		role 			: String,
 		title 			: String,
-		educa           : String,
-		expc            : String,
-		own             : String,
-		car             : String,
-		achi            : String,
-		consi           : String,
-		cy              : String,
-		expy            : String,
-		wb              : String,
-		hp              : String,
-		vl              : String,
-		pyh             : String,
-		cerci           : String,
-		ywab            : String,
-		yob             : String,
-		cibw            : String,
-		author          : String,
-		book:[{
-			title:String,
-			publication:String,
-	        author:[],
-	        retailstore:String,
-		}],
-		isBlocked: {
-			type: Boolean,
-			default: false
-		},
-		isAdmin: {
-			type: Boolean,
-			default: false
-		},
 		contact 		: {
 			email: String,
 			phone: String,
@@ -68,26 +35,6 @@ var Model = function(mongoose) {
 			fb: String,
 		},
 		certificates: [{
-			filename	: String,
-			filepath	: String,
-		}],
-		certificatesB: [{
-			filename	: String,
-			filepath	: String,
-		}],
-		certificatesCa: [{
-			filename	: String,
-			filepath	: String,
-		}],
-		certificatesE: [{
-			filename	: String,
-			filepath	: String,
-		}],
-		certificatesAc: [{
-			filename	: String,
-			filepath	: String,
-		}],
-		certificatesC: [{
 			filename	: String,
 			filepath	: String,
 		}],
@@ -109,31 +56,30 @@ var Model = function(mongoose) {
 		color 			: {type: String, default: 'bronze'},
 		xp				: {type: Number, default: 0},
 		xpInfo 			: {type: Object, default: {a: 1}},
-		nextXpCronDate		: Date,
 		lastVisit		: Date,
 	})
 
 	var getLevelInfoByXP = (xp) => {
 		let level = 0,
-			levelScore = 0,
-			badge = 0,
-			badgeLevel = 0,
-			badgeMaxLevels = 10,
 			xpPassed = 0,
-			prevXpPassed = 0
+			prevXpPassed = 0,
+			baseXP = 50
 
 		while (xpPassed <= xp) {
-			if (badge < 10) levelScore += ((badge+1) * 10);
-			else levelScore += ((badge+5) * 10);
-			xpPassed += levelScore;
-			level++;
-			badgeLevel++;
-			if (badgeLevel == badgeMaxLevels) {
-				badge++;
-				badgeLevel = 0;
-				badgeMaxLevels = Math.round(badgeMaxLevels * 0.8);
-				if (badge == 10) badgeMaxLevels = 100000000; // Not acheivable target for an user
+			if (xpPassed == 0) {
+				xpPassed = baseXP
+			} else {
+				var factor = 3.08 - Math.sqrt(Math.log(level))
+
+				if (factor < 1.01) {
+					factor = 1.01
+				}
+
+				xpPassed *= factor
+				xpPassed = Math.round(xpPassed)
 			}
+
+			level++
 
 			if (xpPassed > xp) break
 			prevXpPassed = xpPassed
@@ -144,23 +90,20 @@ var Model = function(mongoose) {
 			prevLevelXp: prevXpPassed,
 			nextLevelXp: xpPassed,
 			xpGap: xpPassed - prevXpPassed,
-			badge: badge,
 		}
 	}
 
 	var setXpInfo = function (user, callback) {
+		user.xpInfo = getLevelInfoByXP(user.xp)
 
-		if (user) {
-			user.xpInfo = getLevelInfoByXP(user.xp)
-
-			if (user.xpInfo.level >0 && user.xpInfo.level < 30) {
-				user.color = 'bronze'
-			} else if (user.xpInfo.level >= 30 && user.xpInfo.level < 60) {
-				user.color = 'silver'
-			} else {
-				user.color = 'gold'
-			}
+		if (user.xpInfo.level > 0 && user.xpInfo.level < 30) {
+			user.color = 'bronze'
+		} else if (user.xpInfo.level >= 30 && user.xpInfo.level < 60) {
+			user.color = 'silver'
+		} else {
+			user.color = 'gold'
 		}
+
 		callback(null, user)
 	}
 
@@ -171,28 +114,6 @@ var Model = function(mongoose) {
 	return {
 		setXpInfo: setXpInfo,
 
-		removeUserById : (_id, callback) => {
-			_id = MOI(_id)
-
-			Model.findOneAndRemove({_id},callback);
-		},
-
-		blockUserById: (_id, callback) => {
-			_id = MOI(_id)
-
-			Model.findOne({_id}, (err, user) => {
-				user.isBlocked = true;
-				user.save(callback);
-			})
-		},
-		unblockUserById: (_id, callback) => {
-			_id = MOI(_id)
-
-			Model.findOne({_id}, (err, user) => {
-				user.isBlocked = false;
-				user.save(callback);
-			})
-		},
 		updateLastVisit: (_id, callback) => {
 			_id = MOI(_id)
 
@@ -200,18 +121,6 @@ var Model = function(mongoose) {
 				user.lastVisit = (new Date())
 				user.save(callback)
 			})
-		},
-
-		findAll: (callback) => {
-			Model.find(callback)
-		},
-
-		findByPage: (page, count, callback) => {
-			let skips = page * count;
-			let query = Model.find().sort({ username: 1 }).skip(skips).limit(count);
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
 		},
 
 		findOne: (params, callback) => {
@@ -242,19 +151,14 @@ var Model = function(mongoose) {
 
 		findByQuery: (query, callback) => {
 			Model.find(query).lean().exec(callback)
-			console.log('query',query)			
 		},
 
 		findByEmail: (email, callback) => {
 			Model.findOne({email}, callback)
-			console.log('email',email)
 		},
 
 		findByPhone: (phone, callback) => {
 			Model.findOne({phone}, callback)
-		},
-		findUsername: (username, callback) => {
-			Model.findOne({username}, callback)
 		},
 
 		findByEmailOrPhone: (value, callback) => {
@@ -267,7 +171,6 @@ var Model = function(mongoose) {
 
 			let user = new Model()
 			Object.assign(user, params)
-			user.nextXpCronDate = new Date(new Date().getTime() + (7 * 24 * 60 * 60 * 1000));
 			user.save(callback)
 		},
 
@@ -352,6 +255,7 @@ var Model = function(mongoose) {
 				user.save(callback)
 			})
 		},
+
 		update: (_id, data, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Types.ObjectId(_id)
 
@@ -391,15 +295,12 @@ var Model = function(mongoose) {
 			})
 		},
 
-		updateSettings: (book, _id, name, email, phone, country, city, gender, field, language, username, callback) => {
-				
+		updateSettings: (_id, name, email, phone, country, city, gender, field, language, nickname, callback) => {
 			if (typeof _id !== 'object') _id = mongoose.Schema.Types.ObjectId(_id)
-			
-				
-			Model.findOne({_id}, (err, user) => {
-				Object.assign(user, {name, email, phone, country, city, gender, field, language, username, book})				
-				user.save(callback)
 
+			Model.findOne({_id}, (err, user) => {
+				Object.assign(user, {name, email, phone, country, city, gender, field, language, nickname})
+				user.save(callback)
 			})
 		},
 
@@ -520,38 +421,17 @@ var Model = function(mongoose) {
 			let query = {
 			}
 
-			if (nicknameSearch) query.username = new RegExp(q, 'gi')
+			if (nicknameSearch) query.nickname = new RegExp(q, 'gi')
 			else query.name = new RegExp(q, 'gi')
 			models.BlockedUser.getBlockedByUser(user, (err, blockeds) => {
 				var blockedIds = blockeds.map((b) => b._id)
 				blockedIds.push(user)
 				query['_id'] = {$nin: blockedIds}
-				console.log(query);
+
 				Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
 					async.mapSeries(users, setXpInfo, callback)
 				})
 			})
-		},
-		adminSearch: (user, q, role, skip = 0, limit = 5, nicknameSearch = false, callback) => {
-			skip = Number(skip)
-			limit = Number(limit)
-
-			user = MOI(user)
-
-			// let roleQuery = {$ne: 'user'}
-			// if (role) roleQuery = role
-
-			let query = {}
-			
-			
-			query.name = new RegExp(q, 'gi')
-			Model.find(query).lean().skip(skip).limit(limit).exec((err, users) => {
-				if (err) return callback(err);
-				Model.count(query).exec((error, result)=>{
-					callback(error, users,result)
-				})
-				
-			})			
 		},
 		searchFriendsAndFollowersNicknames : (executorID, options, callback) => {
             if (!options || !options.query) return [];
@@ -614,32 +494,9 @@ var Model = function(mongoose) {
 				   resolve(users)
                })
 		   })
-        },
+        }
 
-		findByCronScheduledToday: (callback) => {
-			var now = new Date();
-			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			var endOfToday = new Date(startOfToday.getTime() + (24 * 60 * 60 * 1000));
-			let query = Model.find({
-				$and: [
-					{ role: { $ne: 'user' } },
-					{
-						$or: [
-							{
-								$and: [
-									{ nextXpCronDate: { $gte: startOfToday } },
-									{ nextXpCronDate: { $lt: startOfToday } },
-								],
-							},
-							{ nextXpCronDate: { $eq: null } },
-						],
-					},
-				],
-			});
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
+
 	}
 }
 

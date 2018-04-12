@@ -1,7 +1,7 @@
 <div class="user-profile-info" ng-if="profile">
 	<div class="info">
 		<a ng-href="#!/person/{{profile._id}}" class="name">{{profile.name}}</a>
-		<div class="nickname" ng-if="profile.username">@{{profile.username}}</div>
+		<div class="nickname" ng-if="profile.nickname">@{{profile.nickname}}</div>
 		<div class="position">{{profile.title}}</div>
 	</div>
 
@@ -41,25 +41,8 @@
 		<div class="value tinted" ng-show="!profile.certificates || profile.certificates.length == 0">Not specified</div>
 
 		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificates">{{cert.filename}}</a>
-		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesE">{{cert.filename}}</a>
-		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesB">{{cert.filename}}</a>
-		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesCa">{{cert.filename}}</a>
-		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesAc">{{cert.filename}}</a>
-		<a href="{{cert.filepath}}" target="_blank" class="file" ng-repeat="cert in profile.certificatesC">{{cert.filename}}</a>
 	</div>
 
-	<div class="user-description-block" ng-if="profile">
-		<div class="title">Book</div>
-		<div class="value tinted" ng-show="!profile.book || profile.book.length == 0">Not specified</div>
-		<div ng-repeat="cert in profile.book" >
-			<div class="book-pr">{{cert.title}} - {{cert.publication}}</div>
-			<div class="book-pr"><a href="#!/tagsearch/@{{profile.username}}" class="text-people">@{{profile.username}}</a> <a ng-repeat="i in cert.author" class="text-people" href="#!/tagsearch/@{{i}}">@{{i}}</a></div>
-			<div class="book-pr">Available in {{cert.retailstore}}</div>
-			<br>
-		</div>
-			
-		
-	</div>
 	<div class="user-description-block" ng-if="profile">
 		<div class="title">Contacts</div>
 

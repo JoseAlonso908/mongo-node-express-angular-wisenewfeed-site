@@ -37,24 +37,11 @@ router.post('/follow', (req, res) => {
 				if (err) res.status(400).send(err)
 				else {
 					async.series({
-						reward: function (next) {
-							models.Follow.followingToday(following, (err, followers) => {
-								var count = followers.length;
-								models.ExperienceLog.awardedToday(following, 'follow', (err, experiences) => {
-									var points = 0;
-									var awarded = false;
-									experiences.forEach((exp) => {
-										points += exp.reward;
-									});
-									config.WISEPOINT_REWARDS.FOLLOWER.forEach((item) => {
-										awarded = true;
-										if (item.MIN_COUNT <= count && item.POINTS > points) {
-											models.ExperienceLog.award(following, item.POINTS - points, null, null, 'follow', next);
-										}
-									});
-									if (!awarded) next();
-								});
-							});
+						rewardFollowee: function (next) {
+							models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.FOLLOW.following, null, null, 'follow', next)
+						},
+						rewardFollowing: function (next) {
+							models.ExperienceLog.award(following, config.EXP_REWARDS.FOLLOW.follower, null, null, 'follow', next)
 						},
 						notification: function (next) {
 							// Add following notification
@@ -98,7 +85,7 @@ router.get('/followers', (req, res) => {
 			models.Follow.followingByFollower(req.user._id, null, null, null, (err, following) => {
 				followers = followers.map((follower) => {
 					for (let followee of following) {
-						if (follower.follower&&followee.following&&follower.follower._id.toString() === followee.following._id.toString()) {
+						if (follower.follower._id.toString() === followee.following._id.toString()) {
 							follower.isFollowing = true
 							break
 						}

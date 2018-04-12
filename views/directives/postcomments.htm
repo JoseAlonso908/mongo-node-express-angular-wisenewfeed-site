@@ -3,7 +3,7 @@
 		{{($parent.showmore ? 'Show less' : 'Show more')}}
 	</a>
 
-	<div class="ordering">
+	<div class="ordering" ng-show="showmore || nocollapse">
 		<div class="title">Sort</div>
 
 		<a href="javascript:void(0);" ng-click="ordering = '+createdAt'" ng-class="{active: ordering == '+createdAt'}">By date</a>
@@ -30,7 +30,8 @@
 
 			<span class="time small-light" am-time-ago="comment.createdAt"></span>
 		</div>
-		<div class="post-comment"  ng-disabled="loading" ng-show="comment.editing" ng-class="{'not-empty': post.commentText}" contenteditable ng-model="comment.editingText"></div>
+
+		<textarea class="text" ng-show="comment.editing" ng-model="comment.editingText" ng-disabled="loading"></textarea>
 		<div class="text" ng-if="comment.author.role.toLowerCase() == 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks"></div>
 		<div class="text" ng-if="comment.author.role.toLowerCase() != 'user'" ng-hide="comment.editing" ng-bind-html="comment.text | textLinks | url"></div>
 

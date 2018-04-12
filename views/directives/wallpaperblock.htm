@@ -41,9 +41,6 @@
             <a ng-href="#!/chat/{{profile._id}}" class="message"><i class="material-icons">message</i>
                 <div class="title">Message</div>
             </a>
-            <a ng-href="#!/advisedtime/{{profile._id}}" class="message"><i class="material-icons"></i>
-                <div class="title">Start Advice</div>
-            </a>
         </div>
 
         <div ng-class="{single: (user.active_questions == 0 || !user.active_questions)}" class="buttons"
@@ -54,9 +51,6 @@
             </a>
             <a ng-href="#!/editmy" class="edit-profile"><i class="material-icons">edit</i>
                 <div class="title">Edit profile</div>
-            </a>
-            <a ng-href="#!/person/{{profile._id}}/book" class="edit-profile"><i class="fa fa-book" aria-hidden="true"></i>
-                <div class="title">Book</div>
             </a>
         </div>
     </div>

@@ -67,16 +67,12 @@ var Model = function(mongoose) {
 
 			query.exec((err, following) => {
 				if (following && !sort) {
-					console.log('following ',following)
 					following = following.sort((a, b) => {
-						if (a.following&&b.following) {
-							if (a.following.name > b.following.name) {
-								return 1
-							} else if (a.following.name < b.following.name) {
-								return -1
-							}
+						if (a.following.name > b.following.name) {
+							return 1
+						} else if (a.following.name < b.following.name) {
+							return -1
 						}
-							
 
 						return 0
 					})
@@ -85,16 +81,14 @@ var Model = function(mongoose) {
 				async.map(following, (f, next) => {
 					async.parallel([
 						(next) => {
-							models.User.setXpInfo(f.follower, (err, follower) => {								
-								f.follower = follower								
+							models.User.setXpInfo(f.follower, (err, follower) => {
+								f.follower = follower
 								next()
 							})
 						},
 						(next) => {
 							models.User.setXpInfo(f.following, (err, following) => {
 								f.following = following
-								console.log('errrrr',err)
-								console.log('f.followerf.follower',f.follower)
 								next()
 							})
 						},
@@ -177,17 +171,7 @@ var Model = function(mongoose) {
 
 		setReadAllForUser: (following, callback) => {
 			Model.update({following}, {$set: {read: true}}, {multi: true}, callback)
-		},
-		followingToday: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-
-			var now = new Date();
-			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			let query = Model.find({following: user, createdAt: { $gte: startOfToday }});
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
+		}
 	}
 }
 

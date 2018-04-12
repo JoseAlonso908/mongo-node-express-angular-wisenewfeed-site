@@ -15,7 +15,6 @@ var Model = function(mongoose) {
 		createCode: (phone, callback) => {
 			let code = randomString({letters: false, length: 6})
 			var model = new Model()
-			console.log('CODE ',code);
 			Object.assign(model, {code, phone})
 			model.save(callback)
 		},

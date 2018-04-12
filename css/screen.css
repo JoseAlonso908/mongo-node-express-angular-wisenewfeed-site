@@ -260,7 +260,7 @@ a[disabled] {
   background-size: cover;
 }
 .avatar-border .badge {
-  position: relative;
+  position: absolute;
   height: 16px;
   margin: 32px 0 0 14px;
   background-image: url("../images/avatar-badge.png");
@@ -537,10 +537,6 @@ a[disabled] {
 #wrapper > .content a {
   color: #43abe7;
 }
-
-#wrapper > .content .menu-buttons {
-  color: #ffffff;
-}
 #wrapper > .content .card {
   background-color: #ffffff;
   border-radius: 4px;
@@ -574,7 +570,7 @@ a[disabled] {
   padding: 17px 17px 17px 65px;
 }
 #wrapper > .content .card.feed-item .avatar-border {
-  position: relative;
+  position: absolute;
   margin-left: -52px;
 }
 #wrapper > .content .card.feed-item .body .title {
@@ -685,7 +681,7 @@ a[disabled] {
   background-color: #daeffa;
 }
 #wrapper > .content .card.feed-item .actions button i {
-  position: relative;
+  position: absolute;
   margin-left: -17px;
   margin-top: 1px;
   font-size: 13px;
@@ -828,14 +824,6 @@ a[disabled] {
 #wrapper > .content .middle {
   width: 50%;
   order: 2;
-  height: 100vh;
-  overflow-y: scroll;
-
-
-}
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent; /* make scrollbar transparent */
 }
 #wrapper > .content .middle .on-your-mind {
   position: relative;
@@ -2022,8 +2010,4 @@ a[disabled] {
   #wrapper .content .right {
     display: none;
   }
-}
-
-.proof-h{
-  margin-bottom: 45px;
 }

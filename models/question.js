@@ -26,7 +26,7 @@ var Model = function(mongoose) {
 	return {
 		getById: (_id, callback) => {
 			_id = MOI(_id)
-			Model.findOne({_id}).populate('author').sort({createdAt: -1}).exec(callback)
+			Model.findOne({_id}).populate('author').exec(callback)
 		},
 
 		create: (author, recipient, text, callback) => {
@@ -46,7 +46,7 @@ var Model = function(mongoose) {
 			let query = {recipient}
 			if (type) Object.assign(query, {type})
 
-			Model.find(query).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: -1}).lean().exec((err, questions) => {
+			Model.find(query).populate('author').skip(Number(skip)).limit(Number(limit)).sort({createdAt: 'asc'}).lean().exec((err, questions) => {
 				async.mapSeries(questions, (q, next) => {
 					async.series({
 						reactedByViewer: (done) => {
@@ -70,7 +70,7 @@ var Model = function(mongoose) {
 
 		getByRecipientOfType: (recipient, type, skip = 0, limit = 100, callback) => {
 			recipient = MOI(recipient)
-			let query = Model.find({recipient, type}).populate('author').lean().sort({createdAt: -1})
+			let query = Model.find({recipient, type}).populate('author').lean().sort({createdAt: 'asc'})
 			if (skip) query.skip(Number(skip))
 			if (limit) query.limit(Number(limit))
 			query.exec(callback)

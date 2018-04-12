@@ -16,14 +16,6 @@ var Model = function(mongoose) {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'article',
         }],
-        totalShared: {
-        	type:Number,
-        	default: 0
-        },
-        totalRecommended: {
-        	type:Number,
-        	default: 0
-        },
 		images		: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'image',
@@ -41,7 +33,6 @@ var Model = function(mongoose) {
             enum: ['Family', 'Close friend', 'Friend', 'Stranger'],
 			default: 'Stranger'
         },
-		keywords	: [{ type: mongoose.Schema.Types.String }],
 		meta		: mongoose.Schema.Types.Mixed
 	})
     schema.index({countries: 1})
@@ -235,8 +226,6 @@ var Model = function(mongoose) {
                     category: true,
                     privacy: true,
                     meta: true,
-                    totalRecommended: true,
-                    totalShared: true
                 },
             },
 			{
@@ -315,43 +304,11 @@ var Model = function(mongoose) {
                 }
             },
             {
-                $unwind: {
-                    path: '$images',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
                 $lookup: {
                     from: 'images',
                     localField: 'images',
                     foreignField: '_id',
                     as: 'images',
-                }
-            },
-            {
-                $unwind: {
-                    path: '$images',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    images: { $push: "$images" },
-                    author: { $first: "$author" },
-                    sharedFrom: { $first: "$sharedFrom" },
-                    sharedIn: { $first: "$sharedIn" },
-                    countries: { $first: "$countries" },
-                    title: { $first: "$title" },
-                    text: { $first: "$text" },
-                    createdAt: { $first: "$createdAt" },
-                    country: { $first: "$country" },
-                    category: { $first: "$category" },
-                    privacy: { $first: "$privacy" },
-                    meta: { $first: "$meta" },
-                    friendship: { $first: "$friendship" },
-                    totalRecommended: { $first: "$totalRecommended"},
-                    totalShared: { $first: "$totalShared"}
                 }
             }
 		]
@@ -386,8 +343,6 @@ var Model = function(mongoose) {
 							author: 1,
 							createdAt: 1,
 							images: 1,
-							totalRecommended: 1,
-							totalShared: 1,
 							reactionsCount: {$size: {
 								$filter: {
 									input: '$reactions',
@@ -405,58 +360,10 @@ var Model = function(mongoose) {
 			case 'news':
                 filterAggregationParams = filterAggregationParams.concat([
 					{
-						$project: {
-							category: 1,
-							country: 1,
-							countries: 1,
-							friendship: 1,
-							meta: 1,
-							title: 1,
-							text: 1,
-							author: 1,
-							createdAt: 1,
-							images: 1,
-							sharedFrom: 1,
-							sharedIn: 1,
-							totalRecommended: 1,
-							totalShared: 1,
-							latest: {
-								$floor: {
-									$divide: [
-										{ $subtract: [ new Date(), '$createdAt' ] },
-										1000 * 60 * 60 * 24
-									]
-								}
-							},
-							weightage: {
-								$add: [
-									{ $ifNull: [ { $multiply: ['$sharedFrom.totalShared', 100000] }, 0] },
-									{ $ifNull: [ { $multiply: ['$totalShared', 100000] }, 0] },
-									{ $ifNull: [ '$sharedFrom.totalRecommended', 0 ] },
-									{ $ifNull: [ '$totalRecommended', 0 ] },
-								]
-							}
-						}	
-					},					
-					{
-						$sort: {latest: 1, weightage: -1, createdAt: -1}
-					}
-				])
-				break;
-			case 'recommended':
-				filterAggregationParams = filterAggregationParams.concat([
-					{
-						$sort: {totalRecommended: -1,'sharedFrom.totalRecommended': -1},
+						$sort: {createdAt: -1},
 					},
 				])
 				break;
-			case 'shared':
-				filterAggregationParams = filterAggregationParams.concat([
-					{
-						$sort: {totalShared: -1,'sharedFrom.totalShared':-1},
-					},
-				])
-				break;	
 			case 'journalist':
 			case 'expert':
                 filterAggregationParams = filterAggregationParams.concat([
@@ -554,7 +461,7 @@ var Model = function(mongoose) {
 		},
 
 		create: (data, callback) => {
-			let {author, country, category, title, text, images, allowhtml, meta, privacy, keywords} = data
+			let {author, country, category, title, text, images, allowhtml, meta, privacy} = data
 			author = MOI(author)
 
 			if (!allowhtml) {
@@ -574,7 +481,6 @@ var Model = function(mongoose) {
 			Object.assign(article, {
 				author, images, title, text, country, category, meta, countries, privacy
 			})
-			article.keywords = keywords;
 			article.save(callback)
 		},
 
@@ -597,54 +503,32 @@ var Model = function(mongoose) {
 			})
 		},
 
-		share: (user, sharedFrom, type, callback) => {
-			let author = user._id;
+		share: (author, sharedFrom, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
 			if (typeof sharedFrom !== 'object') sharedFrom = mongoose.Types.ObjectId(sharedFrom)
 
 			Model.findOne({_id: sharedFrom}).exec((err, sharedFrom) => {
-				if (type === 'smart') {
-					sharedFrom.totalRecommended = sharedFrom.totalRecommended ? sharedFrom.totalRecommended : 0;
-					
-					if (user.role=='expert') {
-                		sharedFrom.totalRecommended+=2;
-                	} else {
-                		sharedFrom.totalRecommended+=1;
-                	}
-                	
-                	sharedFrom.save((err, result) => {
-                        callback(err, sharedFrom)
-                    })
-				} else {
-					async.waterfall([
-						next => {
-	                        let article = new Model()
-	                        Object.assign(article, {
-	                            author,
-	                            sharedFrom: sharedFrom._id,
-	                            country: sharedFrom.country,
-	                            category: sharedFrom.category,
-	                        })
-	                        article.save((err, savedArticle) => {
-	                            next(err, savedArticle)
-	                        })
-	                    },
-	                    (repost, next) => {
-	                        if (!repost) return next()
-	                        sharedFrom.sharedIn.push(repost._id);
-	                    	sharedFrom.totalShared = sharedFrom.totalShared? sharedFrom.totalShared: 0;
-	                    	if (user.role=='expert') {
-	                    		sharedFrom.totalShared+=2;
-	                    	} else {
-	                    		sharedFrom.totalShared+=1;
-	                    	}
-	                        sharedFrom.save((err, result) => {
-	                            next(err, repost)
-	                        })
-	                    }
-					], callback)
-				}
-					
+				async.waterfall([
+					next => {
+                        let article = new Model()
+                        Object.assign(article, {
+                            author,
+                            sharedFrom: sharedFrom._id,
+                            country: sharedFrom.country,
+                            category: sharedFrom.category,
+                        })
+                        article.save((err, savedArticle) => {
+                            next(err, savedArticle)
+                        })
+                    },
+                    (repost, next) => {
+                        if (!repost) return next()
+                        sharedFrom.sharedIn.push(repost._id)
+                        sharedFrom.save((err, result) => {
+                            next(err, repost)
+                        })
+                    }
+				], callback)
 			})
 		},
 
@@ -662,20 +546,6 @@ var Model = function(mongoose) {
                 }
             ], callback)
 		},
-		unRecommend: (author, post, callback) => {
-			Model.findOne({_id: post}).exec((err, result)=>{
-				if (err) callback(err);
-				else {
-					if (author.role==='expert') {
-						result.totalRecommended-=2;
-
-					} else {
-						result.totalRecommended-=1;
-					}
-					result.save(callback)
-				}
-			})
-		},
 
 		remove: (author, _id, callback) => {
 			if (typeof author !== 'object') author = mongoose.Types.ObjectId(author)
@@ -686,15 +556,8 @@ var Model = function(mongoose) {
 
 		getAll: (viewer, category, country, filter, start = 0, limit = 4, callback) => {
 			let query = {}
-			if (category!=='partnership') 
-				Object.assign(query, {text: {$not: new RegExp(`\\$partnership`, 'gi')}})
-			else 
-				Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			if (country) {
-
-				country = country.replace(/ /g, '');
-				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
-			}
+			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			if (country) Object.assign(query, {country})
 
             start = Number(start)
 			limit = Number(limit)
@@ -785,19 +648,10 @@ var Model = function(mongoose) {
 				]
 			})
 
-			if (category!=='partnership') {
-				query['$and'].push({text: {$not: new RegExp(`\\$partnership`, 'gi')}})
-			} else {
+			if (category) {
 				query['$and'].push({text: new RegExp(`\\$${category}`, 'gi')})
 			}
-
-
-
-			if (country) {
-
-				country = country.replace(/ /g, '');
-				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
-			}	
+			if (country) Object.assign(query, {country})
 
 			start = Number(start)
 			limit = Number(limit)
@@ -860,7 +714,6 @@ var Model = function(mongoose) {
             if (limit) aggregationOptions.push({$limit: limit})
 
             Model.aggregate(aggregationOptions).exec((err, articles) => {
-                models.Image.Model.populate(articles, { path: "sharedFrom.images" });
                 this.postProcessList(articles, viewer, callback)
             })
 		},
@@ -885,7 +738,7 @@ var Model = function(mongoose) {
 		},
 
 		getByUsers: (parameters, callback) => {
-			let {authors, viewer, shares, category, country, start, limit, privacy, filter} = parameters
+			let {authors, viewer, shares, category, country, start, limit, privacy} = parameters
 			if (!start) start = 0
 			if (!limit) limit = 4
 			authors = (authors) ? authors.map(MOI) : authors
@@ -909,19 +762,8 @@ var Model = function(mongoose) {
 				query = {}
 			}
 
-
-
-			
-			if (category!=='partnership') {
-				 Object.assign(query, { text: {$not: new RegExp(`\\$partnership`, 'gi')} })
-			} else {
-				if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
-			}
-		
-			if (country) {
-				country = country.replace(/ /g, '');
-				Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
-			}
+			if (category) Object.assign(query, {text: new RegExp(`\\$${category}`, 'gi')})
+			if (country) Object.assign(query, {text: new RegExp(`\\!${country}`, 'gi')})
 			// if (privacy) {
 			// 	const privacyIncluded = models.Article.getPrivacySubLevels(privacy)
              //    Object.assign(query, {privacy: {$in: privacyIncluded}})
@@ -933,31 +775,21 @@ var Model = function(mongoose) {
                 parameters.nousers = true
 			}
 
-			if (filter) {
-				filterAggregationOptions = this.getFilterAggregationOptions(filter, parameters.viewer, {nousers: parameters.nousers})
-			} else {
-				filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
-			}
-            
+            filterAggregationOptions = this.getFilterAggregationOptions('news', parameters.viewer, {nousers: parameters.nousers})
 
             var aggregationOptions = [
                 {
                     $match: query
-                }
+                },
             ]
 
             aggregationOptions = aggregationOptions.concat(filterAggregationOptions)
             if (start) aggregationOptions.push({$skip: start})
             if (limit) aggregationOptions.push({$limit: limit})
-      
-            	Model.aggregate(aggregationOptions).exec((err, articles) => {
-            		if (!err)
-	            	    this.postProcessList(articles, viewer, callback)
-	            	else callback(err)
 
-				})
-            	
-			
+			Model.aggregate(aggregationOptions).exec((err, articles) => {
+                this.postProcessList(articles, viewer, callback)
+			})
 		},
 
 		getReactedOfUser: (author, viewer, type, skip, limit, callback) => {
@@ -1253,130 +1085,7 @@ var Model = function(mongoose) {
             }
             if (privacy && levels.hasOwnProperty(privacy)) return levels[privacy]
 			return levels['Stranger']
-		},
-		createdArticlesToday: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-
-			var now = new Date();
-			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			let query = Model.find({
-				$and: [
-					{
-						author: user,
-						sharedFrom: { $eq: null },
-						createdAt: { $gte: startOfToday }
-					},
-					{ title: { $ne: '' } },
-					{ title: { $ne: null } }
-				]
-			});
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
-		createdPostsToday: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-
-			var now = new Date();
-			var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			let query = Model.find({
-				$and: [
-					{
-						author: user,
-						sharedFrom: { $eq: null },
-						createdAt: { $gte: startOfToday }
-					},
-					{
-						$or: [
-							{ title: { $eq: '' } },
-							{ title: { $eq: null } }
-						]
-					}
-				]
-			});
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
-		findArticlesByUser: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-			let query = Model.find({
-				$and: [
-					{
-						sharedFrom: { $eq: null },
-						author: user
-					},
-					{ title: { $ne: '' } },
-					{ title: { $ne: null } }
-				]
-			});
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
-		findArticlesAndPostsByUser: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-			let query = Model.find({ sharedFrom: { $eq: null }, author: user });
-			query.exec((err, records) => {
-				return callback(err, records);
-			});
-		},
-		hasArticlesInLastWeek: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-			var now = new Date();
-			var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
-			let query = Model.find({
-				$and: [
-					{
-						author: user,
-						sharedFrom: { $eq: null },
-					},
-					{
-						$and: [
-							{ createdAt: { $gte: startOfLastWeek } },
-							{ createdAt: { $lt: endOfLastWeek } },
-						],
-					},
-					{ title: { $ne: '' } },
-					{ title: { $ne: null } },
-				]
-			});
-			query.exec((err, records) => {
-				let hasArticles = (records && records.length > 0);
-				return callback(err, hasArticles);
-			});
-		},
-		hasPostsInLastWeek: (user, callback) => {
-			if (typeof user !== 'object') user = mongoose.Types.ObjectId(user);
-			var now = new Date();
-			var endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			var startOfLastWeek = new Date(endOfLastWeek.getTime() - (7 * 24 * 60 * 60 * 1000));
-			let query = Model.find({
-				$and: [
-					{
-						author: user,
-						sharedFrom: { $eq: null },
-					},
-					{
-						$and: [
-							{ createdAt: { $gte: startOfLastWeek } },
-							{ createdAt: { $lt: endOfLastWeek } },
-						],
-					},
-					{
-						$or: [
-							{ title: { $eq: '' } },
-							{ title: { $eq: null } },
-						],
-					},
-				]
-			});
-			query.exec((err, records) => {
-				let hasPosts = (records && records.length > 0);
-				return callback(err, hasPosts);
-			});
-		},
+		}
 	}
 }
 

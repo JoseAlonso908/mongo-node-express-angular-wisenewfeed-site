@@ -23,19 +23,15 @@
 					<div class="subtitle">Change your basic account information and language settings.</div>
 
 					<div class="divider"></div>
-					<div class="settings-field-block">
-						<label>Username</label><input type="text" name="username" ng-model="user.username" minlength="6" required>
-						<div class="clear"></div>
-					</div>
 
-					<!-- <div class="settings-field-block">
+					<div class="settings-field-block">
 						<label>Nickname</label>
 						<input type="text" name="nickname" ng-model="user.nickname" minlength="2" maxlength="20" required ng-pattern="/^(?![0-9])[a-zA-Z0-9]+$/">
 						<div class="error-block" ng-show="(profileSettings.nickname.$error.required  || profileSettings.nickname.$error.pattern || profileSettings.nickname.$error.minlength) && profileSettings.nickname.$touched">
 							Nickname should not start with a numeric character, may not contain special characters and spaces
 						</div>
 						<div class="clear"></div>
-					</div> -->
+					</div>
 					<div class="settings-field-block">
 						<label>Full name</label><input type="text" name="name" ng-model="user.name" minlength="6" required>
 						<div class="clear"></div>
@@ -61,7 +57,16 @@
 							<option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
 						</select>
 						<div class="clear"></div>
-					</div>		
+					</div>
+
+					<div class="settings-field-block">
+						<label>City</label>
+						<div class="small-loader" ng-show="loadingCities"></div>
+						<select ng-model="user.city" name="city">
+							<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
+						</select>
+						<div class="clear"></div>
+					</div>
 
 					<div class="settings-field-block">
 						<label>Field</label>
@@ -73,10 +78,11 @@
 					</div>
 
 					<div class="settings-field-block">
-						<label>City</label>
-						<div class="small-loader" ng-show="loadingCities"></div>
-						<select ng-model="user.city" name="city">
-							<option ng-repeat="city in cities track by $index" value="{{city}}">{{city}}</option>
+						<label>Gender</label>
+						<select name="gender" ng-model="user.gender">
+							<option value="">Not specified</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
 						</select>
 						<div class="clear"></div>
 					</div>
@@ -90,72 +96,10 @@
 						</select>
 						<div class="clear"></div>
 					</div>
-					<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">Book</h1>	
-
-					<div ng-repeat="(i,item) in user.book"> 
-						<div class="close-btn-wrap">
-                            <button  ng-click="hidden($index)"  class="btn btn-danger">x</button>
-                        </div>
-						<h1 style="text-align: center; padding-bottom: 20px ;font-size: 20px;font-weight: bold;">#{{$index+1}}</h1>
-						<div class="settings-field-block">
-						<label>Title</label><input type="text" name="email" minlength="1" ng-model="item.title" required>
-						<div class="clear"></div>
-						
-						</div>
-
-						<div class="settings-field-block">
-							<!-- <label>Author</label><input type="text" name="email" minlength="1" ng-model="item.author" required> -->
-
-							<label>Author</label>
-                            <div class="author-st" ng-repeat="aut in item.author track by $index">{{aut}}   
-                                <button class="btnlsct" ng-click="removeAuthor(i, $index)">x</button>
-                            </div>
-                            <input class="author-st-ip" ng-change="myFunc(i, item)" ng-model="item.authersearch" type="text" require>
-							<div class="clear"></div>
-							
-						</div>
-						<div class="clear"></div>   
-                        <div class="authorst-tb" ng-hide="hiddenAuthor[i]"> 
-                            <ul>
-                                <li ng-repeat="ite in authorresults" ng-click="addauthor(i, ite.username)">
-                                    <div class="authorav">
-                                        <img class="img-author" src="{{ite.avatar}}">
-                                    </div>
-                                    <div class="authorn">
-                                        <div>{{ite.name}}</div>
-                                        <div>@{{ite.username}}</div>
-                                    </div>
-                                </li>                                      
-                            </ul>
-                        </div>
-						<div class="settings-field-block">
-							<label>Publications</label><input type="text" name="email" minlength="1" ng-model="item.publication" required>
-							<div class="clear"></div>
-							
-						</div>
-						<div class="settings-field-block">
-							<label>Retail Store</label><input type="text" name="email" minlength="1" ng-model="item.retailstore" required>
-							<div class="clear"></div>
-							
-						</div>
-
-					</div>						
-
-					<div class="input-group" style="float: right">
-                        <a href="javascript:void(0);" class="add-more" ng-hide='user.book.length>4'  ng-click="addMoreBooks()">
-                            <i class="fa fa-plus"></i>
-                            Add more books
-                        </a>
-                    </div> 
-                    <div class="clear"></div>
 
 					<div class="divider"></div>
-					<div class="tb-request">
-                        <div ng-class="submitClass">
-                            {{submitResult}}
-                        </div>
-                    </div>
-					<input type="submit" ng-class="submitClass" class="cta-button" value="Save changes">
+
+					<input type="submit" class="cta-button" value="Save changes">
 				</form>
 			</div>
 

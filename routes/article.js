@@ -21,9 +21,8 @@ router.use((req, res, next) => {
 })
 
 router.post('/create', tempUploads.array('files', 5), (req, res) => {
-	let {title, text, privacy, keywords} = req.body
+	let {title, text, privacy} = req.body
 
-	if (keywords) keywords = JSON.parse(keywords)
 	let filenames = []
 
 	if (req.files && req.files.length > 0) {
@@ -46,13 +45,11 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 			models.Image.createBunch(req.user._id, filenames, next)
 		},
 		(images, next) => {
-			console.log('imagesmodelsfile',images)
 			models.Article.getFirstLinkMeta(text).then((meta) => {
 		        next(null, meta, images)
 		    }).catch(next)
 		},
 		(meta, images, next) => {
-			console.log('third ',images)
             if (text && req.user.role === 'user') text = text.replace(/\$lessonlearned/gi, '')
 			models.Article.create({
 	            author: req.user._id,
@@ -63,54 +60,15 @@ router.post('/create', tempUploads.array('files', 5), (req, res) => {
 	            images,
 	            allowhtml: !!title,
 				meta,
-				privacy,
-				keywords
+				privacy
 	        }, (err, article) => {
 	        	next(err, article)
 	        })
 		},
 		(article, next) => {
-			if (article.title && article.title !== "") {
-				models.Article.createdArticlesToday(req.user._id, (err, articles) => {
-					var count = articles.length;
-					models.ExperienceLog.awardedToday(req.user._id, 'article', (err, experiences) => {
-						var points = 0;
-						var awarded = false;
-						experiences.forEach((exp) => {
-							points += exp.reward;
-						});
-						config.WISEPOINT_REWARDS.ARTICLE_CREATE.forEach((item) => {
-							if (item.MIN_COUNT <= count && item.POINTS > points) {
-								awarded = true;
-								models.ExperienceLog.award(req.user._id, item.POINTS - points, article._id, null, 'article', (err, result) => {
-									next(null, article);
-								});
-							}
-						});
-						if (!awarded) next(null, article);
-					});
-				});
-			} else {
-				models.Article.createdPostsToday(req.user._id, (err, posts) => {
-					var count = posts.length;
-					models.ExperienceLog.awardedToday(req.user._id, 'post', (err, experiences) => {
-						var points = 0;
-						var awarded = false;
-						experiences.forEach((exp) => {
-							points += exp.reward;
-						});
-						config.WISEPOINT_REWARDS.POST_CREATE.forEach((item) => {
-							if (item.MIN_COUNT <= count && item.POINTS > points) {
-								awarded = true;
-								models.ExperienceLog.award(req.user._id, item.POINTS - points, article._id, null, 'post', (err, result) => {
-									next(null, article);
-								});
-							}
-						});
-						if (!awarded) next(null, article);
-					});
-				});
-			}
+			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.POST.create, article._id, null, 'create', (err, result) => {
+				next(null, article)
+			})
 		},
 		//Get mentioned users
 		(article, next) => {
@@ -219,8 +177,9 @@ router.get('/byuser', (req, res) => {
 })
 
 router.get('/friendsfeed', (req, res) => {
-	let {category, country, start, limit, filter} = req.query
+	let {category, country, start, limit} = req.query
 	let userId = req.query.userId || req.user._id
+
 	let authors = []
 	// Include user's articles into feed
 	authors.push(userId)
@@ -259,7 +218,6 @@ router.get('/friendsfeed', (req, res) => {
             viewer: req.user._id,
             shares: [],
             nousers: false,
-            filter: filter
         }, (err, articles) => {
             if (err) res.status(400).send(err)
             else res.send(articles)
@@ -268,7 +226,7 @@ router.get('/friendsfeed', (req, res) => {
 })
 
 router.get('/feed', (req, res) => {
-	let {category, country, start, limit, filter} = req.query
+	let {category, country, start, limit} = req.query
 	let userId = req.query.userId || req.user._id
 
 	let authors = []
@@ -312,8 +270,7 @@ router.get('/feed', (req, res) => {
             start,
             limit,
             viewer: req.user._id,
-            shares: [],
-            filter
+            shares: []
         }, (err, articles) => {
 			if (err) res.status(400).send(err)
 			else res.send(articles)
@@ -424,15 +381,9 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			}
 
 			// Add comment notification
-
-			if (postAuthor._id.toString()!=req.user._id.toString()) {
-				models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
-	                next(null, postAuthor)
-				})
-			} else {
-				next(null, postAuthor)
-			}
-				
+			models.Notification.create(postAuthor, req.user._id, postId, null, 'comment', () => {
+                next(null, postAuthor)
+			})
 		},
 		(postAuthor, next) => {
 			// Notify people who like this post about this reaction
@@ -481,27 +432,14 @@ router.post('/comment/add', tempUploads.array('files', 5), (req, res) => {
 			})
 		},
 		(postAuthor, next) => {
-			if (postAuthor.role === 'expert') {
-				models.Comment.expertPostCommentsToday(req.user._id, (err, comments) => {
-					var count = comments.length;
-					models.ExperienceLog.awardedToday(req.user._id, 'comment', (err, experiences) => {
-						var points = 0;
-						var awarded = false;
-						experiences.forEach((exp) => {
-							points += exp.reward;
-						});
-						config.WISEPOINT_REWARDS.COMMENT_CREATE.forEach((item) => {
-							if (item.MIN_COUNT <= count && item.POINTS > points) {
-								awarded = true;
-								models.ExperienceLog.award(req.user._id, item.POINTS - points, commentPost, null, 'comment', (err, result) => {
-									next();
-								});
-							}
-						});
-						if (!awarded) next();
-					});
-				});
-			}
+			models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST.react, commentPost, null, 'comment', () => {
+                next()
+			})
+		},
+		(next) => {
+			models.ExperienceLog.award(req.user._id, config.EXP_REWARDS.COMMENT.create, commentPost, null, 'comment', () => {
+                next()
+			})
 		},
         (next) => {
             const nicknames = models.Article.getMentionedNicknames(text)
@@ -658,37 +596,8 @@ router.post('/react', (req, res) => {
 			})
 		},
 		(postAuthor, cb) => {
-			if (type === 'share' || type === 'smart') {
-				let originalAuthor = '';
-				models.Article.findOneById(post, (err, originalPost) => {
-					originalAuthor = originalPost.author._id;
-					models.PostReaction.reactionsForUserToday(originalAuthor, type, (err, reactions) => {
-						var count = req.user.role === 'expert' ? 2 : 1;
-						console.log(reactions);
-						reactions.forEach((reaction) => {
-							if (reaction.author.role === 'expert') count += 2;
-							else count++;
-						});
-						models.ExperienceLog.awardedToday(req.user._id, type, (err, experiences) => {
-							var points = 0;
-							var awarded = false;
-							experiences.forEach((exp) => {
-								points += exp.reward;
-							});
-							console.log(count, points);
-							let pointItems = [];
-							if (type === 'share') pointItems = config.WISEPOINT_REWARDS.SHARE;
-							if (type === 'smart') pointItems = config.WISEPOINT_REWARDS.RECOMMEND;
-							pointItems.forEach((item) => {
-								if (item.MIN_COUNT <= count && item.POINTS > points) {
-									awarded = true;
-									models.ExperienceLog.award(originalAuthor, item.POINTS - points, post, null, type, cb);
-								}
-							});
-							if (!awarded) cb();
-						});
-					});
-				});
+			if (type != 'dislike') {
+				models.ExperienceLog.award(postAuthor, config.EXP_REWARDS.POST[type], post, null, type, cb)
 			} else {
 				cb()
 			}
@@ -700,8 +609,8 @@ router.post('/react', (req, res) => {
 				else res.send({ok: true})
 			}
 
-			if (type === 'share'||type === 'smart') {
-				models.Article.share(req.user, post, type, done)
+			if (type === 'share') {
+				models.Article.share(req.user._id, post, done)
 			} else done()
 		})
 	})
@@ -717,8 +626,6 @@ router.delete('/react', (req, res) => {
 
 		if (type === 'share') {
 			models.Article.unshare(req.user._id, post, done)
-		} else if (type==='smart'){
-			models.Article.unRecommend(req.user, post, done)
 		} else done()
 	})
 })

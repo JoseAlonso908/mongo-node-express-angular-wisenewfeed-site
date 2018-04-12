@@ -61,7 +61,6 @@ router.post('/upgrade', (req, res) => {
         },
         (user, next) => {
             let {form} = req.body
-            console.log('fomemememe',req.body)
             let certificates = form.certificates.map(cert => {
                 let file = ''
                 if (cert.file) {
@@ -87,34 +86,7 @@ router.post('/upgrade', (req, res) => {
             })
             let htmlContent = nunjucks.render(__dirname + '/../templates/signupBeta.html', {form})
             const pdfName = uuid.v4() + '.pdf';
-            console.log('form',form);    
-            for (i in form.book){
-                var a={};
-                a.title=form.book[i].title;
-                a.author=form.book[i].author;
-                a.publication=form.book[i].publication;
-                a.retailstore=form.book[i].retailstore;
-                console.log('aaa',a); 
-            }     
-
             let data = {
-                author:form.author,
-                ywab:form.ywab,
-                yob:form.yob,
-                cibw:form.cibw,
-                cerci:form.cerci,
-                educa:form.educa,
-                expc:form.expc,
-                own:form.own,
-                car:form.car,
-                achi:form.achi,
-                consi:form.consi,
-                cy:form.cy,
-                expy:form.expy,
-                wb:form.wb,
-                hp:form.hp,
-                vl:form.vl,
-                pyh:form.pyh,
                 name: form.name,
                 intro: form.info,
                 email: form.email,
@@ -122,8 +94,6 @@ router.post('/upgrade', (req, res) => {
                 position: form.title,
                 company: form.company,
                 title: form.title,
-                categories: form.categories,
-                book:form.book,
                 contact: {
                     email: form.email,
                     phone: form.phone,
@@ -131,36 +101,6 @@ router.post('/upgrade', (req, res) => {
                     fb: form.facebook,
                 },
                 certificates: form.certificates.filter(c => !!(c.title && c.file)).map(c => {
-                    return {
-                        filename: c.title,
-                        filepath: c.file
-                    }
-                }),
-                certificatesB: form.certificatesB.filter(c => !!(c.title && c.file)).map(c => {
-                    return {
-                        filename: c.title,
-                        filepath: c.file
-                    }
-                }),
-                certificatesCa: form.certificatesCa.filter(c => !!(c.title && c.file)).map(c => {
-                    return {
-                        filename: c.title,
-                        filepath: c.file
-                    }
-                }),
-                certificatesE: form.certificatesE.filter(c => !!(c.title && c.file)).map(c => {
-                    return {
-                        filename: c.title,
-                        filepath: c.file
-                    }
-                }),
-                certificatesAc: form.certificatesAc.filter(c => !!(c.title && c.file)).map(c => {
-                    return {
-                        filename: c.title,
-                        filepath: c.file
-                    }
-                }),
-                certificatesC: form.certificatesC.filter(c => !!(c.title && c.file)).map(c => {
                     return {
                         filename: c.title,
                         filepath: c.file
@@ -179,47 +119,36 @@ router.post('/upgrade', (req, res) => {
                     }
                 })
             }
-            models.User.update(user._id, data, (err, user) => {
-                pdf.create(htmlContent, {format: 'Letter'}).toFile('./assets/pdf/' + pdfName, (err, resultPDF) => {
 
-                    if (err){console.log('PDF create',err); return next(err);}
-                    resultPDF.name = pdfName;
-                    next(null, user, resultPDF, form, data)
+            models.User.update(user._id, data, (err, user) => {
+                pdf.create(htmlContent, {format: 'Letter'}).toFile('./temp/' + pdfName, (err, resultPDF) => {
+                    if (err) return next(err);
+                    next(null, user, resultPDF, form)
                 })
             })
         },
-        (user, resultPDF, form,request, next) => {
-            // let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
-            // console.log(approveLink);
-            // var mail = mailcomposer({
-            //     from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
-            //     to: config.ADMIN_EMAILS.join(', '),
-            //     subject: `ER: Upgrade to ${form.role}`,
-            //     text: `Upgrade for ${form.name} to ${form.role}
-            //         \nApprove ${approveLink}`,
-            //     html: `<strong>Upgrade for ${form.name} to ${form.role}</strong><br>
-            //         <a href="${approveLink}">Approve</a>`,
-            //     attachments: [{path: resultPDF.filename}]
-            // })
-            var requ = {
-                name: user.name,
-                user: user._id.toString(),
-                email: user.email,
-                pdf: resultPDF.name
-            };
-            
-            models.Upgraderequests.create(requ,(err, reuq) => {
-                console.log('reuq ',reuq);
-                if (err) return next(err)
-                next(null)    
+        (user, resultPDF, form, next) => {
+            let approveLink = `${req.protocol}://${req.headers.host}/user/upgrade?id=${user.id}&role=${form.role}`
+
+            var mail = mailcomposer({
+                from: `service@${config.MAILGUN.SANDBOX_DOMAIN}`,
+                to: config.ADMIN_EMAILS.join(', '),
+                subject: `ER: Upgrade to ${form.role}`,
+                text: `Upgrade for ${form.name} to ${form.role}
+                    \nApprove ${approveLink}`,
+                html: `<strong>Upgrade for ${form.name} to ${form.role}</strong><br>
+                    <a href="${approveLink}">Approve</a>`,
+                attachments: [{path: resultPDF.filename}]
             })
+
+            next(null, mail)
         },
-        // (mail, next) => {
-        //     mail.build(next)
-        // }
-        // (msg, next) => {
-        //     mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
-        // }
+        (mail, next) => {
+            mail.build(next)
+        },
+        (msg, next) => {
+            mailgun.sendRaw(`service@${config.MAILGUN.SANDBOX_DOMAIN}`, config.ADMIN_EMAILS, msg.toString('ascii'), next)
+        }
     ], (err) => {
         if (err) res.status(400).send(err)
         else res.send({ok: true})
@@ -235,42 +164,6 @@ router.post('/signup', (req, res) => {
         }
         return {title: cert.title, file}
     })
-
-    let certificatesB = form.certificatesB.map(cert => {
-        let file = ''
-        if (cert.file) {
-            file = `${req.protocol}://${req.headers.host}/${cert.file}`
-        }
-        return {title: cert.title, file}
-    })
-    let certificatesCa = form.certificatesCa.map(cert => {
-        let file = ''
-        if (cert.file) {
-            file = `${req.protocol}://${req.headers.host}/${cert.file}`
-        }
-        return {title: cert.title, file}
-    })
-    let certificatesE = form.certificatesE.map(cert => {
-        let file = ''
-        if (cert.file) {
-            file = `${req.protocol}://${req.headers.host}/${cert.file}`
-        }
-        return {title: cert.title, file}
-    })
-    let certificatesAc = form.certificatesAc.map(cert => {
-        let file = ''
-        if (cert.file) {
-            file = `${req.protocol}://${req.headers.host}/${cert.file}`
-        }
-        return {title: cert.title, file}
-    })
-    let certificatesC = form.certificatesC.map(cert => {
-        let file = ''
-        if (cert.file) {
-            file = `${req.protocol}://${req.headers.host}/${cert.file}`
-        }
-        return {title: cert.title, file}
-    })
     let additional = form.additional.map(item => {
         let file = ''
         if (item.file) {
@@ -279,11 +172,6 @@ router.post('/signup', (req, res) => {
         return {title: item.title, file}
     })
     form.certificates = certificates
-    form.certificatesB = certificatesB
-    form.certificatesCa = certificatesCa
-    form.certificatesE = certificatesE
-    form.certificatesAc = certificatesAc
-    form.certificatesC = certificatesC
     form.additional = additional
     form.exp = form.experience.map(e => {
         return {
@@ -312,36 +200,6 @@ router.post('/signup', (req, res) => {
             fb: form.facebook,
         },
         certificates: form.certificates.map(c => {
-            return {
-                filename: c.title,
-                filepath: c.file
-            }
-        }),
-        certificatesB: form.certificatesB.map(c => {
-            return {
-                filename: c.title,
-                filepath: c.file
-            }
-        }),
-        certificatesCa: form.certificatesCa.map(c => {
-            return {
-                filename: c.title,
-                filepath: c.file
-            }
-        }),
-        certificatesE: form.certificatesE.map(c => {
-            return {
-                filename: c.title,
-                filepath: c.file
-            }
-        }),
-        certificatesAc: form.certificatesAc.map(c => {
-            return {
-                filename: c.title,
-                filepath: c.file
-            }
-        }),
-        certificatesC: form.certificatesC.map(c => {
             return {
                 filename: c.title,
                 filepath: c.file

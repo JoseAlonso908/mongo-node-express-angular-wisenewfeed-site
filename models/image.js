@@ -14,7 +14,7 @@ var model = function (mongoose) {
 	var Model = mongoose.model('image', schema)
 
 	let retainImagesPrivacy = (images, author, viewer, callback) => {
-		if (author&&author._id) author = author._id
+		if (author._id) author = author._id
 
 		async.filter(images, (i, next) => {
 			let allow = next.bind(async, null, true),
@@ -116,9 +116,6 @@ var model = function (mongoose) {
 				image.save(callback)
 			})
 		},
-		getByImageIds: (ids, callback) => {
-			Model.find({_id:{$in:ids}},callback);
-		}
 	}
 }
 

@@ -1,26 +1,12 @@
 <html>
     <head>
-        <meta property="og:title" content="Test" />
-        <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Wise News Feed" />
-        <meta property="og:description" content="{{article.text}}" />
-        <meta property="og:url" content="https://sandboxapp.wisenewsfeed.com/permarticle/{{article._id}}" />
+        <meta property="og:title" content="{{article.title}}">
+        <meta property="og:type" content="article">
         {{#if article.images.length}}
-        <meta property="og:image" content="https://sandboxapp.wisenewsfeed.com/{{article.images.0.filename}}" />
+            <meta property="og:image" content="http://expertreaction.wlab.tech/{{article.images.0.filename}}">
         {{/if}}
-        {{#if article.images.length}}
-        <meta name="twitter:card" content="summary_large_image" />
-        {{else}}
-        <meta name="twitter:card" content="summary" />
-        {{/if}}
-        <meta name="twitter:site" content="@wisenewsfeed" />
-        <meta name="twitter:creator" content="@wisenewsfeed" />
-        <meta name="twitter:title" content="Test" />
-        <meta name="twitter:description" content="{{article.text}}" />
-        <meta name="twitter:url" content="https://sandboxapp.wisenewsfeed.com/permarticle/{{article._id}}" />
-        {{#if article.images.length}}
-        <meta name="twitter:image" content="https://sandboxapp.wisenewsfeed.com/{{article.images.0.filename}}" />
-        {{/if}}
+        <meta property="og:site_name" content="Wise News Feed">
+        <meta property="og:description" content="{{article.text}}">
     </head>
     <body>
         <script>

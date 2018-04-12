@@ -17,7 +17,7 @@
 	<div class="content">
 		<div class="title">
 			<a ng-href="#!/person/{{person._id}}" class="name">{{person.name}}</a>
-			<div class="role">{{(person.role === 'Expert') ? 'Expert Coach' : person.role}}</div>
+			<div class="role">{{person.role}}</div>
 		</div>
 
 		<div class="tagname" ng-if="person.nickname">@{{person.nickname}}</div>

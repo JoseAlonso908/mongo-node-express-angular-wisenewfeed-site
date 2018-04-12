@@ -11,9 +11,9 @@ window.async = require('async')
 angular.module('er', [
 	require('angular-route'), require('angular-animate'), require('angular-sanitize'), require('angular-cookies'),
 	'angularMoment', require('satellizer'), require('angular-socialshare'),require('angular-material'),
-    require('angular-messages'),require('angular-aria'),
+    require('angular-messages'),
 	// 'ngScrollbar',
-	'localytics.directives', 'btford.modal','ngMask','ngTagsInput',
+	'localytics.directives', 'btford.modal','ngMask',
 	'er.controllers', 'er.services', 'er.directives', 'er.modals', 'er.filters'])
 .config(['$locationProvider', '$routeProvider', '$authProvider', '$compileProvider', '$httpProvider',
 	function config($locationProvider, $routeProvider, $authProvider, $compileProvider, $httpProvider) {
@@ -65,10 +65,6 @@ angular.module('er', [
 			.when('/person/:id', {
 				templateUrl: 'assets/views/profile.htm',
 				controller: 'personController',
-			})			
-			.when('/editavail/:id', {
-				templateUrl: 'assets/views/editavail.htm',
-				controller: 'availabilityController',
 			})
 			.when('/editmy', {
 				templateUrl: 'assets/views/edit-profile.htm',
@@ -104,35 +100,6 @@ angular.module('er', [
 				templateUrl: 'assets/views/write.htm',
 				controller: 'writeController',
 			})
-			.when('/availability',{
-				templateUrl:'assets/views/availability.htm',
-				controller:'availabilityController',
-			})
-			.when('/person/:id/book',{
-				templateUrl:'assets/views/book.htm',
-				controller:'bookingController',
-			})
-			.when('/showexpertreviews',{
-				templateUrl:'assets/views/showexpert.htm',
-				controller:'showexpertController',
-			})
-			.when('/admin',{
-				templateUrl:'assets/views/admin.htm',
-				controller:'adminController',
-			})
-			.when('/bookingtime',{
-				templateUrl:'assets/views/bookingtime.htm',
-				controller:'bookingtimeController',
-			})
-			.when('/advisedtime/:id',{
-				templateUrl:'assets/views/advisedtime.htm',
-				controller:'advisedtimeController',
-			})
-			.when('/quanly',{
-				templateUrl:'assets/views/quanly.htm',
-				controller:'quanlyController',
-			})
-
 
 
 		$authProvider.facebook({
@@ -145,8 +112,8 @@ angular.module('er', [
 		});
 	}
 ])
-.run(['fieldsListService','countriesListService','$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
-function (fieldsListService, countriesListService, $rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
+.run(['$rootScope', '$route', '$http', '$templateCache', '$location', '$cookies', 'identityService',
+function ($rootScope, $route, $http, $templateCache, $location, $cookies, identityService, messagesService) {
 	// $templateCache.removeAll()
 
 	$cookies.put('token', 'guest')
@@ -160,13 +127,6 @@ function (fieldsListService, countriesListService, $rootScope, $route, $http, $t
 
 	identityService.get().then(function (user) {
 		if (!user) return
-	})
-
-	countriesListService.countries().then(function (list) {
-		$rootScope.suggestCountries = list
-	})
-	fieldsListService.getFullCategories().then(function(categories){
-		$rootScope.suggestCategories = categories;
 	})
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
